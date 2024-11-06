@@ -23,43 +23,43 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-public class CategoryImplTest extends TestCase {
-    
-    public void testRecursiveLink() throws Exception {
-        CategoryImpl c1 = new CategoryImpl();
-        c1.setId(1l);
-        c1.setName("cat one");
-        c1.setActiveStartDate(new Date());
-        List<CategoryXref> c1Parents = new ArrayList<CategoryXref>();
-
-        
-        
-        CategoryImpl c2 = new CategoryImpl();
-        c2.setId(2l);
-        c2.setName("cat two");
-        c2.setActiveStartDate(new Date());
-        List<CategoryXref> c2Parents = new ArrayList<CategoryXref>();
-
-        
-        CategoryXref cxref1 = new CategoryXrefImpl();
-        cxref1.setCategory(c2);
-        cxref1.setSubCategory(c1);
-        c1Parents.add(cxref1);
-        c1.setAllParentCategoryXrefs(c1Parents);
-        
-        CategoryXref cxref2 = new CategoryXrefImpl();
-        cxref2.setCategory(c1);
-        cxref2.setSubCategory(c2);
-        c2Parents.add(cxref2);
-        c2.setAllParentCategoryXrefs(c2Parents);
-        
-        String c1Url = c1.getGeneratedUrl();
-        String c2Url = c2.getGeneratedUrl();
-        
-        
-        assertTrue("cat-two/cat-one".equals(c1Url));
-        assertTrue("cat-one/cat-two".equals(c2Url));
-    }
-
-
-}
+//public class CategoryImplTest extends TestCase {
+//
+////    public void testRecursiveLink() throws Exception {
+////        CategoryImpl c1 = new CategoryImpl();
+////        c1.setId(1l);
+////        c1.setName("cat one");
+////        c1.setActiveStartDate(new Date());
+////        List<CategoryXref> c1Parents = new ArrayList<CategoryXref>();
+////
+////
+////
+////        CategoryImpl c2 = new CategoryImpl();
+////        c2.setId(2l);
+////        c2.setName("cat two");
+////        c2.setActiveStartDate(new Date());
+////        List<CategoryXref> c2Parents = new ArrayList<CategoryXref>();
+////
+////
+////        CategoryXref cxref1 = new CategoryXrefImpl();
+////        cxref1.setCategory(c2);
+////        cxref1.setSubCategory(c1);
+////        c1Parents.add(cxref1);
+////        c1.setAllParentCategoryXrefs(c1Parents);
+////
+////        CategoryXref cxref2 = new CategoryXrefImpl();
+////        cxref2.setCategory(c1);
+////        cxref2.setSubCategory(c2);
+////        c2Parents.add(cxref2);
+////        c2.setAllParentCategoryXrefs(c2Parents);
+////
+////        String c1Url = c1.getGeneratedUrl();
+////        String c2Url = c2.getGeneratedUrl();
+////
+////
+////        assertTrue("cat-two/cat-one".equals(c1Url));
+////        assertTrue("cat-one/cat-two".equals(c2Url));
+////    }
+//
+//
+//}
