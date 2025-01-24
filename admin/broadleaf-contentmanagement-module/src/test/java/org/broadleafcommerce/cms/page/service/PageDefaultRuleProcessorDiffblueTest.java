@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.page.service;
 
 import static org.junit.Assert.assertEquals;
@@ -28,9 +11,25 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import org.broadleafcommerce.common.page.dto.NullPageDTO;
 import org.broadleafcommerce.common.page.dto.PageDTO;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml",
+    "/applicationContext-servlet-cms-contentCreator.xml", "/bl-cms-applicationContext-entity.xml",
+    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PageDefaultRuleProcessorDiffblueTest {
+  @Autowired
+  private PageDefaultRuleProcessor pageDefaultRuleProcessor;
+
   /**
    * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with
    * {@code PageDTO}, {@code Map}.
@@ -53,6 +52,41 @@ public class PageDefaultRuleProcessorDiffblueTest {
     // Assert
     verify(page).getRuleExpression();
     assertFalse(actualCheckForMatchResult);
+  }
+
+  /**
+   * Test {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)} with
+   * {@code PageDTO}, {@code Map}.
+   * <p>
+   * Method under test:
+   * {@link PageDefaultRuleProcessor#checkForMatch(PageDTO, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCheckForMatchWithPageDTOMap2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.page.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass535 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageDefaultRuleProcessor pageDefaultRuleProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PageDefaultRuleProcessor pageDefaultRuleProcessor2 = new PageDefaultRuleProcessor();
+    PageDTO page = new PageDTO();
+
+    // Act
+    pageDefaultRuleProcessor2.checkForMatch(page, new HashMap<>());
   }
 
   /**
@@ -441,6 +475,35 @@ public class PageDefaultRuleProcessorDiffblueTest {
 
     // Act and Assert
     assertTrue(pageDefaultRuleProcessor.checkForMatch(page, new HashMap<>()));
+  }
+
+  /**
+   * Test {@link PageDefaultRuleProcessor#getContextClassNames()}.
+   * <p>
+   * Method under test: {@link PageDefaultRuleProcessor#getContextClassNames()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetContextClassNames() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.page.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass560 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageDefaultRuleProcessor pageDefaultRuleProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PageDefaultRuleProcessor()).getContextClassNames();
   }
 
   /**

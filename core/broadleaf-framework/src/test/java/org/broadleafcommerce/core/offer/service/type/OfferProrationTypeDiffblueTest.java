@@ -1,28 +1,37 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.service.type;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+import java.util.List;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {OfferProrationType.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OfferProrationTypeDiffblueTest {
+  @Autowired
+  private OfferProrationType offerProrationType;
+
+  /**
+   * Test {@link OfferProrationType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link OfferProrationType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    OfferProrationType actualInstance = OfferProrationType.getInstance("Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+  }
+
   /**
    * Test getters and setters.
    * <p>
@@ -42,6 +51,73 @@ public class OfferProrationTypeDiffblueTest {
     // Assert
     assertNull(actualFriendlyType);
     assertNull(actualOfferProrationType.getType());
+  }
+
+  /**
+   * Test {@link OfferProrationType#OfferProrationType(String, String)}.
+   * <ul>
+   *   <li>When {@code Cannot add the type: (}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link OfferProrationType#OfferProrationType(String, String)}
+   */
+  @Test
+  public void testNewOfferProrationType_whenCannotAddTheType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new OfferProrationType("Cannot add the type: (", "Friendly Type"));
+
+  }
+
+  /**
+   * Test {@link OfferProrationType#OfferProrationType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link OfferProrationType#OfferProrationType(String, String)}
+   */
+  @Test
+  public void testNewOfferProrationType_whenType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new OfferProrationType("Type", "Friendly Type"));
+
+  }
+
+  /**
+   * Test {@link OfferProrationType#getTypes()}.
+   * <p>
+   * Method under test: {@link OfferProrationType#getTypes()}
+   */
+  @Test
+  public void testGetTypes() {
+    // Arrange and Act
+    List<OfferProrationType> actualTypes = OfferProrationType.getTypes();
+
+    // Assert
+    assertEquals(7, actualTypes.size());
+    OfferProrationType getResult = actualTypes.get(4);
+    assertEquals("", getResult.getType());
+    OfferProrationType getResult2 = actualTypes.get(3);
+    assertEquals("42", getResult2.getType());
+    OfferProrationType getResult3 = actualTypes.get(1);
+    assertEquals("Distribute discount between qualifiers and targets", getResult3.getFriendlyType());
+    OfferProrationType getResult4 = actualTypes.get(2);
+    assertEquals("Friendly Type", getResult4.getFriendlyType());
+    assertEquals("Friendly Type", getResult2.getFriendlyType());
+    assertEquals("Friendly Type", getResult.getFriendlyType());
+    OfferProrationType getResult5 = actualTypes.get(5);
+    assertEquals("Friendly Type", getResult5.getFriendlyType());
+    OfferProrationType getResult6 = actualTypes.get(6);
+    assertEquals("Friendly Type", getResult6.getFriendlyType());
+    OfferProrationType getResult7 = actualTypes.get(0);
+    assertEquals("Record discount to targets", getResult7.getFriendlyType());
+    assertEquals("TARGET_AND_QUALIFIER", getResult3.getType());
+    assertEquals("TARGET_ONLY", getResult7.getType());
+    assertEquals("Type", getResult4.getType());
+    assertEquals("java.util.Map$Entry", getResult5.getType());
+    assertEquals("org.broadleafcommerce.core.offer.service.type.OfferProrationType", getResult6.getType());
   }
 
   /**

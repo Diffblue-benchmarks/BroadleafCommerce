@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -22,9 +22,19 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import org.broadleafcommerce.common.util.TableCreator.Col;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TableCreatorDiffblueTest {
+  @Autowired
+  private TableCreator.Col col;
+
   /**
    * Test Col {@link Col#Col(String, int)}.
    * <p>
@@ -55,6 +65,69 @@ public class TableCreatorDiffblueTest {
     // Assert
     assertEquals("Dr", actualCol.title);
     assertEquals(2, actualCol.width);
+  }
+
+  /**
+   * Test Col {@link Col#Col(String)}.
+   * <p>
+   * Method under test: {@link TableCreator.Col#Col(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testColNewCol3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Failed to create Spring context.
+    //   Attempt to initialize test context failed with
+    //   com.diffblue.fuzztest.shared.proxy.LibraryLinkageException: java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
+    //   	Remaining input: .Col;
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
+    //   java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
+    //   	Remaining input: .Col;
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.getOrDeduceTypes(DefinitionsParser.java:121)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseMockBeanAnnotation(DefinitionsParser.java:79)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parseElement$1(DefinitionsParser.java:72)
+    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:602)
+    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:569)
+    //       at java.base/java.util.Spliterator.forEachRemaining(Spliterator.java:326)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:497)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseElement(DefinitionsParser.java:72)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parse$0(DefinitionsParser.java:65)
+    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:706)
+    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:685)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parse(DefinitionsParser.java:65)
+    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.parseDefinitions(MockitoContextCustomizerFactory.java:44)
+    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.createContextCustomizer(MockitoContextCustomizerFactory.java:39)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.getContextCustomizers(AbstractTestContextBootstrapper.java:402)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:374)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildDefaultMergedContextConfiguration(AbstractTestContextBootstrapper.java:309)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:262)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:107)
+    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:137)
+    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:122)
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
+    //   See https://diff.blue/R026 to resolve this issue.
+
+    // Arrange and Act
+    new TableCreator.Col("Dr");
   }
 
   /**

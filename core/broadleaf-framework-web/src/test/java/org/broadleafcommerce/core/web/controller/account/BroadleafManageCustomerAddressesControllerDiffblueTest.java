@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,22 +15,68 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import javax.servlet.http.HttpServletRequest;
+import org.broadleafcommerce.common.exception.ServiceException;
+import org.broadleafcommerce.common.i18n.service.ISOService;
+import org.broadleafcommerce.core.web.controller.account.validator.CustomerAddressValidator;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
+import org.broadleafcommerce.core.web.service.InitBinderService;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
+import org.broadleafcommerce.profile.core.domain.CustomerAddress;
+import org.broadleafcommerce.profile.core.domain.CustomerAddressImpl;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
+import org.broadleafcommerce.profile.core.service.AddressService;
+import org.broadleafcommerce.profile.core.service.CountryService;
+import org.broadleafcommerce.profile.core.service.CustomerAddressService;
+import org.broadleafcommerce.profile.core.service.StateService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
+@ContextConfiguration(classes = {BroadleafManageCustomerAddressesController.class})
+@ExtendWith(SpringExtension.class)
 class BroadleafManageCustomerAddressesControllerDiffblueTest {
+  @MockBean
+  private AddressService addressService;
+
+  @Autowired
+  private BroadleafManageCustomerAddressesController broadleafManageCustomerAddressesController;
+
+  @MockBean
+  private CountryService countryService;
+
+  @MockBean
+  private CustomerAddressService customerAddressService;
+
+  @MockBean(name = "blCustomerAddressValidator")
+  private CustomerAddressValidator customerAddressValidator;
+
+  @MockBean
+  private ISOService iSOService;
+
+  @MockBean
+  private InitBinderService initBinderService;
+
+  @MockBean
+  private StateService stateService;
+
   /**
    * Test
    * {@link BroadleafManageCustomerAddressesController#viewCustomerAddresses(HttpServletRequest, Model)}.
@@ -200,6 +229,289 @@ class BroadleafManageCustomerAddressesControllerDiffblueTest {
     assertTrue(phoneFax.isActive());
     assertEquals(phoneFax, phonePrimary);
     assertEquals(phoneFax, phoneSecondary);
+  }
+
+  /**
+   * Test
+   * {@link BroadleafManageCustomerAddressesController#viewCustomerAddresses(HttpServletRequest, Model)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafManageCustomerAddressesController#viewCustomerAddresses(HttpServletRequest, Model)}
+   */
+  @Test
+  @DisplayName("Test viewCustomerAddresses(HttpServletRequest, Model)")
+  @Disabled("TODO: Complete this test")
+  void testViewCustomerAddresses3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.controller.account;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3585 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController broadleafManageCustomerAddressesController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerAddressValidator") org.broadleafcommerce.core.web.controller.account.validator.CustomerAddressValidator customerAddressValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+
+    // Act
+    broadleafManageCustomerAddressesController.viewCustomerAddresses(request, new ConcurrentModel());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafManageCustomerAddressesController#viewCustomerAddress(HttpServletRequest, Model, Long)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafManageCustomerAddressesController#viewCustomerAddress(HttpServletRequest, Model, Long)}
+   */
+  @Test
+  @DisplayName("Test viewCustomerAddress(HttpServletRequest, Model, Long)")
+  @Disabled("TODO: Complete this test")
+  void testViewCustomerAddress() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.controller.account;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3584 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController broadleafManageCustomerAddressesController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerAddressValidator") org.broadleafcommerce.core.web.controller.account.validator.CustomerAddressValidator customerAddressValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+
+    // Act
+    broadleafManageCustomerAddressesController.viewCustomerAddress(request, new ConcurrentModel(), 1L);
+  }
+
+  /**
+   * Test
+   * {@link BroadleafManageCustomerAddressesController#addCustomerAddress(HttpServletRequest, Model, CustomerAddressForm, BindingResult, RedirectAttributes)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafManageCustomerAddressesController#addCustomerAddress(HttpServletRequest, Model, CustomerAddressForm, BindingResult, RedirectAttributes)}
+   */
+  @Test
+  @DisplayName("Test addCustomerAddress(HttpServletRequest, Model, CustomerAddressForm, BindingResult, RedirectAttributes)")
+  @Disabled("TODO: Complete this test")
+  void testAddCustomerAddress() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.controller.account;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3579 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController broadleafManageCustomerAddressesController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerAddressValidator") org.broadleafcommerce.core.web.controller.account.validator.CustomerAddressValidator customerAddressValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    ConcurrentModel model = new ConcurrentModel();
+
+    CustomerAddressForm form = new CustomerAddressForm();
+    form.setAddress(new AddressImpl());
+    form.setAddressName("42 Main St");
+    form.setCustomerAddressId(1L);
+    BindException result = new BindException("Target", "Object Name");
+
+    // Act
+    broadleafManageCustomerAddressesController.addCustomerAddress(request, model, form, result,
+        new RedirectAttributesModelMap());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafManageCustomerAddressesController#updateCustomerAddress(HttpServletRequest, Model, Long, CustomerAddressForm, BindingResult, RedirectAttributes)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafManageCustomerAddressesController#updateCustomerAddress(HttpServletRequest, Model, Long, CustomerAddressForm, BindingResult, RedirectAttributes)}
+   */
+  @Test
+  @DisplayName("Test updateCustomerAddress(HttpServletRequest, Model, Long, CustomerAddressForm, BindingResult, RedirectAttributes)")
+  @Disabled("TODO: Complete this test")
+  void testUpdateCustomerAddress() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.controller.account;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3582 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController broadleafManageCustomerAddressesController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerAddressValidator") org.broadleafcommerce.core.web.controller.account.validator.CustomerAddressValidator customerAddressValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    ConcurrentModel model = new ConcurrentModel();
+
+    CustomerAddressForm form = new CustomerAddressForm();
+    form.setAddress(new AddressImpl());
+    form.setAddressName("42 Main St");
+    form.setCustomerAddressId(1L);
+    BindException result = new BindException("Target", "Object Name");
+
+    // Act
+    broadleafManageCustomerAddressesController.updateCustomerAddress(request, model, 1L, form, result,
+        new RedirectAttributesModelMap());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafManageCustomerAddressesController#removeCustomerAddress(HttpServletRequest, Model, Long, RedirectAttributes)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafManageCustomerAddressesController#removeCustomerAddress(HttpServletRequest, Model, Long, RedirectAttributes)}
+   */
+  @Test
+  @DisplayName("Test removeCustomerAddress(HttpServletRequest, Model, Long, RedirectAttributes)")
+  @Disabled("TODO: Complete this test")
+  void testRemoveCustomerAddress() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.controller.account;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3580 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController broadleafManageCustomerAddressesController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerAddressValidator") org.broadleafcommerce.core.web.controller.account.validator.CustomerAddressValidator customerAddressValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    broadleafManageCustomerAddressesController.removeCustomerAddress(request, model, 1L,
+        new RedirectAttributesModelMap());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafManageCustomerAddressesController#removeUnusedPhones(CustomerAddressForm)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafManageCustomerAddressesController#removeUnusedPhones(CustomerAddressForm)}
+   */
+  @Test
+  @DisplayName("Test removeUnusedPhones(CustomerAddressForm)")
+  @Disabled("TODO: Complete this test")
+  void testRemoveUnusedPhones() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.controller.account;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3581 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController broadleafManageCustomerAddressesController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerAddressValidator") org.broadleafcommerce.core.web.controller.account.validator.CustomerAddressValidator customerAddressValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerAddressForm form = new CustomerAddressForm();
+    form.setAddress(new AddressImpl());
+    form.setAddressName("42 Main St");
+    form.setCustomerAddressId(1L);
+
+    // Act
+    broadleafManageCustomerAddressesController.removeUnusedPhones(form);
   }
 
   /**
@@ -572,6 +884,45 @@ class BroadleafManageCustomerAddressesControllerDiffblueTest {
     verify(form).setAddress(isA(Address.class));
     verify(form).setAddressName(eq("42 Main St"));
     verify(form).setCustomerAddressId(eq(1L));
+  }
+
+  /**
+   * Test
+   * {@link BroadleafManageCustomerAddressesController#validateCustomerOwnedData(CustomerAddress)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafManageCustomerAddressesController#validateCustomerOwnedData(CustomerAddress)}
+   */
+  @Test
+  @DisplayName("Test validateCustomerOwnedData(CustomerAddress)")
+  @Disabled("TODO: Complete this test")
+  void testValidateCustomerOwnedData() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.controller.account;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3583 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.AddressService addressService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.controller.account.BroadleafManageCustomerAddressesController broadleafManageCustomerAddressesController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CountryService countryService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerAddressService customerAddressService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blCustomerAddressValidator") org.broadleafcommerce.core.web.controller.account.validator.CustomerAddressValidator customerAddressValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.i18n.service.ISOService iSOService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.core.web.service.InitBinderService initBinderService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.StateService stateService;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    broadleafManageCustomerAddressesController.validateCustomerOwnedData(new CustomerAddressImpl());
   }
 
   /**

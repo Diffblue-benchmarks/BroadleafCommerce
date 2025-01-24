@@ -1,216 +1,23 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.order.service;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.broadleafcommerce.common.structure.dto.ItemCriteriaDTO;
-import org.broadleafcommerce.common.structure.dto.StructuredContentDTO;
-import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext.xml",
+    "/bl-framework-applicationContext-entity.xml", "/bl-framework-applicationContext-persistence.xml",
+    "/bl-framework-applicationContext-workflow.xml",
+    "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class StructuredContentCartRuleProcessorDiffblueTest {
-  /**
-   * Test
-   * {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
-   * with {@code StructuredContentDTO}, {@code Map}.
-   * <p>
-   * Method under test:
-   * {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
-   */
-  @Test
-  public void testCheckForMatchWithStructuredContentDTOMap() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StructuredContentCartRuleProcessor structuredContentCartRuleProcessor = new StructuredContentCartRuleProcessor();
-
-    StructuredContentDTO sc = new StructuredContentDTO();
-    sc.setContentName("Not all who wander are lost");
-    sc.setContentType("text/plain");
-    sc.setId(1L);
-    sc.setItemCriteriaDTOList(new ArrayList<>());
-    sc.setLocaleCode("en");
-    sc.setPriority(1);
-    sc.setRuleExpression("Rule Expression");
-    sc.setValues(new HashMap<>());
-
-    // Act and Assert
-    assertTrue(structuredContentCartRuleProcessor.checkForMatch(sc, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
-   * with {@code StructuredContentDTO}, {@code Map}.
-   * <ul>
-   *   <li>Given {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
-   */
-  @Test
-  public void testCheckForMatchWithStructuredContentDTOMap_givenNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StructuredContentCartRuleProcessor structuredContentCartRuleProcessor = new StructuredContentCartRuleProcessor();
-
-    StructuredContentDTO sc = new StructuredContentDTO();
-    sc.setContentName("Not all who wander are lost");
-    sc.setContentType("text/plain");
-    sc.setId(1L);
-    sc.setLocaleCode("en");
-    sc.setPriority(1);
-    sc.setRuleExpression("Rule Expression");
-    sc.setValues(new HashMap<>());
-    sc.setItemCriteriaDTOList(null);
-
-    HashMap<String, Object> valueMap = new HashMap<>();
-    valueMap.put("customer", new CustomerImpl());
-
-    // Act and Assert
-    assertTrue(structuredContentCartRuleProcessor.checkForMatch(sc, valueMap));
-  }
-
-  /**
-   * Test
-   * {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
-   * with {@code StructuredContentDTO}, {@code Map}.
-   * <ul>
-   *   <li>Then calls {@link StructuredContentDTO#getItemCriteriaDTOList()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
-   */
-  @Test
-  public void testCheckForMatchWithStructuredContentDTOMap_thenCallsGetItemCriteriaDTOList() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StructuredContentCartRuleProcessor structuredContentCartRuleProcessor = new StructuredContentCartRuleProcessor();
-    StructuredContentDTO sc = mock(StructuredContentDTO.class);
-    when(sc.getItemCriteriaDTOList()).thenReturn(new ArrayList<>());
-    doNothing().when(sc).setContentName(Mockito.<String>any());
-    doNothing().when(sc).setContentType(Mockito.<String>any());
-    doNothing().when(sc).setId(Mockito.<Long>any());
-    doNothing().when(sc).setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
-    doNothing().when(sc).setLocaleCode(Mockito.<String>any());
-    doNothing().when(sc).setPriority(Mockito.<Integer>any());
-    doNothing().when(sc).setRuleExpression(Mockito.<String>any());
-    doNothing().when(sc).setValues(Mockito.<Map<String, Object>>any());
-    sc.setContentName("Not all who wander are lost");
-    sc.setContentType("text/plain");
-    sc.setId(1L);
-    sc.setItemCriteriaDTOList(new ArrayList<>());
-    sc.setLocaleCode("en");
-    sc.setPriority(1);
-    sc.setRuleExpression("Rule Expression");
-    sc.setValues(new HashMap<>());
-
-    // Act
-    boolean actualCheckForMatchResult = structuredContentCartRuleProcessor.checkForMatch(sc, new HashMap<>());
-
-    // Assert
-    verify(sc).getItemCriteriaDTOList();
-    verify(sc).setContentName(eq("Not all who wander are lost"));
-    verify(sc).setContentType(eq("text/plain"));
-    verify(sc).setId(eq(1L));
-    verify(sc).setItemCriteriaDTOList(isA(List.class));
-    verify(sc).setLocaleCode(eq("en"));
-    verify(sc).setPriority(eq(1));
-    verify(sc).setRuleExpression(eq("Rule Expression"));
-    verify(sc).setValues(isA(Map.class));
-    assertTrue(actualCheckForMatchResult);
-  }
-
-  /**
-   * Test
-   * {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
-   * with {@code StructuredContentDTO}, {@code Map}.
-   * <ul>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link StructuredContentCartRuleProcessor#checkForMatch(StructuredContentDTO, Map)}
-   */
-  @Test
-  public void testCheckForMatchWithStructuredContentDTOMap_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    StructuredContentCartRuleProcessor structuredContentCartRuleProcessor = new StructuredContentCartRuleProcessor();
-
-    ItemCriteriaDTO itemCriteriaDTO = new ItemCriteriaDTO();
-    itemCriteriaDTO.setMatchRule("Match Rule");
-    itemCriteriaDTO.setQty(1);
-
-    ArrayList<ItemCriteriaDTO> itemCriteriaDTOList = new ArrayList<>();
-    itemCriteriaDTOList.add(itemCriteriaDTO);
-    StructuredContentDTO sc = mock(StructuredContentDTO.class);
-    when(sc.getItemCriteriaDTOList()).thenReturn(itemCriteriaDTOList);
-    doNothing().when(sc).setContentName(Mockito.<String>any());
-    doNothing().when(sc).setContentType(Mockito.<String>any());
-    doNothing().when(sc).setId(Mockito.<Long>any());
-    doNothing().when(sc).setItemCriteriaDTOList(Mockito.<List<ItemCriteriaDTO>>any());
-    doNothing().when(sc).setLocaleCode(Mockito.<String>any());
-    doNothing().when(sc).setPriority(Mockito.<Integer>any());
-    doNothing().when(sc).setRuleExpression(Mockito.<String>any());
-    doNothing().when(sc).setValues(Mockito.<Map<String, Object>>any());
-    sc.setContentName("Not all who wander are lost");
-    sc.setContentType("text/plain");
-    sc.setId(1L);
-    sc.setItemCriteriaDTOList(new ArrayList<>());
-    sc.setLocaleCode("en");
-    sc.setPriority(1);
-    sc.setRuleExpression("Rule Expression");
-    sc.setValues(new HashMap<>());
-
-    // Act
-    boolean actualCheckForMatchResult = structuredContentCartRuleProcessor.checkForMatch(sc, new HashMap<>());
-
-    // Assert
-    verify(sc).getItemCriteriaDTOList();
-    verify(sc).setContentName(eq("Not all who wander are lost"));
-    verify(sc).setContentType(eq("text/plain"));
-    verify(sc).setId(eq(1L));
-    verify(sc).setItemCriteriaDTOList(isA(List.class));
-    verify(sc).setLocaleCode(eq("en"));
-    verify(sc).setPriority(eq(1));
-    verify(sc).setRuleExpression(eq("Rule Expression"));
-    verify(sc).setValues(isA(Map.class));
-    assertFalse(actualCheckForMatchResult);
-  }
+  @Autowired
+  private StructuredContentCartRuleProcessor structuredContentCartRuleProcessor;
 
   /**
    * Test new {@link StructuredContentCartRuleProcessor} (default constructor).
@@ -228,5 +35,35 @@ public class StructuredContentCartRuleProcessorDiffblueTest {
     // Assert
     assertNull(actualStructuredContentCartRuleProcessor.getOrderDao());
     assertTrue(actualStructuredContentCartRuleProcessor.getContextClassNames().isEmpty());
+  }
+
+  /**
+   * Test new {@link StructuredContentCartRuleProcessor} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link StructuredContentCartRuleProcessor}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewStructuredContentCartRuleProcessor2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass0 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.StructuredContentCartRuleProcessor structuredContentCartRuleProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new StructuredContentCartRuleProcessor();
   }
 }

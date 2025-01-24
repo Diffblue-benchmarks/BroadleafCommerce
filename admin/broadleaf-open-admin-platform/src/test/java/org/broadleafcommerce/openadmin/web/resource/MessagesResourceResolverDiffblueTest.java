@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.resource;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -35,16 +18,31 @@ import javax.servlet.http.HttpServletRequest;
 import org.broadleafcommerce.common.resource.GeneratedResource;
 import org.broadleafcommerce.common.web.resource.BroadleafDefaultResourceResolverChain;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 import org.springframework.web.servlet.resource.ResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolverChain;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class MessagesResourceResolverDiffblueTest {
+  @Autowired
+  private MessagesResourceResolver messagesResourceResolver;
+
   /**
    * Test
    * {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List, ResourceResolverChain)}.
@@ -65,6 +63,43 @@ public class MessagesResourceResolverDiffblueTest {
     // Act and Assert
     assertNull(messagesResourceResolver.resolveResource(request, "Path", locations,
         new BroadleafDefaultResourceResolverChain(new ArrayList<>())));
+  }
+
+  /**
+   * Test
+   * {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List, ResourceResolverChain)}.
+   * <p>
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveResource(HttpServletRequest, String, List, ResourceResolverChain)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testResolveResource2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.resource;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15732 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.resource.MessagesResourceResolver messagesResourceResolver;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver2 = new MessagesResourceResolver();
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    ArrayList<Resource> locations = new ArrayList<>();
+
+    // Act
+    messagesResourceResolver2.resolveResource(request, "Path", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>()));
   }
 
   /**
@@ -230,6 +265,40 @@ public class MessagesResourceResolverDiffblueTest {
   /**
    * Test
    * {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}.
+   * <p>
+   * Method under test:
+   * {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUpdateMessagesVariables2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.resource;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15874 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.resource.MessagesResourceResolver messagesResourceResolver;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver2 = new MessagesResourceResolver();
+
+    // Act
+    messagesResourceResolver2.updateMessagesVariables(new GeneratedResource(), "Path");
+  }
+
+  /**
+   * Test
+   * {@link MessagesResourceResolver#updateMessagesVariables(Resource, String)}.
    * <ul>
    *   <li>Given {@link IOException#IOException(String)} with {@code UTF-8}.</li>
    *   <li>Then throw {@link RuntimeException}.</li>
@@ -370,6 +439,39 @@ public class MessagesResourceResolverDiffblueTest {
 
   /**
    * Test {@link MessagesResourceResolver#getResourceContents(Resource)}.
+   * <p>
+   * Method under test:
+   * {@link MessagesResourceResolver#getResourceContents(Resource)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetResourceContents() throws IOException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.resource;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15429 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.resource.MessagesResourceResolver messagesResourceResolver;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver2 = new MessagesResourceResolver();
+
+    // Act
+    messagesResourceResolver2.getResourceContents(new GeneratedResource());
+  }
+
+  /**
+   * Test {@link MessagesResourceResolver#getResourceContents(Resource)}.
    * <ul>
    *   <li>Then calls {@link ByteArrayResource#getInputStream()}.</li>
    * </ul>
@@ -439,6 +541,36 @@ public class MessagesResourceResolverDiffblueTest {
 
   /**
    * Test {@link MessagesResourceResolver#replaceResourceContents(String)}.
+   * <p>
+   * Method under test:
+   * {@link MessagesResourceResolver#replaceResourceContents(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testReplaceResourceContents() throws IOException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.resource;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15473 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.resource.MessagesResourceResolver messagesResourceResolver;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MessagesResourceResolver()).replaceResourceContents("Not all who wander are lost");
+  }
+
+  /**
+   * Test {@link MessagesResourceResolver#replaceResourceContents(String)}.
    * <ul>
    *   <li>Then return {@code Not all who wander are lost}.</li>
    * </ul>
@@ -453,6 +585,42 @@ public class MessagesResourceResolverDiffblueTest {
     // Arrange, Act and Assert
     assertEquals("Not all who wander are lost",
         (new MessagesResourceResolver()).replaceResourceContents("Not all who wander are lost"));
+  }
+
+  /**
+   * Test
+   * {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}.
+   * <p>
+   * Method under test:
+   * {@link MessagesResourceResolver#resolveUrlPath(String, List, ResourceResolverChain)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testResolveUrlPath() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.resource;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15853 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.resource.MessagesResourceResolver messagesResourceResolver;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MessagesResourceResolver messagesResourceResolver2 = new MessagesResourceResolver();
+    ArrayList<Resource> locations = new ArrayList<>();
+
+    // Act
+    messagesResourceResolver2.resolveUrlPath("https://example.org/example", locations,
+        new BroadleafDefaultResourceResolverChain(new ArrayList<>()));
   }
 
   /**

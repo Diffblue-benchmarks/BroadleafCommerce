@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -26,6 +26,8 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -37,6 +39,7 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.TimeZone;
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.RequestDTO;
@@ -56,14 +59,221 @@ import org.broadleafcommerce.common.util.BroadleafMergeResourceBundleMessageSour
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
 import org.broadleafcommerce.common.web.util.FileSystemResponseWrapper;
 import org.broadleafcommerce.common.web.util.StatusExposingServletResponse;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
+@ContextConfiguration(classes = {BroadleafRequestContext.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafRequestContextDiffblueTest {
+  @Autowired
+  private BroadleafRequestContext broadleafRequestContext;
+
+  /**
+   * Test {@link BroadleafRequestContext#getBroadleafRequestContext()}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafRequestContext#getBroadleafRequestContext()}
+   */
+  @Test
+  public void testGetBroadleafRequestContext() throws MissingResourceException {
+    // Arrange and Act
+    BroadleafRequestContext actualBroadleafRequestContext = BroadleafRequestContext.getBroadleafRequestContext();
+
+    // Assert
+    java.util.Locale javaLocale = actualBroadleafRequestContext.getJavaLocale();
+    assertEquals("", javaLocale.getDisplayScript());
+    assertEquals("", javaLocale.getDisplayVariant());
+    assertEquals("", javaLocale.getScript());
+    assertEquals("", javaLocale.getVariant());
+    Currency javaCurrency = actualBroadleafRequestContext.getJavaCurrency();
+    assertEquals("British Pound", javaCurrency.getDisplayName());
+    assertEquals("English (United Kingdom)", javaLocale.getDisplayName());
+    assertEquals("English", javaLocale.getDisplayLanguage());
+    assertEquals("GB", javaLocale.getCountry());
+    assertEquals("GBP", javaCurrency.getCurrencyCode());
+    assertEquals("GBP", javaCurrency.toString());
+    assertEquals("GBR", javaLocale.getISO3Country());
+    assertEquals("United Kingdom", javaLocale.getDisplayCountry());
+    assertEquals("£", javaCurrency.getSymbol());
+    assertEquals("en", javaLocale.getLanguage());
+    assertEquals("eng", javaLocale.getISO3Language());
+    assertNull(actualBroadleafRequestContext.getAdminUserId());
+    assertNull(actualBroadleafRequestContext.getSandBoxId());
+    assertNull(actualBroadleafRequestContext.getRequestURIWithoutContext());
+    assertNull(actualBroadleafRequestContext.getTimeZone());
+    assertNull(actualBroadleafRequestContext.getRequest());
+    assertNull(actualBroadleafRequestContext.getResponse());
+    assertNull(actualBroadleafRequestContext.getRequestDTO());
+    assertNull(actualBroadleafRequestContext.getBroadleafCurrency());
+    assertNull(actualBroadleafRequestContext.getRequestedBroadleafCurrency());
+    assertNull(actualBroadleafRequestContext.getLocale());
+    assertNull(actualBroadleafRequestContext.getSandBox());
+    assertNull(actualBroadleafRequestContext.getCurrentCatalog());
+    assertNull(actualBroadleafRequestContext.getCurrentProfile());
+    assertNull(actualBroadleafRequestContext.getNonPersistentSite());
+    assertNull(actualBroadleafRequestContext.getSite());
+    assertNull(actualBroadleafRequestContext.getTheme());
+    assertNull(actualBroadleafRequestContext.getMessageSource());
+    assertNull(actualBroadleafRequestContext.getWebRequest());
+    assertEquals(2, javaCurrency.getDefaultFractionDigits());
+    assertEquals(826, javaCurrency.getNumericCode());
+    assertEquals(DeployBehavior.UNDEFINED, actualBroadleafRequestContext.getDeployBehavior());
+    assertEquals(DeployState.UNDEFINED, actualBroadleafRequestContext.getDeployState());
+    assertEquals(EnforceEnterpriseCollectionBehaviorState.UNDEFINED,
+        actualBroadleafRequestContext.getEnforceEnterpriseCollectionBehaviorState());
+    assertEquals(ValidateProductionChangesState.UNDEFINED,
+        actualBroadleafRequestContext.getValidateProductionChangesState());
+    assertFalse(javaLocale.hasExtensions());
+    assertFalse(actualBroadleafRequestContext.getAdmin());
+    assertFalse(actualBroadleafRequestContext.getIgnoreSite());
+    assertFalse(actualBroadleafRequestContext.getInternalIgnoreFilters());
+    assertFalse(actualBroadleafRequestContext.getInternalValidateFind());
+    assertFalse(actualBroadleafRequestContext.ignoreSite);
+    assertFalse(actualBroadleafRequestContext.isAdmin);
+    assertTrue(actualBroadleafRequestContext.getExplicitCatalogs().isEmpty());
+    assertTrue(actualBroadleafRequestContext.explicitCatalogs.isEmpty());
+    assertTrue(actualBroadleafRequestContext.getAdditionalProperties().isEmpty());
+    Set<Character> extensionKeys = javaLocale.getExtensionKeys();
+    assertTrue(extensionKeys.isEmpty());
+    assertTrue(actualBroadleafRequestContext.isProductionSandBox());
+    assertSame(extensionKeys, javaLocale.getUnicodeLocaleAttributes());
+    assertSame(extensionKeys, javaLocale.getUnicodeLocaleKeys());
+    assertSame(javaCurrency, actualBroadleafRequestContext.javaCurrency);
+    assertSame(javaLocale, actualBroadleafRequestContext.javaLocale);
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#getBroadleafRequestContext(boolean)} with
+   * {@code boolean}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafRequestContext#getBroadleafRequestContext(boolean)}
+   */
+  @Test
+  public void testGetBroadleafRequestContextWithBoolean() throws MissingResourceException {
+    // Arrange and Act
+    BroadleafRequestContext actualBroadleafRequestContext = BroadleafRequestContext.getBroadleafRequestContext(true);
+
+    // Assert
+    java.util.Locale javaLocale = actualBroadleafRequestContext.getJavaLocale();
+    assertEquals("", javaLocale.getDisplayScript());
+    assertEquals("", javaLocale.getDisplayVariant());
+    assertEquals("", javaLocale.getScript());
+    assertEquals("", javaLocale.getVariant());
+    Currency javaCurrency = actualBroadleafRequestContext.getJavaCurrency();
+    assertEquals("British Pound", javaCurrency.getDisplayName());
+    assertEquals("English (United Kingdom)", javaLocale.getDisplayName());
+    assertEquals("English", javaLocale.getDisplayLanguage());
+    assertEquals("GB", javaLocale.getCountry());
+    assertEquals("GBP", javaCurrency.getCurrencyCode());
+    assertEquals("GBP", javaCurrency.toString());
+    assertEquals("GBR", javaLocale.getISO3Country());
+    assertEquals("United Kingdom", javaLocale.getDisplayCountry());
+    assertEquals("£", javaCurrency.getSymbol());
+    assertEquals("en", javaLocale.getLanguage());
+    assertEquals("eng", javaLocale.getISO3Language());
+    assertNull(actualBroadleafRequestContext.getAdminUserId());
+    assertNull(actualBroadleafRequestContext.getSandBoxId());
+    assertNull(actualBroadleafRequestContext.getRequestURIWithoutContext());
+    assertNull(actualBroadleafRequestContext.getTimeZone());
+    assertNull(actualBroadleafRequestContext.getRequest());
+    assertNull(actualBroadleafRequestContext.getResponse());
+    assertNull(actualBroadleafRequestContext.getRequestDTO());
+    assertNull(actualBroadleafRequestContext.getBroadleafCurrency());
+    assertNull(actualBroadleafRequestContext.getRequestedBroadleafCurrency());
+    assertNull(actualBroadleafRequestContext.getLocale());
+    assertNull(actualBroadleafRequestContext.getSandBox());
+    assertNull(actualBroadleafRequestContext.getCurrentCatalog());
+    assertNull(actualBroadleafRequestContext.getCurrentProfile());
+    assertNull(actualBroadleafRequestContext.getNonPersistentSite());
+    assertNull(actualBroadleafRequestContext.getSite());
+    assertNull(actualBroadleafRequestContext.getTheme());
+    assertNull(actualBroadleafRequestContext.getMessageSource());
+    assertNull(actualBroadleafRequestContext.getWebRequest());
+    assertEquals(2, javaCurrency.getDefaultFractionDigits());
+    assertEquals(826, javaCurrency.getNumericCode());
+    assertEquals(DeployBehavior.UNDEFINED, actualBroadleafRequestContext.getDeployBehavior());
+    assertEquals(DeployState.UNDEFINED, actualBroadleafRequestContext.getDeployState());
+    assertEquals(EnforceEnterpriseCollectionBehaviorState.UNDEFINED,
+        actualBroadleafRequestContext.getEnforceEnterpriseCollectionBehaviorState());
+    assertEquals(ValidateProductionChangesState.UNDEFINED,
+        actualBroadleafRequestContext.getValidateProductionChangesState());
+    assertFalse(javaLocale.hasExtensions());
+    assertFalse(actualBroadleafRequestContext.getAdmin());
+    assertFalse(actualBroadleafRequestContext.getIgnoreSite());
+    assertFalse(actualBroadleafRequestContext.getInternalIgnoreFilters());
+    assertFalse(actualBroadleafRequestContext.getInternalValidateFind());
+    assertFalse(actualBroadleafRequestContext.ignoreSite);
+    assertFalse(actualBroadleafRequestContext.isAdmin);
+    assertTrue(actualBroadleafRequestContext.getExplicitCatalogs().isEmpty());
+    assertTrue(actualBroadleafRequestContext.explicitCatalogs.isEmpty());
+    assertTrue(actualBroadleafRequestContext.getAdditionalProperties().isEmpty());
+    Set<Character> extensionKeys = javaLocale.getExtensionKeys();
+    assertTrue(extensionKeys.isEmpty());
+    assertTrue(actualBroadleafRequestContext.isProductionSandBox());
+    assertSame(extensionKeys, javaLocale.getUnicodeLocaleAttributes());
+    assertSame(extensionKeys, javaLocale.getUnicodeLocaleKeys());
+    assertSame(javaCurrency, actualBroadleafRequestContext.javaCurrency);
+    assertSame(javaLocale, actualBroadleafRequestContext.javaLocale);
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#getBroadleafRequestContext(boolean)} with
+   * {@code boolean}.
+   * <ul>
+   *   <li>When {@code false}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BroadleafRequestContext#getBroadleafRequestContext(boolean)}
+   */
+  @Test
+  public void testGetBroadleafRequestContextWithBoolean_whenFalse_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(BroadleafRequestContext.getBroadleafRequestContext(false));
+  }
+
+  /**
+   * Test
+   * {@link BroadleafRequestContext#setBroadleafRequestContext(BroadleafRequestContext)}.
+   * <ul>
+   *   <li>When {@link BroadleafRequestContext} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BroadleafRequestContext#setBroadleafRequestContext(BroadleafRequestContext)}
+   */
+  @Test
+  public void testSetBroadleafRequestContext_whenBroadleafRequestContext() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    BroadleafRequestContext.setBroadleafRequestContext(new BroadleafRequestContext());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#isContextInitialized()}.
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#isContextInitialized()}
+   */
+  @Test
+  public void testIsContextInitialized() {
+    // Arrange, Act and Assert
+    assertFalse(BroadleafRequestContext.isContextInitialized());
+  }
+
   /**
    * Test {@link BroadleafRequestContext#hasLocale()}.
    * <p>
@@ -95,6 +305,45 @@ public class BroadleafRequestContextDiffblueTest {
   public void testGetCurrency() {
     // Arrange, Act and Assert
     assertNull(BroadleafRequestContext.getCurrency());
+  }
+
+  /**
+   * Test {@link BroadleafRequestContext#getRequestAttribute(String)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafRequestContext#getRequestAttribute(String)}
+   */
+  @Test
+  public void testGetRequestAttribute() throws MissingResourceException {
+    // Arrange and Act
+    Object actualRequestAttribute = broadleafRequestContext.getRequestAttribute("Name");
+
+    // Assert
+    Locale locale = broadleafRequestContext.javaLocale;
+    assertEquals("", locale.getDisplayScript());
+    assertEquals("", locale.getDisplayVariant());
+    assertEquals("", locale.getScript());
+    assertEquals("", locale.getVariant());
+    Currency currency = broadleafRequestContext.javaCurrency;
+    assertEquals("British Pound", currency.getDisplayName());
+    assertEquals("English (United Kingdom)", locale.getDisplayName());
+    assertEquals("English", locale.getDisplayLanguage());
+    assertEquals("GB", locale.getCountry());
+    assertEquals("GBP", currency.getCurrencyCode());
+    assertEquals("GBP", currency.toString());
+    assertEquals("GBR", locale.getISO3Country());
+    assertEquals("United Kingdom", locale.getDisplayCountry());
+    assertEquals("£", currency.getSymbol());
+    assertEquals("en", locale.getLanguage());
+    assertEquals("eng", locale.getISO3Language());
+    assertNull(actualRequestAttribute);
+    assertEquals(2, currency.getDefaultFractionDigits());
+    assertEquals(826, currency.getNumericCode());
+    assertFalse(locale.hasExtensions());
+    Currency expectedJavaCurrency = broadleafRequestContext.javaCurrency;
+    assertSame(expectedJavaCurrency, broadleafRequestContext.getJavaCurrency());
+    Locale expectedJavaLocale = broadleafRequestContext.javaLocale;
+    assertSame(expectedJavaLocale, broadleafRequestContext.getJavaLocale());
   }
 
   /**
@@ -512,6 +761,26 @@ public class BroadleafRequestContextDiffblueTest {
   }
 
   /**
+   * Test {@link BroadleafRequestContext#getRequestParameterMap()}.
+   * <p>
+   * Method under test: {@link BroadleafRequestContext#getRequestParameterMap()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRequestParameterMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.web.BroadleafRequestContext.getRequestParameterMap(BroadleafRequestContext.java:442)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    BroadleafRequestContext.getRequestParameterMap();
+  }
+
+  /**
    * Test {@link BroadleafRequestContext#getIgnoreSite()}.
    * <ul>
    *   <li>Given {@link BroadleafRequestContext} (default constructor) IgnoreSite is
@@ -857,6 +1126,35 @@ public class BroadleafRequestContextDiffblueTest {
             + "\",\"currentProfile\":\"null\",\"deployBehavior\":\"UNDEFINED\",\"deployState\":\"UNDEFINED\",\"internalIgnoreFilters"
             + "\":\"false\",\"locale\":\"null\",\"validateProductionChangesState\":\"UNDEFINED\",\"timeZone\":\"null\"}",
         (new BroadleafRequestContext()).createLightWeightCloneJson());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafRequestContext#createLightWeightCloneFromJson(String, EntityManager)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafRequestContext#createLightWeightCloneFromJson(String, EntityManager)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateLightWeightCloneFromJson() throws JsonProcessingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from a null delegate object
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:94)
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:107)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    ObjectMapper objectMapper = new ObjectMapper();
+    String Json = objectMapper.writeValueAsString(new HashMap());
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+
+    // Act
+    BroadleafRequestContext.createLightWeightCloneFromJson(Json,
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
   }
 
   /**

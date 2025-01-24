@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -18,12 +18,79 @@
 package org.broadleafcommerce.common.event;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 import org.junit.Test;
 
 public class ItemsCancelledEventDiffblueTest {
+  /**
+   * Test {@link ItemsCancelledEvent#ItemsCancelledEvent(Long, Map)}.
+   * <ul>
+   *   <li>Given {@link BiFunction}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ItemsCancelledEvent#ItemsCancelledEvent(Long, Map)}
+   */
+  @Test
+  public void testNewItemsCancelledEvent_givenBiFunction() {
+    // Arrange
+    HashMap<Long, Integer> cancelledItems = new HashMap<>();
+    cancelledItems.computeIfPresent(1L, mock(BiFunction.class));
+    cancelledItems.put(1L, 1);
+
+    // Act
+    ItemsCancelledEvent actualItemsCancelledEvent = new ItemsCancelledEvent(1L, cancelledItems);
+
+    // Assert
+    assertNull(actualItemsCancelledEvent.getCatalogId());
+    assertNull(actualItemsCancelledEvent.getProfileId());
+    assertNull(actualItemsCancelledEvent.getSiteId());
+    assertNull(actualItemsCancelledEvent.getCurrencyCode());
+    assertNull(actualItemsCancelledEvent.getLocaleCode());
+    assertNull(actualItemsCancelledEvent.getTimeZoneId());
+    Map<Long, Integer> itemsAndQuantitiesCancelled = actualItemsCancelledEvent.getItemsAndQuantitiesCancelled();
+    assertEquals(1, itemsAndQuantitiesCancelled.size());
+    assertEquals(1, itemsAndQuantitiesCancelled.get(1L).intValue());
+    assertEquals(1L, actualItemsCancelledEvent.getFulfillmentGroupId().longValue());
+    assertTrue(actualItemsCancelledEvent.getContext().isEmpty());
+  }
+
+  /**
+   * Test {@link ItemsCancelledEvent#ItemsCancelledEvent(Long, Map)}.
+   * <ul>
+   *   <li>Given one.</li>
+   *   <li>Then return CatalogId is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ItemsCancelledEvent#ItemsCancelledEvent(Long, Map)}
+   */
+  @Test
+  public void testNewItemsCancelledEvent_givenOne_thenReturnCatalogIdIsNull() {
+    // Arrange
+    HashMap<Long, Integer> cancelledItems = new HashMap<>();
+    cancelledItems.put(1L, 1);
+
+    // Act
+    ItemsCancelledEvent actualItemsCancelledEvent = new ItemsCancelledEvent(1L, cancelledItems);
+
+    // Assert
+    assertNull(actualItemsCancelledEvent.getCatalogId());
+    assertNull(actualItemsCancelledEvent.getProfileId());
+    assertNull(actualItemsCancelledEvent.getSiteId());
+    assertNull(actualItemsCancelledEvent.getCurrencyCode());
+    assertNull(actualItemsCancelledEvent.getLocaleCode());
+    assertNull(actualItemsCancelledEvent.getTimeZoneId());
+    Map<Long, Integer> itemsAndQuantitiesCancelled = actualItemsCancelledEvent.getItemsAndQuantitiesCancelled();
+    assertEquals(1, itemsAndQuantitiesCancelled.size());
+    assertEquals(1, itemsAndQuantitiesCancelled.get(1L).intValue());
+    assertEquals(1L, actualItemsCancelledEvent.getFulfillmentGroupId().longValue());
+    assertTrue(actualItemsCancelledEvent.getContext().isEmpty());
+  }
+
   /**
    * Test {@link ItemsCancelledEvent#getFulfillmentGroupId()}.
    * <ul>

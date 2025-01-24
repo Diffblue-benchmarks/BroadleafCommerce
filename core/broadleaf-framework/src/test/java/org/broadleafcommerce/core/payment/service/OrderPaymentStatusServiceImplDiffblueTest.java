@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.payment.service;
 
 import static org.junit.Assert.assertFalse;
@@ -34,10 +17,94 @@ import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
 import org.broadleafcommerce.core.payment.domain.PaymentTransaction;
 import org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl;
 import org.broadleafcommerce.core.payment.service.type.OrderPaymentStatus;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OrderPaymentStatusServiceImplDiffblueTest {
+  @Autowired
+  private OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
+
+  /**
+   * Test
+   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetermineOrderPaymentStatus() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2268 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
+
+    // Act
+    orderPaymentStatusServiceImpl2.determineOrderPaymentStatus(new OrderPaymentImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
+   * (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}
+   */
+  @Test
+  public void testDetermineOrderPaymentStatus_givenArrayListAddPaymentTransactionImpl() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
+
+    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
+    paymentTransactionList.add(new PaymentTransactionImpl());
+    OrderPaymentImpl orderPayment = mock(OrderPaymentImpl.class);
+    when(orderPayment.getTransactions()).thenReturn(paymentTransactionList);
+    when(orderPayment.getTransactionsForType(Mockito.<PaymentTransactionType>any())).thenReturn(new ArrayList<>());
+    when(orderPayment.getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any()))
+        .thenReturn(new Money());
+
+    // Act
+    OrderPaymentStatus actualDetermineOrderPaymentStatusResult = orderPaymentStatusServiceImpl
+        .determineOrderPaymentStatus(orderPayment);
+
+    // Assert
+    verify(orderPayment, atLeast(1)).getSuccessfulTransactionAmountForType(Mockito.<PaymentTransactionType>any());
+    verify(orderPayment, atLeast(1)).getTransactions();
+    verify(orderPayment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
+    assertSame(actualDetermineOrderPaymentStatusResult.UNDETERMINED, actualDetermineOrderPaymentStatusResult);
+  }
+
   /**
    * Test
    * {@link OrderPaymentStatusServiceImpl#determineOrderPaymentStatus(OrderPayment)}.
@@ -320,6 +387,41 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   /**
    * Test
    * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testContainsSuccessfulType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2197 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+
+    // Act
+    orderPaymentStatusServiceImpl2.containsSuccessfulType(payment, new PaymentTransactionType("Type", "Friendly Type"));
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentStatusServiceImpl#containsSuccessfulType(OrderPayment, PaymentTransactionType)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
    *   <li>Then return {@code false}.</li>
@@ -433,6 +535,39 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
     // Act and Assert
     assertFalse(orderPaymentStatusServiceImpl.containsSuccessfulType(payment,
         new PaymentTransactionType("Type", "Friendly Type")));
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentStatusServiceImpl#determineComplete(OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetermineComplete() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2236 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
+
+    // Act
+    orderPaymentStatusServiceImpl2.determineComplete(new OrderPaymentImpl());
   }
 
   /**
@@ -653,6 +788,40 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
     verify(payment, atLeast(1)).getTransactionsForType(Mockito.<PaymentTransactionType>any());
     verify(paymentTransactionImpl, atLeast(1)).getSuccess();
     assertFalse(actualDetermineCompleteResult);
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentStatusServiceImpl#determinePartiallyComplete(OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDeterminePartiallyComplete() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2284 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
+
+    // Act
+    orderPaymentStatusServiceImpl2.determinePartiallyComplete(new OrderPaymentImpl());
   }
 
   /**
@@ -970,6 +1139,40 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
   /**
    * Test
    * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetermineFullyCaptured() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2252 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
+
+    // Act
+    orderPaymentStatusServiceImpl2.determineFullyCaptured(new OrderPaymentImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentStatusServiceImpl#determineFullyCaptured(OrderPayment)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
    * (default constructor).</li>
@@ -1158,6 +1361,39 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetermineAuthorized() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2220 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
+
+    // Act
+    orderPaymentStatusServiceImpl2.determineAuthorized(new OrderPaymentImpl());
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determineAuthorized(OrderPayment)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
    * (default constructor).</li>
@@ -1336,6 +1572,39 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
     verify(payment).getTransactionsForType(isA(PaymentTransactionType.class));
     verify(paymentTransactionImpl).getSuccess();
     assertFalse(actualDetermineAuthorizedResult);
+  }
+
+  /**
+   * Test {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentStatusServiceImpl#determinePending(OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDeterminePending() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2300 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
+
+    // Act
+    orderPaymentStatusServiceImpl2.determinePending(new OrderPaymentImpl());
   }
 
   /**
@@ -1583,6 +1852,72 @@ public class OrderPaymentStatusServiceImplDiffblueTest {
     verify(payment, atLeast(1)).getTransactions();
     verify(paymentTransactionImpl).getSuccess();
     verify(paymentTransactionImpl).getType();
+    assertFalse(actualDetermineUnconfirmedResult);
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetermineUnconfirmed3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2316 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl2 = new OrderPaymentStatusServiceImpl();
+
+    // Act
+    orderPaymentStatusServiceImpl2.determineUnconfirmed(new OrderPaymentImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@link PaymentTransactionImpl}
+   * (default constructor).</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentStatusServiceImpl#determineUnconfirmed(OrderPayment)}
+   */
+  @Test
+  public void testDetermineUnconfirmed_givenArrayListAddPaymentTransactionImpl_thenReturnFalse() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OrderPaymentStatusServiceImpl orderPaymentStatusServiceImpl = new OrderPaymentStatusServiceImpl();
+
+    ArrayList<PaymentTransaction> paymentTransactionList = new ArrayList<>();
+    paymentTransactionList.add(new PaymentTransactionImpl());
+    OrderPaymentImpl payment = mock(OrderPaymentImpl.class);
+    when(payment.getTransactions()).thenReturn(paymentTransactionList);
+
+    // Act
+    boolean actualDetermineUnconfirmedResult = orderPaymentStatusServiceImpl.determineUnconfirmed(payment);
+
+    // Assert
+    verify(payment, atLeast(1)).getTransactions();
     assertFalse(actualDetermineUnconfirmedResult);
   }
 

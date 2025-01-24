@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -24,7 +24,9 @@ import static org.junit.Assert.assertTrue;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class PomEvaluatorDiffblueTest {
@@ -112,6 +114,52 @@ public class PomEvaluatorDiffblueTest {
     // Arrange, Act and Assert
     assertEquals("Name:https://example.org/example",
         (new PomEvaluator.LicenseType("Name", "https://example.org/example")).toString());
+  }
+
+  /**
+   * Test {@link PomEvaluator#printOutDependencies(Category, List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PomEvaluator#printOutDependencies(PomEvaluator.Category, List)}
+   */
+  @Test
+  public void testPrintOutDependencies_whenArrayList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    PomEvaluator.Category category = new PomEvaluator.Category("Category Name",
+        new PomEvaluator.LicenseType("Name", "https://example.org/example"), PomEvaluator.FrameworkType.PERSISTENCE);
+
+    // Act
+    PomEvaluator.printOutDependencies(category, new ArrayList<>());
+  }
+
+  /**
+   * Test {@link PomEvaluator#printOutDependencies(Category, List)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PomEvaluator#printOutDependencies(PomEvaluator.Category, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPrintOutDependencies_whenNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.util.PomEvaluator.printOutDependencies(PomEvaluator.java:253)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    PomEvaluator.printOutDependencies(null, new ArrayList<>());
   }
 
   /**

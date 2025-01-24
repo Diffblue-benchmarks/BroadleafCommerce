@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.structure.service;
 
 import static org.junit.Assert.assertEquals;
@@ -47,10 +30,319 @@ import org.broadleafcommerce.common.sandbox.domain.SandBox;
 import org.broadleafcommerce.common.sandbox.domain.SandBoxImpl;
 import org.broadleafcommerce.common.structure.dto.ItemCriteriaDTO;
 import org.broadleafcommerce.common.structure.dto.StructuredContentDTO;
+import org.hibernate.Criteria;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.hibernate.internal.CriteriaImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml",
+    "/applicationContext-servlet-cms-contentCreator.xml", "/bl-cms-applicationContext-entity.xml",
+    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class StructuredContentServiceImplDiffblueTest {
+  @Autowired
+  private StructuredContentServiceImpl structuredContentServiceImpl;
+
+  /**
+   * Test {@link StructuredContentServiceImpl#findStructuredContentById(Long)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#findStructuredContentById(Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindStructuredContentById() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6457 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).findStructuredContentById(1L);
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#findStructuredContentTypeById(Long)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#findStructuredContentTypeById(Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindStructuredContentTypeById() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6475 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).findStructuredContentTypeById(1L);
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#findStructuredContentTypeByName(String)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#findStructuredContentTypeByName(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindStructuredContentTypeByName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6493 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).findStructuredContentTypeByName("Name");
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#retrieveAllStructuredContentTypes()}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#retrieveAllStructuredContentTypes()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRetrieveAllStructuredContentTypes() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8234 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).retrieveAllStructuredContentTypes();
+  }
+
+  /**
+   * Test {@link StructuredContentServiceImpl#findContentItems(Criteria)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#findContentItems(Criteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindContentItems() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6329 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+
+    // Act
+    structuredContentServiceImpl2.findContentItems(new CriteriaImpl("Entity Or Class Name",
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null))));
+  }
+
+  /**
+   * Test {@link StructuredContentServiceImpl#findAllContentItems()}.
+   * <p>
+   * Method under test: {@link StructuredContentServiceImpl#findAllContentItems()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindAllContentItems() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6325 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).findAllContentItems();
+  }
+
+  /**
+   * Test {@link StructuredContentServiceImpl#countContentItems(Criteria)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#countContentItems(Criteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCountContentItems() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6190 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+
+    // Act
+    structuredContentServiceImpl2.countContentItems(new CriteriaImpl("Entity Or Class Name",
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null))));
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#saveStructuredContentType(StructuredContentType)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#saveStructuredContentType(StructuredContentType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSaveStructuredContentType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8238 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    // Act
+    structuredContentServiceImpl2.saveStructuredContentType(new StructuredContentTypeImpl());
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildStructuredContentDTOList(List, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildStructuredContentDTOList(List, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildStructuredContentDTOList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6053 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildStructuredContentDTOList(new ArrayList<>(), true);
+  }
+
   /**
    * Test
    * {@link StructuredContentServiceImpl#buildStructuredContentDTOList(List, boolean)}.
@@ -122,6 +414,41 @@ public class StructuredContentServiceImplDiffblueTest {
     verify(structuredContentDTO).setRuleExpression(eq("Rule Expression"));
     verify(structuredContentDTO).setValues(isA(Map.class));
     assertSame(structuredContentList, actualEvaluateAndPriortizeContentResult);
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#evaluateAndPriortizeContent(List, int, Map)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#evaluateAndPriortizeContent(List, int, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEvaluateAndPriortizeContent2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6306 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    ArrayList<StructuredContentDTO> structuredContentList = new ArrayList<>();
+
+    // Act
+    structuredContentServiceImpl2.evaluateAndPriortizeContent(structuredContentList, 3, new HashMap<>());
   }
 
   /**
@@ -347,6 +674,41 @@ public class StructuredContentServiceImplDiffblueTest {
   /**
    * Test
    * {@link StructuredContentServiceImpl#processUnprioritizedContent(List, Map)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#processUnprioritizedContent(List, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testProcessUnprioritizedContent3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7843 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    ArrayList<StructuredContentDTO> structuredContentList = new ArrayList<>();
+
+    // Act
+    structuredContentServiceImpl2.processUnprioritizedContent(structuredContentList, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#processUnprioritizedContent(List, Map)}.
    * <ul>
    *   <li>Then calls {@link RuleProcessor#checkForMatch(Object, Map)}.</li>
    * </ul>
@@ -418,6 +780,50 @@ public class StructuredContentServiceImplDiffblueTest {
 
     // Act and Assert
     assertTrue(structuredContentServiceImpl.processContentRules(sc, new HashMap<>()));
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#processContentRules(StructuredContentDTO, Map)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#processContentRules(StructuredContentDTO, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testProcessContentRules2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7623 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    StructuredContentDTO sc = new StructuredContentDTO();
+    sc.setContentName("Not all who wander are lost");
+    sc.setContentType("text/plain");
+    sc.setId(1L);
+    sc.setItemCriteriaDTOList(new ArrayList<>());
+    sc.setLocaleCode("en");
+    sc.setPriority(1);
+    sc.setRuleExpression("Rule Expression");
+    sc.setValues(new HashMap<>());
+
+    // Act
+    structuredContentServiceImpl2.processContentRules(sc, new HashMap<>());
   }
 
   /**
@@ -495,6 +901,186 @@ public class StructuredContentServiceImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link StructuredContentServiceImpl#modifyStructuredContentDtoList(List)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#modifyStructuredContentDtoList(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testModifyStructuredContentDtoList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7615 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    // Act
+    structuredContentServiceImpl2.modifyStructuredContentDtoList(new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#lookupStructuredContentItemsByType(StructuredContentType, Locale, Integer, Map, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#lookupStructuredContentItemsByType(StructuredContentType, Locale, Integer, Map, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupStructuredContentItemsByType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7582 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    StructuredContentTypeImpl contentType = new StructuredContentTypeImpl();
+    LocaleImpl locale = new LocaleImpl();
+
+    // Act
+    structuredContentServiceImpl2.lookupStructuredContentItemsByType(contentType, locale, 3, new HashMap<>(), true);
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#lookupStructuredContentItemsByName(String, Locale, Integer, Map, boolean)}
+   * with {@code contentName}, {@code locale}, {@code count}, {@code ruleDTOs},
+   * {@code secure}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#lookupStructuredContentItemsByName(String, Locale, Integer, Map, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupStructuredContentItemsByNameWithContentNameLocaleCountRuleDTOsSecure() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7499 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    LocaleImpl locale = new LocaleImpl();
+
+    // Act
+    structuredContentServiceImpl2.lookupStructuredContentItemsByName("Not all who wander are lost", locale, 3,
+        new HashMap<>(), true);
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#lookupStructuredContentItemsByName(StructuredContentType, String, Locale, Integer, Map, boolean)}
+   * with {@code contentType}, {@code contentName}, {@code locale}, {@code count},
+   * {@code ruleDTOs}, {@code secure}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#lookupStructuredContentItemsByName(StructuredContentType, String, Locale, Integer, Map, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupStructuredContentItemsByNameWithContentTypeContentNameLocaleCountRuleDTOsSecure() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7536 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    StructuredContentTypeImpl contentType = new StructuredContentTypeImpl();
+    LocaleImpl locale = new LocaleImpl();
+
+    // Act
+    structuredContentServiceImpl2.lookupStructuredContentItemsByName(contentType, "Not all who wander are lost", locale,
+        3, new HashMap<>(), true);
+  }
+
+  /**
+   * Test {@link StructuredContentServiceImpl#convertToDtos(List, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#convertToDtos(List, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConvertToDtos() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6181 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    // Act
+    structuredContentServiceImpl2.convertToDtos(new ArrayList<>(), true);
+  }
+
+  /**
    * Test {@link StructuredContentServiceImpl#convertToDtos(List, boolean)}.
    * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
@@ -541,6 +1127,71 @@ public class StructuredContentServiceImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link StructuredContentServiceImpl#removeStructuredContentFromCache(SandBox, StructuredContent)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#removeStructuredContentFromCache(SandBox, StructuredContent)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveStructuredContentFromCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8202 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    SandBoxImpl sandBox = new SandBoxImpl();
+
+    // Act
+    structuredContentServiceImpl2.removeStructuredContentFromCache(sandBox, new StructuredContentImpl());
+  }
+
+  /**
+   * Test {@link StructuredContentServiceImpl#removeItemFromCacheByKey(String)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#removeItemFromCacheByKey(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveItemFromCacheByKey() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7886 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).removeItemFromCacheByKey("Key");
+  }
+
+  /**
    * Test {@link StructuredContentServiceImpl#removeItemFromCacheByKey(String)}.
    * <ul>
    *   <li>When empty string.</li>
@@ -577,6 +1228,70 @@ public class StructuredContentServiceImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link StructuredContentServiceImpl#removeItemFromCache(String, String)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#removeItemFromCache(String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveItemFromCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7858 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).removeItemFromCache("Name Key", "Type Key");
+  }
+
+  /**
+   * Test {@link StructuredContentServiceImpl#findLanguageOnlyLocale(Locale)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#findLanguageOnlyLocale(Locale)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindLanguageOnlyLocale() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6445 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    // Act
+    structuredContentServiceImpl2.findLanguageOnlyLocale(new LocaleImpl());
+  }
+
+  /**
    * Test {@link StructuredContentServiceImpl#findLanguageOnlyLocale(Locale)}.
    * <ul>
    *   <li>When {@code null}.</li>
@@ -592,6 +1307,70 @@ public class StructuredContentServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new StructuredContentServiceImpl()).findLanguageOnlyLocale(null));
+  }
+
+  /**
+   * Test {@link StructuredContentServiceImpl#getStructuredContentCache()}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#getStructuredContentCache()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetStructuredContentCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7125 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).getStructuredContentCache();
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildRuleExpression(StructuredContent)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildRuleExpression(StructuredContent)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildRuleExpression() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6014 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildRuleExpression(new StructuredContentImpl());
   }
 
   /**
@@ -781,6 +1560,40 @@ public class StructuredContentServiceImplDiffblueTest {
   /**
    * Test
    * {@link StructuredContentServiceImpl#buildItemCriteriaDTOList(StructuredContent)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildItemCriteriaDTOList(StructuredContent)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildItemCriteriaDTOList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5817 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildItemCriteriaDTOList(new StructuredContentImpl());
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildItemCriteriaDTOList(StructuredContent)}.
    * <ul>
    *   <li>Given {@link HashSet#HashSet()}.</li>
    *   <li>Then calls
@@ -864,6 +1677,81 @@ public class StructuredContentServiceImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildFieldValues(StructuredContent, StructuredContentDTO, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildFieldValues(StructuredContent, StructuredContentDTO, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildFieldValues() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5588 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    StructuredContentImpl sc = new StructuredContentImpl();
+
+    StructuredContentDTO scDTO = new StructuredContentDTO();
+    scDTO.setContentName("Not all who wander are lost");
+    scDTO.setContentType("text/plain");
+    scDTO.setId(1L);
+    scDTO.setItemCriteriaDTOList(new ArrayList<>());
+    scDTO.setLocaleCode("en");
+    scDTO.setPriority(1);
+    scDTO.setRuleExpression("Rule Expression");
+    scDTO.setValues(new HashMap<>());
+
+    // Act
+    structuredContentServiceImpl2.buildFieldValues(sc, scDTO, true);
+  }
+
+  /**
+   * Test {@link StructuredContentServiceImpl#hasCmsPrefix(String, String)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#hasCmsPrefix(String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHasCmsPrefix() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7471 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).hasCmsPrefix("42", "Cms Prefix");
+  }
+
+  /**
    * Test {@link StructuredContentServiceImpl#hasCmsPrefix(String, String)}.
    * <ul>
    *   <li>When {@code 42}.</li>
@@ -938,6 +1826,84 @@ public class StructuredContentServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link StructuredContentServiceImpl#buildFieldValueWithCmsPrefix(String, StructuredContentDTO, boolean, String)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildFieldValueWithCmsPrefix(String, StructuredContentDTO, boolean, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildFieldValueWithCmsPrefix() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5350 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    StructuredContentDTO scDTO = new StructuredContentDTO();
+    scDTO.setContentName("Not all who wander are lost");
+    scDTO.setContentType("text/plain");
+    scDTO.setId(1L);
+    scDTO.setItemCriteriaDTOList(new ArrayList<>());
+    scDTO.setLocaleCode("en");
+    scDTO.setPriority(1);
+    scDTO.setRuleExpression("Rule Expression");
+    scDTO.setValues(new HashMap<>());
+
+    // Act
+    structuredContentServiceImpl2.buildFieldValueWithCmsPrefix("42", scDTO, true, "Field Key");
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildStructuredContentDTO(StructuredContent, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildStructuredContentDTO(StructuredContent, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildStructuredContentDTO() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6033 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildStructuredContentDTO(new StructuredContentImpl(), true);
+  }
+
+  /**
+   * Test
    * {@link StructuredContentServiceImpl#buildNameKey(SandBox, Long, Locale, String, String)}
    * with {@code currentSandbox}, {@code site}, {@code locale},
    * {@code contentType}, {@code contentName}.
@@ -1005,6 +1971,44 @@ public class StructuredContentServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link StructuredContentServiceImpl#buildNameKey(SandBox, Long, Locale, String, String)}
+   * with {@code currentSandbox}, {@code site}, {@code locale},
+   * {@code contentType}, {@code contentName}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildNameKey(SandBox, Long, Locale, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildNameKeyWithCurrentSandboxSiteLocaleContentTypeContentName4() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5836 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    SandBoxImpl currentSandbox = new SandBoxImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildNameKey(currentSandbox, 1L, new LocaleImpl(), "text/plain",
+        "Not all who wander are lost");
+  }
+
+  /**
+   * Test
    * {@link StructuredContentServiceImpl#buildNameKey(SandBox, Long, Locale, String, String, Boolean)}
    * with {@code currentSandbox}, {@code site}, {@code locale},
    * {@code contentType}, {@code contentName}, {@code secure}.
@@ -1068,6 +2072,116 @@ public class StructuredContentServiceImplDiffblueTest {
     // Assert
     verify(currentSandbox).getId();
     assertEquals("text/plain-Not all who wander are lost-null-1-1-true", actualBuildNameKeyResult);
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildNameKey(SandBox, Long, Locale, String, String, Boolean)}
+   * with {@code currentSandbox}, {@code site}, {@code locale},
+   * {@code contentType}, {@code contentName}, {@code secure}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildNameKey(SandBox, Long, Locale, String, String, Boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildNameKeyWithCurrentSandboxSiteLocaleContentTypeContentNameSecure4() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5892 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    SandBoxImpl currentSandbox = new SandBoxImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildNameKey(currentSandbox, 1L, new LocaleImpl(), "text/plain",
+        "Not all who wander are lost", true);
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildNameKey(SandBox, StructuredContent)}
+   * with {@code sandBox}, {@code sc}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildNameKey(SandBox, StructuredContent)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildNameKeyWithSandBoxSc() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5949 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    SandBoxImpl sandBox = new SandBoxImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildNameKey(sandBox, new StructuredContentImpl());
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildNameKey(SandBox, StructuredContent, Boolean)}
+   * with {@code sandBox}, {@code sc}, {@code secure}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildNameKey(SandBox, StructuredContent, Boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildNameKeyWithSandBoxScSecure() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5981 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    SandBoxImpl sandBox = new SandBoxImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildNameKey(sandBox, new StructuredContentImpl(), true);
   }
 
   /**
@@ -1326,6 +2440,43 @@ public class StructuredContentServiceImplDiffblueTest {
    * {@link StructuredContentServiceImpl#buildTypeKey(SandBox, Long, Locale, String)}
    * with {@code currentSandbox}, {@code site}, {@code locale},
    * {@code contentType}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildTypeKey(SandBox, Long, Locale, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildTypeKeyWithCurrentSandboxSiteLocaleContentType3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6062 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    SandBoxImpl currentSandbox = new SandBoxImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildTypeKey(currentSandbox, 1L, new LocaleImpl(), "text/plain");
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildTypeKey(SandBox, Long, Locale, String)}
+   * with {@code currentSandbox}, {@code site}, {@code locale},
+   * {@code contentType}.
    * <ul>
    *   <li>Then return {@code text/plain}.</li>
    * </ul>
@@ -1339,6 +2490,42 @@ public class StructuredContentServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertEquals("text/plain", (new StructuredContentServiceImpl()).buildTypeKey(null, null, null, "text/plain"));
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildTypeKey(SandBox, StructuredContent)}
+   * with {@code sandBox}, {@code sc}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildTypeKey(SandBox, StructuredContent)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildTypeKeyWithSandBoxSc() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6105 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    SandBoxImpl sandBox = new SandBoxImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildTypeKey(sandBox, new StructuredContentImpl());
   }
 
   /**
@@ -1425,6 +2612,41 @@ public class StructuredContentServiceImplDiffblueTest {
   /**
    * Test
    * {@link StructuredContentServiceImpl#buildTypeKeyWithSecure(SandBox, Long, Locale, String, Boolean)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#buildTypeKeyWithSecure(SandBox, Long, Locale, String, Boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildTypeKeyWithSecure() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6137 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+    SandBoxImpl currentSandbox = new SandBoxImpl();
+
+    // Act
+    structuredContentServiceImpl2.buildTypeKeyWithSecure(currentSandbox, 1L, new LocaleImpl(), "text/plain", true);
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#buildTypeKeyWithSecure(SandBox, Long, Locale, String, Boolean)}.
    * <ul>
    *   <li>Given one.</li>
    *   <li>Then return {@code text/plain-null-1-1-true}.</li>
@@ -1493,5 +2715,180 @@ public class StructuredContentServiceImplDiffblueTest {
     // Act and Assert
     assertEquals("text/plain-null-null-1-true",
         structuredContentServiceImpl.buildTypeKeyWithSecure(currentSandbox, 1L, new LocaleImpl(), "text/plain", true));
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#addStructuredContentListToCache(String, List)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#addStructuredContentListToCache(String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddStructuredContentListToCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5330 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    // Act
+    structuredContentServiceImpl2.addStructuredContentListToCache("Key", new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#addSingleStructuredContentToCache(String, StructuredContentDTO)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#addSingleStructuredContentToCache(String, StructuredContentDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddSingleStructuredContentToCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5105 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    StructuredContentDTO scDTO = new StructuredContentDTO();
+    scDTO.setContentName("Not all who wander are lost");
+    scDTO.setContentType("text/plain");
+    scDTO.setId(1L);
+    scDTO.setItemCriteriaDTOList(new ArrayList<>());
+    scDTO.setLocaleCode("en");
+    scDTO.setPriority(1);
+    scDTO.setRuleExpression("Rule Expression");
+    scDTO.setValues(new HashMap<>());
+
+    // Act
+    structuredContentServiceImpl2.addSingleStructuredContentToCache("Key", scDTO);
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#getSingleStructuredContentFromCache(String)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#getSingleStructuredContentFromCache(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSingleStructuredContentFromCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6809 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).getSingleStructuredContentFromCache("Key");
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#getStructuredContentListFromCache(String)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#getStructuredContentListFromCache(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetStructuredContentListFromCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7155 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new StructuredContentServiceImpl()).getStructuredContentListFromCache("Key");
+  }
+
+  /**
+   * Test
+   * {@link StructuredContentServiceImpl#getStructuredContentItemsByContentName(String, Locale, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link StructuredContentServiceImpl#getStructuredContentItemsByContentName(String, Locale, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetStructuredContentItemsByContentName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.structure.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7129 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.structure.service.StructuredContentServiceImpl structuredContentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    StructuredContentServiceImpl structuredContentServiceImpl2 = new StructuredContentServiceImpl();
+
+    // Act
+    structuredContentServiceImpl2.getStructuredContentItemsByContentName("Not all who wander are lost",
+        new LocaleImpl(), true);
   }
 }

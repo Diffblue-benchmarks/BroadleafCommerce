@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -29,6 +29,7 @@ import org.broadleafcommerce.common.exception.OptimisticLockInvalidStateExceptio
 import org.broadleafcommerce.common.exception.OptimisticLockMaxRetryException;
 import org.broadleafcommerce.common.persistence.transaction.LifecycleAwareJpaTransactionManager;
 import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -59,6 +60,36 @@ public class OptimisticLockUtilsDiffblueTest {
     // Act and Assert
     assertThrows(OptimisticLockMaxRetryException.class, () -> OptimisticLockUtils.performOptimisticLockUpdate("Name",
         operation, entityClass, BLCFieldUtils.NULL_FIELD, -1, new LifecycleAwareJpaTransactionManager(), null));
+  }
+
+  /**
+   * Test
+   * {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String, UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)}.
+   * <p>
+   * Method under test:
+   * {@link OptimisticLockUtils#doTransactionalOptimisticUpdate(String, OptimisticLockUtils.UpdateOperation, Class, Object, PlatformTransactionManager, EntityManager)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDoTransactionalOptimisticUpdate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from a null delegate object
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:94)
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:107)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    OptimisticLockUtils.UpdateOperation<Object> operation = mock(OptimisticLockUtils.UpdateOperation.class);
+    Class<Object> entityClass = Object.class;
+    LifecycleAwareJpaTransactionManager transactionManager = new LifecycleAwareJpaTransactionManager();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+
+    // Act
+    OptimisticLockUtils.doTransactionalOptimisticUpdate("Name", operation, entityClass, BLCFieldUtils.NULL_FIELD,
+        transactionManager, new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
   }
 
   /**

@@ -1,28 +1,21 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.editor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {NonNullBooleanEditor.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class NonNullBooleanEditorDiffblueTest {
+  @Autowired
+  private NonNullBooleanEditor nonNullBooleanEditor;
+
   /**
    * Test new {@link NonNullBooleanEditor} (default constructor).
    * <p>
@@ -61,5 +54,45 @@ public class NonNullBooleanEditorDiffblueTest {
     // Assert that nothing has changed
     String expectedAsText = Boolean.FALSE.toString();
     assertEquals(expectedAsText, nonNullBooleanEditor.getAsText());
+  }
+
+  /**
+   * Test {@link NonNullBooleanEditor#setAsText(String)}.
+   * <ul>
+   *   <li>When empty string.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link NonNullBooleanEditor#setAsText(String)}
+   */
+  @Test
+  public void testSetAsText_whenEmptyString() throws IllegalArgumentException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    nonNullBooleanEditor.setAsText("");
+  }
+
+  /**
+   * Test {@link NonNullBooleanEditor#setAsText(String)}.
+   * <ul>
+   *   <li>When {@code Text}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link NonNullBooleanEditor#setAsText(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetAsText_whenText() throws IllegalArgumentException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: Invalid boolean value [Text]
+    //       at org.broadleafcommerce.openadmin.web.editor.NonNullBooleanEditor.setAsText(NonNullBooleanEditor.java:39)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    nonNullBooleanEditor.setAsText("Text");
   }
 }

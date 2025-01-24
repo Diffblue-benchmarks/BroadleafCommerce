@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.order.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -60,10 +43,25 @@ import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.Phone;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FulfillmentGroupImplDiffblueTest {
+  @Autowired
+  private FulfillmentGroupImpl fulfillmentGroupImpl;
+
   /**
    * Test {@link FulfillmentGroupImpl#getDiscreteOrderItems()}.
    * <p>
@@ -103,6 +101,35 @@ public class FulfillmentGroupImplDiffblueTest {
     // Assert
     verify(fulfillmentGroupItem).getOrderItem();
     assertTrue(actualDiscreteOrderItems.isEmpty());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getDiscreteOrderItems()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getDiscreteOrderItems()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDiscreteOrderItems3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass432 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getDiscreteOrderItems();
   }
 
   /**
@@ -309,6 +336,40 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test
    * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddFulfillmentGroupItem3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass312 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.addFulfillmentGroupItem(new FulfillmentGroupItemImpl());
+  }
+
+  /**
+   * Test
+   * {@link FulfillmentGroupImpl#addFulfillmentGroupItem(FulfillmentGroupItem)}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
    * {@link AddressImpl} (default constructor).</li>
@@ -510,6 +571,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
     // Act and Assert
     assertNull(fulfillmentGroupImpl.getRetailFulfillmentPrice());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getRetailFulfillmentPrice()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getRetailFulfillmentPrice()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRetailFulfillmentPrice2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass612 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getRetailFulfillmentPrice();
   }
 
   /**
@@ -1216,6 +1306,39 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetRetailFulfillmentPrice3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1152 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setRetailFulfillmentPrice(new Money());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setRetailFulfillmentPrice(Money)}.
    * <ul>
    *   <li>When {@link Money}.</li>
    * </ul>
@@ -1254,6 +1377,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
     // Act and Assert
     assertNull(fulfillmentGroupImpl.getRetailShippingPrice());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getRetailShippingPrice()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getRetailShippingPrice()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRetailShippingPrice2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass642 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getRetailShippingPrice();
   }
 
   /**
@@ -1958,6 +2110,38 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#setRetailShippingPrice(Money)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setRetailShippingPrice(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetRetailShippingPrice3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1182 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setRetailShippingPrice(new Money());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setRetailShippingPrice(Money)}.
    * <ul>
    *   <li>When {@link Money}.</li>
    * </ul>
@@ -1999,6 +2183,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#getType()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getType()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetType2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass972 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getType();
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getType()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
@@ -2011,6 +2224,65 @@ public class FulfillmentGroupImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getType());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setType(FulfillmentType)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setType(FulfillmentType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1482 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).setType(FulfillmentType.DIGITAL);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setType(FulfillmentType)}.
+   * <ul>
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) Type FriendlyType
+   * is {@code Friendly Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setType(FulfillmentType)}
+   */
+  @Test
+  public void testSetType_givenType_thenFulfillmentGroupImplTypeFriendlyTypeIsFriendlyType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentType type = mock(FulfillmentType.class);
+    when(type.getType()).thenReturn("Type");
+
+    // Act
+    fulfillmentGroupImpl.setType(type);
+
+    // Assert
+    verify(type).getType();
+    FulfillmentType type2 = fulfillmentGroupImpl.getType();
+    assertEquals("Friendly Type", type2.getFriendlyType());
+    assertEquals("Type", type2.getType());
+    assertEquals("Type", fulfillmentGroupImpl.type);
   }
 
   /**
@@ -2147,6 +2419,69 @@ public class FulfillmentGroupImplDiffblueTest {
         .getCandidateFulfillmentGroupOffers();
     assertEquals(1, candidateFulfillmentGroupOffers.size());
     assertSame(candidateOffer, candidateFulfillmentGroupOffers.get(0));
+  }
+
+  /**
+   * Test
+   * {@link FulfillmentGroupImpl#addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#addCandidateFulfillmentGroupOffer(CandidateFulfillmentGroupOffer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddCandidateFulfillmentGroupOffer3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass252 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.addCandidateFulfillmentGroupOffer(new CandidateFulfillmentGroupOfferImpl());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#removeAllCandidateOffers()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#removeAllCandidateOffers()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveAllCandidateOffers() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1032 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).removeAllCandidateOffers();
   }
 
   /**
@@ -2475,6 +2810,37 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test
    * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFutureCreditFulfillmentGroupAdjustments3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass522 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getFutureCreditFulfillmentGroupAdjustments();
+  }
+
+  /**
+   * Test
+   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustments()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
@@ -2613,6 +2979,36 @@ public class FulfillmentGroupImplDiffblueTest {
     verify(fulfillmentGroupAdjustmentImpl).setFulfillmentGroup(isA(FulfillmentGroup.class));
     verify(order).getCurrency();
     assertEquals(expectedFulfillmentGroupAdjustmentsValue, actualFulfillmentGroupAdjustmentsValue);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#getFulfillmentGroupAdjustmentsValue()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFulfillmentGroupAdjustmentsValue3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass462 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getFulfillmentGroupAdjustmentsValue();
   }
 
   /**
@@ -2793,6 +3189,37 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test
    * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFutureCreditFulfillmentGroupAdjustmentsValue3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass552 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getFutureCreditFulfillmentGroupAdjustmentsValue();
+  }
+
+  /**
+   * Test
+   * {@link FulfillmentGroupImpl#getFutureCreditFulfillmentGroupAdjustmentsValue()}.
    * <ul>
    *   <li>Then return {@link Money#Money()}.</li>
    * </ul>
@@ -2927,6 +3354,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#removeAllAdjustments()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#removeAllAdjustments()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveAllAdjustments2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1002 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).removeAllAdjustments();
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#removeAllAdjustments()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
@@ -3057,6 +3513,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
     // Assert that nothing has changed
     assertTrue(fulfillmentGroupImpl.getOrder() instanceof NullOrderImpl);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getSaleFulfillmentPrice()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getSaleFulfillmentPrice()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSaleFulfillmentPrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass672 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getSaleFulfillmentPrice();
   }
 
   /**
@@ -3784,6 +4269,39 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetSaleFulfillmentPrice3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1212 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setSaleFulfillmentPrice(new Money());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setSaleFulfillmentPrice(Money)}.
    * <ul>
    *   <li>When {@link Money}.</li>
    * </ul>
@@ -3805,6 +4323,35 @@ public class FulfillmentGroupImplDiffblueTest {
     assertNull(fulfillmentGroupImpl.saleFulfillmentPrice);
     assertNull(fulfillmentGroupImpl.getSaleFulfillmentPrice());
     assertNull(fulfillmentGroupImpl.getSaleShippingPrice());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getSaleShippingPrice()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getSaleShippingPrice()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSaleShippingPrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass702 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getSaleShippingPrice();
   }
 
   /**
@@ -4530,6 +5077,38 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#setSaleShippingPrice(Money)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setSaleShippingPrice(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetSaleShippingPrice3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1242 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setSaleShippingPrice(new Money());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setSaleShippingPrice(Money)}.
    * <ul>
    *   <li>When {@link Money}.</li>
    * </ul>
@@ -4550,6 +5129,35 @@ public class FulfillmentGroupImplDiffblueTest {
     assertNull(fulfillmentGroupImpl.saleFulfillmentPrice);
     assertNull(fulfillmentGroupImpl.getSaleFulfillmentPrice());
     assertNull(fulfillmentGroupImpl.getSaleShippingPrice());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getFulfillmentPrice()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getFulfillmentPrice()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFulfillmentPrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass492 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getFulfillmentPrice();
   }
 
   /**
@@ -5276,6 +5884,38 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#setFulfillmentPrice(Money)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setFulfillmentPrice(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetFulfillmentPrice3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1092 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setFulfillmentPrice(new Money());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setFulfillmentPrice(Money)}.
    * <ul>
    *   <li>When {@link Money}.</li>
    *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
@@ -5298,6 +5938,35 @@ public class FulfillmentGroupImplDiffblueTest {
     assertNull(fulfillmentGroupImpl.fulfillmentPrice);
     assertNull(fulfillmentGroupImpl.getFulfillmentPrice());
     assertNull(fulfillmentGroupImpl.getShippingPrice());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getShippingPrice()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getShippingPrice()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetShippingPrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass762 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getShippingPrice();
   }
 
   /**
@@ -5628,6 +6297,38 @@ public class FulfillmentGroupImplDiffblueTest {
     assertSame(bigDecimal, zeroResult25.getAmount());
     assertSame(bigDecimal, zeroResult26.getAmount());
     assertSame(bigDecimal, zeroResult27.getAmount());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setShippingPrice(Money)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setShippingPrice(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetShippingPrice2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1272 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setShippingPrice(new Money());
   }
 
   /**
@@ -6055,6 +6756,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#getTotalTax()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getTotalTax()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTotalTax() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass942 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getTotalTax();
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getTotalTax()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor) TotalTax is
    * {@link Money}.</li>
@@ -6293,6 +7023,38 @@ public class FulfillmentGroupImplDiffblueTest {
     assertSame(bigDecimal, zeroResult9.getAmount());
     assertSame(bigDecimal, zeroResult10.getAmount());
     assertSame(bigDecimal, zeroResult11.getAmount());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setTotalTax(Money)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setTotalTax(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetTotalTax2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1452 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setTotalTax(new Money());
   }
 
   /**
@@ -6720,6 +7482,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#getTotalItemTax()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getTotalItemTax()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTotalItemTax() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass912 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getTotalItemTax();
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getTotalItemTax()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor) TotalItemTax is
    * {@link Money}.</li>
@@ -6971,6 +7762,38 @@ public class FulfillmentGroupImplDiffblueTest {
     assertSame(bigDecimal, zeroResult12.getAmount());
     assertSame(bigDecimal, zeroResult13.getAmount());
     assertSame(bigDecimal, zeroResult14.getAmount());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setTotalItemTax(Money)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setTotalItemTax(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetTotalItemTax2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1422 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setTotalItemTax(new Money());
   }
 
   /**
@@ -7397,6 +8220,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#getTotalFeeTax()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getTotalFeeTax()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTotalFeeTax() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass852 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getTotalFeeTax();
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getTotalFeeTax()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor) TotalFeeTax is
    * {@link Money}.</li>
@@ -7648,6 +8500,38 @@ public class FulfillmentGroupImplDiffblueTest {
     assertSame(bigDecimal, zeroResult12.getAmount());
     assertSame(bigDecimal, zeroResult13.getAmount());
     assertSame(bigDecimal, zeroResult14.getAmount());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setTotalFeeTax(Money)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setTotalFeeTax(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetTotalFeeTax2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1362 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setTotalFeeTax(new Money());
   }
 
   /**
@@ -8087,6 +8971,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
     // Act and Assert
     assertNull(fulfillmentGroupImpl.getTotalFulfillmentGroupTax());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getTotalFulfillmentGroupTax()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getTotalFulfillmentGroupTax()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTotalFulfillmentGroupTax2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass882 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getTotalFulfillmentGroupTax();
   }
 
   /**
@@ -8718,6 +9631,39 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetTotalFulfillmentGroupTax3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1392 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setTotalFulfillmentGroupTax(new Money());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setTotalFulfillmentGroupTax(Money)}.
    * <ul>
    *   <li>When {@link Money}.</li>
    * </ul>
@@ -8738,6 +9684,35 @@ public class FulfillmentGroupImplDiffblueTest {
     // Assert
     assertNull(fulfillmentGroupImpl.totalFulfillmentGroupTax);
     assertNull(fulfillmentGroupImpl.getTotalFulfillmentGroupTax());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getMerchandiseTotal()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getMerchandiseTotal()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetMerchandiseTotal() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass582 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getMerchandiseTotal();
   }
 
   /**
@@ -9388,6 +10363,38 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#setMerchandiseTotal(Money)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setMerchandiseTotal(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetMerchandiseTotal3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1122 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setMerchandiseTotal(new Money());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setMerchandiseTotal(Money)}.
    * <ul>
    *   <li>When {@link Money}.</li>
    *   <li>Then {@link FulfillmentGroupImpl} (default constructor)
@@ -9409,6 +10416,35 @@ public class FulfillmentGroupImplDiffblueTest {
     // Assert
     assertNull(fulfillmentGroupImpl.merchandiseTotal);
     assertNull(fulfillmentGroupImpl.getMerchandiseTotal());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getTotal()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getTotal()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTotal() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass822 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getTotal();
   }
 
   /**
@@ -9664,6 +10700,38 @@ public class FulfillmentGroupImplDiffblueTest {
     assertSame(bigDecimal, zeroResult12.getAmount());
     assertSame(bigDecimal, zeroResult13.getAmount());
     assertSame(bigDecimal, zeroResult14.getAmount());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setTotal(Money)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#setTotal(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetTotal2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1332 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.setTotal(new Money());
   }
 
   /**
@@ -10108,6 +11176,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#getStatus()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getStatus()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetStatus2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass792 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getStatus();
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getStatus()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor).</li>
    * </ul>
@@ -10120,6 +11217,67 @@ public class FulfillmentGroupImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupImpl()).getStatus());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetStatus() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1302 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).setStatus(FulfillmentGroupStatusType.CANCELLED);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}.
+   * <ul>
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then {@link FulfillmentGroupImpl} (default constructor) Status
+   * FriendlyType is {@code Friendly Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#setStatus(FulfillmentGroupStatusType)}
+   */
+  @Test
+  public void testSetStatus_givenType_thenFulfillmentGroupImplStatusFriendlyTypeIsFriendlyType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl = new FulfillmentGroupImpl();
+    FulfillmentGroupStatusType status = mock(FulfillmentGroupStatusType.class);
+    when(status.getType()).thenReturn("Type");
+
+    // Act
+    fulfillmentGroupImpl.setStatus(status);
+
+    // Assert
+    verify(status).getType();
+    FulfillmentGroupStatusType status2 = fulfillmentGroupImpl.getStatus();
+    assertEquals("Friendly Type", status2.getFriendlyType());
+    assertEquals("Type", status2.getType());
+    assertEquals("Type", fulfillmentGroupImpl.status);
   }
 
   /**
@@ -10201,6 +11359,40 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test
    * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddFulfillmentGroupFee3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass282 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupImpl2.addFulfillmentGroupFee(new FulfillmentGroupFeeImpl());
+  }
+
+  /**
+   * Test
+   * {@link FulfillmentGroupImpl#addFulfillmentGroupFee(FulfillmentGroupFee)}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
    * {@link AddressImpl} (default constructor).</li>
@@ -10257,6 +11449,65 @@ public class FulfillmentGroupImplDiffblueTest {
     List<FulfillmentGroupFee> fulfillmentGroupFees = fulfillmentGroupImpl.getFulfillmentGroupFees();
     assertEquals(1, fulfillmentGroupFees.size());
     assertSame(fulfillmentGroupFee, fulfillmentGroupFees.get(0));
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#removeAllFulfillmentGroupFees()}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#removeAllFulfillmentGroupFees()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveAllFulfillmentGroupFees() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1062 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).removeAllFulfillmentGroupFees();
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getCurrencyCode()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getCurrencyCode()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCurrencyCode() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass402 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getCurrencyCode();
   }
 
   /**
@@ -10519,6 +11770,35 @@ public class FulfillmentGroupImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupImpl#getShippingOverride()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupImpl#getShippingOverride()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetShippingOverride() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass732 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupImpl()).getShippingOverride();
+  }
+
+  /**
+   * Test {@link FulfillmentGroupImpl#getShippingOverride()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupImpl} (default constructor) Address is
    * {@link AddressImpl} (default constructor).</li>
@@ -10670,6 +11950,46 @@ public class FulfillmentGroupImplDiffblueTest {
   /**
    * Test
    * {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass372 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+
+    // Act
+    fulfillmentGroupImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite,
+        toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
+  }
+
+  /**
+   * Test
+   * {@link FulfillmentGroupImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Then Clone return {@link FulfillmentGroupImpl}.</li>
    * </ul>
@@ -10705,6 +12025,47 @@ public class FulfillmentGroupImplDiffblueTest {
     assertTrue(clone instanceof FulfillmentGroupImpl);
     assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
     assertEquals(fulfillmentGroupImpl, clone);
+  }
+
+  /**
+   * Test
+   * {@link FulfillmentGroupImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroup)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupImpl#cloneTaxDetails(MultiTenantCopyContext, FulfillmentGroup)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCloneTaxDetails() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass342 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroupImpl2 = new FulfillmentGroupImpl();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext context = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
+
+    // Act
+    fulfillmentGroupImpl2.cloneTaxDetails(context, new FulfillmentGroupImpl());
   }
 
   /**
@@ -11550,5 +12911,35 @@ public class FulfillmentGroupImplDiffblueTest {
     assertTrue(actualFulfillmentGroupImpl.getFulfillmentGroupItems().isEmpty());
     assertTrue(actualFulfillmentGroupImpl.getFutureCreditFulfillmentGroupAdjustments().isEmpty());
     assertTrue(actualFulfillmentGroupImpl.getTaxes().isEmpty());
+  }
+
+  /**
+   * Test new {@link FulfillmentGroupImpl} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link FulfillmentGroupImpl}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewFulfillmentGroupImpl2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass251 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl fulfillmentGroupImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new FulfillmentGroupImpl();
   }
 }

@@ -1,27 +1,101 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
+import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+import org.broadleafcommerce.openadmin.dto.ForeignKey;
+import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
+import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
+import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddMetadataFromFieldTypeRequest;
+import org.hibernate.mapping.Property;
+import org.hibernate.type.BigDecimalType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class AdvancedCollectionFieldMetadataProviderDiffblueTest {
+  /**
+   * Test
+   * {@link AdvancedCollectionFieldMetadataProvider#canHandleFieldForTypeMetadata(AddMetadataFromFieldTypeRequest, Map)}.
+   * <p>
+   * Method under test:
+   * {@link AdvancedCollectionFieldMetadataProvider#canHandleFieldForTypeMetadata(AddMetadataFromFieldTypeRequest, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleFieldForTypeMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdvancedCollectionFieldMetadataProvider.canHandleFieldForTypeMetadata(AdvancedCollectionFieldMetadataProvider.java:49)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    AdvancedCollectionFieldMetadataProvider advancedCollectionFieldMetadataProvider = new AdvancedCollectionFieldMetadataProvider();
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    BigDecimalType type = new BigDecimalType();
+    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
+    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
+    Class<Object> returnedClass = Object.class;
+    AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest = new AddMetadataFromFieldTypeRequest(null,
+        targetClass, foreignField, new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, componentProperties,
+        "Id Property", "Prefix", "Requested Property Name", type, true, 1, presentationAttributes,
+        presentationAttribute, SupportedFieldType.UNKNOWN, returnedClass, new DynamicEntityDaoImpl());
+
+    // Act
+    advancedCollectionFieldMetadataProvider.canHandleFieldForTypeMetadata(addMetadataFromFieldTypeRequest,
+        new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link AdvancedCollectionFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}.
+   * <ul>
+   *   <li>Given {@link AdvancedCollectionFieldMetadataProvider} (default
+   * constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdvancedCollectionFieldMetadataProvider#addMetadataFromFieldType(AddMetadataFromFieldTypeRequest, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddMetadataFromFieldType_givenAdvancedCollectionFieldMetadataProvider() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdvancedCollectionFieldMetadataProvider.canHandleFieldForTypeMetadata(AdvancedCollectionFieldMetadataProvider.java:49)
+    //       at org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdvancedCollectionFieldMetadataProvider.addMetadataFromFieldType(AdvancedCollectionFieldMetadataProvider.java:56)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    AdvancedCollectionFieldMetadataProvider advancedCollectionFieldMetadataProvider = new AdvancedCollectionFieldMetadataProvider();
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    BigDecimalType type = new BigDecimalType();
+    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
+    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
+    Class<Object> returnedClass = Object.class;
+    AddMetadataFromFieldTypeRequest addMetadataFromFieldTypeRequest = new AddMetadataFromFieldTypeRequest(null,
+        targetClass, foreignField, new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, componentProperties,
+        "Id Property", "Prefix", "Requested Property Name", type, true, 1, presentationAttributes,
+        presentationAttribute, SupportedFieldType.UNKNOWN, returnedClass, new DynamicEntityDaoImpl());
+
+    // Act
+    advancedCollectionFieldMetadataProvider.addMetadataFromFieldType(addMetadataFromFieldTypeRequest, new HashMap<>());
+  }
+
   /**
    * Test new {@link AdvancedCollectionFieldMetadataProvider} (default
    * constructor).

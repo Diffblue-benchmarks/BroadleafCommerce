@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -38,6 +21,7 @@ import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.domain.OrderAdjustment;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
@@ -52,9 +36,95 @@ import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {PromotableOrderImpl.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PromotableOrderImplDiffblueTest {
+  @MockBean
+  private Order order;
+
+  @MockBean
+  private PromotableItemFactory promotableItemFactory;
+
+  @Autowired
+  private PromotableOrderImpl promotableOrderImpl;
+
+  /**
+   * Test
+   * {@link PromotableOrderImpl#PromotableOrderImpl(Order, PromotableItemFactory, boolean)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#PromotableOrderImpl(Order, PromotableItemFactory, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewPromotableOrderImpl_whenNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    new PromotableOrderImpl(null, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+  }
+
+  /**
+   * Test
+   * {@link PromotableOrderImpl#PromotableOrderImpl(Order, PromotableItemFactory, boolean)}.
+   * <ul>
+   *   <li>When {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#PromotableOrderImpl(Order, PromotableItemFactory, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewPromotableOrderImpl_whenNullOrderImpl() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#createExistingOrderAdjustments()}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#createExistingOrderAdjustments()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateExistingOrderAdjustments() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+        .createExistingOrderAdjustments();
+  }
+
   /**
    * Test {@link PromotableOrderImpl#setOrderSubTotalToPriceWithoutAdjustments()}.
    * <p>
@@ -252,6 +322,54 @@ public class PromotableOrderImplDiffblueTest {
     assertEquals(retailPrice, order2.getSubTotal());
     assertSame(allOrderItems.get(0), promotableOrderItemList.get(0));
     assertSame(promotableOrderImpl.allOrderItems, allOrderItems);
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#getAllOrderItems()}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#getAllOrderItems()}
+   */
+  @Test
+  public void testGetAllOrderItems() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<OrderItem> orderItems = new ArrayList<>();
+    orderItems.add(new BundleOrderItemImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(new ArrayList<>());
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(orderItems);
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act and Assert
+    assertSame(promotableOrderImpl.allOrderItems, promotableOrderImpl.getAllOrderItems());
   }
 
   /**
@@ -849,6 +967,112 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
+   * Test {@link PromotableOrderImpl#addPromotableOrderItem(OrderItem, List)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#addPromotableOrderItem(OrderItem, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddPromotableOrderItem() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Failed to create Spring context.
+    //   Attempt to initialize test context failed with
+    //   java.lang.IllegalStateException: Failed to load ApplicationContext
+    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
+    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
+    //   org.mockito.exceptions.base.MockitoException: 
+    //   Cannot mock/spy boolean
+    //   Mockito cannot mock/spy because :
+    //    - primitive type
+    //       at org.springframework.boot.test.mock.mockito.MockDefinition.createMock(MockDefinition.java:158)
+    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.registerMock(MockitoPostProcessor.java:185)
+    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.register(MockitoPostProcessor.java:167)
+    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.postProcessBeanFactory(MockitoPostProcessor.java:141)
+    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.postProcessBeanFactory(MockitoPostProcessor.java:129)
+    //       at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:325)
+    //       at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:191)
+    //       at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:756)
+    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:573)
+    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
+    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
+    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
+    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
+    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
+    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
+    //   See https://diff.blue/R026 to resolve this issue.
+
+    // Arrange
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+
+    // Act
+    promotableOrderImpl.addPromotableOrderItem(orderItem, new ArrayList<>());
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#getFulfillmentGroups()}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#getFulfillmentGroups()}
+   */
+  @Test
+  public void testGetFulfillmentGroups() {
+    // Arrange
+    Auditable auditable = new Auditable();
+    auditable.setCreatedBy(1L);
+    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    auditable.setUpdatedBy(1L);
+
+    ArrayList<FulfillmentGroup> fulfillmentGroups = new ArrayList<>();
+    fulfillmentGroups.add(new FulfillmentGroupImpl());
+
+    OrderImpl order = new OrderImpl();
+    order.setAdditionalOfferInformation(new HashMap<>());
+    order.setAuditable(auditable);
+    order.setCandidateOrderOffers(new ArrayList<>());
+    order.setCurrency(new BroadleafCurrencyImpl());
+    order.setCustomer(new CustomerImpl());
+    order.setEmailAddress("42 Main St");
+    order.setFulfillmentGroups(fulfillmentGroups);
+    order.setId(1L);
+    order.setLocale(new LocaleImpl());
+    order.setName("Name");
+    order.setOrderAttributes(new HashMap<>());
+    order.setOrderItems(new ArrayList<>());
+    order.setOrderMessages(new ArrayList<>());
+    order.setOrderNumber("42");
+    order.setPayments(new ArrayList<>());
+    order.setStatus(OrderStatus.ARCHIVED);
+    order.setSubTotal(new Money());
+    order.setSubmitDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+    order.setTaxOverride(true);
+    order.setTotal(new Money());
+    order.setTotalFulfillmentCharges(new Money());
+    order.setTotalShipping(new Money());
+    order.setTotalTax(new Money());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act and Assert
+    assertEquals(promotableOrderImpl.fulfillmentGroups, promotableOrderImpl.getFulfillmentGroups());
+  }
+
+  /**
    * Test {@link PromotableOrderImpl#getFulfillmentGroups()}.
    * <ul>
    *   <li>Given {@link Auditable} (default constructor) DateCreated is
@@ -949,6 +1173,25 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
+   * Test {@link PromotableOrderImpl#isHasOrderAdjustments()}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#isHasOrderAdjustments()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsHasOrderAdjustments() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+        .isHasOrderAdjustments();
+  }
+
+  /**
    * Test getters and setters.
    * <p>
    * Methods under test:
@@ -978,6 +1221,65 @@ public class PromotableOrderImplDiffblueTest {
     assertTrue(actualExtraDataMap.isEmpty());
     assertTrue(actualIsIncludeOrderAndItemAdjustmentsResult);
     assertSame(promotableOrderImpl.order, actualOrder);
+  }
+
+  /**
+   * Test
+   * {@link PromotableOrderImpl#addCandidateOrderAdjustment(PromotableOrderAdjustment)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#addCandidateOrderAdjustment(PromotableOrderAdjustment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddCandidateOrderAdjustment() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+    NullOrderImpl order2 = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order2,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer = new PromotableCandidateOrderOfferImpl(
+        promotableOrder, new OfferImpl());
+
+    NullOrderImpl order3 = new NullOrderImpl();
+
+    // Act
+    promotableOrderImpl.addCandidateOrderAdjustment(new PromotableOrderAdjustmentImpl(promotableCandidateOrderOffer,
+        new PromotableOrderImpl(order3, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true)));
+  }
+
+  /**
+   * Test
+   * {@link PromotableOrderImpl#addCandidateOrderAdjustment(PromotableOrderAdjustment)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#addCandidateOrderAdjustment(PromotableOrderAdjustment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddCandidateOrderAdjustment_whenNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+        .addCandidateOrderAdjustment(null);
   }
 
   /**
@@ -1197,6 +1499,26 @@ public class PromotableOrderImplDiffblueTest {
     assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
     assertTrue(promotableOrderImpl.getFulfillmentGroups().isEmpty());
     assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#removeAllCandidateOrderOfferAdjustments()}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#removeAllCandidateOrderOfferAdjustments()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveAllCandidateOrderOfferAdjustments() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+        .removeAllCandidateOrderOfferAdjustments();
   }
 
   /**
@@ -1518,6 +1840,29 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
+   * Test {@link PromotableOrderImpl#updateRuleVariables(Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#updateRuleVariables(Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUpdateRuleVariables_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableOrderImpl.updateRuleVariables(new HashMap<>());
+  }
+
+  /**
    * Test {@link PromotableOrderImpl#isTotalitarianOfferApplied()}.
    * <p>
    * Method under test: {@link PromotableOrderImpl#isTotalitarianOfferApplied()}
@@ -1730,6 +2075,26 @@ public class PromotableOrderImplDiffblueTest {
     assertTrue(promotableOrderImpl.getAllOrderItems().isEmpty());
     assertTrue(promotableOrderImpl.getFulfillmentGroups().isEmpty());
     assertTrue(promotableOrderImpl.allOrderItems.isEmpty());
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#isTotalitarianOrderOfferApplied()}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#isTotalitarianOrderOfferApplied()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsTotalitarianOrderOfferApplied() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+        .isTotalitarianOrderOfferApplied();
   }
 
   /**
@@ -2045,6 +2410,48 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
+   * Test {@link PromotableOrderImpl#calculateOrderAdjustmentTotal()}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#calculateOrderAdjustmentTotal()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCalculateOrderAdjustmentTotal() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+        .calculateOrderAdjustmentTotal();
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#calculateOrderAdjustmentTotal()}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#calculateOrderAdjustmentTotal()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCalculateOrderAdjustmentTotal2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl.calculateOrderAdjustmentTotal(PromotableOrderImpl.java:257)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    (new PromotableOrderImpl(null, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), false))
+        .calculateOrderAdjustmentTotal();
+  }
+
+  /**
    * Test {@link PromotableOrderImpl#calculateItemAdjustmentTotal()}.
    * <ul>
    *   <li>Given {@link OrderItemImpl} (default constructor) Price is
@@ -2244,6 +2651,25 @@ public class PromotableOrderImplDiffblueTest {
   }
 
   /**
+   * Test {@link PromotableOrderImpl#getOrderCurrency()}.
+   * <p>
+   * Method under test: {@link PromotableOrderImpl#getOrderCurrency()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetOrderCurrency() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+        .getOrderCurrency();
+  }
+
+  /**
    * Test {@link PromotableOrderImpl#setTotalFufillmentCharges(Money)}.
    * <p>
    * Method under test:
@@ -2293,6 +2719,63 @@ public class PromotableOrderImplDiffblueTest {
     assertTrue(order2 instanceof OrderImpl);
     assertNull(order2.getTotalFulfillmentCharges());
     assertNull(order2.getTotalShipping());
+  }
+
+  /**
+   * Test {@link PromotableOrderImpl#isNotCombinableOrderOfferApplied()}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#isNotCombinableOrderOfferApplied()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsNotCombinableOrderOfferApplied() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    (new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true))
+        .isNotCombinableOrderOfferApplied();
+  }
+
+  /**
+   * Test
+   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   *   <li>Then calls {@link NullOrderImpl#getCurrency()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderImpl#canApplyOrderOffer(PromotableCandidateOrderOffer)}
+   */
+  @Test
+  public void testCanApplyOrderOffer_givenArrayList_thenCallsGetCurrency() {
+    // Arrange
+    NullOrderImpl order = mock(NullOrderImpl.class);
+    when(order.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    PromotableOrderImpl promotableOrderImpl = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+    NullOrderImpl order2 = mock(NullOrderImpl.class);
+    when(order2.getOrderAdjustments()).thenReturn(new ArrayList<>());
+    when(order2.getOrderItems()).thenReturn(new ArrayList<>());
+    when(order2.getCurrency()).thenReturn(null);
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order2,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    boolean actualCanApplyOrderOfferResult = promotableOrderImpl
+        .canApplyOrderOffer(new PromotableCandidateOrderOfferImpl(promotableOrder, new OfferImpl()));
+
+    // Assert
+    verify(order2, atLeast(1)).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order2, atLeast(1)).getOrderAdjustments();
+    verify(order2).getOrderItems();
+    assertTrue(actualCanApplyOrderOfferResult);
   }
 
   /**

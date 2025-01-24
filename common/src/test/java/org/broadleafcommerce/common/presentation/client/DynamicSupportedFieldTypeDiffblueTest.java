@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -22,6 +22,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import java.util.List;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,46 @@ public class DynamicSupportedFieldTypeDiffblueTest {
         () -> new DynamicSupportedFieldType("ADDITIONAL_FOREIGN_KEY|org.broadleafcommerce.core.catalog.domain.Category",
             "Friendly Type"));
 
+  }
+
+  /**
+   * Test {@link DynamicSupportedFieldType#verifyLegalType(String)}.
+   * <p>
+   * Method under test: {@link DynamicSupportedFieldType#verifyLegalType(String)}
+   */
+  @Test
+  public void testVerifyLegalType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    DynamicSupportedFieldType
+        .verifyLegalType("ADDITIONAL_FOREIGN_KEY|org.broadleafcommerce.core.catalog.domain.Category");
+  }
+
+  /**
+   * Test {@link DynamicSupportedFieldType#verifyLegalType(String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicSupportedFieldType#verifyLegalType(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testVerifyLegalType_whenType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: No enum constant org.broadleafcommerce.common.presentation.client.SupportedFieldType.Type
+    //       at java.base/java.lang.Enum.valueOf(Enum.java:240)
+    //       at org.broadleafcommerce.common.presentation.client.SupportedFieldType.valueOf(SupportedFieldType.java:25)
+    //       at org.broadleafcommerce.common.presentation.client.DynamicSupportedFieldType.verifyLegalType(DynamicSupportedFieldType.java:76)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    DynamicSupportedFieldType.verifyLegalType("Type");
   }
 
   /**

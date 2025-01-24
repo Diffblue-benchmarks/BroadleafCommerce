@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Profile
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.profile.core.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -28,12 +11,43 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Set;
+import org.broadleafcommerce.common.security.util.PasswordReset;
 import org.broadleafcommerce.profile.core.domain.ChallengeQuestion;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class EmailNotificationPasswordUpdatedHandlerDiffblueTest {
+  /**
+   * Test
+   * {@link EmailNotificationPasswordUpdatedHandler#passwordChanged(PasswordReset, Customer, String)}.
+   * <ul>
+   *   <li>When {@link CustomerImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link EmailNotificationPasswordUpdatedHandler#passwordChanged(PasswordReset, Customer, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPasswordChanged_whenCustomerImpl() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.profile.core.service.handler.EmailNotificationPasswordUpdatedHandler.passwordChanged(EmailNotificationPasswordUpdatedHandler.java:84)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    EmailNotificationPasswordUpdatedHandler emailNotificationPasswordUpdatedHandler = new EmailNotificationPasswordUpdatedHandler();
+    PasswordReset passwordReset = new PasswordReset("janedoe");
+
+    // Act
+    emailNotificationPasswordUpdatedHandler.passwordChanged(passwordReset, new CustomerImpl(), "iloveyou");
+  }
+
   /**
    * Test
    * {@link EmailNotificationPasswordUpdatedHandler#constructPasswordChangeEmailTemplateVariables(Customer, String)}.

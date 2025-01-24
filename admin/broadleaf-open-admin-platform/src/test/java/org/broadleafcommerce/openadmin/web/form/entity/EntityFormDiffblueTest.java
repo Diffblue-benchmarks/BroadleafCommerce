@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.form.entity;
 
 import static org.junit.Assert.assertEquals;
@@ -32,8 +15,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.broadleafcommerce.openadmin.dto.ClassMetadata;
+import org.broadleafcommerce.openadmin.dto.ClassTree;
+import org.broadleafcommerce.openadmin.dto.GroupMetadata;
+import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.dto.TabMetadata;
+import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -42,9 +31,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {EntityForm.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class EntityFormDiffblueTest {
   @Autowired
   private EntityForm entityForm;
@@ -256,6 +245,58 @@ public class EntityFormDiffblueTest {
   }
 
   /**
+   * Test {@link EntityForm#findListGrid(String)}.
+   * <p>
+   * Method under test: {@link EntityForm#findListGrid(String)}
+   */
+  @Test
+  public void testFindListGrid() {
+    // Arrange, Act and Assert
+    assertNull(entityForm.findListGrid("Collection Field Name"));
+    assertTrue(entityForm.fields.isEmpty());
+  }
+
+  /**
+   * Test {@link EntityForm#findGroup(String)}.
+   * <p>
+   * Method under test: {@link EntityForm#findGroup(String)}
+   */
+  @Test
+  public void testFindGroup() {
+    // Arrange, Act and Assert
+    assertNull(entityForm.findGroup("Group Name"));
+    assertTrue(entityForm.fields.isEmpty());
+  }
+
+  /**
+   * Test {@link EntityForm#findTab(String)}.
+   * <p>
+   * Method under test: {@link EntityForm#findTab(String)}
+   */
+  @Test
+  public void testFindTab() {
+    // Arrange, Act and Assert
+    assertNull(entityForm.findTab("Tab Key"));
+    assertTrue(entityForm.fields.isEmpty());
+  }
+
+  /**
+   * Test {@link EntityForm#findTabForField(String)}.
+   * <ul>
+   *   <li>When {@code Field Name}.</li>
+   *   <li>Then return {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityForm#findTabForField(String)}
+   */
+  @Test
+  public void testFindTabForField_whenFieldName_thenReturnNull() {
+    // Arrange, Act and Assert
+    assertNull(entityForm.findTabForField("Field Name"));
+    assertTrue(entityForm.fields.isEmpty());
+  }
+
+  /**
    * Test {@link EntityForm#findField(String)}.
    * <ul>
    *   <li>When {@code Field Name}.</li>
@@ -268,6 +309,68 @@ public class EntityFormDiffblueTest {
   public void testFindField_whenFieldName_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(entityForm.findField("Field Name"));
+    assertTrue(entityForm.fields.isEmpty());
+  }
+
+  /**
+   * Test {@link EntityForm#sanitizeFieldName(String)}.
+   * <ul>
+   *   <li>When {@code Field Name}.</li>
+   *   <li>Then return {@code Field Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityForm#sanitizeFieldName(String)}
+   */
+  @Test
+  public void testSanitizeFieldName_whenFieldName_thenReturnFieldName() {
+    // Arrange, Act and Assert
+    assertEquals("Field Name", entityForm.sanitizeFieldName("Field Name"));
+    assertTrue(entityForm.fields.isEmpty());
+  }
+
+  /**
+   * Test {@link EntityForm#removeField(String)}.
+   * <p>
+   * Method under test: {@link EntityForm#removeField(String)}
+   */
+  @Test
+  public void testRemoveField() {
+    // Arrange, Act and Assert
+    assertNull(entityForm.removeField("Field Name"));
+    assertTrue(entityForm.fields.isEmpty());
+  }
+
+  /**
+   * Test {@link EntityForm#removeGroup(FieldGroup)}.
+   * <ul>
+   *   <li>Given {@link EntityForm} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityForm#removeGroup(FieldGroup)}
+   */
+  @Test
+  public void testRemoveGroup_givenEntityForm() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    EntityForm entityForm = new EntityForm();
+
+    // Act
+    entityForm.removeGroup(new FieldGroup());
+  }
+
+  /**
+   * Test {@link EntityForm#removeTab(String)} with {@code tabName}.
+   * <p>
+   * Method under test: {@link EntityForm#removeTab(String)}
+   */
+  @Test
+  public void testRemoveTabWithTabName() {
+    // Arrange and Act
+    entityForm.removeTab("Tab Name");
+
+    // Assert that nothing has changed
     assertTrue(entityForm.fields.isEmpty());
   }
 
@@ -340,6 +443,208 @@ public class EntityFormDiffblueTest {
 
     // Assert
     assertTrue(entityForm.getTabs().isEmpty());
+  }
+
+  /**
+   * Test {@link EntityForm#removeListGrid(String)}.
+   * <p>
+   * Method under test: {@link EntityForm#removeListGrid(String)}
+   */
+  @Test
+  public void testRemoveListGrid() {
+    // Arrange, Act and Assert
+    assertNull(entityForm.removeListGrid("Sub Collection Field Name"));
+    assertTrue(entityForm.fields.isEmpty());
+  }
+
+  /**
+   * Test {@link EntityForm#addHiddenField(ClassMetadata, Field)}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   *   <li>When {@link Field} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityForm#addHiddenField(ClassMetadata, Field)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddHiddenField_givenHashMap_whenField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessageSource(BLCMessageUtils.java:67)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:60)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:48)
+    //       at org.broadleafcommerce.openadmin.web.form.entity.EntityForm.addField(EntityForm.java:396)
+    //       at org.broadleafcommerce.openadmin.web.form.entity.EntityForm.addHiddenField(EntityForm.java:344)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    entityForm.addHiddenField(cmd, new Field());
+  }
+
+  /**
+   * Test
+   * {@link EntityForm#addField(ClassMetadata, Field, String, Integer, String, Integer)}
+   * with {@code cmd}, {@code field}, {@code groupName}, {@code groupOrder},
+   * {@code tabName}, {@code tabOrder}.
+   * <p>
+   * Method under test:
+   * {@link EntityForm#addField(ClassMetadata, Field, String, Integer, String, Integer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddFieldWithCmdFieldGroupNameGroupOrderTabNameTabOrder() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessageSource(BLCMessageUtils.java:67)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:60)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:48)
+    //       at org.broadleafcommerce.openadmin.web.form.entity.EntityForm.addField(EntityForm.java:396)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    entityForm.addField(cmd, new Field(), "Group Name", 2, "Tab Name", 2);
+  }
+
+  /**
+   * Test {@link EntityForm#addField(ClassMetadata, Field)} with {@code cmd},
+   * {@code field}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityForm#addField(ClassMetadata, Field)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddFieldWithCmdField_givenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessageSource(BLCMessageUtils.java:67)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:60)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:48)
+    //       at org.broadleafcommerce.openadmin.web.form.entity.EntityForm.addField(EntityForm.java:396)
+    //       at org.broadleafcommerce.openadmin.web.form.entity.EntityForm.addField(EntityForm.java:348)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    entityForm.addField(cmd, new Field());
+  }
+
+  /**
+   * Test
+   * {@link EntityForm#addListGrid(ClassMetadata, ListGrid, String, Integer, String, boolean)}.
+   * <ul>
+   *   <li>When {@link ClassMetadata} (default constructor) CeilingType is
+   * {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link EntityForm#addListGrid(ClassMetadata, ListGrid, String, Integer, String, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddListGrid_whenClassMetadataCeilingTypeIsType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessageSource(BLCMessageUtils.java:67)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:60)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:48)
+    //       at org.broadleafcommerce.openadmin.web.form.entity.EntityForm.addListGrid(EntityForm.java:455)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    entityForm.addListGrid(cmd, new ListGrid(), "Tab Name", 2, "Group Name", true);
+  }
+
+  /**
+   * Test {@link EntityForm#addMapKeyField(ClassMetadata, Field)}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link EntityForm#addMapKeyField(ClassMetadata, Field)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddMapKeyField_givenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessageSource(BLCMessageUtils.java:67)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:60)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:48)
+    //       at org.broadleafcommerce.openadmin.web.form.entity.EntityForm.addField(EntityForm.java:396)
+    //       at org.broadleafcommerce.openadmin.web.form.entity.EntityForm.addMapKeyField(EntityForm.java:352)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    entityForm.addMapKeyField(cmd, new Field());
   }
 
   /**
@@ -425,6 +730,46 @@ public class EntityFormDiffblueTest {
   }
 
   /**
+   * Test {@link EntityForm#removeAction(EntityFormAction)}.
+   * <p>
+   * Method under test: {@link EntityForm#removeAction(EntityFormAction)}
+   */
+  @Test
+  public void testRemoveAction() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new EntityForm()).removeAction(DefaultAdornedEntityFormActions.Add);
+  }
+
+  /**
+   * Test {@link EntityForm#removeAllActions()}.
+   * <p>
+   * Method under test: {@link EntityForm#removeAllActions()}
+   */
+  @Test
+  public void testRemoveAllActions() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new EntityForm()).removeAllActions();
+  }
+
+  /**
+   * Test {@link EntityForm#getDynamicForm(String)}.
+   * <p>
+   * Method under test: {@link EntityForm#getDynamicForm(String)}
+   */
+  @Test
+  public void testGetDynamicForm() {
+    // Arrange, Act and Assert
+    assertNull(entityForm.getDynamicForm("Name"));
+    assertTrue(entityForm.fields.isEmpty());
+  }
+
+  /**
    * Test {@link EntityForm#putDynamicForm(String, EntityForm)}.
    * <p>
    * Method under test: {@link EntityForm#putDynamicForm(String, EntityForm)}
@@ -438,6 +783,18 @@ public class EntityFormDiffblueTest {
     Map<String, EntityForm> dynamicForms = entityForm.getDynamicForms();
     assertEquals(1, dynamicForms.size());
     assertSame(entityForm, dynamicForms.get("Name"));
+  }
+
+  /**
+   * Test {@link EntityForm#getDynamicFormInfo(String)}.
+   * <p>
+   * Method under test: {@link EntityForm#getDynamicFormInfo(String)}
+   */
+  @Test
+  public void testGetDynamicFormInfo() {
+    // Arrange, Act and Assert
+    assertNull(entityForm.getDynamicFormInfo("Name"));
+    assertTrue(entityForm.fields.isEmpty());
   }
 
   /**
@@ -654,6 +1011,18 @@ public class EntityFormDiffblueTest {
   public void testGetActions() {
     // Arrange, Act and Assert
     assertTrue((new EntityForm()).getActions().isEmpty());
+  }
+
+  /**
+   * Test {@link EntityForm#findActionById(String)}.
+   * <p>
+   * Method under test: {@link EntityForm#findActionById(String)}
+   */
+  @Test
+  public void testFindActionById() {
+    // Arrange, Act and Assert
+    assertNull(entityForm.findActionById("42"));
+    assertTrue(entityForm.fields.isEmpty());
   }
 
   /**
@@ -1184,6 +1553,33 @@ public class EntityFormDiffblueTest {
     // Act and Assert
     assertNull(entityForm.addTabFromTabMetadata(new TabMetadata()));
     assertEquals(1, entityForm.getTabs().size());
+  }
+
+  /**
+   * Test {@link EntityForm#addGroupFromGroupMetadata(GroupMetadata, String)}.
+   * <ul>
+   *   <li>When {@link GroupMetadata} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link EntityForm#addGroupFromGroupMetadata(GroupMetadata, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddGroupFromGroupMetadata_whenGroupMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessageSource(BLCMessageUtils.java:67)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:60)
+    //       at org.broadleafcommerce.common.util.BLCMessageUtils.getMessage(BLCMessageUtils.java:48)
+    //       at org.broadleafcommerce.openadmin.web.form.entity.EntityForm.addGroupFromGroupMetadata(EntityForm.java:754)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    entityForm.addGroupFromGroupMetadata(new GroupMetadata(), "Unprocessed Tab Name");
   }
 
   /**

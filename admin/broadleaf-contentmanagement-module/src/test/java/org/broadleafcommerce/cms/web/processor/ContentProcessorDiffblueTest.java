@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.web.processor;
 
 import static org.junit.Assert.assertEquals;
@@ -33,15 +16,37 @@ import java.util.TimeZone;
 import java.util.function.BiFunction;
 import javax.servlet.ServletRequestWrapper;
 import javax.servlet.http.HttpServletRequest;
+import org.broadleafcommerce.cms.structure.domain.StructuredContentType;
+import org.broadleafcommerce.cms.structure.domain.StructuredContentTypeImpl;
 import org.broadleafcommerce.common.TimeDTO;
+import org.broadleafcommerce.common.locale.domain.Locale;
+import org.broadleafcommerce.common.locale.domain.LocaleImpl;
+import org.broadleafcommerce.common.sandbox.domain.SandBox;
+import org.broadleafcommerce.common.sandbox.domain.SandBoxImpl;
 import org.broadleafcommerce.common.web.BroadleafRequestContext;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml",
+    "/applicationContext-servlet-cms-contentCreator.xml", "/bl-cms-applicationContext-entity.xml",
+    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ContentProcessorDiffblueTest {
+  @Autowired
+  private ContentProcessor contentProcessor;
+
   /**
    * Test {@link ContentProcessor#getName()}.
    * <p>
@@ -64,6 +69,68 @@ public class ContentProcessorDiffblueTest {
 
     // Arrange, Act and Assert
     assertEquals(10000, (new ContentProcessor()).getPrecedence());
+  }
+
+  /**
+   * Test {@link ContentProcessor#getPrecedence()}.
+   * <p>
+   * Method under test: {@link ContentProcessor#getPrecedence()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPrecedence2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3314 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.processor.ContentProcessor contentProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new ContentProcessor()).getPrecedence();
+  }
+
+  /**
+   * Test {@link ContentProcessor#getAttributeValue(Map, String, String)}.
+   * <p>
+   * Method under test:
+   * {@link ContentProcessor#getAttributeValue(Map, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAttributeValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3145 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.processor.ContentProcessor contentProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ContentProcessor contentProcessor2 = new ContentProcessor();
+
+    // Act
+    contentProcessor2.getAttributeValue(new HashMap<>(), "42", "42");
   }
 
   /**
@@ -138,6 +205,40 @@ public class ContentProcessorDiffblueTest {
   /**
    * Test
    * {@link ContentProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test:
+   * {@link ContentProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateModelVariables() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3384 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.processor.ContentProcessor contentProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ContentProcessor contentProcessor2 = new ContentProcessor();
+
+    // Act
+    contentProcessor2.populateModelVariables("Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
+  }
+
+  /**
+   * Test
+   * {@link ContentProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
    * <ul>
    *   <li>Given empty string.</li>
    *   <li>When {@link HashMap#HashMap()} {@code contentType} is empty string.</li>
@@ -182,6 +283,218 @@ public class ContentProcessorDiffblueTest {
     // Act and Assert
     assertThrows(IllegalArgumentException.class, () -> contentProcessor.populateModelVariables("Tag Name",
         new HashMap<>(), mock(BroadleafTemplateContext.class)));
+  }
+
+  /**
+   * Test
+   * {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test:
+   * {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetContentItems() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3171 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.processor.ContentProcessor contentProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ContentProcessor contentProcessor2 = new ContentProcessor();
+    MockHttpServletRequest request = new MockHttpServletRequest();
+    HashMap<String, Object> mvelParameters = new HashMap<>();
+    SandBoxImpl currentSandbox = new SandBoxImpl();
+    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
+    LocaleImpl locale = new LocaleImpl();
+    HashMap<String, String> tagAttributes = new HashMap<>();
+
+    // Act
+    contentProcessor2.getContentItems("Not all who wander are lost", 3, request, mvelParameters, currentSandbox,
+        structuredContentType, locale, "Tag Name", tagAttributes, new HashMap<>(),
+        mock(BroadleafTemplateContext.class));
+  }
+
+  /**
+   * Test
+   * {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Given {@link IllegalArgumentException#IllegalArgumentException(String)}
+   * with {@code foo}.</li>
+   *   <li>Then calls {@link ServletRequestWrapper#getScheme()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  public void testGetContentItems_givenIllegalArgumentExceptionWithFoo_thenCallsGetScheme() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getScheme()).thenThrow(new IllegalArgumentException("foo"));
+    HashMap<String, Object> mvelParameters = new HashMap<>();
+    SandBoxImpl currentSandbox = new SandBoxImpl();
+    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
+    LocaleImpl locale = new LocaleImpl();
+    HashMap<String, String> tagAttributes = new HashMap<>();
+
+    // Act
+    contentProcessor.getContentItems("Not all who wander are lost", 3, request, mvelParameters, currentSandbox,
+        structuredContentType, locale, "Tag Name", tagAttributes, new HashMap<>(),
+        mock(BroadleafTemplateContext.class));
+
+    // Assert
+    verify(request).getScheme();
+  }
+
+  /**
+   * Test
+   * {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Given {@link IllegalArgumentException#IllegalArgumentException(String)}
+   * with {@code foo}.</li>
+   *   <li>Then calls {@link ServletRequestWrapper#getScheme()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  public void testGetContentItems_givenIllegalArgumentExceptionWithFoo_thenCallsGetScheme2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getScheme()).thenThrow(new IllegalArgumentException("foo"));
+    HashMap<String, Object> mvelParameters = new HashMap<>();
+    SandBoxImpl currentSandbox = new SandBoxImpl();
+    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
+    LocaleImpl locale = new LocaleImpl();
+    HashMap<String, String> tagAttributes = new HashMap<>();
+
+    // Act
+    contentProcessor.getContentItems(null, 3, request, mvelParameters, currentSandbox, structuredContentType, locale,
+        "Tag Name", tagAttributes, new HashMap<>(), mock(BroadleafTemplateContext.class));
+
+    // Assert
+    verify(request).getScheme();
+  }
+
+  /**
+   * Test
+   * {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>Given {@link IllegalArgumentException#IllegalArgumentException(String)}
+   * with {@code foo}.</li>
+   *   <li>Then calls {@link ServletRequestWrapper#getScheme()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  public void testGetContentItems_givenIllegalArgumentExceptionWithFoo_thenCallsGetScheme3() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getScheme()).thenThrow(new IllegalArgumentException("foo"));
+    HashMap<String, Object> mvelParameters = new HashMap<>();
+    SandBoxImpl currentSandbox = new SandBoxImpl();
+    LocaleImpl locale = new LocaleImpl();
+    HashMap<String, String> tagAttributes = new HashMap<>();
+
+    // Act
+    contentProcessor.getContentItems("Not all who wander are lost", 3, request, mvelParameters, currentSandbox, null,
+        locale, "Tag Name", tagAttributes, new HashMap<>(), mock(BroadleafTemplateContext.class));
+
+    // Assert
+    verify(request).getScheme();
+  }
+
+  /**
+   * Test
+   * {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}.
+   * <ul>
+   *   <li>When empty string.</li>
+   *   <li>Then calls {@link ServletRequestWrapper#getScheme()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ContentProcessor#getContentItems(String, Integer, HttpServletRequest, Map, SandBox, StructuredContentType, Locale, String, Map, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  public void testGetContentItems_whenEmptyString_thenCallsGetScheme() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getScheme()).thenThrow(new IllegalArgumentException("foo"));
+    HashMap<String, Object> mvelParameters = new HashMap<>();
+    SandBoxImpl currentSandbox = new SandBoxImpl();
+    StructuredContentTypeImpl structuredContentType = new StructuredContentTypeImpl();
+    LocaleImpl locale = new LocaleImpl();
+    HashMap<String, String> tagAttributes = new HashMap<>();
+
+    // Act
+    contentProcessor.getContentItems("", 3, request, mvelParameters, currentSandbox, structuredContentType, locale,
+        "Tag Name", tagAttributes, new HashMap<>(), mock(BroadleafTemplateContext.class));
+
+    // Assert
+    verify(request).getScheme();
+  }
+
+  /**
+   * Test
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test:
+   * {@link ContentProcessor#buildMvelParameters(HttpServletRequest, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildMvelParameters() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3069 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.processor.ContentProcessor contentProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ContentProcessor contentProcessor2 = new ContentProcessor();
+    MockHttpServletRequest request = new MockHttpServletRequest();
+
+    // Act
+    contentProcessor2.buildMvelParameters(request, new HashMap<>(), mock(BroadleafTemplateContext.class));
   }
 
   /**
@@ -505,6 +818,38 @@ public class ContentProcessorDiffblueTest {
 
   /**
    * Test {@link ContentProcessor#isSecure(HttpServletRequest)}.
+   * <p>
+   * Method under test: {@link ContentProcessor#isSecure(HttpServletRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsSecure() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3315 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.processor.ContentProcessor contentProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ContentProcessor contentProcessor2 = new ContentProcessor();
+
+    // Act
+    contentProcessor2.isSecure(new MockHttpServletRequest());
+  }
+
+  /**
+   * Test {@link ContentProcessor#isSecure(HttpServletRequest)}.
    * <ul>
    *   <li>Given {@code HTTPS}.</li>
    * </ul>
@@ -526,6 +871,31 @@ public class ContentProcessorDiffblueTest {
     // Assert
     verify(request).getScheme();
     assertTrue(actualIsSecureResult);
+  }
+
+  /**
+   * Test {@link ContentProcessor#isSecure(HttpServletRequest)}.
+   * <ul>
+   *   <li>Given {@link IllegalArgumentException#IllegalArgumentException(String)}
+   * with {@code HTTPS}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ContentProcessor#isSecure(HttpServletRequest)}
+   */
+  @Test
+  public void testIsSecure_givenIllegalArgumentExceptionWithHttps() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ContentProcessor contentProcessor = new ContentProcessor();
+    DefaultMultipartHttpServletRequest request = mock(DefaultMultipartHttpServletRequest.class);
+    when(request.getScheme()).thenThrow(new IllegalArgumentException("HTTPS"));
+
+    // Act
+    contentProcessor.isSecure(request);
+
+    // Assert
+    verify(request).getScheme();
   }
 
   /**

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.security.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -32,9 +15,53 @@ import java.util.Set;
 import org.broadleafcommerce.common.sandbox.domain.SandBox;
 import org.broadleafcommerce.common.sandbox.domain.SandBoxImpl;
 import org.broadleafcommerce.openadmin.server.service.type.ContextType;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml",
+    "/applicationContext-servlet-open-admin.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminUserImplDiffblueTest {
+  @Autowired
+  private AdminUserImpl adminUserImpl;
+
+  /**
+   * Test {@link AdminUserImpl#getFlatAdditionalFields()}.
+   * <p>
+   * Method under test: {@link AdminUserImpl#getFlatAdditionalFields()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFlatAdditionalFields() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass32 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl adminUserImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AdminUserImpl()).getFlatAdditionalFields();
+  }
+
   /**
    * Test {@link AdminUserImpl#getFlatAdditionalFields()}.
    * <ul>
@@ -98,6 +125,35 @@ public class AdminUserImplDiffblueTest {
     // Assert
     assertEquals(1, actualFlatAdditionalFields.size());
     assertNull(actualFlatAdditionalFields.get("foo"));
+  }
+
+  /**
+   * Test {@link AdminUserImpl#getLastUsedSandBoxId()}.
+   * <p>
+   * Method under test: {@link AdminUserImpl#getLastUsedSandBoxId()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetLastUsedSandBoxId() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass46 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl adminUserImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AdminUserImpl()).getLastUsedSandBoxId();
   }
 
   /**
@@ -229,6 +285,35 @@ public class AdminUserImplDiffblueTest {
 
   /**
    * Test {@link AdminUserImpl#setLastUsedSandBoxId(Long)}.
+   * <p>
+   * Method under test: {@link AdminUserImpl#setLastUsedSandBoxId(Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetLastUsedSandBoxId() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass74 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl adminUserImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AdminUserImpl()).setLastUsedSandBoxId(1L);
+  }
+
+  /**
+   * Test {@link AdminUserImpl#setLastUsedSandBoxId(Long)}.
    * <ul>
    *   <li>Given {@link AdminUserImpl} (default constructor) OverrideSandBox is
    * {@link SandBox}.</li>
@@ -339,6 +424,35 @@ public class AdminUserImplDiffblueTest {
     assertEquals(1, flatAdditionalFields.size());
     assertTrue(flatAdditionalFields.containsKey("LAST_USED_SANDBOX"));
     assertSame(adminUserImpl, getResult.getAdminUser());
+  }
+
+  /**
+   * Test {@link AdminUserImpl#getMainEntityName()}.
+   * <p>
+   * Method under test: {@link AdminUserImpl#getMainEntityName()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetMainEntityName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-open-admin-applicationContext-entity.xml","/applicationContext-servlet-open-admin.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass60 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl adminUserImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AdminUserImpl()).getMainEntityName();
   }
 
   /**

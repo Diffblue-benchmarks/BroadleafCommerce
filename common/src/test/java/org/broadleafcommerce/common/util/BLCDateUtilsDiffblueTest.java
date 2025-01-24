@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.TimeZone;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BLCDateUtilsDiffblueTest {
@@ -65,6 +66,35 @@ public class BLCDateUtilsDiffblueTest {
     // Assert
     verify(date).getTime();
     assertEquals("1970-01-01 00:00:00.0", actualConvertDateToUTCResult);
+  }
+
+  /**
+   * Test {@link BLCDateUtils#formatDateAsString(Date)} with {@code date}.
+   * <p>
+   * Method under test: {@link BLCDateUtils#formatDateAsString(Date)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFormatDateAsStringWithDate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at java.base/java.util.GregorianCalendar.computeFields(GregorianCalendar.java:2339)
+    //       at java.base/java.util.GregorianCalendar.computeFields(GregorianCalendar.java:2309)
+    //       at java.base/java.util.Calendar.setTimeInMillis(Calendar.java:1834)
+    //       at java.base/java.util.Calendar.setTime(Calendar.java:1800)
+    //       at java.base/java.text.SimpleDateFormat.format(SimpleDateFormat.java:974)
+    //       at java.base/java.text.SimpleDateFormat.format(SimpleDateFormat.java:967)
+    //       at java.base/java.text.DateFormat.format(DateFormat.java:374)
+    //       at org.broadleafcommerce.common.util.BLCDateUtils.formatDateAsString(BLCDateUtils.java:66)
+    //       at org.broadleafcommerce.common.util.BLCDateUtils.formatDateAsString(BLCDateUtils.java:56)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    BLCDateUtils
+        .formatDateAsString(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
   }
 
   /**

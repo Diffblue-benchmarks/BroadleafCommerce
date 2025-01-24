@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.filter;
 
 import static org.junit.Assert.assertEquals;
@@ -32,14 +15,29 @@ import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminRequestProcessorExtensionManagerDiffblueTest {
+  @Autowired
+  private AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
+
   /**
    * Test
    * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
@@ -168,6 +166,45 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualRetrieveProfilesResult);
+  }
+
+  /**
+   * Test
+   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}.
+   * <p>
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveProfiles(Site, ExtensionResultHolder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRetrieveProfiles5() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1777 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager2 = new AdminRequestProcessorExtensionManager();
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Set<Site>> result = new ExtensionResultHolder<>();
+    result.setResult(new HashSet<>());
+    result.setThrowable(new Throwable());
+
+    // Act
+    adminRequestProcessorExtensionManager2.retrieveProfiles(currentSite, result);
   }
 
   /**
@@ -355,6 +392,45 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualRetrieveCatalogsResult);
+  }
+
+  /**
+   * Test
+   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}.
+   * <p>
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#retrieveCatalogs(Site, ExtensionResultHolder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRetrieveCatalogs5() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1718 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager2 = new AdminRequestProcessorExtensionManager();
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Set<Catalog>> result = new ExtensionResultHolder<>();
+    result.setResult(new HashSet<>());
+    result.setThrowable(new Throwable());
+
+    // Act
+    adminRequestProcessorExtensionManager2.retrieveCatalogs(currentSite, result);
   }
 
   /**
@@ -579,6 +655,46 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
   /**
    * Test
    * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
+   * <p>
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testOverrideCurrentCatalog6() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1352 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager2 = new AdminRequestProcessorExtensionManager();
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Catalog> result = new ExtensionResultHolder<>();
+    result.setResult(new CatalogImpl());
+    result.setThrowable(new Throwable());
+
+    // Act
+    adminRequestProcessorExtensionManager2.overrideCurrentCatalog(request, currentSite, result);
+  }
+
+  /**
+   * Test
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentCatalog(WebRequest, Site, ExtensionResultHolder)}.
    * <ul>
    *   <li>Given {@link AdminRequestProcessorExtensionManager} (default
    * constructor).</li>
@@ -765,6 +881,46 @@ public class AdminRequestProcessorExtensionManagerDiffblueTest {
     // Assert
     verify(adminRequestProcessorExtensionHandler).isEnabled();
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualOverrideCurrentProfileResult);
+  }
+
+  /**
+   * Test
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}.
+   * <p>
+   * Method under test:
+   * {@link AdminRequestProcessorExtensionManager#overrideCurrentProfile(WebRequest, Site, ExtensionResultHolder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testOverrideCurrentProfile6() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1533 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminRequestProcessorExtensionManager adminRequestProcessorExtensionManager2 = new AdminRequestProcessorExtensionManager();
+    ServletWebRequest request = new ServletWebRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+    SiteImpl currentSite = new SiteImpl();
+
+    ExtensionResultHolder<Site> result = new ExtensionResultHolder<>();
+    result.setResult(new SiteImpl());
+    result.setThrowable(new Throwable());
+
+    // Act
+    adminRequestProcessorExtensionManager2.overrideCurrentProfile(request, currentSite, result);
   }
 
   /**

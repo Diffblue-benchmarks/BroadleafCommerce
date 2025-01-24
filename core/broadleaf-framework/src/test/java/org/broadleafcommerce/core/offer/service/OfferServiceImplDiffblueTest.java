@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.service;
 
 import static org.junit.Assert.assertEquals;
@@ -93,10 +76,52 @@ import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OfferServiceImplDiffblueTest {
+  @Autowired
+  private OfferServiceImpl offerServiceImpl;
+
+  /**
+   * Test {@link OfferServiceImpl#findAllOffers()}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#findAllOffers()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindAllOffers() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass218 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OfferServiceImpl()).findAllOffers();
+  }
+
   /**
    * Test {@link OfferServiceImpl#findAllOffers()}.
    * <ul>
@@ -128,6 +153,38 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#save(Offer)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#save(Offer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSave() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1685 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.save(new OfferImpl());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#save(Offer)}.
    * <ul>
    *   <li>Given {@link OfferDaoImpl} {@link OfferDaoImpl#save(Offer)} return
    * {@link OfferImpl} (default constructor).</li>
@@ -155,6 +212,38 @@ public class OfferServiceImplDiffblueTest {
     // Assert
     verify(offerDao).save(isA(Offer.class));
     assertSame(offerImpl, actualSaveResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#saveOfferCode(OfferCode)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#saveOfferCode(OfferCode)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSaveOfferCode() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1733 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.saveOfferCode(new OfferCodeImpl());
   }
 
   /**
@@ -251,6 +340,35 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferByCode(String)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#lookupOfferByCode(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupOfferByCode2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass984 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OfferServiceImpl()).lookupOfferByCode("Code");
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#lookupOfferByCode(String)}.
    * <ul>
    *   <li>Given {@link OfferCodeDaoImpl}
    * {@link OfferCodeDaoImpl#readOfferCodeByCode(String)} return
@@ -307,6 +425,35 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferCodeByCode(String)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#lookupOfferCodeByCode(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupOfferCodeByCode() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1300 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OfferServiceImpl()).lookupOfferCodeByCode("Code");
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#lookupOfferCodeByCode(String)}.
    * <ul>
    *   <li>Then return {@link OfferCodeImpl} (default constructor).</li>
    * </ul>
@@ -331,6 +478,35 @@ public class OfferServiceImplDiffblueTest {
     // Assert
     verify(offerCodeDao).readOfferCodeByCode(eq("Code"));
     assertSame(offerCodeImpl, actualLookupOfferCodeByCodeResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#lookupAllOffersByCode(String)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#lookupAllOffersByCode(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupAllOffersByCode() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass659 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OfferServiceImpl()).lookupAllOffersByCode("Code");
   }
 
   /**
@@ -454,6 +630,35 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupAllOfferCodesByCode() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass343 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OfferServiceImpl()).lookupAllOfferCodesByCode("Code");
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#lookupAllOfferCodesByCode(String)}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
@@ -477,6 +682,104 @@ public class OfferServiceImplDiffblueTest {
     // Assert
     verify(offerCodeDao).readAllOfferCodesByCode(eq("Code"));
     assertTrue(actualLookupAllOfferCodesByCodeResult.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildOfferListForOrder() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass151 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.buildOfferListForOrder(new NullOrderImpl());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferListForOrder(Order)}.
+   * <ul>
+   *   <li>Then calls
+   * {@link CustomerOfferDaoImpl#readCustomerOffersByCustomer(Customer)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link OfferServiceImpl#buildOfferListForOrder(Order)}
+   */
+  @Test
+  public void testBuildOfferListForOrder_thenCallsReadCustomerOffersByCustomer() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CustomerOfferDaoImpl customerOfferDao = mock(CustomerOfferDaoImpl.class);
+    when(customerOfferDao.readCustomerOffersByCustomer(Mockito.<Customer>any())).thenReturn(new ArrayList<>());
+
+    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    offerServiceImpl.setCustomerOfferDao(customerOfferDao);
+    NullOrderImpl order = mock(NullOrderImpl.class);
+    when(order.getAddedOfferCodes()).thenThrow(new RuntimeException("foo"));
+    when(order.getCustomer()).thenReturn(new CustomerImpl());
+
+    // Act
+    offerServiceImpl.buildOfferListForOrder(order);
+
+    // Assert
+    verify(customerOfferDao).readCustomerOffersByCustomer(isA(Customer.class));
+    verify(order).getAddedOfferCodes();
+    verify(order).getCustomer();
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)} with
+   * {@code customer}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#buildOfferCodeListForCustomer(Customer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildOfferCodeListForCustomerWithCustomer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass121 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.buildOfferCodeListForCustomer(new CustomerImpl());
   }
 
   /**
@@ -516,6 +819,40 @@ public class OfferServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertTrue((new OfferServiceImpl()).buildOfferCodeListForCustomer(mock(CustomerImpl.class)).isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)} with
+   * {@code order}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#buildOfferCodeListForCustomer(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildOfferCodeListForCustomerWithOrder() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass100 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.buildOfferCodeListForCustomer(new NullOrderImpl());
   }
 
   /**
@@ -569,6 +906,39 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupOfferCustomerByCustomer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1616 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.lookupOfferCustomerByCustomer(new CustomerImpl());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#lookupOfferCustomerByCustomer(Customer)}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
@@ -598,6 +968,35 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupAutomaticDeliveryOffers() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass975 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OfferServiceImpl()).lookupAutomaticDeliveryOffers();
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#lookupAutomaticDeliveryOffers()}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
@@ -621,6 +1020,38 @@ public class OfferServiceImplDiffblueTest {
     // Assert
     verify(offerDao).readOffersByAutomaticDeliveryType();
     assertTrue(actualLookupAutomaticDeliveryOffersResult.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#removeOutOfDateOfferCodes(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveOutOfDateOfferCodes() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1672 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.removeOutOfDateOfferCodes(new ArrayList<>());
   }
 
   /**
@@ -705,6 +1136,73 @@ public class OfferServiceImplDiffblueTest {
     // Assert
     assertTrue(offerCodes.isEmpty());
     assertTrue(actualRemoveOutOfDateOfferCodesResult.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#refreshOfferCodesIfApplicable(Order)}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#refreshOfferCodesIfApplicable(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRefreshOfferCodesIfApplicable() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1651 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.refreshOfferCodesIfApplicable(new NullOrderImpl());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#applyAndSaveOffersToOrder(List, Order)}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#applyAndSaveOffersToOrder(List, Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testApplyAndSaveOffersToOrder() throws PricingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass25 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    ArrayList<Offer> offers = new ArrayList<>();
+
+    // Act
+    offerServiceImpl2.applyAndSaveOffersToOrder(offers, new NullOrderImpl());
   }
 
   /**
@@ -851,6 +1349,38 @@ public class OfferServiceImplDiffblueTest {
 
     // Act and Assert
     assertFalse(offerServiceImpl.verifyAdjustments(order, false));
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#verifyAdjustments(Order, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testVerifyAdjustments2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1756 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.verifyAdjustments(new NullOrderImpl(), true);
   }
 
   /**
@@ -1233,6 +1763,39 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#applyOffersToOrder(List, Order)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#applyOffersToOrder(List, Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testApplyOffersToOrder() throws PricingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass75 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    ArrayList<Offer> offers = new ArrayList<>();
+
+    // Act
+    offerServiceImpl2.applyOffersToOrder(offers, new NullOrderImpl());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#applyOffersToOrder(List, Order)}.
    * <ul>
    *   <li>Then calls {@link BaseProcessor#filterOffers(List, Customer)}.</li>
    * </ul>
@@ -1280,6 +1843,41 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test
    * {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testApplyFulfillmentGroupOffersToOrder() throws PricingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass50 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    ArrayList<Offer> offers = new ArrayList<>();
+
+    // Act
+    offerServiceImpl2.applyFulfillmentGroupOffersToOrder(offers, new NullOrderImpl());
+  }
+
+  /**
+   * Test
+   * {@link OfferServiceImpl#applyFulfillmentGroupOffersToOrder(List, Order)}.
    * <ul>
    *   <li>Then calls {@link OfferImpl#getType()}.</li>
    * </ul>
@@ -1311,6 +1909,41 @@ public class OfferServiceImplDiffblueTest {
     // Assert
     verify(offerImpl).getType();
     verify(orderService).save(isA(Order.class), eq(false));
+  }
+
+  /**
+   * Test
+   * {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List, Order)}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#applyAndSaveFulfillmentGroupOffersToOrder(List, Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testApplyAndSaveFulfillmentGroupOffersToOrder() throws PricingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass0 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    ArrayList<Offer> offers = new ArrayList<>();
+
+    // Act
+    offerServiceImpl2.applyAndSaveFulfillmentGroupOffersToOrder(offers, new NullOrderImpl());
   }
 
   /**
@@ -1350,6 +1983,42 @@ public class OfferServiceImplDiffblueTest {
     verify(offerImpl).getType();
     verify(orderService).save(isA(Order.class), eq(false));
     assertSame(nullOrderImpl, actualApplyAndSaveFulfillmentGroupOffersToOrderResult);
+  }
+
+  /**
+   * Test
+   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
+   * with {@code customer}, {@code code}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, OfferCode)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerCode() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1947 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    CustomerImpl customer = new CustomerImpl();
+
+    // Act
+    offerServiceImpl2.verifyMaxCustomerUsageThreshold(customer, new OfferCodeImpl());
   }
 
   /**
@@ -1416,6 +2085,72 @@ public class OfferServiceImplDiffblueTest {
    * Test
    * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
    * with {@code customer}, {@code offer}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1873 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    CustomerImpl customer = new CustomerImpl();
+
+    // Act
+    offerServiceImpl2.verifyMaxCustomerUsageThreshold(customer, new OfferImpl());
+  }
+
+  /**
+   * Test
+   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   * with {@code customer}, {@code offer}.
+   * <ul>
+   *   <li>Then calls {@link OfferImpl#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   */
+  @Test
+  public void testVerifyMaxCustomerUsageThresholdWithCustomerOffer_thenCallsGetId() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    CustomerImpl customer = new CustomerImpl();
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenThrow(new RuntimeException("foo"));
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act
+    offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, offer);
+
+    // Assert
+    verify(offer).getId();
+    verify(offer).isLimitedUsePerCustomer();
+  }
+
+  /**
+   * Test
+   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Customer, Offer)}
+   * with {@code customer}, {@code offer}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
@@ -1456,6 +2191,42 @@ public class OfferServiceImplDiffblueTest {
 
     // Act and Assert
     assertTrue(offerServiceImpl.verifyMaxCustomerUsageThreshold(customer, new OfferImpl()));
+  }
+
+  /**
+   * Test
+   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   * with {@code order}, {@code code}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, OfferCode)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testVerifyMaxCustomerUsageThresholdWithOrderCode() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1838 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    offerServiceImpl2.verifyMaxCustomerUsageThreshold(order, new OfferCodeImpl());
   }
 
   /**
@@ -1552,6 +2323,72 @@ public class OfferServiceImplDiffblueTest {
     verify(offerImpl).getId();
     verify(offerImpl).getMaxUsesStrategyType();
     verify(offerImpl).isLimitedUsePerCustomer();
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   * with {@code order}, {@code offer}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1778 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    offerServiceImpl2.verifyMaxCustomerUsageThreshold(order, new OfferImpl());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   * with {@code order}, {@code offer}.
+   * <ul>
+   *   <li>Then calls {@link OfferImpl#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#verifyMaxCustomerUsageThreshold(Order, Offer)}
+   */
+  @Test
+  public void testVerifyMaxCustomerUsageThresholdWithOrderOffer_thenCallsGetId() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl = new OfferServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+    OfferImpl offer = mock(OfferImpl.class);
+    when(offer.getId()).thenThrow(new RuntimeException("ACCOUNT"));
+    when(offer.getMaxUsesStrategyType()).thenReturn(CustomerMaxUsesStrategyType.ACCOUNT);
+    when(offer.isLimitedUsePerCustomer()).thenReturn(true);
+
+    // Act
+    offerServiceImpl.verifyMaxCustomerUsageThreshold(order, offer);
+
+    // Assert
+    verify(offer).getId();
+    verify(offer).getMaxUsesStrategyType();
+    verify(offer).isLimitedUsePerCustomer();
   }
 
   /**
@@ -1769,6 +2606,38 @@ public class OfferServiceImplDiffblueTest {
 
     // Act and Assert
     assertTrue(offerServiceImpl.getUniqueOffersFromOrder(order).isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#getUniqueOffersFromOrder(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetUniqueOffersFromOrder3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass322 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.getUniqueOffersFromOrder(new NullOrderImpl());
   }
 
   /**
@@ -2081,6 +2950,41 @@ public class OfferServiceImplDiffblueTest {
   /**
    * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with
    * {@code codes}, {@code appliedOffers}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetOffersRetrievedFromCodesWithCodesAppliedOffers() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass286 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+    ArrayList<OfferCode> codes = new ArrayList<>();
+
+    // Act
+    offerServiceImpl2.getOffersRetrievedFromCodes(codes, new HashSet<>());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(List, Set)} with
+   * {@code codes}, {@code appliedOffers}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
@@ -2123,6 +3027,40 @@ public class OfferServiceImplDiffblueTest {
 
     // Act and Assert
     assertTrue(offerServiceImpl.getOffersRetrievedFromCodes(codes, appliedOffers).isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)} with
+   * {@code order}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceImpl#getOffersRetrievedFromCodes(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetOffersRetrievedFromCodesWithOrder() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass301 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.getOffersRetrievedFromCodes(new NullOrderImpl());
   }
 
   /**
@@ -2323,6 +3261,38 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#deleteOfferCode(OfferCode)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#deleteOfferCode(OfferCode)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDeleteOfferCode() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass172 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.deleteOfferCode(new OfferCodeImpl());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#deleteOfferCode(OfferCode)}.
    * <ul>
    *   <li>Then return {@code false}.</li>
    * </ul>
@@ -2375,6 +3345,35 @@ public class OfferServiceImplDiffblueTest {
     verify(offerCodeDao).delete(isA(OfferCode.class));
     verify(offerCodeDao).offerCodeIsUsed(isA(OfferCode.class));
     assertTrue(actualDeleteOfferCodeResult);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#duplicate(Long)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#duplicate(Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDuplicate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass195 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OfferServiceImpl()).duplicate(1L);
   }
 
   /**
@@ -2452,6 +3451,35 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#findOfferCodeById(Long)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#findOfferCodeById(Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindOfferCodeById() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass250 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OfferServiceImpl()).findOfferCodeById(1L);
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#findOfferCodeById(Long)}.
    * <ul>
    *   <li>Then return {@link OfferCodeImpl} (default constructor).</li>
    * </ul>
@@ -2480,6 +3508,38 @@ public class OfferServiceImplDiffblueTest {
 
   /**
    * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#findOfferCodesByIds(Collection)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindOfferCodesByIds() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass273 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceImpl offerServiceImpl2 = new OfferServiceImpl();
+
+    // Act
+    offerServiceImpl2.findOfferCodesByIds(new ArrayList<>());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#findOfferCodesByIds(Collection)}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
@@ -2503,6 +3563,35 @@ public class OfferServiceImplDiffblueTest {
     // Assert
     verify(offerCodeDao).readOfferCodesByIds(isA(Collection.class));
     assertTrue(actualFindOfferCodesByIdsResult.isEmpty());
+  }
+
+  /**
+   * Test {@link OfferServiceImpl#findOfferById(Long)}.
+   * <p>
+   * Method under test: {@link OfferServiceImpl#findOfferById(Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindOfferById() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass227 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceImpl offerServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OfferServiceImpl()).findOfferById(1L);
   }
 
   /**

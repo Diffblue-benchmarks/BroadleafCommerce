@@ -1,35 +1,21 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.web.controller;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.mockito.Mockito.mock;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.common.page.dto.PageDTO;
 import org.broadleafcommerce.common.template.TemplateOverrideExtensionManager;
 import org.broadleafcommerce.common.template.TemplateType;
 import org.broadleafcommerce.common.web.deeplink.DeepLinkService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
@@ -45,6 +31,53 @@ public class BroadleafPageControllerDiffblueTest {
 
   @MockBean(name = "blTemplateOverrideExtensionManager")
   private TemplateOverrideExtensionManager templateOverrideExtensionManager;
+
+  /**
+   * Test
+   * {@link BroadleafPageController#handleRequest(HttpServletRequest, HttpServletResponse)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafPageController#handleRequest(HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandleRequest() throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.cms.web.controller.BroadleafPageController.handleRequest(BroadleafPageController.java:60)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    broadleafPageController.handleRequest(null, new MockHttpServletResponse());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafPageController#getExpectedTemplateName(HttpServletRequest)}.
+   * <ul>
+   *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BroadleafPageController#getExpectedTemplateName(HttpServletRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetExpectedTemplateName_whenMockHttpServletRequest() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.cms.web.controller.BroadleafPageController.getExpectedTemplateName(BroadleafPageController.java:111)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    broadleafPageController.getExpectedTemplateName(new MockHttpServletRequest());
+  }
 
   /**
    * Test {@link BroadleafPageController#getTemplateType(HttpServletRequest)}.

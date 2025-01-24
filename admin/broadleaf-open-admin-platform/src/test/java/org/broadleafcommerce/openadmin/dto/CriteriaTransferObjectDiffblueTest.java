@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
@@ -224,6 +207,34 @@ public class CriteriaTransferObjectDiffblueTest {
     assertEquals("Name", getResult.getPropertyId());
     assertNull(getResult.getOrder());
     assertNull(getResult.getRestrictionType());
+    assertEquals(SortDirection.ASCENDING, getResult.getSortDirection());
+    assertTrue(getResult.getFilterValues().isEmpty());
+    assertTrue(getResult.getSpecialFilterValues().isEmpty());
+    assertTrue(getResult.filterValues.isEmpty());
+    assertTrue(getResult.getSortAscending());
+    assertTrue(getResult.isNullsLast());
+  }
+
+  /**
+   * Test
+   * {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String, SortDirection)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link CriteriaTransferObject#defaultSortDirectionForFieldIfUnset(String, SortDirection)}
+   */
+  @Test
+  public void testDefaultSortDirectionForFieldIfUnset_whenNull() {
+    // Arrange and Act
+    criteriaTransferObject.defaultSortDirectionForFieldIfUnset("Name", null);
+
+    // Assert that nothing has changed
+    Map<String, FilterAndSortCriteria> criteriaMap = criteriaTransferObject.getCriteriaMap();
+    assertEquals(1, criteriaMap.size());
+    FilterAndSortCriteria getResult = criteriaMap.get("Name");
+    assertEquals("Name", getResult.getPropertyId());
     assertEquals(SortDirection.ASCENDING, getResult.getSortDirection());
     assertTrue(getResult.getFilterValues().isEmpty());
     assertTrue(getResult.getSpecialFilterValues().isEmpty());

@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -21,6 +21,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,6 +70,68 @@ public class EmailNotificationDiffblueTest {
     assertTrue(actualAttachments.isEmpty());
     assertTrue(actualEmailNotification.getContext().isEmpty());
     assertSame(attachments, actualAttachments);
+  }
+
+  /**
+   * Test
+   * {@link EmailNotification#EmailNotification(String, NotificationEventType, Map)}.
+   * <ul>
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then return Type Type is {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link EmailNotification#EmailNotification(String, NotificationEventType, Map)}
+   */
+  @Test
+  public void testNewEmailNotification_givenType_thenReturnTypeTypeIsType() {
+    // Arrange
+    NotificationEventType notificationEventType2 = mock(NotificationEventType.class);
+    when(notificationEventType2.getType()).thenReturn("Type");
+
+    // Act
+    EmailNotification actualEmailNotification = new EmailNotification("42 Main St", notificationEventType2,
+        new HashMap<>());
+
+    // Assert
+    verify(notificationEventType2).getType();
+    assertEquals("42 Main St", actualEmailNotification.getEmailAddress());
+    NotificationEventType type = actualEmailNotification.getType();
+    assertEquals("Type", type.getType());
+    assertEquals("Type", actualEmailNotification.notificationType);
+    assertEquals("Unable to find an EmailInfo that matched a notification of type ", type.getFriendlyType());
+    assertTrue(actualEmailNotification.getAttachments().isEmpty());
+    assertTrue(actualEmailNotification.getContext().isEmpty());
+  }
+
+  /**
+   * Test {@link EmailNotification#EmailNotification(NotificationEventType, Map)}.
+   * <ul>
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then return Type Type is {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link EmailNotification#EmailNotification(NotificationEventType, Map)}
+   */
+  @Test
+  public void testNewEmailNotification_givenType_thenReturnTypeTypeIsType2() {
+    // Arrange
+    NotificationEventType notificationEventType2 = mock(NotificationEventType.class);
+    when(notificationEventType2.getType()).thenReturn("Type");
+
+    // Act
+    EmailNotification actualEmailNotification = new EmailNotification(notificationEventType2, new HashMap<>());
+
+    // Assert
+    verify(notificationEventType2).getType();
+    NotificationEventType type = actualEmailNotification.getType();
+    assertEquals("Type", type.getType());
+    assertEquals("Type", actualEmailNotification.notificationType);
+    assertEquals("Unable to find an EmailInfo that matched a notification of type ", type.getFriendlyType());
+    assertNull(actualEmailNotification.getEmailAddress());
+    assertTrue(actualEmailNotification.getAttachments().isEmpty());
+    assertTrue(actualEmailNotification.getContext().isEmpty());
   }
 
   /**

@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -22,7 +22,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +125,41 @@ public class AbstractHydratedCacheManagerDiffblueTest {
     // Assert
     Class<Object> expectedTopEntityClass = Object.class;
     assertEquals(expectedTopEntityClass, actualTopEntityClass);
+  }
+
+  /**
+   * Test
+   * {@link AbstractHydratedCacheManager#createNameKey(String, String, Serializable)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractHydratedCacheManager#createNameKey(String, String, Serializable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateNameKey() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    abstractHydratedCacheManager.createNameKey("us-east-2", "Cache Name", new SimpleDateFormat("yyyy/mm/dd"));
+  }
+
+  /**
+   * Test
+   * {@link AbstractHydratedCacheManager#createHeapKey(String, String, String, Serializable)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractHydratedCacheManager#createHeapKey(String, String, String, Serializable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateHeapKey() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    abstractHydratedCacheManager.createHeapKey("us-east-2", "Cache Name", "Element Item Name",
+        new SimpleDateFormat("yyyy/mm/dd"));
   }
 
   /**

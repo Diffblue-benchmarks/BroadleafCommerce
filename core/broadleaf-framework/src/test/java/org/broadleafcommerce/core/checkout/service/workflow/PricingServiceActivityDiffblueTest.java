@@ -1,28 +1,41 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.checkout.service.workflow;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
+import org.broadleafcommerce.core.workflow.ProcessContext;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class PricingServiceActivityDiffblueTest {
+  /**
+   * Test {@link PricingServiceActivity#execute(ProcessContext)}.
+   * <ul>
+   *   <li>Given {@link PricingServiceActivity} (default constructor).</li>
+   *   <li>When {@link DefaultProcessContextImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PricingServiceActivity#execute(ProcessContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testExecute_givenPricingServiceActivity_whenDefaultProcessContextImpl() throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.checkout.service.workflow.PricingServiceActivity.execute(PricingServiceActivity.java:35)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    PricingServiceActivity pricingServiceActivity = new PricingServiceActivity();
+
+    // Act
+    pricingServiceActivity.execute((ProcessContext<CheckoutSeed>) new DefaultProcessContextImpl<>());
+  }
+
   /**
    * Test new {@link PricingServiceActivity} (default constructor).
    * <p>

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.promotionMessage.util;
 
 import static org.junit.Assert.assertEquals;
@@ -38,6 +21,7 @@ import org.broadleafcommerce.core.promotionMessage.domain.PromotionMessage;
 import org.broadleafcommerce.core.promotionMessage.domain.PromotionMessageImpl;
 import org.broadleafcommerce.core.promotionMessage.domain.type.PromotionMessagePlacementType;
 import org.broadleafcommerce.core.promotionMessage.dto.PromotionMessageDTO;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BLCPromotionMessageUtilsDiffblueTest {
@@ -279,6 +263,66 @@ public class BLCPromotionMessageUtilsDiffblueTest {
     verify(promotionMessage).getMessage();
     verify(promotionMessage).getMessagePlacement();
     verify(promotionMessage).getPriority();
+  }
+
+  /**
+   * Test {@link BLCPromotionMessageUtils#sortMessagesByPriority(Map)} with
+   * {@code Map}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()} add {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BLCPromotionMessageUtils#sortMessagesByPriority(Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSortMessagesByPriorityWithMap_givenArrayListAddNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.promotionMessage.util.BLCPromotionMessageUtils$3.compare(BLCPromotionMessageUtils.java:93)
+    //       at org.broadleafcommerce.core.promotionMessage.util.BLCPromotionMessageUtils$3.compare(BLCPromotionMessageUtils.java:90)
+    //       at java.base/java.util.TimSort.countRunAndMakeAscending(TimSort.java:355)
+    //       at java.base/java.util.TimSort.sort(TimSort.java:220)
+    //       at java.base/java.util.Arrays.sort(Arrays.java:1515)
+    //       at java.base/java.util.ArrayList.sort(ArrayList.java:1750)
+    //       at java.base/java.util.Collections.sort(Collections.java:179)
+    //       at org.broadleafcommerce.core.promotionMessage.util.BLCPromotionMessageUtils.sortMessagesByPriority(BLCPromotionMessageUtils.java:90)
+    //       at org.broadleafcommerce.core.promotionMessage.util.BLCPromotionMessageUtils.sortMessagesByPriority(BLCPromotionMessageUtils.java:80)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    ArrayList<PromotionMessageDTO> promotionMessageDTOList = new ArrayList<>();
+    promotionMessageDTOList.add(null);
+    promotionMessageDTOList.add(new PromotionMessageDTO(new PromotionMessageImpl()));
+
+    HashMap<String, List<PromotionMessageDTO>> promotionMessages = new HashMap<>();
+    promotionMessages.put("foo", promotionMessageDTOList);
+
+    // Act
+    BLCPromotionMessageUtils.sortMessagesByPriority(promotionMessages);
+  }
+
+  /**
+   * Test {@link BLCPromotionMessageUtils#sortMessagesByPriority(Map)} with
+   * {@code Map}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BLCPromotionMessageUtils#sortMessagesByPriority(Map)}
+   */
+  @Test
+  public void testSortMessagesByPriorityWithMap_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    BLCPromotionMessageUtils.sortMessagesByPriority(new HashMap<>());
   }
 
   /**

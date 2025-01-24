@@ -1,35 +1,15 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.search.service.solr;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -37,19 +17,15 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.embedded.SSLConfig;
-import org.apache.solr.client.solrj.impl.Http2SolrClient;
 import org.apache.solr.client.solrj.impl.LBHttp2SolrClient;
 import org.apache.solr.client.solrj.response.GroupCommand;
 import org.apache.solr.client.solrj.response.GroupResponse;
 import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrDocument;
-import org.apache.solr.common.SolrInputDocument;
-import org.broadleafcommerce.common.exception.ServiceException;
+import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.Indexable;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
@@ -57,80 +33,129 @@ import org.broadleafcommerce.core.search.domain.Field;
 import org.broadleafcommerce.core.search.domain.FieldImpl;
 import org.broadleafcommerce.core.search.domain.IndexField;
 import org.broadleafcommerce.core.search.domain.IndexFieldImpl;
-import org.broadleafcommerce.core.search.domain.RequiredFacet;
-import org.broadleafcommerce.core.search.domain.RequiredFacetImpl;
 import org.broadleafcommerce.core.search.domain.SearchCriteria;
-import org.broadleafcommerce.core.search.domain.SearchFacet;
 import org.broadleafcommerce.core.search.domain.SearchFacetDTO;
-import org.broadleafcommerce.core.search.domain.SearchFacetImpl;
 import org.broadleafcommerce.core.search.domain.SearchFacetRange;
 import org.broadleafcommerce.core.search.domain.SearchFacetRangeImpl;
+import org.broadleafcommerce.core.search.domain.solr.FieldType;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mvel2.util.InternalNumber;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SolrHelperServiceImplDiffblueTest {
+  @Autowired
+  private SolrHelperServiceImpl solrHelperServiceImpl;
+
   /**
-   * Test {@link SolrHelperServiceImpl#swapActiveCores(SolrConfiguration)}.
-   * <ul>
-   *   <li>Given {@link UpdateResponse} (default constructor).</li>
-   *   <li>Then calls {@link SolrClient#add(String, Collection)}.</li>
-   * </ul>
+   * Test
+   * {@link SolrHelperServiceImpl#getPropertyNameForIndexField(IndexField, FieldType, String)}
+   * with {@code field}, {@code fieldType}, {@code prefix}.
    * <p>
    * Method under test:
-   * {@link SolrHelperServiceImpl#swapActiveCores(SolrConfiguration)}
+   * {@link SolrHelperServiceImpl#getPropertyNameForIndexField(IndexField, FieldType, String)}
    */
   @Test
-  public void testSwapActiveCores_givenUpdateResponse_thenCallsAdd()
-      throws IOException, IllegalStateException, SolrServerException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertyNameForIndexFieldWithFieldFieldTypePrefix() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20903 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    LBHttp2SolrClient reindexServer = mock(LBHttp2SolrClient.class);
-    when(reindexServer.add(Mockito.<String>any(), Mockito.<Collection<SolrInputDocument>>any()))
-        .thenReturn(new UpdateResponse());
-    reindexServer.add("Collection", new ArrayList<>());
-    LBHttp2SolrClient solrServer = mock(LBHttp2SolrClient.class);
-    Http2SolrClient.Builder connectionTimeoutResult = (new Http2SolrClient.Builder()).connectionTimeout(1);
-    Http2SolrClient.Builder connectionTimeoutResult2 = (new Http2SolrClient.Builder()).connectionTimeout(1);
-    Http2SolrClient.Builder connectionTimeoutResult3 = (new Http2SolrClient.Builder()).connectionTimeout(1);
-    Http2SolrClient.Builder connectionTimeoutResult4 = (new Http2SolrClient.Builder()).connectionTimeout(1);
-    Http2SolrClient httpClient = (new Http2SolrClient.Builder()).build();
-    Http2SolrClient httpClient2 = connectionTimeoutResult4.withHttpClient(httpClient)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3)
-        .withSSLConfig(null)
-        .useHttp1_1(true)
-        .build();
-    Http2SolrClient.Builder maxConnectionsPerHostResult = connectionTimeoutResult3.withHttpClient(httpClient2)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient3 = maxConnectionsPerHostResult
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Http2SolrClient.Builder maxConnectionsPerHostResult2 = connectionTimeoutResult2.withHttpClient(httpClient3)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient4 = maxConnectionsPerHostResult2
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
-    Http2SolrClient.Builder maxConnectionsPerHostResult3 = connectionTimeoutResult.withHttpClient(httpClient4)
-        .idleTimeout(1)
-        .maxConnectionsPerHost(3);
-    Http2SolrClient httpClient5 = maxConnectionsPerHostResult3
-        .withSSLConfig(new SSLConfig(true, true, "Key Store", "iloveyou", "Trust Store", "iloveyou"))
-        .useHttp1_1(true)
-        .build();
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
 
     // Act
-    solrHelperServiceImpl.swapActiveCores(new SolrConfiguration(solrServer, reindexServer,
-        new LBHttp2SolrClient(httpClient5, "https://example.org/example")));
+    solrHelperServiceImpl2.getPropertyNameForIndexField(new IndexFieldImpl(), FieldType.BOOLEAN, "Prefix");
+  }
 
-    // Assert that nothing has changed
-    verify(reindexServer).add(eq("Collection"), isA(Collection.class));
+  /**
+   * Test
+   * {@link SolrHelperServiceImpl#getPropertyNameForIndexField(IndexField, FieldType)}
+   * with {@code field}, {@code searchableFieldType}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#getPropertyNameForIndexField(IndexField, FieldType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertyNameForIndexFieldWithFieldSearchableFieldType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20874 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.getPropertyNameForIndexField(new IndexFieldImpl(), FieldType.BOOLEAN);
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#convertPrefixListToString(List)}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#convertPrefixListToString(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConvertPrefixListToString() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20587 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.convertPrefixListToString(new ArrayList<>());
   }
 
   /**
@@ -253,6 +278,100 @@ public class SolrHelperServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link SolrHelperServiceImpl#getCategoryId(Category)} with
+   * {@code Category}.
+   * <p>
+   * Method under test: {@link SolrHelperServiceImpl#getCategoryId(Category)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCategoryIdWithCategory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20657 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.getCategoryId(new CategoryImpl());
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getCategoryId(Long)} with {@code Long}.
+   * <p>
+   * Method under test: {@link SolrHelperServiceImpl#getCategoryId(Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCategoryIdWithLong() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20652 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SolrHelperServiceImpl()).getCategoryId(1L);
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getIndexableId(Indexable)}.
+   * <p>
+   * Method under test: {@link SolrHelperServiceImpl#getIndexableId(Indexable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetIndexableId() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20794 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.getIndexableId(new ProductBundleImpl());
+  }
+
+  /**
    * Test {@link SolrHelperServiceImpl#getPrimaryDocumentType()}.
    * <p>
    * Method under test: {@link SolrHelperServiceImpl#getPrimaryDocumentType()}
@@ -263,6 +382,68 @@ public class SolrHelperServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertEquals("PRODUCT", (new SolrHelperServiceImpl()).getPrimaryDocumentType());
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getPrimaryDocumentType()}.
+   * <p>
+   * Method under test: {@link SolrHelperServiceImpl#getPrimaryDocumentType()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPrimaryDocumentType2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20843 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SolrHelperServiceImpl()).getPrimaryDocumentType();
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getCurrentProductId(Indexable)}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#getCurrentProductId(Indexable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCurrentProductId() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20732 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.getCurrentProductId(new ProductBundleImpl());
   }
 
   /**
@@ -284,6 +465,39 @@ public class SolrHelperServiceImplDiffblueTest {
 
     // Act and Assert
     assertNull(solrHelperServiceImpl.getCurrentProductId(new ProductBundleImpl()));
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getProductForIndexable(Indexable)}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#getProductForIndexable(Indexable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetProductForIndexable() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20844 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.getProductForIndexable(new ProductBundleImpl());
   }
 
   /**
@@ -330,16 +544,35 @@ public class SolrHelperServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrHelperServiceImpl#getTypeFieldName()}.
+   * Test {@link SolrHelperServiceImpl#getDocumentType(Indexable)}.
    * <p>
-   * Method under test: {@link SolrHelperServiceImpl#getTypeFieldName()}
+   * Method under test: {@link SolrHelperServiceImpl#getDocumentType(Indexable)}
    */
   @Test
-  public void testGetTypeFieldName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testGetDocumentType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20764 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
-    // Arrange, Act and Assert
-    assertEquals("type_s", (new SolrHelperServiceImpl()).getTypeFieldName());
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.getDocumentType(new ProductBundleImpl());
   }
 
   /**
@@ -412,6 +645,193 @@ public class SolrHelperServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link SolrHelperServiceImpl#getCategorySortFieldName(Category)} with
+   * {@code category}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#getCategorySortFieldName(Category)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCategorySortFieldNameWithCategory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20702 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.getCategorySortFieldName(new CategoryImpl());
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getCategorySortFieldName(Long)} with
+   * {@code categoryId}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#getCategorySortFieldName(Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCategorySortFieldNameWithCategoryId() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20687 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SolrHelperServiceImpl()).getCategorySortFieldName(1L);
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getLocalePrefix()}.
+   * <p>
+   * Method under test: {@link SolrHelperServiceImpl#getLocalePrefix()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetLocalePrefix() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20824 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SolrHelperServiceImpl()).getLocalePrefix();
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getDefaultLocalePrefix()}.
+   * <p>
+   * Method under test: {@link SolrHelperServiceImpl#getDefaultLocalePrefix()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDefaultLocalePrefix() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20763 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SolrHelperServiceImpl()).getDefaultLocalePrefix();
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getDefaultLocale()}.
+   * <p>
+   * Method under test: {@link SolrHelperServiceImpl#getDefaultLocale()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDefaultLocale() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20762 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SolrHelperServiceImpl()).getDefaultLocale();
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getPropertyValue(Object, Field)} with
+   * {@code object}, {@code field}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#getPropertyValue(Object, Field)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertyValueWithObjectField()
+      throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20963 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.getPropertyValue("Object", new FieldImpl());
+  }
+
+  /**
    * Test {@link SolrHelperServiceImpl#getPropertyValue(Object, Field)} with
    * {@code object}, {@code field}.
    * <ul>
@@ -468,6 +888,38 @@ public class SolrHelperServiceImplDiffblueTest {
     // Assert
     verify(field).getPropertyName();
     assertNull(actualPropertyValue);
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getPropertyValue(Object, String)} with
+   * {@code object}, {@code propertyName}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#getPropertyValue(Object, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertyValueWithObjectPropertyName()
+      throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20933 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SolrHelperServiceImpl()).getPropertyValue("Object", "Property Name");
   }
 
   /**
@@ -531,3039 +983,65 @@ public class SolrHelperServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\||", (new SolrHelperServiceImpl()).scrubFacetValue("\\||"));
-    assertEquals("\\\\\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("\\\\?"));
-    assertEquals("\\+\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("+\\?"));
-    assertEquals("\\-\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("-\\?"));
-    assertEquals("\\&&\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("&&&&"));
-    assertEquals("\\&&\\||", (new SolrHelperServiceImpl()).scrubFacetValue("&&||"));
-    assertEquals("\\&&\\!", (new SolrHelperServiceImpl()).scrubFacetValue("&&!"));
-    assertEquals("\\&&\\(", (new SolrHelperServiceImpl()).scrubFacetValue("&&("));
-    assertEquals("\\&&\\)", (new SolrHelperServiceImpl()).scrubFacetValue("&&)"));
-    assertEquals("\\&&\\{", (new SolrHelperServiceImpl()).scrubFacetValue("&&{"));
-    assertEquals("\\&&\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("&&\\?"));
-    assertEquals("\\&&\\}", (new SolrHelperServiceImpl()).scrubFacetValue("&&}"));
-    assertEquals("\\&&\\]", (new SolrHelperServiceImpl()).scrubFacetValue("&&]"));
-    assertEquals("\\&&\\[", (new SolrHelperServiceImpl()).scrubFacetValue("&&["));
-    assertEquals("\\||\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("||\\"));
-    assertEquals("\\||\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("||&&"));
-    assertEquals("\\||\\||", (new SolrHelperServiceImpl()).scrubFacetValue("||||"));
-    assertEquals("\\||\\!", (new SolrHelperServiceImpl()).scrubFacetValue("||!"));
-    assertEquals("\\||\\(", (new SolrHelperServiceImpl()).scrubFacetValue("||("));
-    assertEquals("\\||\\)", (new SolrHelperServiceImpl()).scrubFacetValue("||)"));
-    assertEquals("\\||\\{", (new SolrHelperServiceImpl()).scrubFacetValue("||{"));
-    assertEquals("\\||\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("||\\?"));
-    assertEquals("\\||\\}", (new SolrHelperServiceImpl()).scrubFacetValue("||}"));
-    assertEquals("\\||\\]", (new SolrHelperServiceImpl()).scrubFacetValue("||]"));
-    assertEquals("\\||\\[", (new SolrHelperServiceImpl()).scrubFacetValue("||["));
-    assertEquals("\\!\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("!&&"));
-    assertEquals("\\!\\||", (new SolrHelperServiceImpl()).scrubFacetValue("!||"));
-    assertEquals("\\!\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("!\\?"));
-    assertEquals("\\!\\]", (new SolrHelperServiceImpl()).scrubFacetValue("!]"));
-    assertEquals("\\(\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("(&&"));
-    assertEquals("\\(\\||", (new SolrHelperServiceImpl()).scrubFacetValue("(||"));
-    assertEquals("\\(\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("(\\?"));
-    assertEquals("\\(\\]", (new SolrHelperServiceImpl()).scrubFacetValue("(]"));
-    assertEquals("\\*\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("*\\?"));
-    assertEquals("\\)\\&&", (new SolrHelperServiceImpl()).scrubFacetValue(")&&"));
-    assertEquals("\\)\\||", (new SolrHelperServiceImpl()).scrubFacetValue(")||"));
-    assertEquals("\\)\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue(")\\?"));
-    assertEquals("\\)\\}", (new SolrHelperServiceImpl()).scrubFacetValue(")}"));
-    assertEquals("\\)\\]", (new SolrHelperServiceImpl()).scrubFacetValue(")]"));
-    assertEquals("\\)\\[", (new SolrHelperServiceImpl()).scrubFacetValue(")["));
-    assertEquals("\\:\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue(":\\?"));
-    assertEquals("\\{\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("{&&"));
-    assertEquals("\\{\\||", (new SolrHelperServiceImpl()).scrubFacetValue("{||"));
-    assertEquals("\\{\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("{\\?"));
-    assertEquals("\\{\\}", (new SolrHelperServiceImpl()).scrubFacetValue("{}"));
-    assertEquals("\\{\\]", (new SolrHelperServiceImpl()).scrubFacetValue("{]"));
-    assertEquals("\\{\\[", (new SolrHelperServiceImpl()).scrubFacetValue("{["));
-    assertEquals("\\\\\\?\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("\\?\\"));
-    assertEquals("\\\\\\?\\+", (new SolrHelperServiceImpl()).scrubFacetValue("\\?+"));
-    assertEquals("\\\\\\?\\-", (new SolrHelperServiceImpl()).scrubFacetValue("\\?-"));
-    assertEquals("\\\\\\?\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("\\?&&"));
-    assertEquals("\\\\\\?\\||", (new SolrHelperServiceImpl()).scrubFacetValue("\\?||"));
-    assertEquals("\\\\\\?\\!", (new SolrHelperServiceImpl()).scrubFacetValue("\\?!"));
-    assertEquals("\\\\\\?\\(", (new SolrHelperServiceImpl()).scrubFacetValue("\\?("));
-    assertEquals("\\\\\\?\\*", (new SolrHelperServiceImpl()).scrubFacetValue("\\?*"));
-    assertEquals("\\\\\\?\\)", (new SolrHelperServiceImpl()).scrubFacetValue("\\?)"));
-    assertEquals("\\\\\\?\\:", (new SolrHelperServiceImpl()).scrubFacetValue("\\?:"));
-    assertEquals("\\\\\\?\\{", (new SolrHelperServiceImpl()).scrubFacetValue("\\?{"));
-    assertEquals("\\\\\\?\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("\\?\\?"));
-    assertEquals("\\\\\\?\\}", (new SolrHelperServiceImpl()).scrubFacetValue("\\?}"));
-    assertEquals("\\\\\\?\\]", (new SolrHelperServiceImpl()).scrubFacetValue("\\?]"));
-    assertEquals("\\\\\\?\\[", (new SolrHelperServiceImpl()).scrubFacetValue("\\?["));
-    assertEquals("\\}\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("}&&"));
-    assertEquals("\\}\\||", (new SolrHelperServiceImpl()).scrubFacetValue("}||"));
-    assertEquals("\\}\\)", (new SolrHelperServiceImpl()).scrubFacetValue("})"));
-    assertEquals("\\}\\{", (new SolrHelperServiceImpl()).scrubFacetValue("}{"));
-    assertEquals("\\}\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("}\\?"));
-    assertEquals("\\}\\}", (new SolrHelperServiceImpl()).scrubFacetValue("}}"));
-    assertEquals("\\}\\]", (new SolrHelperServiceImpl()).scrubFacetValue("}]"));
-    assertEquals("\\}\\[", (new SolrHelperServiceImpl()).scrubFacetValue("}["));
-    assertEquals("\\]\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("]&&"));
-    assertEquals("\\]\\||", (new SolrHelperServiceImpl()).scrubFacetValue("]||"));
-    assertEquals("\\]\\!", (new SolrHelperServiceImpl()).scrubFacetValue("]!"));
-    assertEquals("\\]\\(", (new SolrHelperServiceImpl()).scrubFacetValue("]("));
-    assertEquals("\\]\\)", (new SolrHelperServiceImpl()).scrubFacetValue("])"));
-    assertEquals("\\]\\{", (new SolrHelperServiceImpl()).scrubFacetValue("]{"));
-    assertEquals("\\]\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("]\\?"));
-    assertEquals("\\]\\}", (new SolrHelperServiceImpl()).scrubFacetValue("]}"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \&&\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAmpersandAmpersandBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\&&\\*", (new SolrHelperServiceImpl()).scrubFacetValue("&&*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \&&\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAmpersandAmpersandBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\&&\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("&&\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \&&\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAmpersandAmpersandBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\&&\\:", (new SolrHelperServiceImpl()).scrubFacetValue("&&:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \&&\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAmpersandAmpersandBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\&&\\-", (new SolrHelperServiceImpl()).scrubFacetValue("&&-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \&&\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAmpersandAmpersandBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\&&\\+", (new SolrHelperServiceImpl()).scrubFacetValue("&&+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\&&}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashAmpersandAmpersand() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("*&&"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\*", (new SolrHelperServiceImpl()).scrubFacetValue("**"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("*\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\!", (new SolrHelperServiceImpl()).scrubFacetValue("*!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\{}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashLeftCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\{", (new SolrHelperServiceImpl()).scrubFacetValue("*{"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\(", (new SolrHelperServiceImpl()).scrubFacetValue("*("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\[}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashLeftSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\[", (new SolrHelperServiceImpl()).scrubFacetValue("*["));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\+", (new SolrHelperServiceImpl()).scrubFacetValue("*+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\}}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashRightCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\}", (new SolrHelperServiceImpl()).scrubFacetValue("*}"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\)", (new SolrHelperServiceImpl()).scrubFacetValue("*)"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\]}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashRightSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\]", (new SolrHelperServiceImpl()).scrubFacetValue("*]"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \*\||}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashAsteriskBackslashVerticalLineVerticalLine() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\||", (new SolrHelperServiceImpl()).scrubFacetValue("*||"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\&&}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashAmpersandAmpersand() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("\\&&"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\*", (new SolrHelperServiceImpl()).scrubFacetValue("\\*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("\\\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\:", (new SolrHelperServiceImpl()).scrubFacetValue("\\:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\!", (new SolrHelperServiceImpl()).scrubFacetValue("\\!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\{}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashLeftCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\{", (new SolrHelperServiceImpl()).scrubFacetValue("\\{"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\(", (new SolrHelperServiceImpl()).scrubFacetValue("\\("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\[}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashLeftSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\[", (new SolrHelperServiceImpl()).scrubFacetValue("\\["));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\+", (new SolrHelperServiceImpl()).scrubFacetValue("\\+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\?}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashQuestionMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("\\?"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\}}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashRightCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\}", (new SolrHelperServiceImpl()).scrubFacetValue("\\}"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\)", (new SolrHelperServiceImpl()).scrubFacetValue("\\)"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\\]}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashBackslashBackslashRightSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\]", (new SolrHelperServiceImpl()).scrubFacetValue("\\]"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \:\&&}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashColonBackslashAmpersandAmpersand() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\&&", (new SolrHelperServiceImpl()).scrubFacetValue(":&&"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \:\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashColonBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\\\", (new SolrHelperServiceImpl()).scrubFacetValue(":\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \:\!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashColonBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\!", (new SolrHelperServiceImpl()).scrubFacetValue(":!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \:\{}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashColonBackslashLeftCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\{", (new SolrHelperServiceImpl()).scrubFacetValue(":{"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \:\(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashColonBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\(", (new SolrHelperServiceImpl()).scrubFacetValue(":("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \:\[}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashColonBackslashLeftSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\[", (new SolrHelperServiceImpl()).scrubFacetValue(":["));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \:\}}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashColonBackslashRightCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\}", (new SolrHelperServiceImpl()).scrubFacetValue(":}"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \:\)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashColonBackslashRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\)", (new SolrHelperServiceImpl()).scrubFacetValue(":)"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \:\]}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashColonBackslashRightSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\]", (new SolrHelperServiceImpl()).scrubFacetValue(":]"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \:\||}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashColonBackslashVerticalLineVerticalLine() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\||", (new SolrHelperServiceImpl()).scrubFacetValue(":||"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \-\&&}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashDashBackslashAmpersandAmpersand() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("-&&"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \-\!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashDashBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\!", (new SolrHelperServiceImpl()).scrubFacetValue("-!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \-\{}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashDashBackslashLeftCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\{", (new SolrHelperServiceImpl()).scrubFacetValue("-{"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \-\(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashDashBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\(", (new SolrHelperServiceImpl()).scrubFacetValue("-("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \-\[}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashDashBackslashLeftSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\[", (new SolrHelperServiceImpl()).scrubFacetValue("-["));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \-\}}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashDashBackslashRightCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\}", (new SolrHelperServiceImpl()).scrubFacetValue("-}"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \-\)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashDashBackslashRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\)", (new SolrHelperServiceImpl()).scrubFacetValue("-)"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \-\]}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashDashBackslashRightSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\]", (new SolrHelperServiceImpl()).scrubFacetValue("-]"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \-\||}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashDashBackslashVerticalLineVerticalLine() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\||", (new SolrHelperServiceImpl()).scrubFacetValue("-||"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\*", (new SolrHelperServiceImpl()).scrubFacetValue("!*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("!\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\:", (new SolrHelperServiceImpl()).scrubFacetValue("!:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\-", (new SolrHelperServiceImpl()).scrubFacetValue("!-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\!", (new SolrHelperServiceImpl()).scrubFacetValue("!!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\{}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashLeftCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\{", (new SolrHelperServiceImpl()).scrubFacetValue("!{"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\(", (new SolrHelperServiceImpl()).scrubFacetValue("!("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\[}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashLeftSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\[", (new SolrHelperServiceImpl()).scrubFacetValue("!["));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\+", (new SolrHelperServiceImpl()).scrubFacetValue("!+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\}}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashRightCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\}", (new SolrHelperServiceImpl()).scrubFacetValue("!}"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \!\)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashExclamationMarkBackslashRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!\\)", (new SolrHelperServiceImpl()).scrubFacetValue("!)"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \{\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftCurlyBracketBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\{\\*", (new SolrHelperServiceImpl()).scrubFacetValue("{*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \{\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftCurlyBracketBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\{\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("{\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \{\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftCurlyBracketBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\{\\:", (new SolrHelperServiceImpl()).scrubFacetValue("{:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \{\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftCurlyBracketBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\{\\-", (new SolrHelperServiceImpl()).scrubFacetValue("{-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \{\!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftCurlyBracketBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\{\\!", (new SolrHelperServiceImpl()).scrubFacetValue("{!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \{\{}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftCurlyBracketBackslashLeftCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\{\\{", (new SolrHelperServiceImpl()).scrubFacetValue("{{"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \{\(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftCurlyBracketBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\{\\(", (new SolrHelperServiceImpl()).scrubFacetValue("{("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \{\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftCurlyBracketBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\{\\+", (new SolrHelperServiceImpl()).scrubFacetValue("{+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \{\)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftCurlyBracketBackslashRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\{\\)", (new SolrHelperServiceImpl()).scrubFacetValue("{)"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\*", (new SolrHelperServiceImpl()).scrubFacetValue("(*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("(\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\:", (new SolrHelperServiceImpl()).scrubFacetValue("(:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\-", (new SolrHelperServiceImpl()).scrubFacetValue("(-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\!", (new SolrHelperServiceImpl()).scrubFacetValue("(!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\{}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashLeftCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\{", (new SolrHelperServiceImpl()).scrubFacetValue("({"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\(", (new SolrHelperServiceImpl()).scrubFacetValue("(("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\[}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashLeftSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\[", (new SolrHelperServiceImpl()).scrubFacetValue("(["));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\+", (new SolrHelperServiceImpl()).scrubFacetValue("(+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\}}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashRightCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\}", (new SolrHelperServiceImpl()).scrubFacetValue("(}"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \(\)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashLeftParenthesisBackslashRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(\\)", (new SolrHelperServiceImpl()).scrubFacetValue("()"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\&&}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashAmpersandAmpersand() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("+&&"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\*", (new SolrHelperServiceImpl()).scrubFacetValue("+*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("+\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\!", (new SolrHelperServiceImpl()).scrubFacetValue("+!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\{}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashLeftCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\{", (new SolrHelperServiceImpl()).scrubFacetValue("+{"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\(", (new SolrHelperServiceImpl()).scrubFacetValue("+("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\[}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashLeftSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\[", (new SolrHelperServiceImpl()).scrubFacetValue("+["));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\+", (new SolrHelperServiceImpl()).scrubFacetValue("++"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\}}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashRightCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\}", (new SolrHelperServiceImpl()).scrubFacetValue("+}"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\)", (new SolrHelperServiceImpl()).scrubFacetValue("+)"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\]}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashRightSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\]", (new SolrHelperServiceImpl()).scrubFacetValue("+]"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \+\||}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashPlusSignBackslashVerticalLineVerticalLine() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\||", (new SolrHelperServiceImpl()).scrubFacetValue("+||"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \}\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightCurlyBracketBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\}\\*", (new SolrHelperServiceImpl()).scrubFacetValue("}*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \}\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightCurlyBracketBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\}\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("}\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \}\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightCurlyBracketBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\}\\:", (new SolrHelperServiceImpl()).scrubFacetValue("}:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \}\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightCurlyBracketBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\}\\-", (new SolrHelperServiceImpl()).scrubFacetValue("}-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \}\!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightCurlyBracketBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\}\\!", (new SolrHelperServiceImpl()).scrubFacetValue("}!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \}\(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightCurlyBracketBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\}\\(", (new SolrHelperServiceImpl()).scrubFacetValue("}("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \}\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightCurlyBracketBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\}\\+", (new SolrHelperServiceImpl()).scrubFacetValue("}+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \)\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightParenthesisBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\)\\*", (new SolrHelperServiceImpl()).scrubFacetValue(")*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \)\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightParenthesisBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\)\\\\", (new SolrHelperServiceImpl()).scrubFacetValue(")\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \)\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightParenthesisBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\)\\:", (new SolrHelperServiceImpl()).scrubFacetValue("):"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \)\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightParenthesisBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\)\\-", (new SolrHelperServiceImpl()).scrubFacetValue(")-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \)\!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightParenthesisBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\)\\!", (new SolrHelperServiceImpl()).scrubFacetValue(")!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \)\{}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightParenthesisBackslashLeftCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\)\\{", (new SolrHelperServiceImpl()).scrubFacetValue("){"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \)\(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightParenthesisBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\)\\(", (new SolrHelperServiceImpl()).scrubFacetValue(")("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \)\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightParenthesisBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\)\\+", (new SolrHelperServiceImpl()).scrubFacetValue(")+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \)\)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightParenthesisBackslashRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\)\\)", (new SolrHelperServiceImpl()).scrubFacetValue("))"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \]\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightSquareBracketBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\]\\*", (new SolrHelperServiceImpl()).scrubFacetValue("]*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \]\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightSquareBracketBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\]\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("]\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \]\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightSquareBracketBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\]\\:", (new SolrHelperServiceImpl()).scrubFacetValue("]:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \]\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightSquareBracketBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\]\\-", (new SolrHelperServiceImpl()).scrubFacetValue("]-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \]\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashRightSquareBracketBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\]\\+", (new SolrHelperServiceImpl()).scrubFacetValue("]+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \||}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashVerticalLineVerticalLine() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\||", (new SolrHelperServiceImpl()).scrubFacetValue("||"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \||\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashVerticalLineVerticalLineBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\||\\*", (new SolrHelperServiceImpl()).scrubFacetValue("||*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \||\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashVerticalLineVerticalLineBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\||\\:", (new SolrHelperServiceImpl()).scrubFacetValue("||:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \||\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashVerticalLineVerticalLineBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\||\\-", (new SolrHelperServiceImpl()).scrubFacetValue("||-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \||\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnBackslashVerticalLineVerticalLineBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\||\\+", (new SolrHelperServiceImpl()).scrubFacetValue("||+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>Then return {@code \\exploitProtection.xssEnabled}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_thenReturnExploitProtectionXssEnabled() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("\\exploitProtection.xssEnabled"));
-    assertEquals("\\+exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("+exploitProtection.xssEnabled"));
-    assertEquals("\\-exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("-exploitProtection.xssEnabled"));
-    assertEquals("\\&&exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("&&exploitProtection.xssEnabled"));
-    assertEquals("\\||exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("||exploitProtection.xssEnabled"));
-    assertEquals("\\!exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("!exploitProtection.xssEnabled"));
-    assertEquals("\\(exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("(exploitProtection.xssEnabled"));
-    assertEquals("\\*exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("*exploitProtection.xssEnabled"));
-    assertEquals("\\)exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue(")exploitProtection.xssEnabled"));
-    assertEquals("\\:exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue(":exploitProtection.xssEnabled"));
-    assertEquals("\\{exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("{exploitProtection.xssEnabled"));
-    assertEquals("\\\\\\?exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("\\?exploitProtection.xssEnabled"));
-    assertEquals("\\}exploitProtection.xssEnabled",
-        (new SolrHelperServiceImpl()).scrubFacetValue("}exploitProtection.xssEnabled"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code 42}.</li>
-   *   <li>Then return {@code 42}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_when42_thenReturn42() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("42", (new SolrHelperServiceImpl()).scrubFacetValue("42"));
-    assertEquals("42\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("42\\"));
-    assertEquals("42\\+", (new SolrHelperServiceImpl()).scrubFacetValue("42+"));
-    assertEquals("42\\-", (new SolrHelperServiceImpl()).scrubFacetValue("42-"));
-    assertEquals("42\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("42&&"));
-    assertEquals("42\\||", (new SolrHelperServiceImpl()).scrubFacetValue("42||"));
-    assertEquals("42\\!", (new SolrHelperServiceImpl()).scrubFacetValue("42!"));
-    assertEquals("42\\(", (new SolrHelperServiceImpl()).scrubFacetValue("42("));
-    assertEquals("42\\*", (new SolrHelperServiceImpl()).scrubFacetValue("42*"));
-    assertEquals("42\\)", (new SolrHelperServiceImpl()).scrubFacetValue("42)"));
-    assertEquals("42\\:", (new SolrHelperServiceImpl()).scrubFacetValue("42:"));
-    assertEquals("42\\{", (new SolrHelperServiceImpl()).scrubFacetValue("42{"));
-    assertEquals("42\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("42\\?"));
-    assertEquals("42\\}", (new SolrHelperServiceImpl()).scrubFacetValue("42}"));
-    assertEquals("42\\]", (new SolrHelperServiceImpl()).scrubFacetValue("42]"));
-    assertEquals("42\\[", (new SolrHelperServiceImpl()).scrubFacetValue("42["));
-    assertEquals("\\\\42", (new SolrHelperServiceImpl()).scrubFacetValue("\\42"));
-    assertEquals("\\+42", (new SolrHelperServiceImpl()).scrubFacetValue("+42"));
-    assertEquals("\\-42", (new SolrHelperServiceImpl()).scrubFacetValue("-42"));
-    assertEquals("\\&&42", (new SolrHelperServiceImpl()).scrubFacetValue("&&42"));
-    assertEquals("\\||42", (new SolrHelperServiceImpl()).scrubFacetValue("||42"));
-    assertEquals("\\!42", (new SolrHelperServiceImpl()).scrubFacetValue("!42"));
-    assertEquals("\\(42", (new SolrHelperServiceImpl()).scrubFacetValue("(42"));
-    assertEquals("\\*42", (new SolrHelperServiceImpl()).scrubFacetValue("*42"));
-    assertEquals("\\)42", (new SolrHelperServiceImpl()).scrubFacetValue(")42"));
-    assertEquals("\\:42", (new SolrHelperServiceImpl()).scrubFacetValue(":42"));
-    assertEquals("\\{42", (new SolrHelperServiceImpl()).scrubFacetValue("{42"));
-    assertEquals("\\\\\\?42", (new SolrHelperServiceImpl()).scrubFacetValue("\\?42"));
-    assertEquals("\\}42", (new SolrHelperServiceImpl()).scrubFacetValue("}42"));
-    assertEquals("\\]42", (new SolrHelperServiceImpl()).scrubFacetValue("]42"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code &&}.</li>
-   *   <li>Then return {@code \&&}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenAmpersandAmpersand_thenReturnBackslashAmpersandAmpersand() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("&&"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code *:}.</li>
-   *   <li>Then return {@code \*\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenAsteriskColon_thenReturnBackslashAsteriskBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\:", (new SolrHelperServiceImpl()).scrubFacetValue("*:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code *-}.</li>
-   *   <li>Then return {@code \*\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenAsteriskDash_thenReturnBackslashAsteriskBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*\\-", (new SolrHelperServiceImpl()).scrubFacetValue("*-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code *}.</li>
-   *   <li>Then return {@code \*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenAsterisk_thenReturnBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\*", (new SolrHelperServiceImpl()).scrubFacetValue("*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code \-}.</li>
-   *   <li>Then return {@code \\\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenBackslashDash_thenReturnBackslashBackslashBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\\\-", (new SolrHelperServiceImpl()).scrubFacetValue("\\-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code \}.</li>
-   *   <li>Then return {@code \\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenBackslash_thenReturnBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code :*}.</li>
-   *   <li>Then return {@code \:\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenColonAsterisk_thenReturnBackslashColonBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\*", (new SolrHelperServiceImpl()).scrubFacetValue(":*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code ::}.</li>
-   *   <li>Then return {@code \:\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenColonColon_thenReturnBackslashColonBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\:", (new SolrHelperServiceImpl()).scrubFacetValue("::"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code :-}.</li>
-   *   <li>Then return {@code \:\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenColonDash_thenReturnBackslashColonBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\-", (new SolrHelperServiceImpl()).scrubFacetValue(":-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code :+}.</li>
-   *   <li>Then return {@code \:\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenColonPlusSign_thenReturnBackslashColonBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:\\+", (new SolrHelperServiceImpl()).scrubFacetValue(":+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code :}.</li>
-   *   <li>Then return {@code \:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenColon_thenReturnBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\:", (new SolrHelperServiceImpl()).scrubFacetValue(":"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code -*}.</li>
-   *   <li>Then return {@code \-\*}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenDashAsterisk_thenReturnBackslashDashBackslashAsterisk() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\*", (new SolrHelperServiceImpl()).scrubFacetValue("-*"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code -\}.</li>
-   *   <li>Then return {@code \-\\}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenDashBackslash_thenReturnBackslashDashBackslashBackslash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("-\\"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code -:}.</li>
-   *   <li>Then return {@code \-\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenDashColon_thenReturnBackslashDashBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\:", (new SolrHelperServiceImpl()).scrubFacetValue("-:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code --}.</li>
-   *   <li>Then return {@code \-\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenDashDash_thenReturnBackslashDashBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\-", (new SolrHelperServiceImpl()).scrubFacetValue("--"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code -+}.</li>
-   *   <li>Then return {@code \-\+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenDashPlusSign_thenReturnBackslashDashBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-\\+", (new SolrHelperServiceImpl()).scrubFacetValue("-+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code -}.</li>
-   *   <li>Then return {@code \-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenDash_thenReturnBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\-", (new SolrHelperServiceImpl()).scrubFacetValue("-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code \desc}.</li>
-   *   <li>Then return {@code \\desc}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenDesc_thenReturnDesc() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\desc", (new SolrHelperServiceImpl()).scrubFacetValue("\\desc"));
-    assertEquals("\\+desc", (new SolrHelperServiceImpl()).scrubFacetValue("+desc"));
-    assertEquals("\\-desc", (new SolrHelperServiceImpl()).scrubFacetValue("-desc"));
-    assertEquals("\\&&desc", (new SolrHelperServiceImpl()).scrubFacetValue("&&desc"));
-    assertEquals("\\||desc", (new SolrHelperServiceImpl()).scrubFacetValue("||desc"));
-    assertEquals("\\!desc", (new SolrHelperServiceImpl()).scrubFacetValue("!desc"));
-    assertEquals("\\(desc", (new SolrHelperServiceImpl()).scrubFacetValue("(desc"));
-    assertEquals("\\*desc", (new SolrHelperServiceImpl()).scrubFacetValue("*desc"));
-    assertEquals("\\)desc", (new SolrHelperServiceImpl()).scrubFacetValue(")desc"));
-    assertEquals("\\:desc", (new SolrHelperServiceImpl()).scrubFacetValue(":desc"));
-    assertEquals("\\{desc", (new SolrHelperServiceImpl()).scrubFacetValue("{desc"));
-    assertEquals("\\\\\\?desc", (new SolrHelperServiceImpl()).scrubFacetValue("\\?desc"));
-    assertEquals("\\}desc", (new SolrHelperServiceImpl()).scrubFacetValue("}desc"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code !}.</li>
-   *   <li>Then return {@code \!}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenExclamationMark_thenReturnBackslashExclamationMark() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\!", (new SolrHelperServiceImpl()).scrubFacetValue("!"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code \Facet Value}.</li>
-   *   <li>Then return {@code \\Facet Value}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenFacetValue_thenReturnFacetValue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\\\Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("\\Facet Value"));
-    assertEquals("\\+Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("+Facet Value"));
-    assertEquals("\\-Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("-Facet Value"));
-    assertEquals("\\&&Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("&&Facet Value"));
-    assertEquals("\\||Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("||Facet Value"));
-    assertEquals("\\!Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("!Facet Value"));
-    assertEquals("Facet Value\\\\", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value\\"));
-    assertEquals("Facet Value\\+", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value+"));
-    assertEquals("Facet Value\\-", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value-"));
-    assertEquals("Facet Value\\&&", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value&&"));
-    assertEquals("Facet Value\\||", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value||"));
-    assertEquals("Facet Value\\!", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value!"));
-    assertEquals("Facet Value\\(", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value("));
-    assertEquals("Facet Value\\*", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value*"));
-    assertEquals("Facet Value\\)", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value)"));
-    assertEquals("Facet Value\\:", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value:"));
-    assertEquals("Facet Value\\{", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value{"));
-    assertEquals("Facet Value\\\\\\?", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value\\?"));
-    assertEquals("Facet Value\\}", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value}"));
-    assertEquals("Facet Value\\]", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value]"));
-    assertEquals("Facet Value\\[", (new SolrHelperServiceImpl()).scrubFacetValue("Facet Value["));
-    assertEquals("\\(Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("(Facet Value"));
-    assertEquals("\\*Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("*Facet Value"));
-    assertEquals("\\)Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue(")Facet Value"));
-    assertEquals("\\:Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue(":Facet Value"));
-    assertEquals("\\{Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("{Facet Value"));
-    assertEquals("\\\\\\?Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("\\?Facet Value"));
-    assertEquals("\\}Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("}Facet Value"));
-    assertEquals("\\]Facet Value", (new SolrHelperServiceImpl()).scrubFacetValue("]Facet Value"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code {}.</li>
-   *   <li>Then return {@code \{}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenLeftCurlyBracket_thenReturnBackslashLeftCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\{", (new SolrHelperServiceImpl()).scrubFacetValue("{"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code (}.</li>
-   *   <li>Then return {@code \(}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenLeftParenthesis_thenReturnBackslashLeftParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\(", (new SolrHelperServiceImpl()).scrubFacetValue("("));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code [}.</li>
-   *   <li>Then return {@code \[}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenLeftSquareBracket_thenReturnBackslashLeftSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\[", (new SolrHelperServiceImpl()).scrubFacetValue("["));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code +:}.</li>
-   *   <li>Then return {@code \+\:}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenPlusSignColon_thenReturnBackslashPlusSignBackslashColon() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\:", (new SolrHelperServiceImpl()).scrubFacetValue("+:"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code +-}.</li>
-   *   <li>Then return {@code \+\-}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenPlusSignDash_thenReturnBackslashPlusSignBackslashDash() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+\\-", (new SolrHelperServiceImpl()).scrubFacetValue("+-"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code +}.</li>
-   *   <li>Then return {@code \+}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenPlusSign_thenReturnBackslashPlusSign() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\+", (new SolrHelperServiceImpl()).scrubFacetValue("+"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code }}.</li>
-   *   <li>Then return {@code \}}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenRightCurlyBracket_thenReturnBackslashRightCurlyBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\}", (new SolrHelperServiceImpl()).scrubFacetValue("}"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code )}.</li>
-   *   <li>Then return {@code \)}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenRightParenthesis_thenReturnBackslashRightParenthesis() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\)", (new SolrHelperServiceImpl()).scrubFacetValue(")"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#scrubFacetValue(String)}.
-   * <ul>
-   *   <li>When {@code ]}.</li>
-   *   <li>Then return {@code \]}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#scrubFacetValue(String)}
-   */
-  @Test
-  public void testScrubFacetValue_whenRightSquareBracket_thenReturnBackslashRightSquareBracket() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("\\]", (new SolrHelperServiceImpl()).scrubFacetValue("]"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#sanitizeQuery(String)}.
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#sanitizeQuery(String)}
-   */
-  @Test
-  public void testSanitizeQuery() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("Query", (new SolrHelperServiceImpl()).sanitizeQuery("Query"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#isFacetAvailable(SearchFacet, Map)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#isFacetAvailable(SearchFacet, Map)}
-   */
-  @Test
-  public void testIsFacetAvailable_givenArrayList_whenHashMap_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+   * Test {@link SolrHelperServiceImpl#buildSearchFacetDTOs(List)}.
+   * <p>
+   * Method under test: {@link SolrHelperServiceImpl#buildSearchFacetDTOs(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildSearchFacetDTOs() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20522 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchFacetImpl facet = mock(SearchFacetImpl.class);
-    when(facet.getRequiredFacets()).thenReturn(new ArrayList<>());
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
 
     // Act
-    boolean actualIsFacetAvailableResult = solrHelperServiceImpl.isFacetAvailable(facet, new HashMap<>());
-
-    // Assert
-    verify(facet).getRequiredFacets();
-    assertTrue(actualIsFacetAvailableResult);
+    solrHelperServiceImpl2.buildSearchFacetDTOs(new ArrayList<>());
   }
 
   /**
-   * Test {@link SolrHelperServiceImpl#isFacetAvailable(SearchFacet, Map)}.
-   * <ul>
-   *   <li>Then calls {@link SearchFacetImpl#getField()}.</li>
-   * </ul>
+   * Test {@link SolrHelperServiceImpl#buildSolrFacetField(String, String)}.
    * <p>
    * Method under test:
-   * {@link SolrHelperServiceImpl#isFacetAvailable(SearchFacet, Map)}
+   * {@link SolrHelperServiceImpl#buildSolrFacetField(String, String)}
    */
   @Test
-  public void testIsFacetAvailable_thenCallsGetField() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testBuildSolrFacetField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20527 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchFacetImpl requiredFacet = mock(SearchFacetImpl.class);
-    when(requiredFacet.getField()).thenReturn(new FieldImpl());
-
-    RequiredFacetImpl requiredFacetImpl = new RequiredFacetImpl();
-    requiredFacetImpl.setRequiredFacet(requiredFacet);
-
-    ArrayList<RequiredFacet> requiredFacetList = new ArrayList<>();
-    requiredFacetList.add(requiredFacetImpl);
-    SearchFacetImpl facet = mock(SearchFacetImpl.class);
-    when(facet.getRequiresAllDependentFacets()).thenReturn(true);
-    when(facet.getRequiredFacets()).thenReturn(requiredFacetList);
-
-    HashMap<String, String[]> params = new HashMap<>();
-    params.put("42", new String[]{"foo"});
-
-    // Act
-    boolean actualIsFacetAvailableResult = solrHelperServiceImpl.isFacetAvailable(facet, params);
-
-    // Assert
-    verify(requiredFacet).getField();
-    verify(facet, atLeast(1)).getRequiredFacets();
-    verify(facet).getRequiresAllDependentFacets();
-    assertFalse(actualIsFacetAvailableResult);
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#isFacetAvailable(SearchFacet, Map)}.
-   * <ul>
-   *   <li>When {@link HashMap#HashMap()}.</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#isFacetAvailable(SearchFacet, Map)}
-   */
-  @Test
-  public void testIsFacetAvailable_whenHashMap_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-
-    ArrayList<RequiredFacet> requiredFacetList = new ArrayList<>();
-    requiredFacetList.add(new RequiredFacetImpl());
-    SearchFacetImpl facet = mock(SearchFacetImpl.class);
-    when(facet.getRequiredFacets()).thenReturn(requiredFacetList);
-
-    // Act
-    boolean actualIsFacetAvailableResult = solrHelperServiceImpl.isFacetAvailable(facet, new HashMap<>());
-
-    // Assert
-    verify(facet).getRequiredFacets();
-    assertFalse(actualIsFacetAvailableResult);
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#isFacetAvailable(SearchFacet, Map)}.
-   * <ul>
-   *   <li>When {@link SearchFacetImpl} (default constructor).</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#isFacetAvailable(SearchFacet, Map)}
-   */
-  @Test
-  public void testIsFacetAvailable_whenSearchFacetImpl_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchFacetImpl facet = new SearchFacetImpl();
-
-    // Act and Assert
-    assertTrue(solrHelperServiceImpl.isFacetAvailable(facet, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrRangeString(String, BigDecimal, BigDecimal)}.
-   * <ul>
-   *   <li>Given {@code 2.3}.</li>
-   *   <li>Then calls {@link BigDecimal#toPlainString()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrRangeString(String, BigDecimal, BigDecimal)}
-   */
-  @Test
-  public void testGetSolrRangeString_given23_thenCallsToPlainString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    InternalNumber minValue = mock(InternalNumber.class);
-    when(minValue.toPlainString()).thenReturn("2.3");
-
-    // Act
-    String actualSolrRangeString = solrHelperServiceImpl.getSolrRangeString("Field Name", minValue,
-        new BigDecimal("2.3"));
-
-    // Assert
-    verify(minValue).toPlainString();
-    assertEquals("Field Name:[2.3 TO 2.3]", actualSolrRangeString);
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrRangeString(String, BigDecimal, BigDecimal)}.
-   * <ul>
-   *   <li>When {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   *   <li>Then return {@code Field Name:[2.3 TO 2.3]}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrRangeString(String, BigDecimal, BigDecimal)}
-   */
-  @Test
-  public void testGetSolrRangeString_whenBigDecimalWith23_thenReturnFieldName23To23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    BigDecimal minValue = new BigDecimal("2.3");
-
-    // Act and Assert
-    assertEquals("Field Name:[2.3 TO 2.3]",
-        solrHelperServiceImpl.getSolrRangeString("Field Name", minValue, new BigDecimal("2.3")));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrRangeString(String, BigDecimal, BigDecimal)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code Field Name:[* TO *]}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrRangeString(String, BigDecimal, BigDecimal)}
-   */
-  @Test
-  public void testGetSolrRangeString_whenNull_thenReturnFieldNameTo() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("Field Name:[* TO *]", (new SolrHelperServiceImpl()).getSolrRangeString("Field Name", null, null));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrRangeFunctionString(BigDecimal, BigDecimal)}.
-   * <ul>
-   *   <li>Given {@code 2.3}.</li>
-   *   <li>Then calls {@link BigDecimal#toPlainString()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrRangeFunctionString(BigDecimal, BigDecimal)}
-   */
-  @Test
-  public void testGetSolrRangeFunctionString_given23_thenCallsToPlainString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    InternalNumber minValue = mock(InternalNumber.class);
-    when(minValue.toPlainString()).thenReturn("2.3");
-
-    // Act
-    String actualSolrRangeFunctionString = solrHelperServiceImpl.getSolrRangeFunctionString(minValue,
-        new BigDecimal("2.3"));
-
-    // Assert
-    verify(minValue).toPlainString();
-    assertEquals("frange incl=false l=2.3 u=2.3", actualSolrRangeFunctionString);
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrRangeFunctionString(BigDecimal, BigDecimal)}.
-   * <ul>
-   *   <li>Then return {@code frange incl=false l=2.3 u=2.3}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrRangeFunctionString(BigDecimal, BigDecimal)}
-   */
-  @Test
-  public void testGetSolrRangeFunctionString_thenReturnFrangeInclFalseL23U23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    BigDecimal minValue = new BigDecimal("2.3");
-
-    // Act and Assert
-    assertEquals("frange incl=false l=2.3 u=2.3",
-        solrHelperServiceImpl.getSolrRangeFunctionString(minValue, new BigDecimal("2.3")));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrRangeFunctionString(BigDecimal, BigDecimal)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code frange incl=false l=2.3}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrRangeFunctionString(BigDecimal, BigDecimal)}
-   */
-  @Test
-  public void testGetSolrRangeFunctionString_whenNull_thenReturnFrangeInclFalseL23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-
-    // Act and Assert
-    assertEquals("frange incl=false l=2.3",
-        solrHelperServiceImpl.getSolrRangeFunctionString(new BigDecimal("2.3"), null));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>Then return {@code {!ex=Field Name Param=Field Name[2.3:*] frange
-   * incl=false l=2.3}}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrFieldTag_thenReturnExFieldNameParamFieldName23FrangeInclFalseL23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-
-    SearchFacetRangeImpl range = new SearchFacetRangeImpl();
-    range.setId(1L);
-    range.setMinValue(new BigDecimal("2.3"));
-    range.setSearchFacet(new SearchFacetImpl());
-    range.setMaxValue(null);
-
-    // Act and Assert
-    assertEquals("{!ex=Field Name Param=Field Name[2.3:*] frange incl=false l=2.3}",
-        solrHelperServiceImpl.getSolrFieldTag("Field Name", "Param", range));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>Then return {@code {!ex=Field Name Param=Field Name[2.3:2.3] frange
-   * incl=false l=2.3 u=2.3}}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrFieldTag_thenReturnExFieldNameParamFieldName2323FrangeInclFalseL23U23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchFacetRangeImpl range = mock(SearchFacetRangeImpl.class);
-    when(range.getMaxValue()).thenReturn(new BigDecimal("2.3"));
-    when(range.getMinValue()).thenReturn(new BigDecimal("2.3"));
-
-    // Act
-    String actualSolrFieldTag = solrHelperServiceImpl.getSolrFieldTag("Field Name", "Param", range);
-
-    // Assert
-    verify(range, atLeast(1)).getMaxValue();
-    verify(range, atLeast(1)).getMinValue();
-    assertEquals("{!ex=Field Name Param=Field Name[2.3:2.3] frange incl=false l=2.3 u=2.3}", actualSolrFieldTag);
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return empty string.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrFieldTag_whenNull_thenReturnEmptyString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("", (new SolrHelperServiceImpl()).getSolrFieldTag(null, null, null));
-    assertEquals("", (new SolrHelperServiceImpl()).getSolrFieldTag("Field Name", null, null));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code {!Param=Field Name}}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrFieldTag_whenNull_thenReturnParamFieldName() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("{!Param=Field Name}", (new SolrHelperServiceImpl()).getSolrFieldTag("Field Name", "Param", null));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>When {@link SearchFacetRangeImpl} (default constructor) MaxValue is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrFieldTag_whenSearchFacetRangeImplMaxValueIsBigDecimalWith23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-
-    SearchFacetRangeImpl range = new SearchFacetRangeImpl();
-    range.setId(1L);
-    range.setMinValue(new BigDecimal("2.3"));
-    range.setSearchFacet(new SearchFacetImpl());
-    range.setMaxValue(new BigDecimal("2.3"));
-
-    // Act and Assert
-    assertEquals("{!ex=Field Name Param=Field Name[2.3:2.3] frange incl=false l=2.3 u=2.3}",
-        solrHelperServiceImpl.getSolrFieldTag("Field Name", "Param", range));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>When {@code u=}.</li>
-   *   <li>Then return {@code {!ex= u= Param= u=[2.3:2.3] frange incl=false l=2.3
-   * u=2.3}}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrFieldTag(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrFieldTag_whenU_thenReturnExUParamU2323FrangeInclFalseL23U23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchFacetRangeImpl range = mock(SearchFacetRangeImpl.class);
-    when(range.getMaxValue()).thenReturn(new BigDecimal("2.3"));
-    when(range.getMinValue()).thenReturn(new BigDecimal("2.3"));
-
-    // Act
-    String actualSolrFieldTag = solrHelperServiceImpl.getSolrFieldTag(" u=", "Param", range);
-
-    // Assert
-    verify(range, atLeast(1)).getMaxValue();
-    verify(range, atLeast(1)).getMinValue();
-    assertEquals("{!ex= u= Param= u=[2.3:2.3] frange incl=false l=2.3 u=2.3}", actualSolrFieldTag);
+    // Arrange and Act
+    (new SolrHelperServiceImpl()).buildSolrFacetField("Field Name", "Param");
   }
 
   /**
@@ -3655,6 +1133,40 @@ public class SolrHelperServiceImplDiffblueTest {
     verify(range, atLeast(1)).getMinValue();
     assertEquals("{!ex=Field Name key=Field Name[2.3:2.3] frange incl=false l=2.3 u=2.3}",
         actualBuildSolrFacetQueryResult);
+  }
+
+  /**
+   * Test
+   * {@link SolrHelperServiceImpl#buildSolrFacetQuery(String, SearchFacetRange, Boolean, String)}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#buildSolrFacetQuery(String, SearchFacetRange, Boolean, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildSolrFacetQuery3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20557 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.buildSolrFacetQuery("Field Name", new SearchFacetRangeImpl(), true, "Param");
   }
 
   /**
@@ -3752,6 +1264,77 @@ public class SolrHelperServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link SolrHelperServiceImpl#attachFacets(SolrQuery, Map)} with
+   * {@code query}, {@code namedFacetMap}.
+   * <p>
+   * Method under test: {@link SolrHelperServiceImpl#attachFacets(SolrQuery, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAttachFacetsWithQueryNamedFacetMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20432 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+    SolrQuery query = new SolrQuery("foo");
+
+    // Act
+    solrHelperServiceImpl2.attachFacets(query, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link SolrHelperServiceImpl#attachFacets(SolrQuery, Map, SearchCriteria)}
+   * with {@code query}, {@code namedFacetMap}, {@code searchCriteria}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#attachFacets(SolrQuery, Map, SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAttachFacetsWithQueryNamedFacetMapSearchCriteria() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20462 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+    SolrQuery query = new SolrQuery("foo");
+    HashMap<String, SearchFacetDTO> namedFacetMap = new HashMap<>();
+
+    // Act
+    solrHelperServiceImpl2.attachFacets(query, namedFacetMap, new SearchCriteria());
+  }
+
+  /**
    * Test
    * {@link SolrHelperServiceImpl#attachFacets(SolrQuery, Map, SearchCriteria)}
    * with {@code query}, {@code namedFacetMap}, {@code searchCriteria}.
@@ -3811,197 +1394,6 @@ public class SolrHelperServiceImplDiffblueTest {
   }
 
   /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}.
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrTaggedFieldString() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-
-    SearchFacetRangeImpl range = new SearchFacetRangeImpl();
-    range.setId(1L);
-    range.setMinValue(new BigDecimal("2.3"));
-    range.setSearchFacet(new SearchFacetImpl());
-    range.setMaxValue(null);
-
-    // Act and Assert
-    assertEquals("{!ex=Index Field Tag=Index Field[2.3:*] frange incl=false l=2.3}field(Index Field)",
-        solrHelperServiceImpl.getSolrTaggedFieldString("Index Field", "Tag", range));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}.
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrTaggedFieldString2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchFacetRangeImpl range = mock(SearchFacetRangeImpl.class);
-    when(range.getMaxValue()).thenReturn(new BigDecimal("2.3"));
-    when(range.getMinValue()).thenReturn(new BigDecimal("2.3"));
-
-    // Act
-    String actualSolrTaggedFieldString = solrHelperServiceImpl.getSolrTaggedFieldString("Index Field", "Tag", range);
-
-    // Assert
-    verify(range, atLeast(1)).getMaxValue();
-    verify(range, atLeast(1)).getMinValue();
-    assertEquals("{!ex=Index Field Tag=Index Field[2.3:2.3] frange incl=false l=2.3 u=2.3}field(Index Field)",
-        actualSolrTaggedFieldString);
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>Then return {@code {!ex= u= Tag= u=[2.3:2.3] frange incl=false l=2.3
-   * u=2.3}field( u=)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrTaggedFieldString_thenReturnExUTagU2323FrangeInclFalseL23U23FieldU() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchFacetRangeImpl range = mock(SearchFacetRangeImpl.class);
-    when(range.getMaxValue()).thenReturn(new BigDecimal("2.3"));
-    when(range.getMinValue()).thenReturn(new BigDecimal("2.3"));
-
-    // Act
-    String actualSolrTaggedFieldString = solrHelperServiceImpl.getSolrTaggedFieldString(" u=", "Tag", range);
-
-    // Assert
-    verify(range, atLeast(1)).getMaxValue();
-    verify(range, atLeast(1)).getMinValue();
-    assertEquals("{!ex= u= Tag= u=[2.3:2.3] frange incl=false l=2.3 u=2.3}field( u=)", actualSolrTaggedFieldString);
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code Index Field}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrTaggedFieldString_whenNull_thenReturnIndexField() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("Index Field", (new SolrHelperServiceImpl()).getSolrTaggedFieldString("Index Field", null, null));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrTaggedFieldString_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("null", (new SolrHelperServiceImpl()).getSolrTaggedFieldString(null, null, null));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code {!Tag=Index Field}Index Field}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrTaggedFieldString_whenNull_thenReturnTagIndexFieldIndexField() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals("{!Tag=Index Field}Index Field",
-        (new SolrHelperServiceImpl()).getSolrTaggedFieldString("Index Field", "Tag", null));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>When {@link SearchFacetRangeImpl} (default constructor) MaxValue is
-   * {@link BigDecimal#BigDecimal(String)} with {@code 2.3}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrTaggedFieldString_whenSearchFacetRangeImplMaxValueIsBigDecimalWith23() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-
-    SearchFacetRangeImpl range = new SearchFacetRangeImpl();
-    range.setId(1L);
-    range.setMinValue(new BigDecimal("2.3"));
-    range.setSearchFacet(new SearchFacetImpl());
-    range.setMaxValue(new BigDecimal("2.3"));
-
-    // Act and Assert
-    assertEquals("{!ex=Index Field Tag=Index Field[2.3:2.3] frange incl=false l=2.3 u=2.3}field(Index Field)",
-        solrHelperServiceImpl.getSolrTaggedFieldString("Index Field", "Tag", range));
-  }
-
-  /**
-   * Test
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}.
-   * <ul>
-   *   <li>When {@link SearchFacetRangeImpl} (default constructor).</li>
-   *   <li>Then return {@code field(null)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrTaggedFieldString(String, String, SearchFacetRange)}
-   */
-  @Test
-  public void testGetSolrTaggedFieldString_whenSearchFacetRangeImpl_thenReturnFieldNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-
-    // Act and Assert
-    assertEquals("field(null)", solrHelperServiceImpl.getSolrTaggedFieldString(null, null, new SearchFacetRangeImpl()));
-  }
-
-  /**
    * Test {@link SolrHelperServiceImpl#getResponseDocuments(QueryResponse)}.
    * <p>
    * Method under test:
@@ -4026,6 +1418,39 @@ public class SolrHelperServiceImplDiffblueTest {
     // Assert
     verify(response, atLeast(1)).getGroupResponse();
     assertTrue(actualResponseDocuments.isEmpty());
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getResponseDocuments(QueryResponse)}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#getResponseDocuments(QueryResponse)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetResponseDocuments2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20995 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.getResponseDocuments(new QueryResponse());
   }
 
   /**
@@ -4099,175 +1524,72 @@ public class SolrHelperServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link SolrHelperServiceImpl#getSortableFieldTypes()}.
-   * <p>
-   * Method under test: {@link SolrHelperServiceImpl#getSortableFieldTypes()}
-   */
-  @Test
-  public void testGetSortableFieldTypes() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange and Act
-    List<String> actualSortableFieldTypes = (new SolrHelperServiceImpl()).getSortableFieldTypes();
-
-    // Assert
-    assertEquals(5, actualSortableFieldTypes.size());
-    assertEquals("i", actualSortableFieldTypes.get(3));
-    assertEquals("l", actualSortableFieldTypes.get(4));
-    assertEquals("p", actualSortableFieldTypes.get(2));
-    assertEquals("s", actualSortableFieldTypes.get(1));
-    assertEquals("sort", actualSortableFieldTypes.get(0));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#getSortOrder(String[], String)}.
+   * Test
+   * {@link SolrHelperServiceImpl#attachSortClause(SolrQuery, SearchCriteria, String)}.
    * <p>
    * Method under test:
-   * {@link SolrHelperServiceImpl#getSortOrder(String[], String)}
+   * {@link SolrHelperServiceImpl#attachSortClause(SolrQuery, SearchCriteria, String)}
    */
   @Test
-  public void testGetSortOrder() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals(SolrQuery.ORDER.asc, (new SolrHelperServiceImpl()).getSortOrder(
-        new String[]{"Solr sortquery received was ", ", but no sorting tokens could be extracted."}, "Sort Query"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#getSortOrder(String[], String)}.
-   * <ul>
-   *   <li>When array of {@link String} with {@code Sort Fields Segments} and
-   * {@code desc}.</li>
-   *   <li>Then return {@code desc}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSortOrder(String[], String)}
-   */
-  @Test
-  public void testGetSortOrder_whenArrayOfStringWithSortFieldsSegmentsAndDesc_thenReturnDesc() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals(SolrQuery.ORDER.desc,
-        (new SolrHelperServiceImpl()).getSortOrder(new String[]{"Sort Fields Segments", "desc"}, null));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#getSortOrder(String[], String)}.
-   * <ul>
-   *   <li>When array of {@link String} with {@code Sort Fields Segments}.</li>
-   *   <li>Then return {@code asc}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSortOrder(String[], String)}
-   */
-  @Test
-  public void testGetSortOrder_whenArrayOfStringWithSortFieldsSegments_thenReturnAsc() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertEquals(SolrQuery.ORDER.asc,
-        (new SolrHelperServiceImpl()).getSortOrder(new String[]{"Sort Fields Segments"}, "Sort Query"));
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#getSolrFieldKeyMap(SearchCriteria, List)}.
-   * <ul>
-   *   <li>Given {@link IndexFieldImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default
-   * constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrFieldKeyMap(SearchCriteria, List)}
-   */
-  @Test
-  public void testGetSolrFieldKeyMap_givenIndexFieldImpl_whenArrayListAddIndexFieldImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testAttachSortClause() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20492 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchCriteria searchCriteria = new SearchCriteria();
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+    SolrQuery query = new SolrQuery("foo");
 
-    ArrayList<IndexField> fields = new ArrayList<>();
-    fields.add(new IndexFieldImpl());
-
-    // Act and Assert
-    assertTrue(solrHelperServiceImpl.getSolrFieldKeyMap(searchCriteria, fields).isEmpty());
+    // Act
+    solrHelperServiceImpl2.attachSortClause(query, new SearchCriteria(), "Default Sort");
   }
 
   /**
-   * Test {@link SolrHelperServiceImpl#getSolrFieldKeyMap(SearchCriteria, List)}.
-   * <ul>
-   *   <li>Given {@link IndexFieldImpl} (default constructor).</li>
-   *   <li>When {@link ArrayList#ArrayList()} add {@link IndexFieldImpl} (default
-   * constructor).</li>
-   * </ul>
+   * Test {@link SolrHelperServiceImpl#getNamedFacetMap(List, SearchCriteria)}.
    * <p>
    * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrFieldKeyMap(SearchCriteria, List)}
+   * {@link SolrHelperServiceImpl#getNamedFacetMap(List, SearchCriteria)}
    */
   @Test
-  public void testGetSolrFieldKeyMap_givenIndexFieldImpl_whenArrayListAddIndexFieldImpl2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testGetNamedFacetMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20825 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchCriteria searchCriteria = new SearchCriteria();
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+    ArrayList<SearchFacetDTO> facets = new ArrayList<>();
 
-    ArrayList<IndexField> fields = new ArrayList<>();
-    fields.add(new IndexFieldImpl());
-    fields.add(new IndexFieldImpl());
-
-    // Act and Assert
-    assertTrue(solrHelperServiceImpl.getSolrFieldKeyMap(searchCriteria, fields).isEmpty());
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#getSolrFieldKeyMap(SearchCriteria, List)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrFieldKeyMap(SearchCriteria, List)}
-   */
-  @Test
-  public void testGetSolrFieldKeyMap_whenArrayList_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchCriteria searchCriteria = new SearchCriteria();
-
-    // Act and Assert
-    assertTrue(solrHelperServiceImpl.getSolrFieldKeyMap(searchCriteria, new ArrayList<>()).isEmpty());
-  }
-
-  /**
-   * Test {@link SolrHelperServiceImpl#getSolrFieldKeyMap(SearchCriteria, List)}.
-   * <ul>
-   *   <li>When {@link SearchCriteria}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link SolrHelperServiceImpl#getSolrFieldKeyMap(SearchCriteria, List)}
-   */
-  @Test
-  public void testGetSolrFieldKeyMap_whenSearchCriteria_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    SolrHelperServiceImpl solrHelperServiceImpl = new SolrHelperServiceImpl();
-    SearchCriteria searchCriteria = mock(SearchCriteria.class);
-
-    // Act and Assert
-    assertTrue(solrHelperServiceImpl.getSolrFieldKeyMap(searchCriteria, new ArrayList<>()).isEmpty());
+    // Act
+    solrHelperServiceImpl2.getNamedFacetMap(facets, new SearchCriteria());
   }
 
   /**
@@ -4311,6 +1633,42 @@ public class SolrHelperServiceImplDiffblueTest {
 
     // Act and Assert
     assertTrue(solrHelperServiceImpl.getNamedFacetMap(new ArrayList<>(), mock(SearchCriteria.class)).isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link SolrHelperServiceImpl#attachActiveFacetFilters(SolrQuery, Map, SearchCriteria)}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#attachActiveFacetFilters(SolrQuery, Map, SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAttachActiveFacetFilters() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20402 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+    SolrQuery query = new SolrQuery("foo");
+    HashMap<String, SearchFacetDTO> namedFacetMap = new HashMap<>();
+
+    // Act
+    solrHelperServiceImpl2.attachActiveFacetFilters(query, namedFacetMap, new SearchCriteria());
   }
 
   /**
@@ -4362,6 +1720,38 @@ public class SolrHelperServiceImplDiffblueTest {
   /**
    * Test
    * {@link SolrHelperServiceImpl#getPropertyValueInternal(Object, String[], int)}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#getPropertyValueInternal(Object, String[], int)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertyValueInternal2()
+      throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20965 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SolrHelperServiceImpl()).getPropertyValueInternal("Object", new String[]{"Components"}, 1);
+  }
+
+  /**
+   * Test
+   * {@link SolrHelperServiceImpl#getPropertyValueInternal(Object, String[], int)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
@@ -4397,6 +1787,40 @@ public class SolrHelperServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new SolrHelperServiceImpl()).getPropertyValueInternal("Object", new String[]{"Components"}, 0));
+  }
+
+  /**
+   * Test
+   * {@link SolrHelperServiceImpl#copyPropertyToCollection(Collection, Object)}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#copyPropertyToCollection(Collection, Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCopyPropertyToCollection() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20592 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+
+    // Act
+    solrHelperServiceImpl2.copyPropertyToCollection(new ArrayList<>(), "42");
   }
 
   /**
@@ -4481,5 +1905,69 @@ public class SolrHelperServiceImplDiffblueTest {
 
     // Assert that nothing has changed
     assertTrue(collection.isEmpty());
+  }
+
+  /**
+   * Test {@link SolrHelperServiceImpl#getSearchableIndexFields()}.
+   * <p>
+   * Method under test: {@link SolrHelperServiceImpl#getSearchableIndexFields()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSearchableIndexFields() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass21003 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SolrHelperServiceImpl()).getSearchableIndexFields();
+  }
+
+  /**
+   * Test
+   * {@link SolrHelperServiceImpl#getCategoryFilterIds(Category, SearchCriteria)}.
+   * <p>
+   * Method under test:
+   * {@link SolrHelperServiceImpl#getCategoryFilterIds(Category, SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCategoryFilterIds() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20622 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.SolrHelperServiceImpl solrHelperServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SolrHelperServiceImpl solrHelperServiceImpl2 = new SolrHelperServiceImpl();
+    CategoryImpl category = new CategoryImpl();
+
+    // Act
+    solrHelperServiceImpl2.getCategoryFilterIds(category, new SearchCriteria());
   }
 }

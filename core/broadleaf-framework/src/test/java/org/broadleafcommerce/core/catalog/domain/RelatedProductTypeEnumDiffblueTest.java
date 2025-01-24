@@ -1,28 +1,36 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {RelatedProductTypeEnum.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RelatedProductTypeEnumDiffblueTest {
+  @Autowired
+  private RelatedProductTypeEnum relatedProductTypeEnum;
+
+  /**
+   * Test {@link RelatedProductTypeEnum#getInstance(String)}.
+   * <p>
+   * Method under test: {@link RelatedProductTypeEnum#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    RelatedProductTypeEnum actualInstance = RelatedProductTypeEnum.getInstance("Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+  }
+
   /**
    * Test getters and setters.
    * <p>
@@ -42,6 +50,38 @@ public class RelatedProductTypeEnumDiffblueTest {
     // Assert
     assertNull(actualFriendlyType);
     assertNull(actualRelatedProductTypeEnum.getType());
+  }
+
+  /**
+   * Test {@link RelatedProductTypeEnum#RelatedProductTypeEnum(String, String)}.
+   * <ul>
+   *   <li>When {@code Cannot add the type: (}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link RelatedProductTypeEnum#RelatedProductTypeEnum(String, String)}
+   */
+  @Test
+  public void testNewRelatedProductTypeEnum_whenCannotAddTheType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new RelatedProductTypeEnum("Cannot add the type: (", "Friendly Type"));
+
+  }
+
+  /**
+   * Test {@link RelatedProductTypeEnum#RelatedProductTypeEnum(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link RelatedProductTypeEnum#RelatedProductTypeEnum(String, String)}
+   */
+  @Test
+  public void testNewRelatedProductTypeEnum_whenType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new RelatedProductTypeEnum("Type", "Friendly Type"));
+
   }
 
   /**

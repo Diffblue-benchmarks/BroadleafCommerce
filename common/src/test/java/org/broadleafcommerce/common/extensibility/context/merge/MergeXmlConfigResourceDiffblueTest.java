@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -40,6 +40,7 @@ import java.io.UnsupportedEncodingException;
 import org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeException;
 import org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeManagerSetupException;
 import org.broadleafcommerce.common.resource.GeneratedResource;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.BeansException;
@@ -146,6 +147,47 @@ public class MergeXmlConfigResourceDiffblueTest {
     assertEquals(8, mergeXmlConfigResource.merge(new ResourceInputStream[]{
         new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")}).read(bytes));
     assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), bytes);
+  }
+
+  /**
+   * Test
+   * {@link MergeXmlConfigResource#mergeItems(ResourceInputStream, ResourceInputStream)}.
+   * <ul>
+   *   <li>When {@link ResourceInputStream#ResourceInputStream(InputStream, String)}
+   * with is is {@link ByteArrayInputStream#ByteArrayInputStream(byte[])} and
+   * {@code Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link MergeXmlConfigResource#mergeItems(ResourceInputStream, ResourceInputStream)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testMergeItems_whenResourceInputStreamWithIsIsByteArrayInputStreamAndName()
+      throws UnsupportedEncodingException, MergeException, MergeManagerSetupException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   org.broadleafcommerce.common.extensibility.context.merge.exceptions.MergeException: org.xml.sax.SAXParseException; lineNumber: 1; columnNumber: 1; Content is not allowed in prolog.
+    //       at org.broadleafcommerce.common.extensibility.context.merge.MergeManager.merge(MergeManager.java:279)
+    //       at org.broadleafcommerce.common.extensibility.context.merge.MergeXmlConfigResource.mergeItems(MergeXmlConfigResource.java:109)
+    //   org.xml.sax.SAXParseException: Content is not allowed in prolog.
+    //       at org.apache.xerces.parsers.DOMParser.parse(Unknown Source)
+    //       at org.apache.xerces.jaxp.DocumentBuilderImpl.parse(Unknown Source)
+    //       at java.xml/javax.xml.parsers.DocumentBuilder.parse(DocumentBuilder.java:122)
+    //       at org.broadleafcommerce.common.extensibility.context.merge.MergeManager.merge(MergeManager.java:238)
+    //       at org.broadleafcommerce.common.extensibility.context.merge.MergeXmlConfigResource.mergeItems(MergeXmlConfigResource.java:109)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    MergeXmlConfigResource mergeXmlConfigResource = new MergeXmlConfigResource();
+    ResourceInputStream sourceLocationFirst = new ResourceInputStream(
+        new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
+
+    // Act
+    mergeXmlConfigResource.mergeItems(sourceLocationFirst,
+        new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name"));
   }
 
   /**
@@ -308,5 +350,22 @@ public class MergeXmlConfigResourceDiffblueTest {
     assertThrows(FactoryBeanNotInitializedException.class, () -> mergeXmlConfigResource.buildArrayFromStream(source));
     verify(source).close();
     verify(source).read();
+  }
+
+  /**
+   * Test new {@link MergeXmlConfigResource} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link MergeXmlConfigResource}
+   */
+  @Test
+  public void testNewMergeXmlConfigResource() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new MergeXmlConfigResource();
   }
 }

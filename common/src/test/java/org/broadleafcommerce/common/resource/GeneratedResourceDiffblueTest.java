@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -25,6 +25,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +94,26 @@ public class GeneratedResourceDiffblueTest {
   public void testGetFilename() {
     // Arrange, Act and Assert
     assertNull((new GeneratedResource()).getFilename());
+  }
+
+  /**
+   * Test {@link GeneratedResource#lastModified()}.
+   * <p>
+   * Method under test: {@link GeneratedResource#lastModified()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLastModified() throws IOException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Method may be time-sensitive.
+    //   Diffblue Cover was only able to write tests that are time-sensitive.
+    //   The assertions don't pass when run at an alternate date, time, and
+    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
+    //   that the time can be parameterized during testing.
+    //   See Working with code R031 (https://diff.blue/R031) for details.
+
+    // Arrange and Act
+    (new GeneratedResource()).lastModified();
   }
 
   /**

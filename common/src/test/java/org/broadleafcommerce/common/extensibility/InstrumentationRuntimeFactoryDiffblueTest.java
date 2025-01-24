@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -18,9 +18,26 @@
 package org.broadleafcommerce.common.extensibility;
 
 import static org.junit.Assert.assertNull;
+import java.lang.instrument.Instrumentation;
 import org.junit.Test;
 
 public class InstrumentationRuntimeFactoryDiffblueTest {
+  /**
+   * Test
+   * {@link InstrumentationRuntimeFactory#agentmain(String, Instrumentation)}.
+   * <p>
+   * Method under test:
+   * {@link InstrumentationRuntimeFactory#agentmain(String, Instrumentation)}
+   */
+  @Test
+  public void testAgentmain() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    InstrumentationRuntimeFactory.agentmain("Agent Args", null);
+  }
+
   /**
    * Test {@link InstrumentationRuntimeFactory#getInstrumentation()}.
    * <p>

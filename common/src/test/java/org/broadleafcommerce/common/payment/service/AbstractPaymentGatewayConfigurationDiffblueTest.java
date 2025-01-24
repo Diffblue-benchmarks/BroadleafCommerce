@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -231,5 +231,22 @@ public class AbstractPaymentGatewayConfigurationDiffblueTest {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> (new AbstractPaymentGatewayConfiguration()).getGatewayType());
+  }
+
+  /**
+   * Test new {@link AbstractPaymentGatewayConfiguration} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link AbstractPaymentGatewayConfiguration}
+   */
+  @Test
+  public void testNewAbstractPaymentGatewayConfiguration() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new AbstractPaymentGatewayConfiguration();
   }
 }

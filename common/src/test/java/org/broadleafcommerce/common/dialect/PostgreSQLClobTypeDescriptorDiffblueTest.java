@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -27,6 +27,21 @@ import org.hibernate.type.descriptor.sql.SqlTypeDescriptor;
 import org.junit.Test;
 
 public class PostgreSQLClobTypeDescriptorDiffblueTest {
+  /**
+   * Test {@link PostgreSQLClobTypeDescriptor#getExtractor(JavaTypeDescriptor)}.
+   * <p>
+   * Method under test:
+   * {@link PostgreSQLClobTypeDescriptor#getExtractor(JavaTypeDescriptor)}
+   */
+  @Test
+  public void testGetExtractor() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new PostgreSQLClobTypeDescriptor()).<Object>getExtractor(mock(JavaTypeDescriptor.class));
+  }
+
   /**
    * Test {@link PostgreSQLClobTypeDescriptor#getClobBinder(JavaTypeDescriptor)}.
    * <p>

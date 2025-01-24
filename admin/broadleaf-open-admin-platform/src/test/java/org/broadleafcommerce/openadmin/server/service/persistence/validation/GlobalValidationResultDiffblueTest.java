@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.service.persistence.validation;
 
 import static org.junit.Assert.assertEquals;
@@ -22,9 +5,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class GlobalValidationResultDiffblueTest {
@@ -139,6 +126,40 @@ public class GlobalValidationResultDiffblueTest {
   public void testGetErrorMessage_givenGlobalValidationResultWithValidIsTrue_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull((new GlobalValidationResult(true)).getErrorMessage());
+  }
+
+  /**
+   * Test {@link GlobalValidationResult#setErrorMessage(String)}.
+   * <p>
+   * Method under test: {@link GlobalValidationResult#setErrorMessage(String)}
+   */
+  @Test
+  public void testSetErrorMessage() {
+    // Arrange
+    doNothing().when(globalValidationResult).setErrorMessage(Mockito.<String>any());
+
+    // Act
+    globalValidationResult.setErrorMessage("An error occurred");
+
+    // Assert
+    verify(globalValidationResult).setErrorMessage(eq("An error occurred"));
+  }
+
+  /**
+   * Test {@link GlobalValidationResult#addErrorMessage(String)}.
+   * <p>
+   * Method under test: {@link GlobalValidationResult#addErrorMessage(String)}
+   */
+  @Test
+  public void testAddErrorMessage() {
+    // Arrange
+    doNothing().when(globalValidationResult).addErrorMessage(Mockito.<String>any());
+
+    // Act
+    globalValidationResult.addErrorMessage("An error occurred");
+
+    // Assert
+    verify(globalValidationResult).addErrorMessage(eq("An error occurred"));
   }
 
   /**

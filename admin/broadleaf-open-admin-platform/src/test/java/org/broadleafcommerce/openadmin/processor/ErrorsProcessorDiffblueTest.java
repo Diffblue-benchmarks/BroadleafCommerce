@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.processor;
 
 import static org.junit.Assert.assertEquals;
@@ -33,11 +16,26 @@ import java.util.function.BiFunction;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
 import org.broadleafcommerce.presentation.model.BroadleafBindStatus;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.BindException;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ErrorsProcessorDiffblueTest {
+  @Autowired
+  private ErrorsProcessor errorsProcessor;
+
   /**
    * Test getters and setters.
    * <p>
@@ -75,6 +73,35 @@ public class ErrorsProcessorDiffblueTest {
 
   /**
    * Test {@link ErrorsProcessor#getPrecedence()}.
+   * <p>
+   * Method under test: {@link ErrorsProcessor#getPrecedence()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPrecedence2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6057 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.processor.ErrorsProcessor errorsProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new ErrorsProcessor()).getPrecedence();
+  }
+
+  /**
+   * Test {@link ErrorsProcessor#getPrecedence()}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code foo} and
    * {@link BiFunction}.</li>
@@ -95,6 +122,41 @@ public class ErrorsProcessorDiffblueTest {
 
     // Act and Assert
     assertEquals(10000, errorsProcessor.getPrecedence());
+  }
+
+  /**
+   * Test
+   * {@link ErrorsProcessor#populateModelVariables(String, Map, String, String, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test:
+   * {@link ErrorsProcessor#populateModelVariables(String, Map, String, String, BroadleafTemplateContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateModelVariables() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6059 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.processor.ErrorsProcessor errorsProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ErrorsProcessor errorsProcessor2 = new ErrorsProcessor();
+
+    // Act
+    errorsProcessor2.populateModelVariables("Tag Name", new HashMap<>(), "Attribute Name", "42",
+        mock(BroadleafTemplateContext.class));
   }
 
   /**
@@ -132,6 +194,38 @@ public class ErrorsProcessorDiffblueTest {
     Object getResult = actualPopulateModelVariablesResult.get("tabErrors");
     assertTrue(getResult instanceof Map);
     assertTrue(((Map<Object, Object>) getResult).isEmpty());
+  }
+
+  /**
+   * Test {@link ErrorsProcessor#addFieldError(String, String, Map)}.
+   * <p>
+   * Method under test: {@link ErrorsProcessor#addFieldError(String, String, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddFieldError() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6031 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.processor.ErrorsProcessor errorsProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ErrorsProcessor errorsProcessor2 = new ErrorsProcessor();
+
+    // Act
+    errorsProcessor2.addFieldError("Field Name", "Not all who wander are lost", new HashMap<>());
   }
 
   /**

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.controller.config;
 
 import static org.junit.Assert.assertEquals;
@@ -27,18 +10,38 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import org.broadleafcommerce.openadmin.web.controller.AdminRequestMappingHandlerMapping;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.accept.ContentNegotiationStrategy;
 import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 import org.springframework.web.cors.DefaultCorsProcessor;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMethodMappingNamingStrategy;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+@ContextConfiguration(classes = {AdminWebMvcConfigurationSupport.class})
+@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminWebMvcConfigurationSupportDiffblueTest {
+  @Autowired
+  private AdminWebMvcConfigurationSupport adminWebMvcConfigurationSupport;
+
+  @Autowired
+  private List<WebMvcConfigurer> list;
+
+  @MockBean
+  private WebMvcConfigurer webMvcConfigurer;
+
   /**
    * Test
    * {@link AdminWebMvcConfigurationSupport#createRequestMappingHandlerMapping()}.
@@ -90,6 +93,41 @@ public class AdminWebMvcConfigurationSupportDiffblueTest {
     assertTrue(builderConfiguration.getUrlPathHelper().isUrlDecode());
     assertEquals(Integer.MAX_VALUE, actualCreateRequestMappingHandlerMappingResult.getOrder());
     assertSame(pathPrefixes, contentNegotiationManager.getMediaTypeMappings());
+  }
+
+  /**
+   * Test
+   * {@link AdminWebMvcConfigurationSupport#createRequestMappingHandlerMapping()}.
+   * <p>
+   * Method under test:
+   * {@link AdminWebMvcConfigurationSupport#createRequestMappingHandlerMapping()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateRequestMappingHandlerMapping2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   - org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfigurationSupport
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller.config;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfigurationSupport.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfigurationSupport adminWebMvcConfigurationSupport;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.springframework.web.servlet.config.annotation.WebMvcConfigurer;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.web.servlet.config.annotation.WebMvcConfigurer webMvcConfigurer;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminWebMvcConfigurationSupport.createRequestMappingHandlerMapping();
   }
 
   /**
@@ -160,5 +198,39 @@ public class AdminWebMvcConfigurationSupportDiffblueTest {
     // Assert
     assertNull(actualAdminWebMvcConfigurationSupport.getServletContext());
     assertNull(actualAdminWebMvcConfigurationSupport.getApplicationContext());
+  }
+
+  /**
+   * Test new {@link AdminWebMvcConfigurationSupport} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link AdminWebMvcConfigurationSupport}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewAdminWebMvcConfigurationSupport2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   - org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfigurationSupport
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller.config;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfigurationSupport.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfigurationSupport adminWebMvcConfigurationSupport;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.springframework.web.servlet.config.annotation.WebMvcConfigurer;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.web.servlet.config.annotation.WebMvcConfigurer webMvcConfigurer;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new AdminWebMvcConfigurationSupport();
   }
 }

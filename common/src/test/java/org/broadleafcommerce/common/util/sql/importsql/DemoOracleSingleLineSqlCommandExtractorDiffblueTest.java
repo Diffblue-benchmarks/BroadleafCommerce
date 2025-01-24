@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -19,9 +19,246 @@ package org.broadleafcommerce.common.util.sql.importsql;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import java.io.Reader;
+import java.io.StringReader;
 import org.junit.Test;
 
 public class DemoOracleSingleLineSqlCommandExtractorDiffblueTest {
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>Then return array of {@link String} with {@code {ts '9999-99-99
+   * 99:99:99'}}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_thenReturnArrayOfStringWithTs99999999999999() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"{ts '9999-99-99 99:99:99'}"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader("'9999-99-99 99:99:99'")));
+  }
+
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code false ,}.</li>
+   *   <li>Then return array of {@link String} with {@code 0,}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithFalse_thenReturnArrayOfStringWith0() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"0,"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader("false ,")));
+  }
+
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with
+   * {@code , false ,}.</li>
+   *   <li>Then return array of {@link String} with {@code , 0,}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithFalse_thenReturnArrayOfStringWith02() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{", 0,"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader(", false ,")));
+  }
+
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code , false}.</li>
+   *   <li>Then return array of {@link String} with {@code ,0}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithFalse_thenReturnArrayOfStringWith03() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{",0"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader(", false")));
+  }
+
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code = false}.</li>
+   *   <li>Then return array of {@link String} with {@code =0}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithFalse_thenReturnArrayOfStringWith04() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"=0"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader("= false")));
+  }
+
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code foo}.</li>
+   *   <li>Then return array of {@link String} with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithFoo_thenReturnArrayOfStringWithFoo() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"foo"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader("foo")));
+  }
+
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code \r\n}.</li>
+   *   <li>Then return array of {@link String} with
+   * {@code ' || CHR(13) || CHR(10) || '}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithRN_thenReturnArrayOfStringWithChr13Chr10() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"' || CHR(13) || CHR(10) || '"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader("\\r\\n")));
+  }
+
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code true ,}.</li>
+   *   <li>Then return array of {@link String} with {@code 1,}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithTrue_thenReturnArrayOfStringWith1() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"1,"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader("true ,")));
+  }
+
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with
+   * {@code , true ,}.</li>
+   *   <li>Then return array of {@link String} with {@code , 1,}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithTrue_thenReturnArrayOfStringWith12() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{", 1,"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader(", true ,")));
+  }
+
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code , true}.</li>
+   *   <li>Then return array of {@link String} with {@code ,1}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithTrue_thenReturnArrayOfStringWith13() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{",1"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader(", true")));
+  }
+
+  /**
+   * Test {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code = true}.</li>
+   *   <li>Then return array of {@link String} with {@code =1}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoOracleSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithTrue_thenReturnArrayOfStringWith14() {
+    // Arrange
+    DemoOracleSingleLineSqlCommandExtractor demoOracleSingleLineSqlCommandExtractor = new DemoOracleSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoOracleSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"=1"},
+        demoOracleSingleLineSqlCommandExtractor.extractCommands(new StringReader("= true")));
+  }
+
   /**
    * Test
    * {@link DemoOracleSingleLineSqlCommandExtractor#handleBooleans(String[])}.

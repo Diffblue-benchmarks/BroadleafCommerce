@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -32,12 +32,28 @@ import javax.servlet.ServletResponse;
 import javax.servlet.ServletResponseWrapper;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.owasp.esapi.filters.SecurityWrapperResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {StatusExposingServletResponse.class})
+@RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class StatusExposingServletResponseDiffblueTest {
+  @MockBean
+  private HttpServletResponse httpServletResponse;
+
+  @Autowired
+  private StatusExposingServletResponse statusExposingServletResponse;
+
   /**
    * Test getters and setters.
    * <p>
@@ -313,6 +329,39 @@ public class StatusExposingServletResponseDiffblueTest {
   }
 
   /**
+   * Test {@link StatusExposingServletResponse#sendError(int, String)} with
+   * {@code sc}, {@code msg}.
+   * <p>
+   * Method under test:
+   * {@link StatusExposingServletResponse#sendError(int, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSendErrorWithScMsg4() throws IOException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   - org.broadleafcommerce.common.web.util.StatusExposingServletResponse
+    //   when running class:
+    //   package org.broadleafcommerce.common.web.util;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.web.util.StatusExposingServletResponse.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean javax.servlet.http.HttpServletResponse httpServletResponse;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.web.util.StatusExposingServletResponse statusExposingServletResponse;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    statusExposingServletResponse.sendError(1, "Msg");
+  }
+
+  /**
    * Test {@link StatusExposingServletResponse#setStatus(int)} with {@code sc}.
    * <p>
    * Method under test: {@link StatusExposingServletResponse#setStatus(int)}
@@ -550,6 +599,39 @@ public class StatusExposingServletResponseDiffblueTest {
     assertTrue(response9.isCommitted());
     assertTrue(response6.isCommitted());
     assertTrue(response8.isCommitted());
+  }
+
+  /**
+   * Test {@link StatusExposingServletResponse#setStatus(int, String)} with
+   * {@code status}, {@code string}.
+   * <p>
+   * Method under test:
+   * {@link StatusExposingServletResponse#setStatus(int, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetStatusWithStatusString6() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   - org.broadleafcommerce.common.web.util.StatusExposingServletResponse
+    //   when running class:
+    //   package org.broadleafcommerce.common.web.util;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.web.util.StatusExposingServletResponse.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass24 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean javax.servlet.http.HttpServletResponse httpServletResponse;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.web.util.StatusExposingServletResponse statusExposingServletResponse;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    statusExposingServletResponse.setStatus(1, "String");
   }
 
   /**

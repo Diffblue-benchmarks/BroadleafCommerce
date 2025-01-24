@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.order.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -37,15 +20,60 @@ import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FulfillmentOptionImplDiffblueTest {
+  @Autowired
+  private FulfillmentOptionImpl fulfillmentOptionImpl;
+
+  /**
+   * Test {@link FulfillmentOptionImpl#getName()}.
+   * <p>
+   * Method under test: {@link FulfillmentOptionImpl#getName()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1927 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl fulfillmentOptionImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentOptionImpl()).getName();
+  }
+
   /**
    * Test {@link FulfillmentOptionImpl#getName()}.
    * <ul>
@@ -132,6 +160,35 @@ public class FulfillmentOptionImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentOptionImpl#getLongDescription()}.
+   * <p>
+   * Method under test: {@link FulfillmentOptionImpl#getLongDescription()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetLongDescription() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1909 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl fulfillmentOptionImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentOptionImpl()).getLongDescription();
+  }
+
+  /**
+   * Test {@link FulfillmentOptionImpl#getLongDescription()}.
    * <ul>
    *   <li>Given {@link FulfillmentOptionImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
@@ -214,6 +271,35 @@ public class FulfillmentOptionImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentOptionImpl#getFulfillmentType()}.
+   * <p>
+   * Method under test: {@link FulfillmentOptionImpl#getFulfillmentType()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFulfillmentType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1891 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl fulfillmentOptionImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentOptionImpl()).getFulfillmentType();
+  }
+
+  /**
+   * Test {@link FulfillmentOptionImpl#getFulfillmentType()}.
    * <ul>
    *   <li>Given {@link FulfillmentOptionImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
@@ -227,6 +313,90 @@ public class FulfillmentOptionImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new FulfillmentOptionImpl()).getFulfillmentType());
+  }
+
+  /**
+   * Test {@link FulfillmentOptionImpl#getFulfillmentType()}.
+   * <ul>
+   *   <li>Then return {@code Friendly Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FulfillmentOptionImpl#getFulfillmentType()}
+   */
+  @Test
+  public void testGetFulfillmentType_thenReturnFriendlyType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentType fulfillmentType = mock(FulfillmentType.class);
+    when(fulfillmentType.getType()).thenReturn("Type");
+
+    FulfillmentOptionImpl fulfillmentOptionImpl = new FulfillmentOptionImpl();
+    fulfillmentOptionImpl.setFulfillmentType(fulfillmentType);
+
+    // Act
+    FulfillmentType actualFulfillmentType = fulfillmentOptionImpl.getFulfillmentType();
+
+    // Assert
+    verify(fulfillmentType).getType();
+    assertEquals("Friendly Type", actualFulfillmentType.getFriendlyType());
+    assertEquals("Type", actualFulfillmentType.getType());
+  }
+
+  /**
+   * Test {@link FulfillmentOptionImpl#setFulfillmentType(FulfillmentType)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentOptionImpl#setFulfillmentType(FulfillmentType)}
+   */
+  @Test
+  public void testSetFulfillmentType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentOptionImpl fulfillmentOptionImpl = new FulfillmentOptionImpl();
+    FulfillmentType fulfillmentType = mock(FulfillmentType.class);
+    when(fulfillmentType.getType()).thenReturn("Type");
+
+    // Act
+    fulfillmentOptionImpl.setFulfillmentType(fulfillmentType);
+
+    // Assert
+    verify(fulfillmentType).getType();
+    FulfillmentType fulfillmentType2 = fulfillmentOptionImpl.getFulfillmentType();
+    assertEquals("Friendly Type", fulfillmentType2.getFriendlyType());
+    assertEquals("Type", fulfillmentType2.getType());
+    assertEquals("Type", fulfillmentOptionImpl.fulfillmentType);
+  }
+
+  /**
+   * Test {@link FulfillmentOptionImpl#setFulfillmentType(FulfillmentType)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentOptionImpl#setFulfillmentType(FulfillmentType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetFulfillmentType2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1945 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl fulfillmentOptionImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentOptionImpl()).setFulfillmentType(FulfillmentType.DIGITAL);
   }
 
   /**
@@ -509,6 +679,46 @@ public class FulfillmentOptionImplDiffblueTest {
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test
+   * {@link FulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1861 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl fulfillmentOptionImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentOptionImpl fulfillmentOptionImpl2 = new FulfillmentOptionImpl();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+
+    // Act
+    fulfillmentOptionImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite,
+        toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
   }
 
   /**

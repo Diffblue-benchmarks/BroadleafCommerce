@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -17,12 +17,39 @@
  */
 package org.broadleafcommerce.common.vendor.service.type;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {ContainerShapeType.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ContainerShapeTypeDiffblueTest {
+  @Autowired
+  private ContainerShapeType containerShapeType;
+
+  /**
+   * Test {@link ContainerShapeType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link ContainerShapeType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    ContainerShapeType actualInstance = ContainerShapeType.getInstance("Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+  }
+
   /**
    * Test getters and setters.
    * <p>
@@ -45,6 +72,65 @@ public class ContainerShapeTypeDiffblueTest {
   }
 
   /**
+   * Test {@link ContainerShapeType#ContainerShapeType(String, String)}.
+   * <ul>
+   *   <li>When {@code Cannot add the type: (}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ContainerShapeType#ContainerShapeType(String, String)}
+   */
+  @Test
+  public void testNewContainerShapeType_whenCannotAddTheType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new ContainerShapeType("Cannot add the type: (", "Friendly Type"));
+
+  }
+
+  /**
+   * Test {@link ContainerShapeType#ContainerShapeType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ContainerShapeType#ContainerShapeType(String, String)}
+   */
+  @Test
+  public void testNewContainerShapeType_whenType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new ContainerShapeType("Type", "Friendly Type"));
+
+  }
+
+  /**
+   * Test {@link ContainerShapeType#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ContainerShapeType#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEquals_whenOtherIsDifferent() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.RuntimeException: Cannot add the type: (Type). It already exists as a type via org.broadleafcommerce.common.vendor.service.type.ContainerShapeType
+    //       at org.broadleafcommerce.common.vendor.service.type.ContainerShapeType.setType(ContainerShapeType.java:66)
+    //       at org.broadleafcommerce.common.vendor.service.type.ContainerShapeType.<init>(ContainerShapeType.java:50)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    ContainerShapeType containerShapeType = new ContainerShapeType("Type", "Friendly Type");
+
+    // Act
+    containerShapeType.equals(new ContainerShapeType("Type", "Friendly Type"));
+  }
+
+  /**
    * Test {@link ContainerShapeType#equals(Object)}.
    * <ul>
    *   <li>When other is different.</li>
@@ -57,5 +143,60 @@ public class ContainerShapeTypeDiffblueTest {
   public void testEquals_whenOtherIsDifferent_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(new ContainerShapeType(), BLCFieldUtils.NULL_FIELD);
+  }
+
+  /**
+   * Test {@link ContainerShapeType#equals(Object)}.
+   * <ul>
+   *   <li>When other is {@code null}.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ContainerShapeType#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEquals_whenOtherIsNull_thenReturnNotEqual() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange, Act and Assert
+    assertNotEquals(new ContainerShapeType("Type", "Friendly Type"), null);
+  }
+
+  /**
+   * Test {@link ContainerShapeType#equals(Object)}.
+   * <ul>
+   *   <li>When other is same.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ContainerShapeType#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEquals_whenOtherIsSame() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new ContainerShapeType("Type", "Friendly Type")).equals(new ContainerShapeType("Type", "Friendly Type"));
+  }
+
+  /**
+   * Test {@link ContainerShapeType#equals(Object)}.
+   * <ul>
+   *   <li>When other is wrong type.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ContainerShapeType#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEquals_whenOtherIsWrongType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new ContainerShapeType("Type", "Friendly Type")).equals("Different type to ContainerShapeType");
   }
 }

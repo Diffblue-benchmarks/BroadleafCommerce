@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -24,6 +24,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.ServletResponse;
@@ -63,6 +65,22 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
     assertNull((new BroadleafAuthenticationFailureHandler()).validateUrlParam("https://example.org/example"));
     assertNull((new BroadleafAuthenticationFailureHandler("https://example.org/example"))
         .validateUrlParam("https://example.org/example"));
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler(String)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAuthenticationFailureHandler#BroadleafAuthenticationFailureHandler(String)}
+   */
+  @Test
+  public void testNewBroadleafAuthenticationFailureHandler2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    new BroadleafAuthenticationFailureHandler("https://example.org/example");
   }
 
   /**
@@ -219,5 +237,32 @@ public class BroadleafAuthenticationFailureHandlerDiffblueTest {
   public void testValidateUrlParam_whenWww_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(broadleafAuthenticationFailureHandler.validateUrlParam("www"));
+  }
+
+  /**
+   * Test {@link BroadleafAuthenticationFailureHandler#setExceptionMappings(Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BroadleafAuthenticationFailureHandler#setExceptionMappings(Map)}
+   */
+  @Test
+  public void testSetExceptionMappings_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     BroadleafAuthenticationFailureHandler.defaultFailureUrl
+    //     BroadleafAuthenticationFailureHandler.failureUrlMap
+    //     SimpleUrlAuthenticationFailureHandler.defaultFailureUrl
+    //     SimpleUrlAuthenticationFailureHandler.logger
+
+    // Arrange
+    BroadleafAuthenticationFailureHandler broadleafAuthenticationFailureHandler = new BroadleafAuthenticationFailureHandler();
+
+    // Act
+    broadleafAuthenticationFailureHandler.setExceptionMappings(new HashMap<>());
   }
 }

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.web.file;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -25,10 +8,92 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml",
+    "/applicationContext-servlet-cms-contentCreator.xml", "/bl-cms-applicationContext-entity.xml",
+    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 public class StaticAssetViewControllerDiffblueTest {
+  @Autowired
+  private StaticAssetViewController staticAssetViewController;
+
+  /**
+   * Test {@link StaticAssetViewController#init()}.
+   * <p>
+   * Method under test: {@link StaticAssetViewController#init()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testInit() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.file;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2443 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.file.StaticAssetViewController staticAssetViewController;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    staticAssetViewController.init();
+  }
+
+  /**
+   * Test {@link StaticAssetViewController#convertParameterMap(Map)}.
+   * <p>
+   * Method under test: {@link StaticAssetViewController#convertParameterMap(Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConvertParameterMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.file;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2325 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.file.StaticAssetViewController staticAssetViewController;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    staticAssetViewController.convertParameterMap(new HashMap<>());
+  }
+
   /**
    * Test {@link StaticAssetViewController#convertParameterMap(Map)}.
    * <ul>
@@ -47,6 +112,103 @@ public class StaticAssetViewControllerDiffblueTest {
 
     // Act and Assert
     assertTrue(staticAssetViewController.convertParameterMap(new HashMap<>()).isEmpty());
+  }
+
+  /**
+   * Test {@link StaticAssetViewController#isAllowedUrlParameter(String)}.
+   * <p>
+   * Method under test:
+   * {@link StaticAssetViewController#isAllowedUrlParameter(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsAllowedUrlParameter() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.file;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2444 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.file.StaticAssetViewController staticAssetViewController;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    staticAssetViewController.isAllowedUrlParameter("https://example.org/example");
+  }
+
+  /**
+   * Test
+   * {@link StaticAssetViewController#handleRequestInternal(HttpServletRequest, HttpServletResponse)}.
+   * <p>
+   * Method under test:
+   * {@link StaticAssetViewController#handleRequestInternal(HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandleRequestInternal() throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.file;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2334 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.file.StaticAssetViewController staticAssetViewController;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MockHttpServletRequest request = new MockHttpServletRequest();
+
+    // Act
+    staticAssetViewController.handleRequestInternal(request, new MockHttpServletResponse());
+  }
+
+  /**
+   * Test {@link StaticAssetViewController#removeAssetPrefix(String)}.
+   * <p>
+   * Method under test:
+   * {@link StaticAssetViewController#removeAssetPrefix(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveAssetPrefix() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.file;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2757 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.file.StaticAssetViewController staticAssetViewController;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    staticAssetViewController.removeAssetPrefix("Request URI");
   }
 
   /**
@@ -132,6 +294,37 @@ public class StaticAssetViewControllerDiffblueTest {
   }
 
   /**
+   * Test {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}.
+   * <p>
+   * Method under test:
+   * {@link StaticAssetViewController#getAllowUnnamedImageManipulation()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAllowUnnamedImageManipulation() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.file;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2333 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.file.StaticAssetViewController staticAssetViewController;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    staticAssetViewController.getAllowUnnamedImageManipulation();
+  }
+
+  /**
    * Test getters and setters.
    * <p>
    * Methods under test:
@@ -188,5 +381,36 @@ public class StaticAssetViewControllerDiffblueTest {
     assertTrue(actualStaticAssetViewController.isUseCacheControlHeader());
     assertTrue(actualStaticAssetViewController.isUseCacheControlNoStore());
     assertArrayEquals(new String[]{"GET", "HEAD", "POST"}, actualStaticAssetViewController.getSupportedMethods());
+  }
+
+  /**
+   * Test new {@link StaticAssetViewController} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link StaticAssetViewController}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewStaticAssetViewController2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web.file;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2324 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.file.StaticAssetViewController staticAssetViewController;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new StaticAssetViewController();
   }
 }

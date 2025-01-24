@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Profile
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -29,13 +12,84 @@ import static org.mockito.Mockito.when;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.payment.PaymentGatewayType;
 import org.broadleafcommerce.common.payment.PaymentType;
+import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
+    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
+    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
+    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CustomerPaymentImplDiffblueTest {
+  @Autowired
+  private CustomerPaymentImpl customerPaymentImpl;
+
+  /**
+   * Test {@link CustomerPaymentImpl#getPaymentType()}.
+   * <p>
+   * Method under test: {@link CustomerPaymentImpl#getPaymentType()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPaymentType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4082 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl customerPaymentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CustomerPaymentImpl()).getPaymentType();
+  }
+
+  /**
+   * Test {@link CustomerPaymentImpl#getPaymentType()}.
+   * <ul>
+   *   <li>Given {@link CustomerPaymentImpl} (default constructor).</li>
+   *   <li>Then return Type is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPaymentImpl#getPaymentType()}
+   */
+  @Test
+  public void testGetPaymentType_givenCustomerPaymentImpl_thenReturnTypeIsNull() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange and Act
+    PaymentType actualPaymentType = (new CustomerPaymentImpl()).getPaymentType();
+
+    // Assert
+    assertEquals("Friendly Type", actualPaymentType.getFriendlyType());
+    assertNull(actualPaymentType.getType());
+    assertFalse(actualPaymentType.getIsFinalPayment());
+    assertFalse(actualPaymentType.isCreditCardType());
+  }
+
   /**
    * Test {@link CustomerPaymentImpl#getPaymentType()}.
    * <ul>
@@ -114,6 +168,38 @@ public class CustomerPaymentImplDiffblueTest {
 
   /**
    * Test {@link CustomerPaymentImpl#setPaymentType(PaymentType)}.
+   * <p>
+   * Method under test: {@link CustomerPaymentImpl#setPaymentType(PaymentType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetPaymentType2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4108 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl customerPaymentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
+
+    // Act
+    customerPaymentImpl2.setPaymentType(new PaymentType("Type", "Friendly Type"));
+  }
+
+  /**
+   * Test {@link CustomerPaymentImpl#setPaymentType(PaymentType)}.
    * <ul>
    *   <li>Given {@code Type}.</li>
    *   <li>Then {@link CustomerPaymentImpl} (default constructor) PaymentType Type
@@ -138,6 +224,67 @@ public class CustomerPaymentImplDiffblueTest {
     verify(paymentType).getType();
     assertEquals("Type", customerPaymentImpl.getPaymentType().getType());
     assertEquals("Type", customerPaymentImpl.paymentType);
+  }
+
+  /**
+   * Test {@link CustomerPaymentImpl#setPaymentType(PaymentType)}.
+   * <ul>
+   *   <li>Then {@link CustomerPaymentImpl} (default constructor) PaymentType Type
+   * is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CustomerPaymentImpl#setPaymentType(PaymentType)}
+   */
+  @Test
+  public void testSetPaymentType_thenCustomerPaymentImplPaymentTypeTypeIsNull() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CustomerPaymentImpl customerPaymentImpl = new CustomerPaymentImpl();
+    customerPaymentImpl.setAdditionalFields(new HashMap<>());
+    customerPaymentImpl.setBillingAddress(new AddressImpl());
+    customerPaymentImpl.setCustomer(new CustomerImpl());
+    customerPaymentImpl.setId(1L);
+    customerPaymentImpl.setIsDefault(true);
+    customerPaymentImpl.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    customerPaymentImpl.setPaymentToken("ABC123");
+    customerPaymentImpl.setPaymentType(new PaymentType("Type", "Friendly Type"));
+
+    // Act
+    customerPaymentImpl.setPaymentType(null);
+
+    // Assert
+    assertNull(customerPaymentImpl.getPaymentType().getType());
+    assertNull(customerPaymentImpl.paymentType);
+  }
+
+  /**
+   * Test {@link CustomerPaymentImpl#getPaymentGatewayType()}.
+   * <p>
+   * Method under test: {@link CustomerPaymentImpl#getPaymentGatewayType()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPaymentGatewayType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4072 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl customerPaymentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CustomerPaymentImpl()).getPaymentGatewayType();
   }
 
   /**
@@ -201,6 +348,72 @@ public class CustomerPaymentImplDiffblueTest {
 
   /**
    * Test {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}.
+   * <p>
+   * Method under test:
+   * {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetPaymentGatewayType2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4092 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl customerPaymentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
+
+    // Act
+    customerPaymentImpl2.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+  }
+
+  /**
+   * Test {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}.
+   * <ul>
+   *   <li>Then {@link CustomerPaymentImpl} (default constructor) PaymentGatewayType
+   * Type is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}
+   */
+  @Test
+  public void testSetPaymentGatewayType_thenCustomerPaymentImplPaymentGatewayTypeTypeIsNull() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    CustomerPaymentImpl customerPaymentImpl = new CustomerPaymentImpl();
+    customerPaymentImpl.setAdditionalFields(new HashMap<>());
+    customerPaymentImpl.setBillingAddress(new AddressImpl());
+    customerPaymentImpl.setCustomer(new CustomerImpl());
+    customerPaymentImpl.setId(1L);
+    customerPaymentImpl.setIsDefault(true);
+    customerPaymentImpl.setPaymentGatewayType(new PaymentGatewayType("Type", "Friendly Type"));
+    customerPaymentImpl.setPaymentToken("ABC123");
+    customerPaymentImpl.setPaymentType(new PaymentType("Type", "Friendly Type"));
+
+    // Act
+    customerPaymentImpl.setPaymentGatewayType(null);
+
+    // Assert
+    assertNull(customerPaymentImpl.getPaymentGatewayType().getType());
+    assertNull(customerPaymentImpl.paymentGatewayType);
+  }
+
+  /**
+   * Test {@link CustomerPaymentImpl#setPaymentGatewayType(PaymentGatewayType)}.
    * <ul>
    *   <li>Then {@link CustomerPaymentImpl} (default constructor) PaymentGatewayType
    * Type is {@code Type}.</li>
@@ -252,6 +465,46 @@ public class CustomerPaymentImplDiffblueTest {
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test
+   * {@link CustomerPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test:
+   * {@link CustomerPaymentImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4004 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl customerPaymentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerPaymentImpl customerPaymentImpl2 = new CustomerPaymentImpl();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+
+    // Act
+    customerPaymentImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite,
+        toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
   }
 
   /**

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
 import static org.junit.Assert.assertEquals;
@@ -29,25 +12,46 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.OperationType;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
+import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.MapStructure;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
+import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.RestrictionFactory;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class MapStructurePersistenceModuleDiffblueTest {
+  @Autowired
+  private MapStructurePersistenceModule mapStructurePersistenceModule;
+
   /**
    * Test {@link MapStructurePersistenceModule#isCompatible(OperationType)}.
    * <p>
@@ -64,6 +68,36 @@ public class MapStructurePersistenceModuleDiffblueTest {
 
     // Act and Assert
     assertFalse(mapStructurePersistenceModule.isCompatible(OperationType.NONDESTRUCTIVEREMOVE));
+  }
+
+  /**
+   * Test {@link MapStructurePersistenceModule#isCompatible(OperationType)}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#isCompatible(OperationType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsCompatible2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2423 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MapStructurePersistenceModule()).isCompatible(OperationType.NONDESTRUCTIVEREMOVE);
   }
 
   /**
@@ -126,6 +160,42 @@ public class MapStructurePersistenceModuleDiffblueTest {
 
     // Assert that nothing has changed
     assertTrue(properties.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link MapStructurePersistenceModule#extractProperties(Class[], Map, List)}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#extractProperties(Class[], Map, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testExtractProperties2() throws NumberFormatException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1704 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MapStructurePersistenceModule mapStructurePersistenceModule2 = new MapStructurePersistenceModule();
+    Class<Object> forNameResult = Object.class;
+    HashMap<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties = new HashMap<>();
+
+    // Act
+    mapStructurePersistenceModule2.extractProperties(new Class[]{forNameResult}, mergedProperties, new ArrayList<>());
   }
 
   /**
@@ -412,6 +482,246 @@ public class MapStructurePersistenceModuleDiffblueTest {
 
   /**
    * Test
+   * {@link MapStructurePersistenceModule#updateMergedProperties(PersistencePackage, Map)}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#updateMergedProperties(PersistencePackage, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUpdateMergedProperties() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2545 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MapStructurePersistenceModule mapStructurePersistenceModule2 = new MapStructurePersistenceModule();
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act
+    mapStructurePersistenceModule2.updateMergedProperties(persistencePackage, new HashMap<>());
+  }
+
+  /**
+   * Test {@link MapStructurePersistenceModule#add(PersistencePackage)} with
+   * {@code persistencePackage}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#add(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddWithPersistencePackage() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1617 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MapStructurePersistenceModule mapStructurePersistenceModule2 = new MapStructurePersistenceModule();
+
+    // Act
+    mapStructurePersistenceModule2.add(new PersistencePackage());
+  }
+
+  /**
+   * Test
+   * {@link MapStructurePersistenceModule#convertPrimitiveBasedOnType(String, String, Map)}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#convertPrimitiveBasedOnType(String, String, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConvertPrimitiveBasedOnType() throws ParseException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1649 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MapStructurePersistenceModule mapStructurePersistenceModule2 = new MapStructurePersistenceModule();
+
+    // Act
+    mapStructurePersistenceModule2.convertPrimitiveBasedOnType("42", "42", new HashMap<>());
+  }
+
+  /**
+   * Test {@link MapStructurePersistenceModule#update(PersistencePackage)} with
+   * {@code persistencePackage}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#update(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUpdateWithPersistencePackage() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2513 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MapStructurePersistenceModule mapStructurePersistenceModule2 = new MapStructurePersistenceModule();
+
+    // Act
+    mapStructurePersistenceModule2.update(new PersistencePackage());
+  }
+
+  /**
+   * Test {@link MapStructurePersistenceModule#remove(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#remove(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemove() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2481 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MapStructurePersistenceModule mapStructurePersistenceModule2 = new MapStructurePersistenceModule();
+
+    // Act
+    mapStructurePersistenceModule2.remove(new PersistencePackage());
+  }
+
+  /**
+   * Test
+   * {@link MapStructurePersistenceModule#fetch(PersistencePackage, CriteriaTransferObject)}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#fetch(PersistencePackage, CriteriaTransferObject)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFetch() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2032 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MapStructurePersistenceModule mapStructurePersistenceModule2 = new MapStructurePersistenceModule();
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act
+    mapStructurePersistenceModule2.fetch(persistencePackage, new CriteriaTransferObject());
+  }
+
+  /**
+   * Test
+   * {@link MapStructurePersistenceModule#procureSandBoxMapValue(MapStructure, Entity)}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#procureSandBoxMapValue(MapStructure, Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testProcureSandBoxMapValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2436 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MapStructurePersistenceModule mapStructurePersistenceModule2 = new MapStructurePersistenceModule();
+    MapStructure mapStructure = new MapStructure();
+
+    // Act
+    mapStructurePersistenceModule2.procureSandBoxMapValue(mapStructure, new Entity());
+  }
+
+  /**
+   * Test
    * {@link MapStructurePersistenceModule#procureSandBoxMapValue(MapStructure, Entity)}.
    * <ul>
    *   <li>Given {@code 42}.</li>
@@ -509,5 +819,83 @@ public class MapStructurePersistenceModuleDiffblueTest {
     verify(mapStructure).getValueClassName();
     verify(property).getValue();
     verify(dynamicEntityDao).getIdMetadata(isA(Class.class));
+  }
+
+  /**
+   * Test
+   * {@link MapStructurePersistenceModule#getMapRecords(Serializable, MapStructure, Map, Map, Property, String[])}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#getMapRecords(Serializable, MapStructure, Map, Map, Property, String[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetMapRecords() throws ClassNotFoundException, IllegalAccessException, IllegalArgumentException,
+      NoSuchFieldException, NoSuchMethodException, SecurityException, InvocationTargetException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2270 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MapStructurePersistenceModule mapStructurePersistenceModule2 = new MapStructurePersistenceModule();
+    SimpleDateFormat resultRecord = new SimpleDateFormat("yyyy/mm/dd");
+    MapStructure mapStructure = new MapStructure();
+    HashMap<String, FieldMetadata> ceilingMergedProperties = new HashMap<>();
+    HashMap<String, FieldMetadata> valueMergedProperties = new HashMap<>();
+
+    // Act
+    mapStructurePersistenceModule2.getMapRecords(resultRecord, mapStructure, ceilingMergedProperties,
+        valueMergedProperties, new Property(), new String[]{"Custom Criteria"});
+  }
+
+  /**
+   * Test
+   * {@link MapStructurePersistenceModule#getMapRecord(String, Serializable, MapStructure, Map, Property, Object, String[])}.
+   * <p>
+   * Method under test:
+   * {@link MapStructurePersistenceModule#getMapRecord(String, Serializable, MapStructure, Map, Property, Object, String[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetMapRecord() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2080 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.MapStructurePersistenceModule mapStructurePersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MapStructurePersistenceModule mapStructurePersistenceModule2 = new MapStructurePersistenceModule();
+    SimpleDateFormat valueInstance = new SimpleDateFormat("yyyy/mm/dd");
+    MapStructure mapStructure = new MapStructure();
+    HashMap<String, FieldMetadata> valueMergedProperties = new HashMap<>();
+
+    // Act
+    mapStructurePersistenceModule2.getMapRecord("Ceiling Class", valueInstance, mapStructure, valueMergedProperties,
+        new Property(), "Key", new String[]{"Custom Criteria"});
   }
 }

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.order.service.workflow;
 
 import static org.junit.Assert.assertEquals;
@@ -39,6 +22,7 @@ import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CartOperationRequestDiffblueTest {
@@ -140,6 +124,57 @@ public class CartOperationRequestDiffblueTest {
 
     // Act and Assert
     assertTrue((new CartOperationRequest(order, new OrderItemRequestDTO(), true)).getOrder() instanceof NullOrderImpl);
+  }
+
+  /**
+   * Test
+   * {@link CartOperationRequest#sortAllDescendantChildItems(OrderItemRequestDTO)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link CartOperationRequest#sortAllDescendantChildItems(OrderItemRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSortAllDescendantChildItems_whenNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.order.service.workflow.CartOperationRequest.sortAllDescendantChildItems(CartOperationRequest.java:65)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    (new CartOperationRequest(order, new OrderItemRequestDTO(), true)).sortAllDescendantChildItems(null);
+  }
+
+  /**
+   * Test
+   * {@link CartOperationRequest#sortAllDescendantChildItems(OrderItemRequestDTO)}.
+   * <ul>
+   *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link CartOperationRequest#sortAllDescendantChildItems(OrderItemRequestDTO)}
+   */
+  @Test
+  public void testSortAllDescendantChildItems_whenOrderItemRequestDTO() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+    CartOperationRequest cartOperationRequest = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
+
+    // Act
+    cartOperationRequest.sortAllDescendantChildItems(new OrderItemRequestDTO());
   }
 
   /**

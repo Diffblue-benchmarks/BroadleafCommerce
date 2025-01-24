@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -42,5 +42,23 @@ public class MergeJPAPersistenceResourceDiffblueTest {
     assertThrows(FatalBeanException.class,
         () -> mergeJPAPersistenceResource.getMergedConfigResource(new ResourceInputStream[]{
             new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name")}));
+  }
+
+  /**
+   * Test new {@link MergeJPAPersistenceResource} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link MergeJPAPersistenceResource}
+   */
+  @Test
+  public void testNewMergeJPAPersistenceResource() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     MergeJPAPersistenceResource.handler
+
+    // Arrange and Act
+    new MergeJPAPersistenceResource();
   }
 }

@@ -1,25 +1,6 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
@@ -36,7 +17,6 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.audit.Auditable;
@@ -48,12 +28,13 @@ import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.core.offer.dao.OfferDao;
 import org.broadleafcommerce.core.offer.dao.OfferDaoImpl;
 import org.broadleafcommerce.core.offer.domain.CandidateItemOffer;
-import org.broadleafcommerce.core.offer.domain.CandidateItemOfferImpl;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.domain.OrderItemAdjustment;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl;
 import org.broadleafcommerce.core.offer.domain.ProratedOrderItemAdjustment;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateItemOffer;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateItemOfferImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactory;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOfferUtilityImpl;
@@ -61,8 +42,6 @@ import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrder;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetail;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetailAdjustment;
-import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetailAdjustmentImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetailImpl;
 import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetailWrapper;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemFeePrice;
@@ -76,678 +55,187 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.domain.OrderItemAttribute;
-import org.broadleafcommerce.core.order.domain.OrderItemImpl;
 import org.broadleafcommerce.core.order.domain.OrderItemPriceDetail;
 import org.broadleafcommerce.core.order.domain.OrderItemPriceDetailImpl;
 import org.broadleafcommerce.core.order.domain.OrderItemQualifier;
-import org.broadleafcommerce.core.order.domain.OrderItemQualifierImpl;
 import org.broadleafcommerce.core.order.domain.PersonalMessage;
 import org.broadleafcommerce.core.order.domain.PersonalMessageImpl;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OfferServiceUtilitiesImplDiffblueTest {
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#sortTargetItemDetails(List, boolean)}.
-   * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#sortTargetItemDetails(List, boolean)}
-   */
-  @Test
-  public void testSortTargetItemDetails_givenAuditableCreatedByIsOne_thenCallsGetCurrencyCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setOrder(order);
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem, null, null, true), 1));
-    BroadleafCurrencyImpl broadleafCurrencyImpl2 = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl2.getCurrencyCode()).thenReturn("GBP");
-    Order order2 = mock(Order.class);
-    when(order2.getCurrency()).thenReturn(broadleafCurrencyImpl2);
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderItemImpl orderItem2 = new OrderItemImpl();
-    orderItem2.setAuditable(auditable);
-    orderItem2.setCandidateItemOffers(new ArrayList<>());
-    orderItem2.setCartMessages(new ArrayList<>());
-    orderItem2.setChildOrderItems(new ArrayList<>());
-    orderItem2.setDiscountingAllowed(true);
-    orderItem2.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem2.setHasValidationError(true);
-    orderItem2.setId(1L);
-    orderItem2.setName("Name");
-    orderItem2.setOrder(new NullOrderImpl());
-    orderItem2.setOrderItemAdjustments(new ArrayList<>());
-    orderItem2.setOrderItemAttributes(new HashMap<>());
-    orderItem2.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem2.setOrderItemQualifiers(new ArrayList<>());
-    orderItem2.setOrderItemType(OrderItemType.BASIC);
-    orderItem2.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem2.setPersonalMessage(new PersonalMessageImpl());
-    orderItem2.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem2.setQuantity(1);
-    orderItem2.setRetailPrice(new Money());
-    orderItem2.setRetailPriceOverride(true);
-    orderItem2.setSalePrice(new Money());
-    orderItem2.setSalePriceOverride(true);
-    orderItem2.setTaxable(true);
-    orderItem2.updateSaleAndRetailPrices();
-    orderItem2.addCandidateItemOffer(new CandidateItemOfferImpl());
-    orderItem2.setOrder(order2);
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper2 = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem2, null, null, true), 1));
-
-    ArrayList<PromotableOrderItemPriceDetail> itemPriceDetails = new ArrayList<>();
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper2);
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper);
-
-    // Act
-    offerServiceUtilitiesImpl.sortTargetItemDetails(itemPriceDetails, true);
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(broadleafCurrencyImpl2, atLeast(1)).getCurrencyCode();
-    verify(order).getCurrency();
-    verify(order2, atLeast(1)).getCurrency();
-  }
+  @Autowired
+  private OfferServiceUtilitiesImpl offerServiceUtilitiesImpl;
 
   /**
-   * Test {@link OfferServiceUtilitiesImpl#sortTargetItemDetails(List, boolean)}.
-   * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor) Order is
-   * {@link NullOrderImpl} (default constructor).</li>
-   * </ul>
+   * Test
+   * {@link OfferServiceUtilitiesImpl#applyAdjustmentsForItemPriceDetails(PromotableCandidateItemOffer, List)}.
    * <p>
    * Method under test:
-   * {@link OfferServiceUtilitiesImpl#sortTargetItemDetails(List, boolean)}
+   * {@link OfferServiceUtilitiesImpl#applyAdjustmentsForItemPriceDetails(PromotableCandidateItemOffer, List)}
    */
   @Test
-  public void testSortTargetItemDetails_givenBundleOrderItemImplOrderIsNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testApplyAdjustmentsForItemPriceDetails() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2185 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceUtilitiesImpl offerServiceUtilitiesImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
+    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl2 = new OfferServiceUtilitiesImpl(
         new PromotableOfferUtilityImpl());
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setOrder(order);
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem, null, null, true), 1));
-
-    BundleOrderItemImpl orderItem2 = new BundleOrderItemImpl();
-    orderItem2.setOrder(new NullOrderImpl());
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper2 = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem2, null, null, true), 1));
-
-    ArrayList<PromotableOrderItemPriceDetail> itemPriceDetails = new ArrayList<>();
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper2);
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper);
+    PromotableCandidateItemOfferImpl itemOffer = new PromotableCandidateItemOfferImpl(promotableOrder, new OfferImpl());
 
     // Act
-    offerServiceUtilitiesImpl.sortTargetItemDetails(itemPriceDetails, true);
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(order).getCurrency();
-  }
-
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#sortTargetItemDetails(List, boolean)}.
-   * <ul>
-   *   <li>Given {@link Order} {@link Order#getCurrency()} return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#sortTargetItemDetails(List, boolean)}
-   */
-  @Test
-  public void testSortTargetItemDetails_givenOrderGetCurrencyReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setOrder(order);
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem, null, null, true), 1));
-    Order order2 = mock(Order.class);
-    when(order2.getCurrency()).thenReturn(null);
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderItemImpl orderItem2 = new OrderItemImpl();
-    orderItem2.setAuditable(auditable);
-    orderItem2.setCandidateItemOffers(new ArrayList<>());
-    orderItem2.setCartMessages(new ArrayList<>());
-    orderItem2.setChildOrderItems(new ArrayList<>());
-    orderItem2.setDiscountingAllowed(true);
-    orderItem2.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem2.setHasValidationError(true);
-    orderItem2.setId(1L);
-    orderItem2.setName("Name");
-    orderItem2.setOrder(new NullOrderImpl());
-    orderItem2.setOrderItemAdjustments(new ArrayList<>());
-    orderItem2.setOrderItemAttributes(new HashMap<>());
-    orderItem2.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem2.setOrderItemQualifiers(new ArrayList<>());
-    orderItem2.setOrderItemType(OrderItemType.BASIC);
-    orderItem2.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem2.setPersonalMessage(new PersonalMessageImpl());
-    orderItem2.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem2.setQuantity(1);
-    orderItem2.setRetailPrice(new Money());
-    orderItem2.setRetailPriceOverride(true);
-    orderItem2.setSalePrice(new Money());
-    orderItem2.setSalePriceOverride(true);
-    orderItem2.setTaxable(true);
-    orderItem2.updateSaleAndRetailPrices();
-    orderItem2.addCandidateItemOffer(new CandidateItemOfferImpl());
-    orderItem2.setOrder(order2);
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper2 = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem2, null, null, true), 1));
-
-    ArrayList<PromotableOrderItemPriceDetail> itemPriceDetails = new ArrayList<>();
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper2);
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper);
-
-    // Act
-    offerServiceUtilitiesImpl.sortTargetItemDetails(itemPriceDetails, true);
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(order).getCurrency();
-    verify(order2, atLeast(1)).getCurrency();
+    offerServiceUtilitiesImpl2.applyAdjustmentsForItemPriceDetails(itemOffer, new ArrayList<>());
   }
 
   /**
    * Test
-   * {@link OfferServiceUtilitiesImpl#sortQualifierItemDetails(List, boolean)}.
-   * <ul>
-   *   <li>Given {@link BundleOrderItemImpl} (default constructor) Order is
-   * {@link NullOrderImpl} (default constructor).</li>
-   * </ul>
+   * {@link OfferServiceUtilitiesImpl#adjustmentIsNotGoodEnoughToBeApplied(PromotableCandidateItemOffer, PromotableOrderItemPriceDetail)}.
    * <p>
    * Method under test:
-   * {@link OfferServiceUtilitiesImpl#sortQualifierItemDetails(List, boolean)}
+   * {@link OfferServiceUtilitiesImpl#adjustmentIsNotGoodEnoughToBeApplied(PromotableCandidateItemOffer, PromotableOrderItemPriceDetail)}
    */
   @Test
-  public void testSortQualifierItemDetails_givenBundleOrderItemImplOrderIsNullOrderImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testAdjustmentIsNotGoodEnoughToBeApplied() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1996 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceUtilitiesImpl offerServiceUtilitiesImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
+    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl2 = new OfferServiceUtilitiesImpl(
         new PromotableOfferUtilityImpl());
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setOrder(order);
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem, null, null, true), 1));
-
-    BundleOrderItemImpl orderItem2 = new BundleOrderItemImpl();
-    orderItem2.setOrder(new NullOrderImpl());
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper2 = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem2, null, null, true), 1));
-
-    ArrayList<PromotableOrderItemPriceDetail> itemPriceDetails = new ArrayList<>();
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper2);
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper);
+    PromotableCandidateItemOfferImpl itemOffer = new PromotableCandidateItemOfferImpl(promotableOrder, new OfferImpl());
 
     // Act
-    offerServiceUtilitiesImpl.sortQualifierItemDetails(itemPriceDetails, true);
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(order).getCurrency();
+    offerServiceUtilitiesImpl2.adjustmentIsNotGoodEnoughToBeApplied(itemOffer,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(
+            new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true), 1)));
   }
 
   /**
    * Test
-   * {@link OfferServiceUtilitiesImpl#sortQualifierItemDetails(List, boolean)}.
-   * <ul>
-   *   <li>Given {@link Order} {@link Order#getCurrency()} return {@code null}.</li>
-   * </ul>
+   * {@link OfferServiceUtilitiesImpl#applyOrderItemAdjustment(PromotableCandidateItemOffer, PromotableOrderItemPriceDetail)}.
    * <p>
    * Method under test:
-   * {@link OfferServiceUtilitiesImpl#sortQualifierItemDetails(List, boolean)}
+   * {@link OfferServiceUtilitiesImpl#applyOrderItemAdjustment(PromotableCandidateItemOffer, PromotableOrderItemPriceDetail)}
    */
   @Test
-  public void testSortQualifierItemDetails_givenOrderGetCurrencyReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testApplyOrderItemAdjustment() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2282 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceUtilitiesImpl offerServiceUtilitiesImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
+    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl2 = new OfferServiceUtilitiesImpl(
         new PromotableOfferUtilityImpl());
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
 
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setOrder(order);
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem, null, null, true), 1));
-    Order order2 = mock(Order.class);
-    when(order2.getCurrency()).thenReturn(null);
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderItemImpl orderItem2 = new OrderItemImpl();
-    orderItem2.setAuditable(auditable);
-    orderItem2.setCandidateItemOffers(new ArrayList<>());
-    orderItem2.setCartMessages(new ArrayList<>());
-    orderItem2.setChildOrderItems(new ArrayList<>());
-    orderItem2.setDiscountingAllowed(true);
-    orderItem2.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem2.setHasValidationError(true);
-    orderItem2.setId(1L);
-    orderItem2.setName("Name");
-    orderItem2.setOrder(new NullOrderImpl());
-    orderItem2.setOrderItemAdjustments(new ArrayList<>());
-    orderItem2.setOrderItemAttributes(new HashMap<>());
-    orderItem2.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem2.setOrderItemQualifiers(new ArrayList<>());
-    orderItem2.setOrderItemType(OrderItemType.BASIC);
-    orderItem2.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem2.setPersonalMessage(new PersonalMessageImpl());
-    orderItem2.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem2.setQuantity(1);
-    orderItem2.setRetailPrice(new Money());
-    orderItem2.setRetailPriceOverride(true);
-    orderItem2.setSalePrice(new Money());
-    orderItem2.setSalePriceOverride(true);
-    orderItem2.setTaxable(true);
-    orderItem2.updateSaleAndRetailPrices();
-    orderItem2.addCandidateItemOffer(new CandidateItemOfferImpl());
-    orderItem2.setOrder(order2);
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper2 = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem2, null, null, true), 1));
-
-    ArrayList<PromotableOrderItemPriceDetail> itemPriceDetails = new ArrayList<>();
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper2);
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper);
+    PromotableCandidateItemOfferImpl itemOffer = new PromotableCandidateItemOfferImpl(promotableOrder, new OfferImpl());
 
     // Act
-    offerServiceUtilitiesImpl.sortQualifierItemDetails(itemPriceDetails, true);
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(order).getCurrency();
-    verify(order2, atLeast(1)).getCurrency();
+    offerServiceUtilitiesImpl2.applyOrderItemAdjustment(itemOffer,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(
+            new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true), 1)));
   }
 
   /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#sortQualifierItemDetails(List, boolean)}.
-   * <ul>
-   *   <li>Then calls {@link BroadleafCurrencyImpl#getCurrencyCode()}.</li>
-   * </ul>
+   * Test {@link OfferServiceUtilitiesImpl#buildOrderItemList(Order)}.
    * <p>
    * Method under test:
-   * {@link OfferServiceUtilitiesImpl#sortQualifierItemDetails(List, boolean)}
+   * {@link OfferServiceUtilitiesImpl#buildOrderItemList(Order)}
    */
   @Test
-  public void testSortQualifierItemDetails_thenCallsGetCurrencyCode() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testBuildOrderItemList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2489 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceUtilitiesImpl offerServiceUtilitiesImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
+    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl2 = new OfferServiceUtilitiesImpl(
         new PromotableOfferUtilityImpl());
-    BroadleafCurrencyImpl broadleafCurrencyImpl = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl.getCurrencyCode()).thenReturn("GBP");
-    Order order = mock(Order.class);
-    when(order.getCurrency()).thenReturn(broadleafCurrencyImpl);
-
-    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
-    orderItem.setOrder(order);
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem, null, null, true), 1));
-    BroadleafCurrencyImpl broadleafCurrencyImpl2 = mock(BroadleafCurrencyImpl.class);
-    when(broadleafCurrencyImpl2.getCurrencyCode()).thenReturn("GBP");
-    Order order2 = mock(Order.class);
-    when(order2.getCurrency()).thenReturn(broadleafCurrencyImpl2);
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    OrderItemImpl orderItem2 = new OrderItemImpl();
-    orderItem2.setAuditable(auditable);
-    orderItem2.setCandidateItemOffers(new ArrayList<>());
-    orderItem2.setCartMessages(new ArrayList<>());
-    orderItem2.setChildOrderItems(new ArrayList<>());
-    orderItem2.setDiscountingAllowed(true);
-    orderItem2.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    orderItem2.setHasValidationError(true);
-    orderItem2.setId(1L);
-    orderItem2.setName("Name");
-    orderItem2.setOrder(new NullOrderImpl());
-    orderItem2.setOrderItemAdjustments(new ArrayList<>());
-    orderItem2.setOrderItemAttributes(new HashMap<>());
-    orderItem2.setOrderItemPriceDetails(new ArrayList<>());
-    orderItem2.setOrderItemQualifiers(new ArrayList<>());
-    orderItem2.setOrderItemType(OrderItemType.BASIC);
-    orderItem2.setParentOrderItem(new BundleOrderItemImpl());
-    orderItem2.setPersonalMessage(new PersonalMessageImpl());
-    orderItem2.setProratedOrderItemAdjustments(new ArrayList<>());
-    orderItem2.setQuantity(1);
-    orderItem2.setRetailPrice(new Money());
-    orderItem2.setRetailPriceOverride(true);
-    orderItem2.setSalePrice(new Money());
-    orderItem2.setSalePriceOverride(true);
-    orderItem2.setTaxable(true);
-    orderItem2.updateSaleAndRetailPrices();
-    orderItem2.addCandidateItemOffer(new CandidateItemOfferImpl());
-    orderItem2.setOrder(order2);
-    PromotableOrderItemPriceDetailWrapper promotableOrderItemPriceDetailWrapper2 = new PromotableOrderItemPriceDetailWrapper(
-        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(orderItem2, null, null, true), 1));
-
-    ArrayList<PromotableOrderItemPriceDetail> itemPriceDetails = new ArrayList<>();
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper2);
-    itemPriceDetails.add(promotableOrderItemPriceDetailWrapper);
 
     // Act
-    offerServiceUtilitiesImpl.sortQualifierItemDetails(itemPriceDetails, true);
-
-    // Assert
-    verify(broadleafCurrencyImpl).getCurrencyCode();
-    verify(broadleafCurrencyImpl2, atLeast(1)).getCurrencyCode();
-    verify(order).getCurrency();
-    verify(order2, atLeast(1)).getCurrency();
-  }
-
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#findRelatedQualifierRoot(OrderItem)}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#findRelatedQualifierRoot(OrderItem)}
-   */
-  @Test
-  public void testFindRelatedQualifierRoot() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        mock(PromotableOfferUtilityImpl.class));
-    BundleOrderItemImpl relatedQualifier = new BundleOrderItemImpl();
-
-    // Act and Assert
-    assertSame(relatedQualifier, offerServiceUtilitiesImpl.findRelatedQualifierRoot(relatedQualifier));
-  }
-
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#findRelatedQualifierRoot(OrderItem)}.
-   * <ul>
-   *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#findRelatedQualifierRoot(OrderItem)}
-   */
-  @Test
-  public void testFindRelatedQualifierRoot_givenAuditableCreatedByIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-
-    Auditable auditable = new Auditable();
-    auditable.setCreatedBy(1L);
-    auditable.setDateCreated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setDateUpdated(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
-    auditable.setUpdatedBy(1L);
-
-    BundleOrderItemImpl relatedQualifier = new BundleOrderItemImpl();
-    relatedQualifier.setAuditable(auditable);
-    relatedQualifier.setBaseRetailPrice(new Money());
-    relatedQualifier.setBaseSalePrice(new Money());
-    relatedQualifier.setBundleOrderItemFeePrices(new ArrayList<>());
-    relatedQualifier.setCandidateItemOffers(new ArrayList<>());
-    relatedQualifier.setCartMessages(new ArrayList<>());
-    relatedQualifier.setChildOrderItems(new ArrayList<>());
-    relatedQualifier.setDiscountingAllowed(true);
-    relatedQualifier.setDiscreteOrderItems(new ArrayList<>());
-    relatedQualifier.setGiftWrapOrderItem(new GiftWrapOrderItemImpl());
-    relatedQualifier.setHasValidationError(true);
-    relatedQualifier.setId(1L);
-    relatedQualifier.setName("Name");
-    relatedQualifier.setOrder(new NullOrderImpl());
-    relatedQualifier.setOrderItemAdjustments(new ArrayList<>());
-    relatedQualifier.setOrderItemAttributes(new HashMap<>());
-    relatedQualifier.setOrderItemPriceDetails(new ArrayList<>());
-    relatedQualifier.setOrderItemQualifiers(new ArrayList<>());
-    relatedQualifier.setOrderItemType(OrderItemType.BASIC);
-    relatedQualifier.setPersonalMessage(new PersonalMessageImpl());
-    relatedQualifier.setProratedOrderItemAdjustments(new ArrayList<>());
-    relatedQualifier.setQuantity(1);
-    relatedQualifier.setRetailPrice(new Money());
-    relatedQualifier.setRetailPriceOverride(true);
-    relatedQualifier.setSalePrice(new Money());
-    relatedQualifier.setSalePriceOverride(true);
-    relatedQualifier.setTaxable(true);
-    relatedQualifier.updateSaleAndRetailPrices();
-    BundleOrderItemImpl parentOrderItem = new BundleOrderItemImpl();
-    relatedQualifier.setParentOrderItem(parentOrderItem);
-
-    // Act and Assert
-    assertSame(parentOrderItem, offerServiceUtilitiesImpl.findRelatedQualifierRoot(relatedQualifier));
-  }
-
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#findRelatedQualifierRoot(OrderItem)}.
-   * <ul>
-   *   <li>When {@link BundleOrderItemImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#findRelatedQualifierRoot(OrderItem)}
-   */
-  @Test
-  public void testFindRelatedQualifierRoot_whenBundleOrderItemImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    BundleOrderItemImpl relatedQualifier = new BundleOrderItemImpl();
-
-    // Act and Assert
-    assertSame(relatedQualifier, offerServiceUtilitiesImpl.findRelatedQualifierRoot(relatedQualifier));
-  }
-
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#findRelatedQualifierRoot(OrderItem)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#findRelatedQualifierRoot(OrderItem)}
-   */
-  @Test
-  public void testFindRelatedQualifierRoot_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new OfferServiceUtilitiesImpl(new PromotableOfferUtilityImpl())).findRelatedQualifierRoot(null));
-  }
-
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#isAddOnOrderItem(OrderItem)}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#isAddOnOrderItem(OrderItem)}
-   */
-  @Test
-  public void testIsAddOnOrderItem() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        mock(PromotableOfferUtilityImpl.class));
-
-    // Act and Assert
-    assertFalse(offerServiceUtilitiesImpl.isAddOnOrderItem(new BundleOrderItemImpl()));
-  }
-
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#isAddOnOrderItem(OrderItem)}.
-   * <ul>
-   *   <li>Given {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#isAddOnOrderItem(OrderItem)}
-   */
-  @Test
-  public void testIsAddOnOrderItem_givenFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    DiscreteOrderItemImpl orderItem = mock(DiscreteOrderItemImpl.class);
-    when(orderItem.isChildOrderItem()).thenReturn(false);
-    when(orderItem.getAdditionalAttributes()).thenReturn(new HashMap<>());
-
-    // Act
-    boolean actualIsAddOnOrderItemResult = offerServiceUtilitiesImpl.isAddOnOrderItem(orderItem);
-
-    // Assert
-    verify(orderItem).getAdditionalAttributes();
-    verify(orderItem).isChildOrderItem();
-    assertFalse(actualIsAddOnOrderItemResult);
-  }
-
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#isAddOnOrderItem(OrderItem)}.
-   * <ul>
-   *   <li>Given {@link HashMap#HashMap()} {@code addOnXrefId} is
-   * {@code addOnXrefId}.</li>
-   *   <li>Then return {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#isAddOnOrderItem(OrderItem)}
-   */
-  @Test
-  public void testIsAddOnOrderItem_givenHashMapAddOnXrefIdIsAddOnXrefId_thenReturnTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-
-    HashMap<String, String> stringStringMap = new HashMap<>();
-    stringStringMap.put("addOnXrefId", "addOnXrefId");
-    DiscreteOrderItemImpl orderItem = mock(DiscreteOrderItemImpl.class);
-    when(orderItem.isChildOrderItem()).thenReturn(true);
-    when(orderItem.getAdditionalAttributes()).thenReturn(stringStringMap);
-
-    // Act
-    boolean actualIsAddOnOrderItemResult = offerServiceUtilitiesImpl.isAddOnOrderItem(orderItem);
-
-    // Assert
-    verify(orderItem).getAdditionalAttributes();
-    verify(orderItem).isChildOrderItem();
-    assertTrue(actualIsAddOnOrderItemResult);
-  }
-
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#isAddOnOrderItem(OrderItem)}.
-   * <ul>
-   *   <li>Given {@code true}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#isAddOnOrderItem(OrderItem)}
-   */
-  @Test
-  public void testIsAddOnOrderItem_givenTrue() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    DiscreteOrderItemImpl orderItem = mock(DiscreteOrderItemImpl.class);
-    when(orderItem.isChildOrderItem()).thenReturn(true);
-    when(orderItem.getAdditionalAttributes()).thenReturn(new HashMap<>());
-
-    // Act
-    boolean actualIsAddOnOrderItemResult = offerServiceUtilitiesImpl.isAddOnOrderItem(orderItem);
-
-    // Assert
-    verify(orderItem).getAdditionalAttributes();
-    verify(orderItem).isChildOrderItem();
-    assertFalse(actualIsAddOnOrderItemResult);
-  }
-
-  /**
-   * Test {@link OfferServiceUtilitiesImpl#isAddOnOrderItem(OrderItem)}.
-   * <ul>
-   *   <li>When {@link BundleOrderItemImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#isAddOnOrderItem(OrderItem)}
-   */
-  @Test
-  public void testIsAddOnOrderItem_whenBundleOrderItemImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-
-    // Act and Assert
-    assertFalse(offerServiceUtilitiesImpl.isAddOnOrderItem(new BundleOrderItemImpl()));
+    offerServiceUtilitiesImpl2.buildOrderItemList(new NullOrderImpl());
   }
 
   /**
@@ -1006,6 +494,43 @@ public class OfferServiceUtilitiesImplDiffblueTest {
   /**
    * Test
    * {@link OfferServiceUtilitiesImpl#buildPromotableItemMap(PromotableOrder)}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceUtilitiesImpl#buildPromotableItemMap(PromotableOrder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildPromotableItemMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2509 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceUtilitiesImpl offerServiceUtilitiesImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl2 = new OfferServiceUtilitiesImpl(
+        new PromotableOfferUtilityImpl());
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    offerServiceUtilitiesImpl2.buildPromotableItemMap(
+        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
+  }
+
+  /**
+   * Test
+   * {@link OfferServiceUtilitiesImpl#buildPromotableItemMap(PromotableOrder)}.
    * <ul>
    *   <li>Given {@link Auditable} (default constructor) CreatedBy is one.</li>
    *   <li>Then return Empty.</li>
@@ -1142,6 +667,41 @@ public class OfferServiceUtilitiesImplDiffblueTest {
   /**
    * Test
    * {@link OfferServiceUtilitiesImpl#buildItemDetailAdjustmentMap(OrderItemPriceDetail)}.
+   * <p>
+   * Method under test:
+   * {@link OfferServiceUtilitiesImpl#buildItemDetailAdjustmentMap(OrderItemPriceDetail)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildItemDetailAdjustmentMap2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2471 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.OfferServiceUtilitiesImpl offerServiceUtilitiesImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl2 = new OfferServiceUtilitiesImpl(
+        new PromotableOfferUtilityImpl());
+
+    // Act
+    offerServiceUtilitiesImpl2.buildItemDetailAdjustmentMap(new OrderItemPriceDetailImpl());
+  }
+
+  /**
+   * Test
+   * {@link OfferServiceUtilitiesImpl#buildItemDetailAdjustmentMap(OrderItemPriceDetail)}.
    * <ul>
    *   <li>Then return size is one.</li>
    * </ul>
@@ -1201,386 +761,6 @@ public class OfferServiceUtilitiesImplDiffblueTest {
 
     // Act and Assert
     assertTrue(offerServiceUtilitiesImpl.buildItemDetailAdjustmentMap(new OrderItemPriceDetailImpl()).isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#updatePriceDetail(OrderItemPriceDetail, PromotableOrderItemPriceDetail)}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#updatePriceDetail(OrderItemPriceDetail, PromotableOrderItemPriceDetail)}
-   */
-  @Test
-  public void testUpdatePriceDetail() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        mock(PromotableOfferUtilityImpl.class));
-    OrderItemPriceDetailImpl itemDetail = new OrderItemPriceDetailImpl();
-
-    // Act
-    offerServiceUtilitiesImpl.updatePriceDetail(itemDetail,
-        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(
-            new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true), 1)));
-
-    // Assert
-    assertEquals(1, itemDetail.getQuantity());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#updatePriceDetail(OrderItemPriceDetail, PromotableOrderItemPriceDetail)}.
-   * <ul>
-   *   <li>Given {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then calls
-   * {@link OrderItemPriceDetailImpl#getOrderItemPriceDetailAdjustments()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#updatePriceDetail(OrderItemPriceDetail, PromotableOrderItemPriceDetail)}
-   */
-  @Test
-  public void testUpdatePriceDetail_givenArrayList_thenCallsGetOrderItemPriceDetailAdjustments() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    OrderItemPriceDetailImpl itemDetail = mock(OrderItemPriceDetailImpl.class);
-    when(itemDetail.getQuantity()).thenReturn(1);
-    when(itemDetail.getOrderItemPriceDetailAdjustments()).thenReturn(new ArrayList<>());
-
-    // Act
-    offerServiceUtilitiesImpl.updatePriceDetail(itemDetail,
-        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(
-            new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true), 1)));
-
-    // Assert
-    verify(itemDetail).getOrderItemPriceDetailAdjustments();
-    verify(itemDetail).getQuantity();
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#updatePriceDetail(OrderItemPriceDetail, PromotableOrderItemPriceDetail)}.
-   * <ul>
-   *   <li>Given {@code true}.</li>
-   *   <li>Then calls
-   * {@link PromotableOrderItemPriceDetail#getCandidateItemAdjustments()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#updatePriceDetail(OrderItemPriceDetail, PromotableOrderItemPriceDetail)}
-   */
-  @Test
-  public void testUpdatePriceDetail_givenTrue_thenCallsGetCandidateItemAdjustments() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    OrderItemPriceDetailImpl itemDetail = mock(OrderItemPriceDetailImpl.class);
-    doNothing().when(itemDetail).setUseSalePrice(anyBoolean());
-    when(itemDetail.getQuantity()).thenReturn(1);
-    when(itemDetail.getOrderItemPriceDetailAdjustments()).thenReturn(new ArrayList<>());
-    PromotableOrderItemPriceDetail wrappedDetail = mock(PromotableOrderItemPriceDetail.class);
-    when(wrappedDetail.useSaleAdjustments()).thenReturn(true);
-    when(wrappedDetail.isAdjustmentsFinalized()).thenReturn(true);
-    when(wrappedDetail.getQuantity()).thenReturn(1);
-    when(wrappedDetail.getCandidateItemAdjustments()).thenReturn(new ArrayList<>());
-
-    // Act
-    offerServiceUtilitiesImpl.updatePriceDetail(itemDetail, new PromotableOrderItemPriceDetailWrapper(wrappedDetail));
-
-    // Assert
-    verify(wrappedDetail).getCandidateItemAdjustments();
-    verify(wrappedDetail).getQuantity();
-    verify(wrappedDetail).isAdjustmentsFinalized();
-    verify(wrappedDetail).useSaleAdjustments();
-    verify(itemDetail).getOrderItemPriceDetailAdjustments();
-    verify(itemDetail).getQuantity();
-    verify(itemDetail).setUseSalePrice(eq(true));
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#updatePriceDetail(OrderItemPriceDetail, PromotableOrderItemPriceDetail)}.
-   * <ul>
-   *   <li>Then {@link OrderItemPriceDetailImpl} (default constructor) Quantity is
-   * one.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#updatePriceDetail(OrderItemPriceDetail, PromotableOrderItemPriceDetail)}
-   */
-  @Test
-  public void testUpdatePriceDetail_thenOrderItemPriceDetailImplQuantityIsOne() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    OrderItemPriceDetailImpl itemDetail = new OrderItemPriceDetailImpl();
-
-    // Act
-    offerServiceUtilitiesImpl.updatePriceDetail(itemDetail,
-        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(
-            new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true), 1)));
-
-    // Assert
-    assertEquals(1, itemDetail.getQuantity());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#updateItemAdjustment(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetailAdjustment)}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#updateItemAdjustment(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetailAdjustment)}
-   */
-  @Test
-  public void testUpdateItemAdjustment() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        mock(PromotableOfferUtilityImpl.class));
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment = new OrderItemPriceDetailAdjustmentImpl();
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment2 = mock(OrderItemPriceDetailAdjustmentImpl.class);
-    Money money = new Money();
-    when(itemAdjustment2.getRetailPriceValue()).thenReturn(money);
-    when(itemAdjustment2.isAppliedToSalePrice()).thenReturn(true);
-    Money money2 = new Money();
-    when(itemAdjustment2.getValue()).thenReturn(money2);
-    when(itemAdjustment2.getOffer()).thenReturn(new OfferImpl());
-
-    // Act
-    offerServiceUtilitiesImpl.updateItemAdjustment(itemAdjustment, new PromotableOrderItemPriceDetailAdjustmentImpl(
-        itemAdjustment2, new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(null, 1))));
-
-    // Assert
-    verify(itemAdjustment2).getOffer();
-    verify(itemAdjustment2).getRetailPriceValue();
-    verify(itemAdjustment2, atLeast(1)).getValue();
-    verify(itemAdjustment2, atLeast(1)).isAppliedToSalePrice();
-    assertTrue(itemAdjustment.isAppliedToSalePrice());
-    assertSame(money, itemAdjustment.getRetailPriceValue());
-    assertSame(money2, itemAdjustment.getSalesPriceValue());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#updateItemAdjustment(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetailAdjustment)}.
-   * <ul>
-   *   <li>Then calls
-   * {@link OrderItemPriceDetailAdjustmentImpl#setAppliedToSalePrice(boolean)}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#updateItemAdjustment(OrderItemPriceDetailAdjustment, PromotableOrderItemPriceDetailAdjustment)}
-   */
-  @Test
-  public void testUpdateItemAdjustment_thenCallsSetAppliedToSalePrice() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        mock(PromotableOfferUtilityImpl.class));
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment = mock(OrderItemPriceDetailAdjustmentImpl.class);
-    doNothing().when(itemAdjustment).setAppliedToSalePrice(anyBoolean());
-    doNothing().when(itemAdjustment).setRetailPriceValue(Mockito.<Money>any());
-    doNothing().when(itemAdjustment).setSalesPriceValue(Mockito.<Money>any());
-    doNothing().when(itemAdjustment).setValue(Mockito.<Money>any());
-    OrderItemPriceDetailAdjustmentImpl itemAdjustment2 = mock(OrderItemPriceDetailAdjustmentImpl.class);
-    when(itemAdjustment2.getRetailPriceValue()).thenReturn(new Money());
-    when(itemAdjustment2.isAppliedToSalePrice()).thenReturn(true);
-    when(itemAdjustment2.getValue()).thenReturn(new Money());
-    when(itemAdjustment2.getOffer()).thenReturn(new OfferImpl());
-
-    // Act
-    offerServiceUtilitiesImpl.updateItemAdjustment(itemAdjustment, new PromotableOrderItemPriceDetailAdjustmentImpl(
-        itemAdjustment2, new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(null, 1))));
-
-    // Assert
-    verify(itemAdjustment2).getOffer();
-    verify(itemAdjustment2).getRetailPriceValue();
-    verify(itemAdjustment2, atLeast(1)).getValue();
-    verify(itemAdjustment2, atLeast(1)).isAppliedToSalePrice();
-    verify(itemAdjustment).setAppliedToSalePrice(eq(true));
-    verify(itemAdjustment).setRetailPriceValue(isA(Money.class));
-    verify(itemAdjustment).setSalesPriceValue(isA(Money.class));
-    verify(itemAdjustment).setValue(isA(Money.class));
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedPriceDetails(Map, Iterator)}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedPriceDetails(Map, Iterator)}
-   */
-  @Test
-  public void testRemoveUnmatchedPriceDetails() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        mock(PromotableOfferUtilityImpl.class));
-    HashMap<Long, OrderItemPriceDetail> unmatchedDetailsMap = new HashMap<>();
-
-    ArrayList<OrderItemPriceDetail> orderItemPriceDetailList = new ArrayList<>();
-    Iterator<OrderItemPriceDetail> pdIterator = orderItemPriceDetailList.iterator();
-
-    // Act
-    offerServiceUtilitiesImpl.removeUnmatchedPriceDetails(unmatchedDetailsMap, pdIterator);
-
-    // Assert that nothing has changed
-    assertFalse(pdIterator.hasNext());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedPriceDetails(Map, Iterator)}.
-   * <ul>
-   *   <li>Given {@link OrderItemPriceDetailImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedPriceDetails(Map, Iterator)}
-   */
-  @Test
-  public void testRemoveUnmatchedPriceDetails_givenOrderItemPriceDetailImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    HashMap<Long, OrderItemPriceDetail> unmatchedDetailsMap = new HashMap<>();
-
-    ArrayList<OrderItemPriceDetail> orderItemPriceDetailList = new ArrayList<>();
-    orderItemPriceDetailList.add(new OrderItemPriceDetailImpl());
-    Iterator<OrderItemPriceDetail> pdIterator = orderItemPriceDetailList.iterator();
-
-    // Act
-    offerServiceUtilitiesImpl.removeUnmatchedPriceDetails(unmatchedDetailsMap, pdIterator);
-
-    // Assert that nothing has changed
-    assertFalse(pdIterator.hasNext());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedPriceDetails(Map, Iterator)}.
-   * <ul>
-   *   <li>Then not {@link ArrayList#ArrayList()} iterator hasNext.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedPriceDetails(Map, Iterator)}
-   */
-  @Test
-  public void testRemoveUnmatchedPriceDetails_thenNotArrayListIteratorHasNext() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    HashMap<Long, OrderItemPriceDetail> unmatchedDetailsMap = new HashMap<>();
-
-    ArrayList<OrderItemPriceDetail> orderItemPriceDetailList = new ArrayList<>();
-    Iterator<OrderItemPriceDetail> pdIterator = orderItemPriceDetailList.iterator();
-
-    // Act
-    offerServiceUtilitiesImpl.removeUnmatchedPriceDetails(unmatchedDetailsMap, pdIterator);
-
-    // Assert that nothing has changed
-    assertFalse(pdIterator.hasNext());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedQualifiers(Map, Iterator)}.
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedQualifiers(Map, Iterator)}
-   */
-  @Test
-  public void testRemoveUnmatchedQualifiers() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        mock(PromotableOfferUtilityImpl.class));
-    HashMap<Long, OrderItemQualifier> unmatchedQualifiersMap = new HashMap<>();
-
-    ArrayList<OrderItemQualifier> orderItemQualifierList = new ArrayList<>();
-    Iterator<OrderItemQualifier> qIterator = orderItemQualifierList.iterator();
-
-    // Act
-    offerServiceUtilitiesImpl.removeUnmatchedQualifiers(unmatchedQualifiersMap, qIterator);
-
-    // Assert that nothing has changed
-    assertFalse(qIterator.hasNext());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedQualifiers(Map, Iterator)}.
-   * <ul>
-   *   <li>Given {@link OrderItemQualifierImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedQualifiers(Map, Iterator)}
-   */
-  @Test
-  public void testRemoveUnmatchedQualifiers_givenOrderItemQualifierImpl() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    HashMap<Long, OrderItemQualifier> unmatchedQualifiersMap = new HashMap<>();
-
-    ArrayList<OrderItemQualifier> orderItemQualifierList = new ArrayList<>();
-    orderItemQualifierList.add(new OrderItemQualifierImpl());
-    Iterator<OrderItemQualifier> qIterator = orderItemQualifierList.iterator();
-
-    // Act
-    offerServiceUtilitiesImpl.removeUnmatchedQualifiers(unmatchedQualifiersMap, qIterator);
-
-    // Assert that nothing has changed
-    assertFalse(qIterator.hasNext());
-  }
-
-  /**
-   * Test
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedQualifiers(Map, Iterator)}.
-   * <ul>
-   *   <li>Then not {@link ArrayList#ArrayList()} iterator hasNext.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link OfferServiceUtilitiesImpl#removeUnmatchedQualifiers(Map, Iterator)}
-   */
-  @Test
-  public void testRemoveUnmatchedQualifiers_thenNotArrayListIteratorHasNext() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OfferServiceUtilitiesImpl offerServiceUtilitiesImpl = new OfferServiceUtilitiesImpl(
-        new PromotableOfferUtilityImpl());
-    HashMap<Long, OrderItemQualifier> unmatchedQualifiersMap = new HashMap<>();
-
-    ArrayList<OrderItemQualifier> orderItemQualifierList = new ArrayList<>();
-    Iterator<OrderItemQualifier> qIterator = orderItemQualifierList.iterator();
-
-    // Act
-    offerServiceUtilitiesImpl.removeUnmatchedQualifiers(unmatchedQualifiersMap, qIterator);
-
-    // Assert that nothing has changed
-    assertFalse(qIterator.hasNext());
   }
 
   /**

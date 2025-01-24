@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.page.service;
 
 import static org.junit.Assert.assertEquals;
@@ -37,9 +20,25 @@ import org.broadleafcommerce.common.sitemap.service.SiteMapBuilder;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapChangeFreqType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapGeneratorType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapPriorityType;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml",
+    "/applicationContext-servlet-cms-contentCreator.xml", "/bl-cms-applicationContext-entity.xml",
+    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PageSiteMapGeneratorDiffblueTest {
+  @Autowired
+  private PageSiteMapGenerator pageSiteMapGenerator;
+
   /**
    * Test
    * {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
@@ -149,6 +148,40 @@ public class PageSiteMapGeneratorDiffblueTest {
   /**
    * Test
    * {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
+   * <p>
+   * Method under test:
+   * {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleSiteMapConfiguration5() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.page.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2696 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageSiteMapGenerator pageSiteMapGenerator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PageSiteMapGenerator pageSiteMapGenerator2 = new PageSiteMapGenerator();
+
+    // Act
+    pageSiteMapGenerator2.canHandleSiteMapConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl());
+  }
+
+  /**
+   * Test
+   * {@link PageSiteMapGenerator#canHandleSiteMapConfiguration(SiteMapGeneratorConfiguration)}.
    * <ul>
    *   <li>When {@link CustomUrlSiteMapGeneratorConfigurationImpl} (default
    * constructor).</li>
@@ -166,6 +199,78 @@ public class PageSiteMapGeneratorDiffblueTest {
 
     // Act and Assert
     assertFalse(pageSiteMapGenerator.canHandleSiteMapConfiguration(new CustomUrlSiteMapGeneratorConfigurationImpl()));
+  }
+
+  /**
+   * Test
+   * {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}.
+   * <p>
+   * Method under test:
+   * {@link PageSiteMapGenerator#addSiteMapEntries(SiteMapGeneratorConfiguration, SiteMapBuilder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddSiteMapEntries() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.page.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2651 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageSiteMapGenerator pageSiteMapGenerator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PageSiteMapGenerator pageSiteMapGenerator2 = new PageSiteMapGenerator();
+    CustomUrlSiteMapGeneratorConfigurationImpl smgc = new CustomUrlSiteMapGeneratorConfigurationImpl();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+
+    // Act
+    pageSiteMapGenerator2.addSiteMapEntries(smgc,
+        new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true));
+  }
+
+  /**
+   * Test {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}.
+   * <p>
+   * Method under test:
+   * {@link PageSiteMapGenerator#generateUri(SiteMapBuilder, Page)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGenerateUri() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.page.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2738 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageSiteMapGenerator pageSiteMapGenerator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PageSiteMapGenerator pageSiteMapGenerator2 = new PageSiteMapGenerator();
+    SiteMapConfigurationImpl siteMapConfig = new SiteMapConfigurationImpl();
+    SiteMapBuilder smb = new SiteMapBuilder(siteMapConfig, new FileWorkArea(), "https://example.org/example", true);
+
+    // Act
+    pageSiteMapGenerator2.generateUri(smb, new PageImpl());
   }
 
   /**
@@ -286,6 +391,38 @@ public class PageSiteMapGeneratorDiffblueTest {
     // Assert
     verify(page).getFullUrl();
     assertEquals("https://example.org/example/https://example.org/example", actualGenerateUriResult);
+  }
+
+  /**
+   * Test {@link PageSiteMapGenerator#generateDate(Page)}.
+   * <p>
+   * Method under test: {@link PageSiteMapGenerator#generateDate(Page)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGenerateDate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.page.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2714 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.page.service.PageSiteMapGenerator pageSiteMapGenerator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PageSiteMapGenerator pageSiteMapGenerator2 = new PageSiteMapGenerator();
+
+    // Act
+    pageSiteMapGenerator2.generateDate(new PageImpl());
   }
 
   /**

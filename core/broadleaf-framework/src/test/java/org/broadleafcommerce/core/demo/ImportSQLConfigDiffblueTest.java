@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.demo;
 
 import static org.junit.Assert.assertEquals;
@@ -26,6 +9,7 @@ import com.yahoo.platform.yui.compressor.JarClassLoader;
 import org.broadleafcommerce.common.demo.AutoImportSql;
 import org.broadleafcommerce.core.demo.ImportSQLConfig.AssetFoldersExistCondition;
 import org.broadleafcommerce.core.demo.ImportSQLConfig.GiftCardAndCustomerCreditExistCondition;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +44,24 @@ public class ImportSQLConfigDiffblueTest {
     // Assert
     verify(context).getClassLoader();
     assertFalse(actualMatchesResult);
+  }
+
+  /**
+   * Test AssetFoldersExistCondition new {@link AssetFoldersExistCondition}
+   * (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link ImportSQLConfig.AssetFoldersExistCondition}
+   */
+  @Test
+  public void testAssetFoldersExistConditionNewAssetFoldersExistCondition() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new ImportSQLConfig.AssetFoldersExistCondition();
   }
 
   /**
@@ -99,6 +101,25 @@ public class ImportSQLConfigDiffblueTest {
   }
 
   /**
+   * Test {@link ImportSQLConfig#blApproverOnlySecurityData()}.
+   * <p>
+   * Method under test: {@link ImportSQLConfig#blApproverOnlySecurityData()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBlApproverOnlySecurityData2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'blApproverOnlySecurityData' available
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    importSQLConfig.blApproverOnlySecurityData();
+  }
+
+  /**
    * Test {@link ImportSQLConfig#blFrameworkPreBasicData()}.
    * <p>
    * Method under test: {@link ImportSQLConfig#blFrameworkPreBasicData()}
@@ -134,6 +155,25 @@ public class ImportSQLConfigDiffblueTest {
   }
 
   /**
+   * Test {@link ImportSQLConfig#blFrameworkLateData()}.
+   * <p>
+   * Method under test: {@link ImportSQLConfig#blFrameworkLateData()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBlFrameworkLateData2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'blFrameworkLateData' available
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    importSQLConfig.blFrameworkLateData();
+  }
+
+  /**
    * Test {@link ImportSQLConfig#blAssetFolderData()}.
    * <p>
    * Method under test: {@link ImportSQLConfig#blAssetFolderData()}
@@ -149,6 +189,25 @@ public class ImportSQLConfigDiffblueTest {
     assertEquals("blPU", actualBlAssetFolderDataResult.getPersistenceUnit());
     assertEquals("config/bc/sql/demo/populate_asset_folders.sql", actualBlAssetFolderDataResult.getSqlFilePath());
     assertEquals(7000, actualBlAssetFolderDataResult.getOrder());
+  }
+
+  /**
+   * Test {@link ImportSQLConfig#blAssetFolderData()}.
+   * <p>
+   * Method under test: {@link ImportSQLConfig#blAssetFolderData()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBlAssetFolderData2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'blAssetFolderData' available
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    importSQLConfig.blAssetFolderData();
   }
 
   /**
@@ -168,6 +227,25 @@ public class ImportSQLConfigDiffblueTest {
     assertEquals("config/bc/sql/demo/populate_asset_folders_gift_cards.sql",
         actualBlAssetFolderGiftCardDataResult.getSqlFilePath());
     assertEquals(7000, actualBlAssetFolderGiftCardDataResult.getOrder());
+  }
+
+  /**
+   * Test {@link ImportSQLConfig#blAssetFolderGiftCardData()}.
+   * <p>
+   * Method under test: {@link ImportSQLConfig#blAssetFolderGiftCardData()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBlAssetFolderGiftCardData2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'blAssetFolderGiftCardData' available
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    importSQLConfig.blAssetFolderGiftCardData();
   }
 
   /**
@@ -191,5 +269,23 @@ public class ImportSQLConfigDiffblueTest {
     // Assert
     verify(context).getClassLoader();
     assertFalse(actualMatchesResult);
+  }
+
+  /**
+   * Test GiftCardAndCustomerCreditExistCondition new
+   * {@link GiftCardAndCustomerCreditExistCondition} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link ImportSQLConfig.GiftCardAndCustomerCreditExistCondition}
+   */
+  @Test
+  public void testGiftCardAndCustomerCreditExistConditionNewGiftCardAndCustomerCreditExistCondition() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new ImportSQLConfig.GiftCardAndCustomerCreditExistCondition();
   }
 }

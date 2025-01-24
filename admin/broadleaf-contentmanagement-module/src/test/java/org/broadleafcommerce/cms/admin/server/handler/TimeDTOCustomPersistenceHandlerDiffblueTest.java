@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.admin.server.handler;
 
 import static org.junit.Assert.assertFalse;
@@ -31,12 +14,63 @@ import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
+import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.InspectHelper;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml",
+    "/applicationContext-servlet-cms-contentCreator.xml", "/bl-cms-applicationContext-entity.xml",
+    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TimeDTOCustomPersistenceHandlerDiffblueTest {
+  @Autowired
+  private TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler;
+
+  /**
+   * Test
+   * {@link TimeDTOCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link TimeDTOCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleFetch() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.admin.server.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1718 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.admin.server.handler.TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler2 = new TimeDTOCustomPersistenceHandler();
+
+    // Act
+    timeDTOCustomPersistenceHandler2.canHandleFetch(new PersistencePackage());
+  }
+
   /**
    * Test
    * {@link TimeDTOCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
@@ -135,6 +169,40 @@ public class TimeDTOCustomPersistenceHandlerDiffblueTest {
 
     // Act and Assert
     assertFalse(timeDTOCustomPersistenceHandler.canHandleFetch(new PersistencePackage()));
+  }
+
+  /**
+   * Test
+   * {@link TimeDTOCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link TimeDTOCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleAdd() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.admin.server.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1693 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.admin.server.handler.TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler2 = new TimeDTOCustomPersistenceHandler();
+
+    // Act
+    timeDTOCustomPersistenceHandler2.canHandleAdd(new PersistencePackage());
   }
 
   /**
@@ -241,6 +309,40 @@ public class TimeDTOCustomPersistenceHandlerDiffblueTest {
   /**
    * Test
    * {@link TimeDTOCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link TimeDTOCustomPersistenceHandler#canHandleRemove(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleRemove() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.admin.server.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1768 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.admin.server.handler.TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler2 = new TimeDTOCustomPersistenceHandler();
+
+    // Act
+    timeDTOCustomPersistenceHandler2.canHandleRemove(new PersistencePackage());
+  }
+
+  /**
+   * Test
+   * {@link TimeDTOCustomPersistenceHandler#canHandleRemove(PersistencePackage)}.
    * <ul>
    *   <li>Given {@code Dr Jane Doe}.</li>
    * </ul>
@@ -336,6 +438,40 @@ public class TimeDTOCustomPersistenceHandlerDiffblueTest {
 
     // Act and Assert
     assertFalse(timeDTOCustomPersistenceHandler.canHandleRemove(new PersistencePackage()));
+  }
+
+  /**
+   * Test
+   * {@link TimeDTOCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link TimeDTOCustomPersistenceHandler#canHandleUpdate(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleUpdate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.admin.server.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1793 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.admin.server.handler.TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler2 = new TimeDTOCustomPersistenceHandler();
+
+    // Act
+    timeDTOCustomPersistenceHandler2.canHandleUpdate(new PersistencePackage());
   }
 
   /**
@@ -441,6 +577,40 @@ public class TimeDTOCustomPersistenceHandlerDiffblueTest {
   /**
    * Test
    * {@link TimeDTOCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link TimeDTOCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleInspect() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.admin.server.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1743 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.admin.server.handler.TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler2 = new TimeDTOCustomPersistenceHandler();
+
+    // Act
+    timeDTOCustomPersistenceHandler2.canHandleInspect(new PersistencePackage());
+  }
+
+  /**
+   * Test
+   * {@link TimeDTOCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
    * <ul>
    *   <li>Given {@code Dr Jane Doe}.</li>
    * </ul>
@@ -514,6 +684,42 @@ public class TimeDTOCustomPersistenceHandlerDiffblueTest {
 
     // Act and Assert
     assertFalse(timeDTOCustomPersistenceHandler.canHandleInspect(new PersistencePackage()));
+  }
+
+  /**
+   * Test
+   * {@link TimeDTOCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * <p>
+   * Method under test:
+   * {@link TimeDTOCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testInspect() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.admin.server.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-applicationContext-entity.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1818 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.admin.server.handler.TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    TimeDTOCustomPersistenceHandler timeDTOCustomPersistenceHandler2 = new TimeDTOCustomPersistenceHandler();
+    PersistencePackage persistencePackage = new PersistencePackage();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    // Act
+    timeDTOCustomPersistenceHandler2.inspect(persistencePackage, dynamicEntityDao, new PersistenceManagerImpl());
   }
 
   /**

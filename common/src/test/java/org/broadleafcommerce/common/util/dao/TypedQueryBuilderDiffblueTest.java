@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -24,9 +24,24 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.hibernate.procedure.internal.ProcedureCallImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {TypedQueryBuilder.class, String.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TypedQueryBuilderDiffblueTest {
+  @Autowired
+  private TypedQueryBuilder<Object> typedQueryBuilder;
+
   /**
    * Test getters and setters.
    * <p>
@@ -130,6 +145,62 @@ public class TypedQueryBuilderDiffblueTest {
     assertTrue(getResult.restrictions.isEmpty());
     assertSame(object, paramMap.get("p1"));
     assertSame(object, getResult.parameter);
+  }
+
+  /**
+   * Test {@link TypedQueryBuilder#addRestriction(String, String, Object)} with
+   * {@code expression}, {@code operation}, {@code parameter}.
+   * <p>
+   * Method under test:
+   * {@link TypedQueryBuilder#addRestriction(String, String, Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddRestrictionWithExpressionOperationParameter3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Failed to create Spring context.
+    //   Attempt to initialize test context failed with
+    //   java.lang.IllegalStateException: Failed to load ApplicationContext
+    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:98)
+    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
+    //   org.mockito.exceptions.base.MockitoException: 
+    //   Cannot mock/spy class java.lang.Class
+    //   Mockito cannot mock/spy because :
+    //    - final class
+    //       at org.springframework.boot.test.mock.mockito.MockDefinition.createMock(MockDefinition.java:158)
+    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.registerMock(MockitoPostProcessor.java:185)
+    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.register(MockitoPostProcessor.java:167)
+    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.postProcessBeanFactory(MockitoPostProcessor.java:141)
+    //       at org.springframework.boot.test.mock.mockito.MockitoPostProcessor.postProcessBeanFactory(MockitoPostProcessor.java:129)
+    //       at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:325)
+    //       at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:191)
+    //       at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:756)
+    //       at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:573)
+    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:127)
+    //       at org.springframework.test.context.support.AbstractGenericContextLoader.loadContext(AbstractGenericContextLoader.java:60)
+    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.delegateLoading(AbstractDelegatingSmartContextLoader.java:276)
+    //       at org.springframework.test.context.support.AbstractDelegatingSmartContextLoader.loadContext(AbstractDelegatingSmartContextLoader.java:244)
+    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContextInternal(DefaultCacheAwareContextLoaderDelegate.java:141)
+    //       at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:90)
+    //       at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:124)
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
+    //   See https://diff.blue/R026 to resolve this issue.
+
+    // Arrange and Act
+    typedQueryBuilder.addRestriction("Expression", "Operation", DynamicDaoHelperImpl.LOCK_OBJECT);
   }
 
   /**
@@ -814,5 +885,115 @@ public class TypedQueryBuilderDiffblueTest {
     // Assert
     assertEquals("fooSELECT Root Alias", sb.toString());
     assertSame(sb, actualSelectClause);
+  }
+
+  /**
+   * Test {@link TypedQueryBuilder#toQuery(EntityManager)}.
+   * <ul>
+   *   <li>When
+   * {@link SessionDelegatorBaseImpl#SessionDelegatorBaseImpl(SessionImplementor)}
+   * with delegate is {@link SessionImplementor}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TypedQueryBuilder#toQuery(EntityManager)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testToQuery_whenSessionDelegatorBaseImplWithDelegateIsSessionImplementor() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Class<Object> rootClass = Object.class;
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(mock(SessionImplementor.class));
+
+    // Act
+    typedQueryBuilder
+        .toQuery(new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(mock(SessionImplementor.class))));
+  }
+
+  /**
+   * Test {@link TypedQueryBuilder#toCountQuery(EntityManager)}.
+   * <ul>
+   *   <li>When
+   * {@link SessionDelegatorBaseImpl#SessionDelegatorBaseImpl(SessionImplementor)}
+   * with delegate is {@link SessionImplementor}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TypedQueryBuilder#toCountQuery(EntityManager)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testToCountQuery_whenSessionDelegatorBaseImplWithDelegateIsSessionImplementor() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Class<Object> rootClass = Object.class;
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(mock(SessionImplementor.class));
+
+    // Act
+    typedQueryBuilder.toCountQuery(
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(mock(SessionImplementor.class))));
+  }
+
+  /**
+   * Test {@link TypedQueryBuilder#fillParameterMap(TypedQuery)}.
+   * <p>
+   * Method under test: {@link TypedQueryBuilder#fillParameterMap(TypedQuery)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFillParameterMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Class<Object> rootClass = Object.class;
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(mock(SessionImplementor.class));
+
+    // Act
+    typedQueryBuilder.fillParameterMap(new ProcedureCallImpl<>(
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(mock(SessionImplementor.class))),
+        "Procedure Name"));
+  }
+
+  /**
+   * Test {@link TypedQueryBuilder#fillParameterMap(TypedQuery)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TypedQueryBuilder#fillParameterMap(TypedQuery)}
+   */
+  @Test
+  public void testFillParameterMap_whenNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    Class<Object> rootClass = Object.class;
+    TypedQueryBuilder<Object> typedQueryBuilder = new TypedQueryBuilder<>(rootClass, "Root Alias");
+
+    // Act
+    typedQueryBuilder.fillParameterMap(null);
   }
 }

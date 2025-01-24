@@ -1,24 +1,8 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.demo;
 
 import static org.junit.Assert.assertEquals;
 import org.broadleafcommerce.common.demo.AutoImportSql;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +66,24 @@ public class ImportSQLConfigDiffblueTest {
     assertEquals("blPU", actualBlCMSLateDataResult.getPersistenceUnit());
     assertEquals("config/bc/sql/demo/fix_static_asset_data.sql", actualBlCMSLateDataResult.getSqlFilePath());
     assertEquals(100000, actualBlCMSLateDataResult.getOrder());
+  }
+
+  /**
+   * Test {@link ImportSQLConfig#blCMSLateData()}.
+   * <p>
+   * Method under test: {@link ImportSQLConfig#blCMSLateData()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBlCMSLateData2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'blCMSLateData' available
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    importSQLConfig.blCMSLateData();
   }
 }

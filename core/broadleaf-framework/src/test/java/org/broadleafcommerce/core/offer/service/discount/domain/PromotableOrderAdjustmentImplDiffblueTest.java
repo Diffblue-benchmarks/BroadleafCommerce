@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -35,6 +18,7 @@ import java.util.ArrayList;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
+import org.broadleafcommerce.core.offer.domain.OrderAdjustment;
 import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.junit.Test;
@@ -1617,6 +1601,158 @@ public class PromotableOrderAdjustmentImplDiffblueTest {
     verify(promotableOrder, atLeast(1)).getOrderCurrency();
     verify(promotableOrder).isIncludeOrderAndItemAdjustments();
     assertEquals(money2, actualPromotableOrderAdjustmentImpl.getAdjustmentValue());
+  }
+
+  /**
+   * Test
+   * {@link PromotableOrderAdjustmentImpl#PromotableOrderAdjustmentImpl(PromotableCandidateOrderOffer, PromotableOrder)}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return not FutureCredit.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderAdjustmentImpl#PromotableOrderAdjustmentImpl(PromotableCandidateOrderOffer, PromotableOrder)}
+   */
+  @Test
+  public void testNewPromotableOrderAdjustmentImpl_givenOfferImpl_thenReturnNotFutureCredit() {
+    // Arrange
+    PromotableCandidateOrderOffer promotableCandidateOrderOffer = mock(PromotableCandidateOrderOffer.class);
+    OfferImpl offerImpl = new OfferImpl();
+    when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
+    PromotableOrderImpl promotableOrder = mock(PromotableOrderImpl.class);
+    when(promotableOrder.getOrderCurrency()).thenReturn(null);
+    when(promotableOrder.calculateOrderAdjustmentTotal()).thenReturn(new Money());
+    when(promotableOrder.calculateSubtotalWithAdjustments()).thenReturn(new Money());
+
+    // Act
+    PromotableOrderAdjustmentImpl actualPromotableOrderAdjustmentImpl = new PromotableOrderAdjustmentImpl(
+        promotableCandidateOrderOffer, promotableOrder);
+
+    // Assert
+    verify(promotableCandidateOrderOffer).getOffer();
+    verify(promotableOrder).calculateOrderAdjustmentTotal();
+    verify(promotableOrder).calculateSubtotalWithAdjustments();
+    verify(promotableOrder).getOrderCurrency();
+    assertFalse(actualPromotableOrderAdjustmentImpl.isFutureCredit());
+    assertSame(offerImpl, actualPromotableOrderAdjustmentImpl.getOffer());
+  }
+
+  /**
+   * Test
+   * {@link PromotableOrderAdjustmentImpl#PromotableOrderAdjustmentImpl(PromotableCandidateOrderOffer, PromotableOrder, Money)}.
+   * <ul>
+   *   <li>Given {@link OfferImpl} (default constructor).</li>
+   *   <li>Then return not FutureCredit.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderAdjustmentImpl#PromotableOrderAdjustmentImpl(PromotableCandidateOrderOffer, PromotableOrder, Money)}
+   */
+  @Test
+  public void testNewPromotableOrderAdjustmentImpl_givenOfferImpl_thenReturnNotFutureCredit2() {
+    // Arrange
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer = mock(PromotableCandidateOrderOfferImpl.class);
+    OfferImpl offerImpl = new OfferImpl();
+    when(promotableCandidateOrderOffer.getOffer()).thenReturn(offerImpl);
+    PromotableOrderImpl promotableOrder = mock(PromotableOrderImpl.class);
+    when(promotableOrder.isIncludeOrderAndItemAdjustments()).thenReturn(true);
+    when(promotableOrder.getOrderCurrency()).thenReturn(null);
+    when(promotableOrder.calculateOrderAdjustmentTotal()).thenReturn(new Money());
+    when(promotableOrder.calculateSubtotalWithAdjustments()).thenReturn(new Money());
+
+    // Act
+    PromotableOrderAdjustmentImpl actualPromotableOrderAdjustmentImpl = new PromotableOrderAdjustmentImpl(
+        promotableCandidateOrderOffer, promotableOrder, new Money());
+
+    // Assert
+    verify(promotableCandidateOrderOffer).getOffer();
+    verify(promotableOrder).calculateOrderAdjustmentTotal();
+    verify(promotableOrder).calculateSubtotalWithAdjustments();
+    verify(promotableOrder).getOrderCurrency();
+    verify(promotableOrder).isIncludeOrderAndItemAdjustments();
+    assertFalse(actualPromotableOrderAdjustmentImpl.isFutureCredit());
+    assertSame(offerImpl, actualPromotableOrderAdjustmentImpl.getOffer());
+  }
+
+  /**
+   * Test
+   * {@link PromotableOrderAdjustmentImpl#PromotableOrderAdjustmentImpl(PromotableCandidateOrderOffer, PromotableOrder)}.
+   * <ul>
+   *   <li>Then Offer return {@link OfferImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderAdjustmentImpl#PromotableOrderAdjustmentImpl(PromotableCandidateOrderOffer, PromotableOrder)}
+   */
+  @Test
+  public void testNewPromotableOrderAdjustmentImpl_thenOfferReturnOfferImpl() {
+    // Arrange
+    PromotableCandidateOrderOffer promotableCandidateOrderOffer = mock(PromotableCandidateOrderOffer.class);
+    when(promotableCandidateOrderOffer.getOffer()).thenReturn(new OfferImpl());
+    NullOrderImpl order = mock(NullOrderImpl.class);
+    ArrayList<OrderAdjustment> orderAdjustmentList = new ArrayList<>();
+    when(order.getOrderAdjustments()).thenReturn(orderAdjustmentList);
+    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    when(order.getCurrency()).thenReturn(null);
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    PromotableOrderAdjustmentImpl actualPromotableOrderAdjustmentImpl = new PromotableOrderAdjustmentImpl(
+        promotableCandidateOrderOffer, promotableOrder);
+
+    // Assert
+    verify(promotableCandidateOrderOffer).getOffer();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order).getOrderItems();
+    assertTrue(actualPromotableOrderAdjustmentImpl.getOffer() instanceof OfferImpl);
+    assertEquals(orderAdjustmentList, promotableOrder.allOrderItems);
+    Money adjustmentValue = actualPromotableOrderAdjustmentImpl.getAdjustmentValue();
+    assertEquals(adjustmentValue, adjustmentValue.abs());
+    assertEquals(adjustmentValue, adjustmentValue.zero());
+    assertSame(promotableOrder, actualPromotableOrderAdjustmentImpl.getPromotableOrder());
+  }
+
+  /**
+   * Test
+   * {@link PromotableOrderAdjustmentImpl#PromotableOrderAdjustmentImpl(PromotableCandidateOrderOffer, PromotableOrder, Money)}.
+   * <ul>
+   *   <li>Then Offer return {@link OfferImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderAdjustmentImpl#PromotableOrderAdjustmentImpl(PromotableCandidateOrderOffer, PromotableOrder, Money)}
+   */
+  @Test
+  public void testNewPromotableOrderAdjustmentImpl_thenOfferReturnOfferImpl2() {
+    // Arrange
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer = mock(PromotableCandidateOrderOfferImpl.class);
+    when(promotableCandidateOrderOffer.getOffer()).thenReturn(new OfferImpl());
+    NullOrderImpl order = mock(NullOrderImpl.class);
+    ArrayList<OrderAdjustment> orderAdjustmentList = new ArrayList<>();
+    when(order.getOrderAdjustments()).thenReturn(orderAdjustmentList);
+    when(order.getOrderItems()).thenReturn(new ArrayList<>());
+    when(order.getCurrency()).thenReturn(null);
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    PromotableOrderAdjustmentImpl actualPromotableOrderAdjustmentImpl = new PromotableOrderAdjustmentImpl(
+        promotableCandidateOrderOffer, promotableOrder, new Money());
+
+    // Assert
+    verify(promotableCandidateOrderOffer).getOffer();
+    verify(order, atLeast(1)).getCurrency();
+    verify(order, atLeast(1)).getOrderAdjustments();
+    verify(order).getOrderItems();
+    assertTrue(actualPromotableOrderAdjustmentImpl.getOffer() instanceof OfferImpl);
+    assertEquals(orderAdjustmentList, promotableOrder.allOrderItems);
+    Money adjustmentValue = actualPromotableOrderAdjustmentImpl.getAdjustmentValue();
+    assertEquals(adjustmentValue, adjustmentValue.abs());
+    assertEquals(adjustmentValue, adjustmentValue.zero());
+    assertSame(promotableOrder, actualPromotableOrderAdjustmentImpl.getPromotableOrder());
   }
 
   /**

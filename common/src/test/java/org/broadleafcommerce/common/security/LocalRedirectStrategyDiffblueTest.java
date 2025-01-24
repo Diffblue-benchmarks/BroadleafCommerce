@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -248,5 +248,30 @@ public class LocalRedirectStrategyDiffblueTest {
     // Arrange, Act and Assert
     assertEquals("https://example.org/exampleUrl",
         localRedirectStrategy.calculateRedirectUrl("https://example.org/example", "Url"));
+  }
+
+  /**
+   * Test getters and setters.
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>default or parameterless constructor of {@link LocalRedirectStrategy}
+   *   <li>{@link LocalRedirectStrategy#setContextRelative(boolean)}
+   *   <li>{@link LocalRedirectStrategy#setEnforcePortMatch(boolean)}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     LocalRedirectStrategy.contextRelative
+    //     LocalRedirectStrategy.enforcePortMatch
+
+    // Arrange and Act
+    LocalRedirectStrategy actualLocalRedirectStrategy = new LocalRedirectStrategy();
+    actualLocalRedirectStrategy.setContextRelative(true);
+    actualLocalRedirectStrategy.setEnforcePortMatch(true);
   }
 }

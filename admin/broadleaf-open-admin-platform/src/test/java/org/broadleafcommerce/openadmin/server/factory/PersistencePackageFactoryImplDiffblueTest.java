@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.factory;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -33,18 +16,105 @@ import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.presentation.client.OperationType;
 import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
+import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.ForeignKey;
+import org.broadleafcommerce.openadmin.dto.MapStructure;
 import org.broadleafcommerce.openadmin.dto.OperationTypes;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspectiveItem;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PersistencePackageFactoryImplDiffblueTest {
+  @Autowired
+  private PersistencePackageFactoryImpl persistencePackageFactoryImpl;
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
+   * <p>
+   * Method under test:
+   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.factory;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass0 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactoryImpl persistencePackageFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PersistencePackageFactoryImpl persistencePackageFactoryImpl2 = new PersistencePackageFactoryImpl();
+
+    // Act
+    persistencePackageFactoryImpl2.create(PersistencePackageRequest.adorned());
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
+   * <ul>
+   *   <li>Given {@link AdornedTargetList#AdornedTargetList()}.</li>
+   *   <li>Then calls {@link PersistencePackageRequest#getAdornedList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   */
+  @Test
+  public void testCreate_givenAdornedTargetList_thenCallsGetAdornedList() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
+    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
+    when(request.getAdornedList()).thenReturn(new AdornedTargetList());
+    when(request.getOperationTypesOverride()).thenThrow(new RuntimeException("foo"));
+    when(request.getForeignKey()).thenReturn(new ForeignKey());
+    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{new ForeignKey()});
+    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
+    when(request.getType()).thenReturn(PersistencePackageRequest.Type.ADORNED);
+    request.addAdditionalForeignKey(new ForeignKey());
+
+    // Act
+    persistencePackageFactoryImpl.create(request);
+
+    // Assert
+    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
+    verify(request).getAdditionalForeignKeys();
+    verify(request, atLeast(1)).getAdornedList();
+    verify(request, atLeast(1)).getForeignKey();
+    verify(request).getOperationTypesOverride();
+    verify(request).getType();
+  }
+
   /**
    * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
    * <ul>
@@ -173,6 +243,78 @@ public class PersistencePackageFactoryImplDiffblueTest {
     ForeignKey[] additionalForeignKeys = actualCreateResult.getPersistencePerspective().getAdditionalForeignKeys();
     assertEquals(1, additionalForeignKeys.length);
     assertSame(foreignKey, additionalForeignKeys[0]);
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
+   * <ul>
+   *   <li>Given {@link MapStructure#MapStructure()}.</li>
+   *   <li>Then calls {@link PersistencePackageRequest#getMapStructure()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   */
+  @Test
+  public void testCreate_givenMapStructure_thenCallsGetMapStructure() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
+    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
+    when(request.getMapStructure()).thenReturn(new MapStructure());
+    when(request.getOperationTypesOverride()).thenThrow(new RuntimeException("foo"));
+    when(request.getForeignKey()).thenReturn(new ForeignKey());
+    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{new ForeignKey()});
+    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
+    when(request.getType()).thenReturn(PersistencePackageRequest.Type.MAP);
+    request.addAdditionalForeignKey(new ForeignKey());
+
+    // Act
+    persistencePackageFactoryImpl.create(request);
+
+    // Assert
+    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
+    verify(request).getAdditionalForeignKeys();
+    verify(request, atLeast(1)).getForeignKey();
+    verify(request, atLeast(1)).getMapStructure();
+    verify(request).getOperationTypesOverride();
+    verify(request).getType();
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}.
+   * <ul>
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
+   * {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link PersistencePackageFactoryImpl#create(PersistencePackageRequest)}
+   */
+  @Test
+  public void testCreate_givenRuntimeExceptionWithFoo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    PersistencePackageFactoryImpl persistencePackageFactoryImpl = new PersistencePackageFactoryImpl();
+    PersistencePackageRequest request = mock(PersistencePackageRequest.class);
+    when(request.getOperationTypesOverride()).thenThrow(new RuntimeException("foo"));
+    when(request.getForeignKey()).thenReturn(new ForeignKey());
+    when(request.getAdditionalForeignKeys()).thenReturn(new ForeignKey[]{new ForeignKey()});
+    when(request.addAdditionalForeignKey(Mockito.<ForeignKey>any())).thenReturn(PersistencePackageRequest.adorned());
+    when(request.getType()).thenReturn(PersistencePackageRequest.Type.STANDARD);
+    request.addAdditionalForeignKey(new ForeignKey());
+
+    // Act
+    persistencePackageFactoryImpl.create(request);
+
+    // Assert
+    verify(request).addAdditionalForeignKey(isA(ForeignKey.class));
+    verify(request).getAdditionalForeignKeys();
+    verify(request, atLeast(1)).getForeignKey();
+    verify(request).getOperationTypesOverride();
+    verify(request).getType();
   }
 
   /**
@@ -398,6 +540,36 @@ public class PersistencePackageFactoryImplDiffblueTest {
   }
 
   /**
+   * Test {@link PersistencePackageFactoryImpl#getDefaultOperationTypes()}.
+   * <p>
+   * Method under test:
+   * {@link PersistencePackageFactoryImpl#getDefaultOperationTypes()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDefaultOperationTypes2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.factory;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass60 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactoryImpl persistencePackageFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PersistencePackageFactoryImpl()).getDefaultOperationTypes();
+  }
+
+  /**
    * Test {@link PersistencePackageFactoryImpl#getOperationTypes(OperationType)}.
    * <p>
    * Method under test:
@@ -417,5 +589,95 @@ public class PersistencePackageFactoryImplDiffblueTest {
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualOperationTypes.getFetchType());
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualOperationTypes.getRemoveType());
     assertEquals(OperationType.NONDESTRUCTIVEREMOVE, actualOperationTypes.getUpdateType());
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#getOperationTypes(OperationType)}.
+   * <p>
+   * Method under test:
+   * {@link PersistencePackageFactoryImpl#getOperationTypes(OperationType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetOperationTypes2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.factory;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass76 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactoryImpl persistencePackageFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PersistencePackageFactoryImpl()).getOperationTypes(OperationType.NONDESTRUCTIVEREMOVE);
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#getClassNameForSection(String)}.
+   * <p>
+   * Method under test:
+   * {@link PersistencePackageFactoryImpl#getClassNameForSection(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetClassNameForSection() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.factory;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass45 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactoryImpl persistencePackageFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PersistencePackageFactoryImpl()).getClassNameForSection("Section Key");
+  }
+
+  /**
+   * Test {@link PersistencePackageFactoryImpl#getEntityManager(String)}.
+   * <p>
+   * Method under test:
+   * {@link PersistencePackageFactoryImpl#getEntityManager(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetEntityManager() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.factory;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass61 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.factory.PersistencePackageFactoryImpl persistencePackageFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PersistencePackageFactoryImpl()).getEntityManager("Class Name");
   }
 }

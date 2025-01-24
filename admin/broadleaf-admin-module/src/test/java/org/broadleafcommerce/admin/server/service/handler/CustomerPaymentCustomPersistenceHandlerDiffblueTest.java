@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Admin Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.admin.server.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -47,6 +30,7 @@ import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.InspectHelper;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
@@ -54,10 +38,22 @@ import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
+    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
+  @Autowired
+  private CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
+
   /**
    * Test
    * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
@@ -88,6 +84,40 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     verify(pkg).getCeilingEntityFullyQualifiedClassname();
     verify(pkg).getPersistencePerspective();
     assertFalse(actualCanHandleInspectResult);
+  }
+
+  /**
+   * Test
+   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link CustomerPaymentCustomPersistenceHandler#canHandleInspect(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleInspect2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2328 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler2 = new CustomerPaymentCustomPersistenceHandler();
+
+    // Act
+    customerPaymentCustomPersistenceHandler2.canHandleInspect(new PersistencePackage());
   }
 
   /**
@@ -205,6 +235,40 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
   /**
    * Test
    * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleFetch2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2304 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler2 = new CustomerPaymentCustomPersistenceHandler();
+
+    // Act
+    customerPaymentCustomPersistenceHandler2.canHandleFetch(new PersistencePackage());
+  }
+
+  /**
+   * Test
+   * {@link CustomerPaymentCustomPersistenceHandler#canHandleFetch(PersistencePackage)}.
    * <ul>
    *   <li>Given {@code Dr Jane Doe}.</li>
    * </ul>
@@ -280,6 +344,43 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
 
     // Act and Assert
     assertFalse(customerPaymentCustomPersistenceHandler.canHandleFetch(new PersistencePackage()));
+  }
+
+  /**
+   * Test
+   * {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}.
+   * <p>
+   * Method under test:
+   * {@link CustomerPaymentCustomPersistenceHandler#inspect(PersistencePackage, DynamicEntityDao, InspectHelper)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testInspect() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2421 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler2 = new CustomerPaymentCustomPersistenceHandler();
+    PersistencePackage persistencePackage = new PersistencePackage();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    // Act
+    customerPaymentCustomPersistenceHandler2.inspect(persistencePackage, dynamicEntityDao,
+        new PersistenceManagerImpl());
   }
 
   /**
@@ -385,6 +486,44 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
   /**
    * Test
    * {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
+   * <p>
+   * Method under test:
+   * {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFetch2() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2352 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler2 = new CustomerPaymentCustomPersistenceHandler();
+    PersistencePackage persistencePackage = new PersistencePackage();
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    // Act
+    customerPaymentCustomPersistenceHandler2.fetch(persistencePackage, cto, dynamicEntityDao,
+        new AdornedTargetListPersistenceModule());
+  }
+
+  /**
+   * Test
+   * {@link CustomerPaymentCustomPersistenceHandler#fetch(PersistencePackage, CriteriaTransferObject, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Then return {@link DynamicResultSet#DynamicResultSet()}.</li>
    * </ul>
@@ -422,6 +561,40 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
     verify(adornedTargetListPersistenceModule).fetch(isA(PersistencePackage.class), isA(CriteriaTransferObject.class));
     verify(helper).getCompatibleModule(eq(OperationType.BASIC));
     assertSame(dynamicResultSet, actualFetchResult);
+  }
+
+  /**
+   * Test
+   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}.
+   * <p>
+   * Method under test:
+   * {@link CustomerPaymentCustomPersistenceHandler#buildSavedPaymentDisplayValue(CustomerPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildSavedPaymentDisplayValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2290 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler2 = new CustomerPaymentCustomPersistenceHandler();
+
+    // Act
+    customerPaymentCustomPersistenceHandler2.buildSavedPaymentDisplayValue(new CustomerPaymentImpl());
   }
 
   /**
@@ -535,6 +708,37 @@ public class CustomerPaymentCustomPersistenceHandlerDiffblueTest {
 
     // Act and Assert
     assertEquals("", customerPaymentCustomPersistenceHandler.buildSavedPaymentDisplayValue(new CustomerPaymentImpl()));
+  }
+
+  /**
+   * Test
+   * {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}.
+   * <p>
+   * Method under test:
+   * {@link CustomerPaymentCustomPersistenceHandler#buildPropertyValueIfAvailable(String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildPropertyValueIfAvailable() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2272 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CustomerPaymentCustomPersistenceHandler customerPaymentCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CustomerPaymentCustomPersistenceHandler()).buildPropertyValueIfAvailable("42", "42");
   }
 
   /**

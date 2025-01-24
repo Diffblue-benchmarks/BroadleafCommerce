@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -31,6 +31,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiFunction;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mvel2.ParserConfiguration;
 import org.mvel2.ParserContext;
@@ -114,6 +115,60 @@ public class MvelHelperDiffblueTest {
   public void testToUpperCase_whenNull_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(MvelHelper.toUpperCase(null));
+  }
+
+  /**
+   * Test {@link MvelHelper#currentTime()}.
+   * <p>
+   * Method under test: {@link MvelHelper#currentTime()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCurrentTime() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at java.base/java.util.GregorianCalendar.computeFields(GregorianCalendar.java:2339)
+    //       at java.base/java.util.GregorianCalendar.computeFields(GregorianCalendar.java:2309)
+    //       at java.base/java.util.Calendar.setTimeInMillis(Calendar.java:1834)
+    //       at java.base/java.util.Calendar.setTime(Calendar.java:1800)
+    //       at java.base/java.text.SimpleDateFormat.format(SimpleDateFormat.java:974)
+    //       at java.base/java.text.SimpleDateFormat.format(SimpleDateFormat.java:967)
+    //       at java.base/java.text.DateFormat.format(DateFormat.java:374)
+    //       at org.broadleafcommerce.common.rule.MvelHelper.currentTime(MvelHelper.java:113)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    MvelHelper.currentTime();
+  }
+
+  /**
+   * Test {@link MvelHelper#subtractFromCurrentTime(int)}.
+   * <p>
+   * Method under test: {@link MvelHelper#subtractFromCurrentTime(int)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSubtractFromCurrentTime() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at java.base/java.util.GregorianCalendar.computeFields(GregorianCalendar.java:2339)
+    //       at java.base/java.util.GregorianCalendar.computeFields(GregorianCalendar.java:2309)
+    //       at java.base/java.util.Calendar.setTimeInMillis(Calendar.java:1834)
+    //       at java.base/java.util.Calendar.setTime(Calendar.java:1800)
+    //       at java.base/java.text.SimpleDateFormat.format(SimpleDateFormat.java:974)
+    //       at java.base/java.text.SimpleDateFormat.format(SimpleDateFormat.java:967)
+    //       at java.base/java.text.DateFormat.format(DateFormat.java:374)
+    //       at org.broadleafcommerce.common.rule.MvelHelper.subtractFromCurrentTime(MvelHelper.java:120)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    MvelHelper.subtractFromCurrentTime(1);
   }
 
   /**

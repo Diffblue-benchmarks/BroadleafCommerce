@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.payment.service;
 
 import static org.junit.Assert.assertEquals;
@@ -29,16 +12,34 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.common.payment.dto.AddressDTO;
 import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.OrderPayment;
 import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
+import org.broadleafcommerce.core.payment.domain.PaymentTransaction;
+import org.broadleafcommerce.core.payment.domain.PaymentTransactionImpl;
 import org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl.NameResponse;
+import org.broadleafcommerce.profile.core.domain.Address;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OrderToPaymentRequestDTOServiceImplDiffblueTest {
+  @Autowired
+  private OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+
   /**
    * Test NameResponse {@link NameResponse#equals(Object)}, and
    * {@link NameResponse#hashCode()}.
@@ -341,6 +342,39 @@ public class OrderToPaymentRequestDTOServiceImplDiffblueTest {
 
   /**
    * Test {@link OrderToPaymentRequestDTOServiceImpl#translateOrder(Order)}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#translateOrder(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTranslateOrder() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2572 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.translateOrder(new NullOrderImpl());
+  }
+
+  /**
+   * Test {@link OrderToPaymentRequestDTOServiceImpl#translateOrder(Order)}.
    * <ul>
    *   <li>When {@link NullOrderImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
@@ -394,6 +428,149 @@ public class OrderToPaymentRequestDTOServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new OrderToPaymentRequestDTOServiceImpl()).translateOrder(null));
+  }
+
+  /**
+   * Test
+   * {@link OrderToPaymentRequestDTOServiceImpl#translatePaymentTransaction(Money, PaymentTransaction)}
+   * with {@code transactionAmount}, {@code paymentTransaction}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#translatePaymentTransaction(Money, PaymentTransaction)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTranslatePaymentTransactionWithTransactionAmountPaymentTransaction() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2585 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+    Money transactionAmount = new Money();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.translatePaymentTransaction(transactionAmount, new PaymentTransactionImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderToPaymentRequestDTOServiceImpl#translatePaymentTransaction(Money, PaymentTransaction, boolean)}
+   * with {@code transactionAmount}, {@code paymentTransaction},
+   * {@code autoCalculateFinalPaymentTotals}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#translatePaymentTransaction(Money, PaymentTransaction, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTranslatePaymentTransactionWithTransactionAmountPaymentTransactionAutoCalculateFinalPaymentTotals() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2609 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+    Money transactionAmount = new Money();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.translatePaymentTransaction(transactionAmount, new PaymentTransactionImpl(),
+        true);
+  }
+
+  /**
+   * Test
+   * {@link OrderToPaymentRequestDTOServiceImpl#refreshTransaction(PaymentTransaction)}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#refreshTransaction(PaymentTransaction)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRefreshTransaction() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2554 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.refreshTransaction(new PaymentTransactionImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateTotals(Order, PaymentRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateTotals(Order, PaymentRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateTotals() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2528 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.populateTotals(order, new PaymentRequestDTO());
   }
 
   /**
@@ -707,6 +884,76 @@ public class OrderToPaymentRequestDTOServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateCustomerInfo(Order, PaymentRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateCustomerInfo(Order, PaymentRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateCustomerInfo() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2450 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.populateCustomerInfo(order, new PaymentRequestDTO());
+  }
+
+  /**
+   * Test
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateShipTo(Order, PaymentRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateShipTo(Order, PaymentRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateShipTo() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2502 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.populateShipTo(order, new PaymentRequestDTO());
+  }
+
+  /**
+   * Test
    * {@link OrderToPaymentRequestDTOServiceImpl#populateShipTo(Order, PaymentRequestDTO)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
@@ -730,6 +977,41 @@ public class OrderToPaymentRequestDTOServiceImplDiffblueTest {
 
     // Assert
     verify(order).getFulfillmentGroups();
+  }
+
+  /**
+   * Test
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateBillTo(Order, PaymentRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateBillTo(Order, PaymentRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateBillTo() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2424 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.populateBillTo(order, new PaymentRequestDTO());
   }
 
   /**
@@ -790,6 +1072,109 @@ public class OrderToPaymentRequestDTOServiceImplDiffblueTest {
 
     // Assert
     verify(order).getPayments();
+  }
+
+  /**
+   * Test
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateAddressInfo(AddressDTO, Address)}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateAddressInfo(AddressDTO, Address)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateAddressInfo() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2369 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+    AddressDTO<PaymentRequestDTO> dto = new AddressDTO<>();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.populateAddressInfo(dto, new AddressImpl());
+  }
+
+  /**
+   * Test {@link OrderToPaymentRequestDTOServiceImpl#getName(Address)}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#getName(Address)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2332 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.getName(new AddressImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateDefaultLineItemsAndSubtotal(Order, PaymentRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link OrderToPaymentRequestDTOServiceImpl#populateDefaultLineItemsAndSubtotal(Order, PaymentRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateDefaultLineItemsAndSubtotal() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2476 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderToPaymentRequestDTOServiceImpl orderToPaymentRequestDTOServiceImpl2 = new OrderToPaymentRequestDTOServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    orderToPaymentRequestDTOServiceImpl2.populateDefaultLineItemsAndSubtotal(order, new PaymentRequestDTO());
   }
 
   /**

@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -84,5 +84,19 @@ public class AbstractExtensionHandlerDiffblueTest {
 
     // Act and Assert
     assertFalse(abstractMultiTenantCopierExtensionHandler.isEnabled());
+  }
+
+  /**
+   * Test {@link AbstractExtensionHandler#setEnabled(boolean)}.
+   * <p>
+   * Method under test: {@link AbstractExtensionHandler#setEnabled(boolean)}
+   */
+  @Test
+  public void testSetEnabled() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new AbstractMultiTenantCopierExtensionHandler()).setEnabled(true);
   }
 }

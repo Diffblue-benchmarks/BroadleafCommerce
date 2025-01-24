@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.expression.checkout;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,13 +6,26 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import java.util.List;
+import org.broadleafcommerce.common.payment.PaymentType;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class PaymentMethodVariableExpressionDiffblueTest {
+  @Autowired
+  private PaymentMethodVariableExpression paymentMethodVariableExpression;
+
   /**
    * Test {@link PaymentMethodVariableExpression#getName()}.
    * <p>
@@ -55,6 +51,70 @@ class PaymentMethodVariableExpressionDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new PaymentMethodVariableExpression()).getPaymentRequestDTO());
+  }
+
+  /**
+   * Test {@link PaymentMethodVariableExpression#getPaymentRequestDTO()}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#getPaymentRequestDTO()}
+   */
+  @Test
+  @DisplayName("Test getPaymentRequestDTO()")
+  @Disabled("TODO: Complete this test")
+  void testGetPaymentRequestDTO2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3571 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).getPaymentRequestDTO();
+  }
+
+  /**
+   * Test {@link PaymentMethodVariableExpression#isNullOrder(Order)}.
+   * <p>
+   * Method under test: {@link PaymentMethodVariableExpression#isNullOrder(Order)}
+   */
+  @Test
+  @DisplayName("Test isNullOrder(Order)")
+  @Disabled("TODO: Complete this test")
+  void testIsNullOrder() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3572 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PaymentMethodVariableExpression paymentMethodVariableExpression2 = new PaymentMethodVariableExpression();
+
+    // Act
+    paymentMethodVariableExpression2.isNullOrder(new NullOrderImpl());
   }
 
   /**
@@ -136,6 +196,240 @@ class PaymentMethodVariableExpressionDiffblueTest {
   }
 
   /**
+   * Test {@link PaymentMethodVariableExpression#cartContainsThirdPartyPayment()}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#cartContainsThirdPartyPayment()}
+   */
+  @Test
+  @DisplayName("Test cartContainsThirdPartyPayment()")
+  @Disabled("TODO: Complete this test")
+  void testCartContainsThirdPartyPayment() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3524 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).cartContainsThirdPartyPayment();
+  }
+
+  /**
+   * Test {@link PaymentMethodVariableExpression#cartContainsCreditCardPayment()}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#cartContainsCreditCardPayment()}
+   */
+  @Test
+  @DisplayName("Test cartContainsCreditCardPayment()")
+  @Disabled("TODO: Complete this test")
+  void testCartContainsCreditCardPayment() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3522 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).cartContainsCreditCardPayment();
+  }
+
+  /**
+   * Test
+   * {@link PaymentMethodVariableExpression#cartContainsTemporaryCreditCard()}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#cartContainsTemporaryCreditCard()}
+   */
+  @Test
+  @DisplayName("Test cartContainsTemporaryCreditCard()")
+  @Disabled("TODO: Complete this test")
+  void testCartContainsTemporaryCreditCard() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3523 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).cartContainsTemporaryCreditCard();
+  }
+
+  /**
+   * Test {@link PaymentMethodVariableExpression#orderContainsCODPayment(Order)}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#orderContainsCODPayment(Order)}
+   */
+  @Test
+  @DisplayName("Test orderContainsCODPayment(Order)")
+  @Disabled("TODO: Complete this test")
+  void testOrderContainsCODPayment() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3584 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PaymentMethodVariableExpression paymentMethodVariableExpression2 = new PaymentMethodVariableExpression();
+
+    // Act
+    paymentMethodVariableExpression2.orderContainsCODPayment(new NullOrderImpl());
+  }
+
+  /**
+   * Test
+   * {@link PaymentMethodVariableExpression#orderContainsCreditCardPayment(Order)}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#orderContainsCreditCardPayment(Order)}
+   */
+  @Test
+  @DisplayName("Test orderContainsCreditCardPayment(Order)")
+  @Disabled("TODO: Complete this test")
+  void testOrderContainsCreditCardPayment() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3596 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PaymentMethodVariableExpression paymentMethodVariableExpression2 = new PaymentMethodVariableExpression();
+
+    // Act
+    paymentMethodVariableExpression2.orderContainsCreditCardPayment(new NullOrderImpl());
+  }
+
+  /**
+   * Test
+   * {@link PaymentMethodVariableExpression#orderContainsThirdPartyPayment(Order)}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#orderContainsThirdPartyPayment(Order)}
+   */
+  @Test
+  @DisplayName("Test orderContainsThirdPartyPayment(Order)")
+  @Disabled("TODO: Complete this test")
+  void testOrderContainsThirdPartyPayment() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3629 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PaymentMethodVariableExpression paymentMethodVariableExpression2 = new PaymentMethodVariableExpression();
+
+    // Act
+    paymentMethodVariableExpression2.orderContainsThirdPartyPayment(new NullOrderImpl());
+  }
+
+  /**
+   * Test
+   * {@link PaymentMethodVariableExpression#orderContainsPaymentOfType(Order, PaymentType)}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#orderContainsPaymentOfType(Order, PaymentType)}
+   */
+  @Test
+  @DisplayName("Test orderContainsPaymentOfType(Order, PaymentType)")
+  @Disabled("TODO: Complete this test")
+  void testOrderContainsPaymentOfType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3608 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PaymentMethodVariableExpression paymentMethodVariableExpression2 = new PaymentMethodVariableExpression();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    paymentMethodVariableExpression2.orderContainsPaymentOfType(order, new PaymentType("Type", "Friendly Type"));
+  }
+
+  /**
    * Test {@link PaymentMethodVariableExpression#getExpirationMonthOptions()}.
    * <p>
    * Method under test:
@@ -166,6 +460,37 @@ class PaymentMethodVariableExpressionDiffblueTest {
   }
 
   /**
+   * Test {@link PaymentMethodVariableExpression#getExpirationMonthOptions()}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#getExpirationMonthOptions()}
+   */
+  @Test
+  @DisplayName("Test getExpirationMonthOptions()")
+  @Disabled("TODO: Complete this test")
+  void testGetExpirationMonthOptions2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3568 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).getExpirationMonthOptions();
+  }
+
+  /**
    * Test {@link PaymentMethodVariableExpression#getExpirationYearOptions()}.
    * <p>
    * Method under test:
@@ -178,5 +503,192 @@ class PaymentMethodVariableExpressionDiffblueTest {
 
     // Arrange, Act and Assert
     assertEquals(10, (new PaymentMethodVariableExpression()).getExpirationYearOptions().size());
+  }
+
+  /**
+   * Test {@link PaymentMethodVariableExpression#getExpirationYearOptions()}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#getExpirationYearOptions()}
+   */
+  @Test
+  @DisplayName("Test getExpirationYearOptions()")
+  @Disabled("TODO: Complete this test")
+  void testGetExpirationYearOptions2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3569 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).getExpirationYearOptions();
+  }
+
+  /**
+   * Test {@link PaymentMethodVariableExpression#getCreditCardTypeFromCart()}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#getCreditCardTypeFromCart()}
+   */
+  @Test
+  @DisplayName("Test getCreditCardTypeFromCart()")
+  @Disabled("TODO: Complete this test")
+  void testGetCreditCardTypeFromCart() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3567 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).getCreditCardTypeFromCart();
+  }
+
+  /**
+   * Test {@link PaymentMethodVariableExpression#getCreditCardLastFourFromCart()}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#getCreditCardLastFourFromCart()}
+   */
+  @Test
+  @DisplayName("Test getCreditCardLastFourFromCart()")
+  @Disabled("TODO: Complete this test")
+  void testGetCreditCardLastFourFromCart() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3566 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).getCreditCardLastFourFromCart();
+  }
+
+  /**
+   * Test {@link PaymentMethodVariableExpression#getCreditCardExpDateFromCart()}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#getCreditCardExpDateFromCart()}
+   */
+  @Test
+  @DisplayName("Test getCreditCardExpDateFromCart()")
+  @Disabled("TODO: Complete this test")
+  void testGetCreditCardExpDateFromCart() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3565 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).getCreditCardExpDateFromCart();
+  }
+
+  /**
+   * Test
+   * {@link PaymentMethodVariableExpression#getCartOrderPaymentProperty(String)}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#getCartOrderPaymentProperty(String)}
+   */
+  @Test
+  @DisplayName("Test getCartOrderPaymentProperty(String)")
+  @Disabled("TODO: Complete this test")
+  void testGetCartOrderPaymentProperty() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3525 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).getCartOrderPaymentProperty("Property Name");
+  }
+
+  /**
+   * Test {@link PaymentMethodVariableExpression#getPaymentProcessingError()}.
+   * <p>
+   * Method under test:
+   * {@link PaymentMethodVariableExpression#getPaymentProcessingError()}
+   */
+  @Test
+  @DisplayName("Test getPaymentProcessingError()")
+  @Disabled("TODO: Complete this test")
+  void testGetPaymentProcessingError() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression.checkout;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3570 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.checkout.PaymentMethodVariableExpression paymentMethodVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PaymentMethodVariableExpression()).getPaymentProcessingError();
   }
 }

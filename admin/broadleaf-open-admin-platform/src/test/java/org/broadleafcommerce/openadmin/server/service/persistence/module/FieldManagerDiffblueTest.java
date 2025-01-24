@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
 import static org.junit.Assert.assertEquals;
@@ -24,8 +7,12 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import java.lang.reflect.Field;
 import javax.persistence.EntityManager;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +109,40 @@ public class FieldManagerDiffblueTest {
   }
 
   /**
+   * Test {@link FieldManager#getField(Class, String)}.
+   * <ul>
+   *   <li>Given
+   * {@link SessionDelegatorBaseImpl#SessionDelegatorBaseImpl(SessionImplementor)}
+   * with delegate is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldManager#getField(Class, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetField_givenSessionDelegatorBaseImplWithDelegateIsNull() throws IllegalStateException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager.isPersistentClass(FieldManager.java:256)
+    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager.getPersistenceManager(FieldManager.java:243)
+    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager.getField(FieldManager.java:73)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+    FieldManager fieldManager = new FieldManager(entityConfiguration,
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
+    Class<Object> clazz = Object.class;
+
+    // Act
+    fieldManager.getField(clazz, "Field Name");
+  }
+
+  /**
    * Test {@link FieldManager#getFieldValue(Object, String)}.
    * <ul>
    *   <li>When {@code .}.</li>
@@ -201,6 +222,37 @@ public class FieldManagerDiffblueTest {
   }
 
   /**
+   * Test {@link FieldManager#getFieldType(Field)}.
+   * <ul>
+   *   <li>Given
+   * {@link SessionDelegatorBaseImpl#SessionDelegatorBaseImpl(SessionImplementor)}
+   * with delegate is {@link SessionImplementor}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldManager#getFieldType(Field)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFieldType_givenSessionDelegatorBaseImplWithDelegateIsSessionImplementor() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(mock(SessionImplementor.class));
+
+    // Act
+    (new FieldManager(entityConfiguration,
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(mock(SessionImplementor.class)))))
+            .getFieldType(null);
+  }
+
+  /**
    * Test {@link FieldManager#persistMiddleEntities()}.
    * <ul>
    *   <li>Then return Empty.</li>
@@ -212,6 +264,33 @@ public class FieldManagerDiffblueTest {
   public void testPersistMiddleEntities_thenReturnEmpty() throws IllegalAccessException, InstantiationException {
     // Arrange, Act and Assert
     assertTrue((new FieldManager(new EntityConfiguration(), null)).persistMiddleEntities().isEmpty());
+  }
+
+  /**
+   * Test {@link FieldManager#getPersistenceManager(Class)}.
+   * <p>
+   * Method under test: {@link FieldManager#getPersistenceManager(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPersistenceManager() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(mock(SessionImplementor.class));
+    FieldManager fieldManager = new FieldManager(entityConfiguration,
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(mock(SessionImplementor.class))));
+    Class<Object> entityClass = Object.class;
+
+    // Act
+    fieldManager.getPersistenceManager(entityClass);
   }
 
   /**
@@ -230,5 +309,107 @@ public class FieldManagerDiffblueTest {
 
     // Act and Assert
     assertFalse(fieldManager.isPersistentClass(entityClass));
+  }
+
+  /**
+   * Test
+   * {@link FieldManager#handleMapFieldExtraction(Object, String, Class, Object, String, String)}.
+   * <ul>
+   *   <li>When {@code Field Name Part}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FieldManager#handleMapFieldExtraction(Object, String, Class, Object, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandleMapFieldExtraction_whenFieldNamePart()
+      throws IllegalAccessException, FieldNotAvailableException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.StringIndexOutOfBoundsException: begin 0, end -1, length 10
+    //       at java.base/java.lang.String.checkBoundsBeginEnd(String.java:3319)
+    //       at java.base/java.lang.String.substring(String.java:1874)
+    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager.handleMapFieldExtraction(FieldManager.java:269)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Class<Object> componentClass = Object.class;
+
+    // Act
+    fieldManager.handleMapFieldExtraction("Bean", "Field Name", componentClass, "Value", "Field Name Part", "Map Key");
+  }
+
+  /**
+   * Test
+   * {@link FieldManager#handleMapFieldPopulation(Object, String, Object, Class, Field, Object, String, String)}.
+   * <ul>
+   *   <li>When {@code Field Name Part}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FieldManager#handleMapFieldPopulation(Object, String, Object, Class, Field, Object, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandleMapFieldPopulation_whenFieldNamePart() throws IllegalAccessException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.StringIndexOutOfBoundsException: begin 0, end -1, length 10
+    //       at java.base/java.lang.String.checkBoundsBeginEnd(String.java:3319)
+    //       at java.base/java.lang.String.substring(String.java:1874)
+    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager.handleMapFieldPopulation(FieldManager.java:315)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Class<Object> componentClass = Object.class;
+
+    // Act
+    fieldManager.handleMapFieldPopulation("Bean", "Field Name", "New Value", componentClass, null, "Value",
+        "Field Name Part", "Map Key");
+  }
+
+  /**
+   * Test {@link FieldManager#clearMiddleFields()}.
+   * <p>
+   * Method under test: {@link FieldManager#clearMiddleFields()}
+   */
+  @Test
+  public void testClearMiddleFields() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new FieldManager(new EntityConfiguration(), null)).clearMiddleFields();
+  }
+
+  /**
+   * Test {@link FieldManager#clearMiddleFields()}.
+   * <p>
+   * Method under test: {@link FieldManager#clearMiddleFields()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testClearMiddleFields2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(mock(SessionImplementor.class));
+
+    // Act
+    (new FieldManager(entityConfiguration,
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(mock(SessionImplementor.class)))))
+            .clearMiddleFields();
   }
 }

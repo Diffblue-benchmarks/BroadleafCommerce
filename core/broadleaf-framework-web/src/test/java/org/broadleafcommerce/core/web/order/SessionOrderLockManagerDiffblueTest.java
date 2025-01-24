@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.order;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,8 +10,10 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.util.concurrent.locks.ReentrantLock;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -73,6 +58,33 @@ class SessionOrderLockManagerDiffblueTest {
     // Act and Assert
     assertThrows(IllegalStateException.class,
         () -> sessionOrderLockManager.acquireLockIfAvailable(new NullOrderImpl()));
+  }
+
+  /**
+   * Test {@link SessionOrderLockManager#releaseLock(Object)}.
+   * <p>
+   * Method under test: {@link SessionOrderLockManager#releaseLock(Object)}
+   */
+  @Test
+  @DisplayName("Test releaseLock(Object)")
+  @Disabled("TODO: Complete this test")
+  void testReleaseLock() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalMonitorStateException
+    //       at java.base/java.util.concurrent.locks.ReentrantLock$Sync.tryRelease(ReentrantLock.java:149)
+    //       at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer.release(AbstractQueuedSynchronizer.java:1302)
+    //       at java.base/java.util.concurrent.locks.ReentrantLock.unlock(ReentrantLock.java:439)
+    //       at org.broadleafcommerce.core.web.order.SessionOrderLockManager.releaseLock(SessionOrderLockManager.java:79)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    SessionOrderLockManager sessionOrderLockManager = new SessionOrderLockManager();
+
+    // Act
+    sessionOrderLockManager.releaseLock(new ReentrantLock());
   }
 
   /**

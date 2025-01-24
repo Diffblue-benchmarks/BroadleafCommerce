@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.form.entity;
 
 import static org.junit.Assert.assertEquals;
@@ -142,6 +125,29 @@ public class EntityFormActionDiffblueTest {
   public void testEquals_whenOtherIsWrongType_thenReturnNotEqual() {
     // Arrange, Act and Assert
     assertNotEquals(DefaultAdornedEntityFormActions.Add, "Different type to EntityFormAction");
+  }
+
+  /**
+   * Test {@link EntityFormAction#clone()}.
+   * <p>
+   * Method under test: {@link EntityFormAction#clone()}
+   */
+  @Test
+  public void testClone() {
+    // Arrange and Act
+    EntityFormAction actualCloneResult = DefaultAdornedEntityFormActions.Add.clone();
+
+    // Assert
+    assertEquals("", actualCloneResult.getConfirmEnabledText());
+    assertEquals("", actualCloneResult.getIconClass());
+    assertEquals("", actualCloneResult.getUrlPostfix());
+    assertEquals("Add", actualCloneResult.getDisplayText());
+    assertEquals("submit", actualCloneResult.getButtonType());
+    assertEquals("submit-button primary", actualCloneResult.getButtonClass());
+    assertNull(actualCloneResult.getUrlOverride());
+    assertFalse(actualCloneResult.getIsConfirmEnabled());
+    assertFalse(actualCloneResult.isConfirmEnabled);
+    assertEquals(EntityFormAction.ADD, actualCloneResult.getId());
   }
 
   /**

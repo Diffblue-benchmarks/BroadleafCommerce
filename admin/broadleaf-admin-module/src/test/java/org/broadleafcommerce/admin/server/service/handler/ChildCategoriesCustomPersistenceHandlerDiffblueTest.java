@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Admin Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.admin.server.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -31,6 +14,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.common.presentation.client.OperationType;
+import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.PersistencePackage;
 import org.broadleafcommerce.openadmin.dto.Property;
@@ -39,10 +24,56 @@ import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.ValidationException;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
+    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
+  @Autowired
+  private ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
+
+  /**
+   * Test
+   * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleAdd() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1212 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
+
+    // Act
+    childCategoriesCustomPersistenceHandler2.canHandleAdd(new PersistencePackage());
+  }
+
   /**
    * Test
    * {@link ChildCategoriesCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
@@ -118,6 +149,43 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
 
     // Act and Assert
     assertFalse(childCategoriesCustomPersistenceHandler.canHandleAdd(new PersistencePackage()));
+  }
+
+  /**
+   * Test
+   * {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <p>
+   * Method under test:
+   * {@link ChildCategoriesCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdd() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1104 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
+    PersistencePackage persistencePackage = new PersistencePackage();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    // Act
+    childCategoriesCustomPersistenceHandler2.add(persistencePackage, dynamicEntityDao,
+        new AdornedTargetListPersistenceModule());
   }
 
   /**
@@ -233,6 +301,40 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
     verify(entity).addGlobalValidationError(eq("validateCategorySelfLink"));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
+  }
+
+  /**
+   * Test
+   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}.
+   * <p>
+   * Method under test:
+   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategory(Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateChildCategory() throws ValidationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1350 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
+
+    // Act
+    childCategoriesCustomPersistenceHandler2.validateChildCategory(new Entity());
   }
 
   /**
@@ -357,6 +459,40 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   /**
    * Test
    * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
+   * <p>
+   * Method under test:
+   * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateSelfLink() throws ValidationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1416 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
+
+    // Act
+    childCategoriesCustomPersistenceHandler2.validateSelfLink(new Entity());
+  }
+
+  /**
+   * Test
+   * {@link ChildCategoriesCustomPersistenceHandler#validateSelfLink(Entity)}.
    * <ul>
    *   <li>Given {@link Property} {@link Property#getValue()} return
    * {@code 42}.</li>
@@ -443,6 +579,40 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   /**
    * Test
    * {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
+   * <p>
+   * Method under test:
+   * {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateDuplicateChild() throws ValidationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1372 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
+
+    // Act
+    childCategoriesCustomPersistenceHandler2.validateDuplicateChild(new Entity());
+  }
+
+  /**
+   * Test
+   * {@link ChildCategoriesCustomPersistenceHandler#validateDuplicateChild(Entity)}.
    * <ul>
    *   <li>Given {@link Property#Property()}.</li>
    *   <li>Then calls {@link Entity#findProperty(String)}.</li>
@@ -470,6 +640,40 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
   /**
    * Test
    * {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
+   * <p>
+   * Method under test:
+   * {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateRecursiveRelationship() throws ValidationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1394 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
+
+    // Act
+    childCategoriesCustomPersistenceHandler2.validateRecursiveRelationship(new Entity());
+  }
+
+  /**
+   * Test
+   * {@link ChildCategoriesCustomPersistenceHandler#validateRecursiveRelationship(Entity)}.
    * <ul>
    *   <li>Given {@link Property#Property()}.</li>
    *   <li>Then calls {@link Entity#findProperty(String)}.</li>
@@ -492,6 +696,76 @@ public class ChildCategoriesCustomPersistenceHandlerDiffblueTest {
 
     // Assert
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
+  }
+
+  /**
+   * Test
+   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategories(Entity, Category, Long, StringBuilder)}.
+   * <p>
+   * Method under test:
+   * {@link ChildCategoriesCustomPersistenceHandler#validateChildCategories(Entity, Category, Long, StringBuilder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateChildCategories() throws ValidationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1237 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
+    Entity entity = new Entity();
+    CategoryImpl category = new CategoryImpl();
+
+    // Act
+    childCategoriesCustomPersistenceHandler2.validateChildCategories(entity, category, 1L, new StringBuilder("foo"));
+  }
+
+  /**
+   * Test
+   * {@link ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}.
+   * <p>
+   * Method under test:
+   * {@link ChildCategoriesCustomPersistenceHandler#addCategoryLink(StringBuilder, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddCategoryLink() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1158 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ChildCategoriesCustomPersistenceHandler childCategoriesCustomPersistenceHandler2 = new ChildCategoriesCustomPersistenceHandler();
+
+    // Act
+    childCategoriesCustomPersistenceHandler2.addCategoryLink(new StringBuilder("foo"), "Category Name");
   }
 
   /**

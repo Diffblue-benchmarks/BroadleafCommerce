@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.rulebuilder;
 
 import static org.junit.Assert.assertEquals;
@@ -33,6 +16,7 @@ import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataDTO;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO;
 import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -45,6 +29,86 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class DataDTOToMVELTranslatorDiffblueTest {
   @Autowired
   private DataDTOToMVELTranslator dataDTOToMVELTranslator;
+
+  /**
+   * Test
+   * {@link DataDTOToMVELTranslator#createMVEL(String, DataDTO, RuleBuilderFieldService)}.
+   * <ul>
+   *   <li>When {@link DataDTO} (default constructor) Condition is
+   * {@code Condition}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DataDTOToMVELTranslator#createMVEL(String, DataDTO, RuleBuilderFieldService)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateMVEL_whenDataDTOConditionIsCondition() throws MVELTranslationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: No enum constant org.broadleafcommerce.openadmin.web.rulebuilder.BLCOperator.Condition
+    //       at java.base/java.lang.Enum.valueOf(Enum.java:240)
+    //       at org.broadleafcommerce.openadmin.web.rulebuilder.BLCOperator.valueOf(BLCOperator.java:23)
+    //       at org.broadleafcommerce.openadmin.web.rulebuilder.DataDTOToMVELTranslator.buildMVEL(DataDTOToMVELTranslator.java:79)
+    //       at org.broadleafcommerce.openadmin.web.rulebuilder.DataDTOToMVELTranslator.createMVEL(DataDTOToMVELTranslator.java:65)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    DataDTO dataDTO = new DataDTO();
+    dataDTO.setCondition("Condition");
+    dataDTO.setContainedPk(1L);
+    dataDTO.setCreatedFromSubGroup(true);
+    dataDTO.setPk(1L);
+    dataDTO.setPreviousContainedPk(1L);
+    dataDTO.setPreviousPk(1L);
+    dataDTO.setQuantity(1);
+    dataDTO.setRules(new ArrayList<>());
+
+    // Act
+    dataDTOToMVELTranslator.createMVEL("Entity Key", dataDTO, mock(RuleBuilderFieldService.class));
+  }
+
+  /**
+   * Test
+   * {@link DataDTOToMVELTranslator#buildMVEL(DataDTO, StringBuffer, String, String, RuleBuilderFieldService)}.
+   * <ul>
+   *   <li>When {@link DataDTO} (default constructor) Condition is
+   * {@code Condition}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DataDTOToMVELTranslator#buildMVEL(DataDTO, StringBuffer, String, String, RuleBuilderFieldService)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildMVEL_whenDataDTOConditionIsCondition() throws MVELTranslationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: No enum constant org.broadleafcommerce.openadmin.web.rulebuilder.BLCOperator.Condition
+    //       at java.base/java.lang.Enum.valueOf(Enum.java:240)
+    //       at org.broadleafcommerce.openadmin.web.rulebuilder.BLCOperator.valueOf(BLCOperator.java:23)
+    //       at org.broadleafcommerce.openadmin.web.rulebuilder.DataDTOToMVELTranslator.buildMVEL(DataDTOToMVELTranslator.java:79)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    DataDTO dataDTO = new DataDTO();
+    dataDTO.setCondition("Condition");
+    dataDTO.setContainedPk(1L);
+    dataDTO.setCreatedFromSubGroup(true);
+    dataDTO.setPk(1L);
+    dataDTO.setPreviousContainedPk(1L);
+    dataDTO.setPreviousPk(1L);
+    dataDTO.setQuantity(1);
+    dataDTO.setRules(new ArrayList<>());
+
+    // Act
+    dataDTOToMVELTranslator.buildMVEL(dataDTO, new StringBuffer("foo"), "Entity Key", "Group Operator",
+        mock(RuleBuilderFieldService.class));
+  }
 
   /**
    * Test
@@ -3614,5 +3678,22 @@ public class DataDTOToMVELTranslatorDiffblueTest {
 
     // Assert
     assertEquals(".CollectionUtils.intersection(?Entity Key.?Field,[Entity Key.Value])Operator", sb.toString());
+  }
+
+  /**
+   * Test new {@link DataDTOToMVELTranslator} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link DataDTOToMVELTranslator}
+   */
+  @Test
+  public void testNewDataDTOToMVELTranslator() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new DataDTOToMVELTranslator();
   }
 }

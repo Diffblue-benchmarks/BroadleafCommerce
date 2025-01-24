@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.workflow;
 
 import static org.junit.Assert.assertEquals;
@@ -27,10 +10,52 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.broadleafcommerce.core.util.ThirdPartyInteractionLatencySimulationActivity;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext-entity.xml", "/bl-framework-applicationContext-persistence.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SequenceProcessorDiffblueTest {
+  @Autowired
+  private SequenceProcessor<Object, Object> sequenceProcessor;
+
+  /**
+   * Test {@link SequenceProcessor#supports(Activity)}.
+   * <p>
+   * Method under test: {@link SequenceProcessor#supports(Activity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSupports() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.workflow;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass680 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.workflow.SequenceProcessor<Ljava.lang.Object;Ljava.lang.Object;> sequenceProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    sequenceProcessor.supports(new ThirdPartyInteractionLatencySimulationActivity());
+  }
+
   /**
    * Test {@link SequenceProcessor#supports(Activity)}.
    * <ul>
@@ -68,6 +93,123 @@ public class SequenceProcessorDiffblueTest {
 
     // Act and Assert
     assertTrue(sequenceProcessor.supports(new ThirdPartyInteractionLatencySimulationActivity()));
+  }
+
+  /**
+   * Test {@link SequenceProcessor#doActivities()}.
+   * <p>
+   * Method under test: {@link SequenceProcessor#doActivities()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDoActivities() throws WorkflowException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.workflow;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass647 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.workflow.SequenceProcessor<Ljava.lang.Object;Ljava.lang.Object;> sequenceProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    sequenceProcessor.doActivities();
+  }
+
+  /**
+   * Test {@link SequenceProcessor#doActivities(Object)} with {@code Object}.
+   * <p>
+   * Method under test: {@link SequenceProcessor#doActivities(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDoActivitiesWithObject() throws WorkflowException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.workflow;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass648 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.workflow.SequenceProcessor<Ljava.lang.Object;Ljava.lang.Object;> sequenceProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    sequenceProcessor.doActivities("Seed Data");
+  }
+
+  /**
+   * Test {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}.
+   * <p>
+   * Method under test:
+   * {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testProcessShouldStop() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.workflow;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass660 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.workflow.SequenceProcessor<Ljava.lang.Object;Ljava.lang.Object;> sequenceProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DefaultProcessContextImpl<Object> context = new DefaultProcessContextImpl<>();
+
+    // Act
+    sequenceProcessor.processShouldStop(context, new ThirdPartyInteractionLatencySimulationActivity());
+  }
+
+  /**
+   * Test {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}.
+   * <ul>
+   *   <li>Given {@link IllegalStateException#IllegalStateException(String)} with
+   * {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link SequenceProcessor#processShouldStop(ProcessContext, Activity)}
+   */
+  @Test
+  public void testProcessShouldStop_givenIllegalStateExceptionWithFoo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SequenceProcessor<Object, Object> sequenceProcessor = new SequenceProcessor<>();
+    DefaultProcessContextImpl<Object> context = mock(DefaultProcessContextImpl.class);
+    when(context.isStopped()).thenThrow(new IllegalStateException("foo"));
+
+    // Act
+    sequenceProcessor.processShouldStop(context, new ThirdPartyInteractionLatencySimulationActivity());
+
+    // Assert
+    verify(context).isStopped();
   }
 
   /**
@@ -143,6 +285,35 @@ public class SequenceProcessorDiffblueTest {
 
   /**
    * Test {@link SequenceProcessor#createContext(Object)}.
+   * <p>
+   * Method under test: {@link SequenceProcessor#createContext(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateContext() throws WorkflowException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.workflow;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass635 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.workflow.SequenceProcessor<Ljava.lang.Object;Ljava.lang.Object;> sequenceProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    sequenceProcessor.createContext("Seed Data");
+  }
+
+  /**
+   * Test {@link SequenceProcessor#createContext(Object)}.
    * <ul>
    *   <li>Then return {@link DefaultProcessContextImpl} (default constructor).</li>
    * </ul>
@@ -191,5 +362,65 @@ public class SequenceProcessorDiffblueTest {
     assertTrue(actualSequenceProcessor.getActivities().isEmpty());
     assertTrue(actualSequenceProcessor.getModuleActivities().isEmpty());
     assertTrue(actualSequenceProcessor.getAutoRollbackOnError());
+  }
+
+  /**
+   * Test new {@link SequenceProcessor} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link SequenceProcessor}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewSequenceProcessor2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.workflow;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass634 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.workflow.SequenceProcessor<Ljava.lang.Object;Ljava.lang.Object;> sequenceProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new SequenceProcessor<>();
+  }
+
+  /**
+   * Test
+   * {@link SequenceProcessor#setProcessContextFactory(ProcessContextFactory)}.
+   * <p>
+   * Method under test:
+   * {@link SequenceProcessor#setProcessContextFactory(ProcessContextFactory)}
+   */
+  @Test
+  public void testSetProcessContextFactory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     SequenceProcessor.processContextFactory
+    //     BaseProcessor.activities
+    //     BaseProcessor.allowEmptyActivities
+    //     BaseProcessor.autoRollbackOnError
+    //     BaseProcessor.beanFactory
+    //     BaseProcessor.beanName
+    //     BaseProcessor.defaultErrorHandler
+    //     BaseProcessor.moduleActivities
+    //     BaseProcessor.supportLogger
+
+    // Arrange
+    SequenceProcessor<Object, Object> sequenceProcessor = new SequenceProcessor<>();
+
+    // Act
+    sequenceProcessor.setProcessContextFactory(mock(ProcessContextFactory.class));
   }
 }

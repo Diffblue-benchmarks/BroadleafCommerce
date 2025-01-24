@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -19,6 +19,8 @@ package org.broadleafcommerce.common.cache;
 
 import static org.junit.Assert.assertEquals;
 import java.math.BigDecimal;
+import java.util.concurrent.atomic.AtomicLong;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CacheStatDiffblueTest {
@@ -66,6 +68,60 @@ public class CacheStatDiffblueTest {
   }
 
   /**
+   * Test {@link CacheStat#incrementRequest()}.
+   * <p>
+   * Method under test: {@link CacheStat#incrementRequest()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIncrementRequest() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    CacheStat cacheStat = new CacheStat();
+
+    // Act
+    cacheStat.incrementRequest();
+
+    // Assert
+    AtomicLong atomicLong = cacheStat.requestCount;
+    long actualGetResult = atomicLong.get();
+    assertEquals(0L, atomicLong.getAndIncrement());
+    assertEquals(1L, cacheStat.getRequestCount().longValue());
+    assertEquals(1L, actualGetResult);
+    assertEquals(1L, atomicLong.getAndDecrement());
+    BigDecimal expectedHitRate = new BigDecimal("0.00");
+    assertEquals(expectedHitRate, cacheStat.getHitRate());
+  }
+
+  /**
+   * Test {@link CacheStat#incrementHit()}.
+   * <p>
+   * Method under test: {@link CacheStat#incrementHit()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIncrementHit() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    CacheStat cacheStat = new CacheStat();
+
+    // Act
+    cacheStat.incrementHit();
+
+    // Assert
+    AtomicLong atomicLong = cacheStat.cacheHitCount;
+    long actualGetResult = atomicLong.get();
+    assertEquals(0L, atomicLong.getAndIncrement());
+    assertEquals(1L, cacheStat.getCacheHitCount().longValue());
+    assertEquals(1L, actualGetResult);
+    assertEquals(1L, atomicLong.getAndDecrement());
+  }
+
+  /**
    * Test {@link CacheStat#getHitRate()}.
    * <ul>
    *   <li>Given {@link CacheStat} (default constructor) incrementRequest.</li>
@@ -103,5 +159,35 @@ public class CacheStatDiffblueTest {
 
     // Assert
     assertEquals(new BigDecimal("-1"), actualHitRate);
+  }
+
+  /**
+   * Test new {@link CacheStat} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of {@link CacheStat}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewCacheStat() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    CacheStat actualCacheStat = new CacheStat();
+
+    // Assert
+    AtomicLong atomicLong = actualCacheStat.cacheHitCount;
+    long actualGetResult = atomicLong.get();
+    assertEquals(-1L, atomicLong.getAndIncrement());
+    AtomicLong atomicLong2 = actualCacheStat.requestCount;
+    assertEquals(-1L, atomicLong2.getAndIncrement());
+    assertEquals(0L, actualCacheStat.getCacheHitCount().longValue());
+    assertEquals(0L, actualCacheStat.getRequestCount().longValue());
+    assertEquals(0L, actualGetResult);
+    assertEquals(0L, atomicLong2.get());
+    assertEquals(0L, atomicLong.getAndDecrement());
+    assertEquals(0L, atomicLong2.getAndDecrement());
+    BigDecimal expectedHitRate = new BigDecimal("-1");
+    assertEquals(expectedHitRate, actualCacheStat.getHitRate());
   }
 }

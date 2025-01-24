@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.geolocation;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,18 +11,133 @@ import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
+@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class GeolocationRequestProcessorDiffblueTest {
+  @Autowired
+  private GeolocationRequestProcessor geolocationRequestProcessor;
+
+  /**
+   * Test {@link GeolocationRequestProcessor#process(WebRequest)}.
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#process(WebRequest)}
+   */
+  @Test
+  @DisplayName("Test process(WebRequest)")
+  @Disabled("TODO: Complete this test")
+  void testProcess() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.geolocation;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4186 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.geolocation.GeolocationRequestProcessor geolocationRequestProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    GeolocationRequestProcessor geolocationRequestProcessor2 = new GeolocationRequestProcessor();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+
+    // Act
+    geolocationRequestProcessor2
+        .process(new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
+  }
+
+  /**
+   * Test {@link GeolocationRequestProcessor#isGeolocationEnabled()}.
+   * <p>
+   * Method under test: {@link GeolocationRequestProcessor#isGeolocationEnabled()}
+   */
+  @Test
+  @DisplayName("Test isGeolocationEnabled()")
+  @Disabled("TODO: Complete this test")
+  void testIsGeolocationEnabled() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.geolocation;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4185 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.geolocation.GeolocationRequestProcessor geolocationRequestProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new GeolocationRequestProcessor()).isGeolocationEnabled();
+  }
+
+  /**
+   * Test {@link GeolocationRequestProcessor#getIPAddress(ServletWebRequest)}.
+   * <p>
+   * Method under test:
+   * {@link GeolocationRequestProcessor#getIPAddress(ServletWebRequest)}
+   */
+  @Test
+  @DisplayName("Test getIPAddress(ServletWebRequest)")
+  @Disabled("TODO: Complete this test")
+  void testGetIPAddress() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.geolocation;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3849 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.geolocation.GeolocationRequestProcessor geolocationRequestProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    GeolocationRequestProcessor geolocationRequestProcessor2 = new GeolocationRequestProcessor();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+
+    // Act
+    geolocationRequestProcessor2
+        .getIPAddress(new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
+  }
+
   /**
    * Test {@link GeolocationRequestProcessor#getIPAddress(ServletWebRequest)}.
    * <ul>
@@ -145,6 +243,43 @@ class GeolocationRequestProcessorDiffblueTest {
                 new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(new MockHttpServletRequest(),
                     mock(Environment.class), new String[]{"White List Param Names"}))))
             .isEmpty());
+  }
+
+  /**
+   * Test {@link GeolocationRequestProcessor#getRuleMapFromRequest(WebRequest)}.
+   * <p>
+   * Method under test:
+   * {@link GeolocationRequestProcessor#getRuleMapFromRequest(WebRequest)}
+   */
+  @Test
+  @DisplayName("Test getRuleMapFromRequest(WebRequest)")
+  @Disabled("TODO: Complete this test")
+  void testGetRuleMapFromRequest3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.geolocation;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4015 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.geolocation.GeolocationRequestProcessor geolocationRequestProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    GeolocationRequestProcessor geolocationRequestProcessor2 = new GeolocationRequestProcessor();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+
+    // Act
+    geolocationRequestProcessor2
+        .getRuleMapFromRequest(new ServletWebRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+            new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}))));
   }
 
   /**

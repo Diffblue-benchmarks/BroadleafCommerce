@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Admin Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.admin.event;
 
 import static org.junit.Assert.assertEquals;
@@ -27,9 +10,57 @@ import java.util.Map;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
 import org.broadleafcommerce.openadmin.server.security.event.AdminForgotPasswordEvent;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
+    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminNotificationForgotPasswordEventListenerDiffblueTest {
+  @Autowired
+  private AdminNotificationForgotPasswordEventListener adminNotificationForgotPasswordEventListener;
+
+  /**
+   * Test
+   * {@link AdminNotificationForgotPasswordEventListener#handleApplicationEvent(AdminForgotPasswordEvent)}
+   * with {@code AdminForgotPasswordEvent}.
+   * <p>
+   * Method under test:
+   * {@link AdminNotificationForgotPasswordEventListener#handleApplicationEvent(AdminForgotPasswordEvent)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandleApplicationEventWithAdminForgotPasswordEvent() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.event;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass48 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.event.AdminNotificationForgotPasswordEventListener adminNotificationForgotPasswordEventListener;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminNotificationForgotPasswordEventListener adminNotificationForgotPasswordEventListener2 = new AdminNotificationForgotPasswordEventListener();
+
+    // Act
+    adminNotificationForgotPasswordEventListener2
+        .handleApplicationEvent(new AdminForgotPasswordEvent("Source", 1L, "ABC123", "https://example.org/example"));
+  }
+
   /**
    * Test
    * {@link AdminNotificationForgotPasswordEventListener#createContext(AdminForgotPasswordEvent, AdminUser)}.
@@ -85,6 +116,42 @@ public class AdminNotificationForgotPasswordEventListenerDiffblueTest {
     assertEquals("ABC123", actualCreateContextResult.get("token"));
     assertEquals("https://example.org/example", actualCreateContextResult.get("resetPasswordUrl"));
     assertSame(adminUser, actualCreateContextResult.get("adminUser"));
+  }
+
+  /**
+   * Test
+   * {@link AdminNotificationForgotPasswordEventListener#createContext(AdminForgotPasswordEvent, AdminUser)}.
+   * <p>
+   * Method under test:
+   * {@link AdminNotificationForgotPasswordEventListener#createContext(AdminForgotPasswordEvent, AdminUser)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateContext3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.event;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass0 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.event.AdminNotificationForgotPasswordEventListener adminNotificationForgotPasswordEventListener;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminNotificationForgotPasswordEventListener adminNotificationForgotPasswordEventListener2 = new AdminNotificationForgotPasswordEventListener();
+    AdminForgotPasswordEvent event = new AdminForgotPasswordEvent("Source", 1L, "ABC123",
+        "https://example.org/example");
+
+    // Act
+    adminNotificationForgotPasswordEventListener2.createContext(event, new AdminUserImpl());
   }
 
   /**

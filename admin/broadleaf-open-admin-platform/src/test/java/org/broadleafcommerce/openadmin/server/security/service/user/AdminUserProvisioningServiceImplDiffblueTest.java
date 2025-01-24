@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.security.service.user;
 
 import static org.junit.Assert.assertEquals;
@@ -28,16 +11,136 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.broadleafcommerce.common.security.BroadleafExternalAuthenticationUserDetails;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminRole;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUser;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminUserImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminUserProvisioningServiceImplDiffblueTest {
+  @Autowired
+  private AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
+
+  /**
+   * Test
+   * {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}.
+   * <p>
+   * Method under test:
+   * {@link AdminUserProvisioningServiceImpl#provisionAdminUser(BroadleafExternalAuthenticationUserDetails)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testProvisionAdminUser() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.service.user;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1559 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+
+    // Act
+    adminUserProvisioningServiceImpl2
+        .provisionAdminUser(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()));
+  }
+
+  /**
+   * Test
+   * {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}.
+   * <p>
+   * Method under test:
+   * {@link AdminUserProvisioningServiceImpl#parseAdminRoles(BroadleafExternalAuthenticationUserDetails)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testParseAdminRoles() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.service.user;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1519 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+
+    // Act
+    adminUserProvisioningServiceImpl2
+        .parseAdminRoles(new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()));
+  }
+
+  /**
+   * Test
+   * {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
+   * <p>
+   * Method under test:
+   * {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testExtractAdminUserAuthorities() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.service.user;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1492 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+
+    // Act
+    adminUserProvisioningServiceImpl2.extractAdminUserAuthorities(new HashSet<>());
+  }
+
   /**
    * Test
    * {@link AdminUserProvisioningServiceImpl#extractAdminUserAuthorities(HashSet)}.
@@ -58,6 +161,40 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
     // Act and Assert
     assertEquals(6, adminUserProvisioningServiceImpl.extractAdminUserAuthorities(new HashSet<>()).size());
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}.
+   * <p>
+   * Method under test:
+   * {@link AdminUserProvisioningServiceImpl#addPermissions(HashSet, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddPermissions() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.service.user;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1438 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+    HashSet<AdminRole> parsedRoles = new HashSet<>();
+
+    // Act
+    adminUserProvisioningServiceImpl2.addPermissions(parsedRoles, new ArrayList<>());
   }
 
   /**
@@ -183,6 +320,40 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
     assertEquals("ROLE_ROLE_", getResult2.getAuthority());
     assertEquals("ROLE_ROLE_", getResult2.toString());
     assertSame(simpleGrantedAuthority, adminUserAuthorities.get(3));
+  }
+
+  /**
+   * Test
+   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}.
+   * <p>
+   * Method under test:
+   * {@link AdminUserProvisioningServiceImpl#convertPermissionPrefixToRole(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConvertPermissionPrefixToRole4() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.service.user;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1447 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+
+    // Act
+    adminUserProvisioningServiceImpl2.convertPermissionPrefixToRole(new ArrayList<>());
   }
 
   /**
@@ -341,6 +512,42 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}.
+   * <p>
+   * Method under test:
+   * {@link AdminUserProvisioningServiceImpl#getAdminUser(BroadleafExternalAuthenticationUserDetails, HashSet)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAdminUser() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.service.user;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1497 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
+
+    // Act
+    adminUserProvisioningServiceImpl2.getAdminUser(details, new HashSet<>());
+  }
+
+  /**
+   * Test
    * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}.
    * <p>
    * Method under test:
@@ -364,6 +571,43 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
     // Assert
     verify(adminUser).getId();
     assertEquals(details, actualCreateDetailsResult);
+  }
+
+  /**
+   * Test
+   * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}.
+   * <p>
+   * Method under test:
+   * {@link AdminUserProvisioningServiceImpl#createDetails(AdminUser, BroadleafExternalAuthenticationUserDetails, Set)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateDetails2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.service.user;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1454 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+    AdminUserImpl adminUser = new AdminUserImpl();
+    BroadleafExternalAuthenticationUserDetails details = new BroadleafExternalAuthenticationUserDetails("janedoe",
+        "iloveyou", new ArrayList<>());
+
+    // Act
+    adminUserProvisioningServiceImpl2.createDetails(adminUser, details, new HashSet<>());
   }
 
   /**
@@ -454,6 +698,41 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
             .parseRolesFromUserDetails(
                 new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()))
             .isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}.
+   * <p>
+   * Method under test:
+   * {@link AdminUserProvisioningServiceImpl#parseRolesFromUserDetails(BroadleafExternalAuthenticationUserDetails)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testParseRolesFromUserDetails2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.security.service.user;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1539 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.security.service.user.AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl2 = new AdminUserProvisioningServiceImpl();
+
+    // Act
+    adminUserProvisioningServiceImpl2.parseRolesFromUserDetails(
+        new BroadleafExternalAuthenticationUserDetails("janedoe", "iloveyou", new ArrayList<>()));
   }
 
   /**
@@ -614,5 +893,29 @@ public class AdminUserProvisioningServiceImplDiffblueTest {
     // Assert
     assertEquals(1, actualParseRolesFromUserDetailsResult.size());
     assertTrue(actualParseRolesFromUserDetailsResult.contains("Role"));
+  }
+
+  /**
+   * Test {@link AdminUserProvisioningServiceImpl#setRoleNameSubstitutions(Map)}.
+   * <p>
+   * Method under test:
+   * {@link AdminUserProvisioningServiceImpl#setRoleNameSubstitutions(Map)}
+   */
+  @Test
+  public void testSetRoleNameSubstitutions() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     AdminUserProvisioningServiceImpl.adminExternalLoginExtensionManager
+    //     AdminUserProvisioningServiceImpl.adminSecurityHelper
+    //     AdminUserProvisioningServiceImpl.roleNameSubstitutions
+    //     AdminUserProvisioningServiceImpl.securityService
+
+    // Arrange
+    AdminUserProvisioningServiceImpl adminUserProvisioningServiceImpl = new AdminUserProvisioningServiceImpl();
+
+    // Act
+    adminUserProvisioningServiceImpl.setRoleNameSubstitutions(new HashMap<>());
   }
 }

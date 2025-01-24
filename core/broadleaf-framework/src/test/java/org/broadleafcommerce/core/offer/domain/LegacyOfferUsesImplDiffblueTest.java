@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -22,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import java.sql.Date;
@@ -33,6 +17,7 @@ import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.offer.weave.LegacyOfferUses;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class LegacyOfferUsesImplDiffblueTest {
@@ -251,6 +236,41 @@ public class LegacyOfferUsesImplDiffblueTest {
 
     // Act and Assert
     assertNotEquals(legacyOfferUsesImpl, legacyOfferUsesImpl2);
+  }
+
+  /**
+   * Test {@link LegacyOfferUsesImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then throw exception.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LegacyOfferUsesImpl#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEquals_whenOtherIsDifferent_thenThrowException() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.offer.domain.LegacyOfferUsesImpl.equals(LegacyOfferUsesImpl.java:107)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    LegacyOfferUsesImpl legacyOfferUsesImpl = new LegacyOfferUsesImpl();
+    legacyOfferUsesImpl.setApplyDiscountToMarkedItems(true);
+    legacyOfferUsesImpl.setOffer(null);
+    legacyOfferUsesImpl.setUses(1);
+
+    LegacyOfferUsesImpl legacyOfferUsesImpl2 = new LegacyOfferUsesImpl();
+    legacyOfferUsesImpl2.setApplyDiscountToMarkedItems(true);
+    legacyOfferUsesImpl2.setOffer(new OfferImpl());
+    legacyOfferUsesImpl2.setUses(1);
+
+    // Act and Assert
+    assertThrows(NullPointerException.class, () -> legacyOfferUsesImpl.equals(legacyOfferUsesImpl2));
   }
 
   /**

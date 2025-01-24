@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.email.domain.EmailTarget;
 import org.broadleafcommerce.common.email.domain.EmailTargetImpl;
+import org.broadleafcommerce.common.email.service.exception.EmailException;
 import org.broadleafcommerce.common.email.service.info.EmailInfo;
 import org.broadleafcommerce.common.email.service.info.NullEmailInfo;
 import org.broadleafcommerce.common.email.service.info.ServerInfo;
@@ -64,6 +65,33 @@ public class EmailServiceImplDiffblueTest {
    * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
    * with {@code emailTarget}, {@code emailInfo}, {@code props}.
    * <ul>
+   *   <li>Then calls {@link EmailInfo#getEmailType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   */
+  @Test
+  public void testSendTemplateEmailWithEmailTargetEmailInfoProps_thenCallsGetEmailType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmailServiceImpl emailServiceImpl = new EmailServiceImpl();
+    EmailTargetImpl emailTarget = new EmailTargetImpl();
+    EmailInfo emailInfo = mock(EmailInfo.class);
+    when(emailInfo.getEmailType()).thenThrow(new EmailException("Arg0"));
+
+    // Act
+    emailServiceImpl.sendTemplateEmail(emailTarget, emailInfo, new HashMap<>());
+
+    // Assert
+    verify(emailInfo).getEmailType();
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendTemplateEmail(EmailTarget, EmailInfo, Map)}
+   * with {@code emailTarget}, {@code emailInfo}, {@code props}.
+   * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
@@ -90,6 +118,32 @@ public class EmailServiceImplDiffblueTest {
     // Assert
     verify(emailTrackingManager).createTrackedEmail(isNull(), isNull(), isNull());
     assertTrue(actualSendTemplateEmailResult);
+  }
+
+  /**
+   * Test {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}.
+   * <ul>
+   *   <li>Then calls {@link EmailInfo#getSendEmailReliableAsync()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link EmailServiceImpl#sendBasicEmail(EmailInfo, EmailTarget, Map)}
+   */
+  @Test
+  public void testSendBasicEmail_thenCallsGetSendEmailReliableAsync() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    EmailServiceImpl emailServiceImpl = new EmailServiceImpl();
+    EmailInfo emailInfo = mock(EmailInfo.class);
+    when(emailInfo.getSendEmailReliableAsync()).thenThrow(new EmailException("Arg0"));
+    EmailTargetImpl emailTarget = new EmailTargetImpl();
+
+    // Act
+    emailServiceImpl.sendBasicEmail(emailInfo, emailTarget, new HashMap<>());
+
+    // Assert
+    verify(emailInfo).getSendEmailReliableAsync();
   }
 
   /**

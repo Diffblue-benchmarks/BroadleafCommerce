@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Profile
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.profile.core.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -34,12 +17,26 @@ import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.i18n.domain.ISOCountry;
 import org.broadleafcommerce.common.i18n.domain.ISOCountryImpl;
 import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
+    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
+    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
+    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AddressImplDiffblueTest {
+  @Autowired
+  private AddressImpl addressImpl;
+
   /**
    * Test getters and setters.
    * <p>
@@ -209,6 +206,35 @@ public class AddressImplDiffblueTest {
     assertSame(isoCountryAlpha2, actualIsoCountryAlpha2);
     assertSame(country, actualCountry);
     assertSame(state, actualState);
+  }
+
+  /**
+   * Test {@link AddressImpl#getPhonePrimary()}.
+   * <p>
+   * Method under test: {@link AddressImpl#getPhonePrimary()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPhonePrimary() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3240 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.AddressImpl addressImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AddressImpl()).getPhonePrimary();
   }
 
   /**
@@ -408,6 +434,35 @@ public class AddressImplDiffblueTest {
 
   /**
    * Test {@link AddressImpl#getPhoneSecondary()}.
+   * <p>
+   * Method under test: {@link AddressImpl#getPhoneSecondary()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPhoneSecondary() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3274 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.AddressImpl addressImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AddressImpl()).getPhoneSecondary();
+  }
+
+  /**
+   * Test {@link AddressImpl#getPhoneSecondary()}.
    * <ul>
    *   <li>Given {@link AddressImpl} (default constructor) Country is
    * {@link CountryImpl} (default constructor).</li>
@@ -597,6 +652,35 @@ public class AddressImplDiffblueTest {
 
     // Act and Assert
     assertSame(phoneSecondary, addressImpl.getPhoneSecondary());
+  }
+
+  /**
+   * Test {@link AddressImpl#getPhoneFax()}.
+   * <p>
+   * Method under test: {@link AddressImpl#getPhoneFax()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPhoneFax() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3206 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.AddressImpl addressImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AddressImpl()).getPhoneFax();
   }
 
   /**
@@ -1508,6 +1592,46 @@ public class AddressImplDiffblueTest {
   /**
    * Test
    * {@link AddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test:
+   * {@link AddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3114 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.AddressImpl addressImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AddressImpl addressImpl2 = new AddressImpl();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+
+    // Act
+    addressImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager()));
+  }
+
+  /**
+   * Test
+   * {@link AddressImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Given {@code java.lang.Object}.</li>
    *   <li>Then Clone return {@link AddressImpl}.</li>
@@ -1595,5 +1719,35 @@ public class AddressImplDiffblueTest {
     assertFalse(actualAddressImpl.isMailing());
     assertFalse(actualAddressImpl.isStreet());
     assertTrue(actualAddressImpl.isActive());
+  }
+
+  /**
+   * Test new {@link AddressImpl} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link AddressImpl}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewAddressImpl2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3113 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.domain.AddressImpl addressImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new AddressImpl();
   }
 }

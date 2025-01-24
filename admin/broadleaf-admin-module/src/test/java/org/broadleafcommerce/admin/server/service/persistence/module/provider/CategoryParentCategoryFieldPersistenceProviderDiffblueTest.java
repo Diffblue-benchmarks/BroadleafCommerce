@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Admin Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.admin.server.service.persistence.module.provider;
 
 import static org.junit.Assert.assertEquals;
@@ -47,10 +30,68 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldMa
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
+    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CategoryParentCategoryFieldPersistenceProviderDiffblueTest {
+  @Autowired
+  private CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider;
+
+  /**
+   * Test
+   * {@link CategoryParentCategoryFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test:
+   * {@link CategoryParentCategoryFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8944 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.persistence.module.provider.CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider2 = new CategoryParentCategoryFieldPersistenceProvider();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    Property property = new Property();
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act
+    categoryParentCategoryFieldPersistenceProvider2.populateValue(populateValueRequest,
+        new SimpleDateFormat("yyyy/mm/dd"));
+  }
+
   /**
    * Test
    * {@link CategoryParentCategoryFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
@@ -80,6 +121,50 @@ public class CategoryParentCategoryFieldPersistenceProviderDiffblueTest {
     // Act and Assert
     assertEquals(MetadataProviderResponse.NOT_HANDLED, categoryParentCategoryFieldPersistenceProvider
         .populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
+  }
+
+  /**
+   * Test
+   * {@link CategoryParentCategoryFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
+   * <p>
+   * Method under test:
+   * {@link CategoryParentCategoryFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testExtractValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8643 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.persistence.module.provider.CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider2 = new CategoryParentCategoryFieldPersistenceProvider();
+    ArrayList<Property> props = new ArrayList<>();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act
+    categoryParentCategoryFieldPersistenceProvider2.extractValue(extractValueRequest, new Property());
   }
 
   /**
@@ -216,6 +301,41 @@ public class CategoryParentCategoryFieldPersistenceProviderDiffblueTest {
     verify(instance).getAllParentCategoryXrefs();
     verify(categoryXrefImpl).getCategory();
     assertTrue(actualCheckDirtyStateResult);
+  }
+
+  /**
+   * Test
+   * {@link CategoryParentCategoryFieldPersistenceProvider#checkDirtyState(Category, Long)}
+   * with {@code instance}, {@code checkValue}.
+   * <p>
+   * Method under test:
+   * {@link CategoryParentCategoryFieldPersistenceProvider#checkDirtyState(Category, Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCheckDirtyStateWithInstanceCheckValue4() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8604 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.persistence.module.provider.CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider2 = new CategoryParentCategoryFieldPersistenceProvider();
+
+    // Act
+    categoryParentCategoryFieldPersistenceProvider2.checkDirtyState(new CategoryImpl(), 42L);
   }
 
   /**
@@ -435,6 +555,40 @@ public class CategoryParentCategoryFieldPersistenceProviderDiffblueTest {
   /**
    * Test
    * {@link CategoryParentCategoryFieldPersistenceProvider#getDefaultCategory(Category)}.
+   * <p>
+   * Method under test:
+   * {@link CategoryParentCategoryFieldPersistenceProvider#getDefaultCategory(Category)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDefaultCategory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8910 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.persistence.module.provider.CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider2 = new CategoryParentCategoryFieldPersistenceProvider();
+
+    // Act
+    categoryParentCategoryFieldPersistenceProvider2.getDefaultCategory(new CategoryImpl());
+  }
+
+  /**
+   * Test
+   * {@link CategoryParentCategoryFieldPersistenceProvider#getDefaultCategory(Category)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()} add {@link CategoryXrefImpl} (default
    * constructor).</li>
@@ -627,6 +781,51 @@ public class CategoryParentCategoryFieldPersistenceProviderDiffblueTest {
   /**
    * Test
    * {@link CategoryParentCategoryFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test:
+   * {@link CategoryParentCategoryFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandlePersistence() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8300 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.persistence.module.provider.CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider2 = new CategoryParentCategoryFieldPersistenceProvider();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    Property property = new Property();
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act
+    categoryParentCategoryFieldPersistenceProvider2.canHandlePersistence(populateValueRequest,
+        new SimpleDateFormat("yyyy/mm/dd"));
+  }
+
+  /**
+   * Test
+   * {@link CategoryParentCategoryFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
    * <ul>
    *   <li>Then return {@code false}.</li>
    * </ul>
@@ -653,6 +852,50 @@ public class CategoryParentCategoryFieldPersistenceProviderDiffblueTest {
     // Act and Assert
     assertFalse(categoryParentCategoryFieldPersistenceProvider.canHandlePersistence(populateValueRequest,
         new SimpleDateFormat("yyyy/mm/dd")));
+  }
+
+  /**
+   * Test
+   * {@link CategoryParentCategoryFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
+   * <p>
+   * Method under test:
+   * {@link CategoryParentCategoryFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleExtraction() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8033 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.persistence.module.provider.CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CategoryParentCategoryFieldPersistenceProvider categoryParentCategoryFieldPersistenceProvider2 = new CategoryParentCategoryFieldPersistenceProvider();
+    ArrayList<Property> props = new ArrayList<>();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act
+    categoryParentCategoryFieldPersistenceProvider2.canHandleExtraction(extractValueRequest, new Property());
   }
 
   /**

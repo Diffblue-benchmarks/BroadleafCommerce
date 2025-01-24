@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.checkout.service.gateway;
 
 import static org.junit.Assert.assertEquals;
@@ -22,9 +5,22 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import org.broadleafcommerce.common.payment.PaymentGatewayType;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PassthroughPaymentConfigurationImplDiffblueTest {
+  @Autowired
+  private PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+
   /**
    * Test getters and setters.
    * <p>
@@ -73,6 +69,36 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
   }
 
   /**
+   * Test {@link PassthroughPaymentConfigurationImpl#handlesAuthorize()}.
+   * <p>
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesAuthorize()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesAuthorize2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass862 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesAuthorize();
+  }
+
+  /**
    * Test {@link PassthroughPaymentConfigurationImpl#handlesCapture()}.
    * <p>
    * Method under test:
@@ -84,6 +110,36 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertTrue((new PassthroughPaymentConfigurationImpl()).handlesCapture());
+  }
+
+  /**
+   * Test {@link PassthroughPaymentConfigurationImpl#handlesCapture()}.
+   * <p>
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesCapture()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesCapture2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass868 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesCapture();
   }
 
   /**
@@ -102,6 +158,37 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link PassthroughPaymentConfigurationImpl#handlesAuthorizeAndCapture()}.
+   * <p>
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesAuthorizeAndCapture()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesAuthorizeAndCapture2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass865 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesAuthorizeAndCapture();
+  }
+
+  /**
    * Test {@link PassthroughPaymentConfigurationImpl#handlesReverseAuthorize()}.
    * <p>
    * Method under test:
@@ -116,6 +203,36 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
   }
 
   /**
+   * Test {@link PassthroughPaymentConfigurationImpl#handlesReverseAuthorize()}.
+   * <p>
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesReverseAuthorize()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesReverseAuthorize2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass886 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesReverseAuthorize();
+  }
+
+  /**
    * Test {@link PassthroughPaymentConfigurationImpl#handlesVoid()}.
    * <p>
    * Method under test: {@link PassthroughPaymentConfigurationImpl#handlesVoid()}
@@ -126,6 +243,35 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertTrue((new PassthroughPaymentConfigurationImpl()).handlesVoid());
+  }
+
+  /**
+   * Test {@link PassthroughPaymentConfigurationImpl#handlesVoid()}.
+   * <p>
+   * Method under test: {@link PassthroughPaymentConfigurationImpl#handlesVoid()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesVoid2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass892 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesVoid();
   }
 
   /**
@@ -143,6 +289,36 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
   }
 
   /**
+   * Test {@link PassthroughPaymentConfigurationImpl#handlesRefund()}.
+   * <p>
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesRefund()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesRefund2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass883 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesRefund();
+  }
+
+  /**
    * Test {@link PassthroughPaymentConfigurationImpl#handlesPartialCapture()}.
    * <p>
    * Method under test:
@@ -154,6 +330,36 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertFalse((new PassthroughPaymentConfigurationImpl()).handlesPartialCapture());
+  }
+
+  /**
+   * Test {@link PassthroughPaymentConfigurationImpl#handlesPartialCapture()}.
+   * <p>
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesPartialCapture()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesPartialCapture2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass877 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesPartialCapture();
   }
 
   /**
@@ -171,6 +377,36 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
   }
 
   /**
+   * Test {@link PassthroughPaymentConfigurationImpl#handlesMultipleShipment()}.
+   * <p>
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesMultipleShipment()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesMultipleShipment2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass874 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesMultipleShipment();
+  }
+
+  /**
    * Test {@link PassthroughPaymentConfigurationImpl#handlesRecurringPayment()}.
    * <p>
    * Method under test:
@@ -182,6 +418,36 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertFalse((new PassthroughPaymentConfigurationImpl()).handlesRecurringPayment());
+  }
+
+  /**
+   * Test {@link PassthroughPaymentConfigurationImpl#handlesRecurringPayment()}.
+   * <p>
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesRecurringPayment()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesRecurringPayment2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass880 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesRecurringPayment();
   }
 
   /**
@@ -200,6 +466,37 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link PassthroughPaymentConfigurationImpl#handlesSavedCustomerPayment()}.
+   * <p>
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesSavedCustomerPayment()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesSavedCustomerPayment2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass889 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesSavedCustomerPayment();
+  }
+
+  /**
    * Test {@link PassthroughPaymentConfigurationImpl#handlesMultiplePayments()}.
    * <p>
    * Method under test:
@@ -211,5 +508,35 @@ public class PassthroughPaymentConfigurationImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertFalse((new PassthroughPaymentConfigurationImpl()).handlesMultiplePayments());
+  }
+
+  /**
+   * Test {@link PassthroughPaymentConfigurationImpl#handlesMultiplePayments()}.
+   * <p>
+   * Method under test:
+   * {@link PassthroughPaymentConfigurationImpl#handlesMultiplePayments()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandlesMultiplePayments2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.gateway;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass871 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.gateway.PassthroughPaymentConfigurationImpl passthroughPaymentConfigurationImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PassthroughPaymentConfigurationImpl()).handlesMultiplePayments();
   }
 }

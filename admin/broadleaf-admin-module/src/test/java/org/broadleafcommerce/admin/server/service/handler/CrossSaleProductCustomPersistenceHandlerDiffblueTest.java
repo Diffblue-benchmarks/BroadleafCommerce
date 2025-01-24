@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Admin Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.admin.server.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -43,10 +26,56 @@ import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.service.ValidationException;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.RecordHelper;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
+    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CrossSaleProductCustomPersistenceHandlerDiffblueTest {
+  @Autowired
+  private CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler;
+
+  /**
+   * Test
+   * {@link CrossSaleProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link CrossSaleProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleAdd() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1547 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler2 = new CrossSaleProductCustomPersistenceHandler();
+
+    // Act
+    crossSaleProductCustomPersistenceHandler2.canHandleAdd(new PersistencePackage());
+  }
+
   /**
    * Test
    * {@link CrossSaleProductCustomPersistenceHandler#canHandleAdd(PersistencePackage)}.
@@ -127,6 +156,43 @@ public class CrossSaleProductCustomPersistenceHandlerDiffblueTest {
   /**
    * Test
    * {@link CrossSaleProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
+   * <p>
+   * Method under test:
+   * {@link CrossSaleProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdd() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1438 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler2 = new CrossSaleProductCustomPersistenceHandler();
+    PersistencePackage persistencePackage = new PersistencePackage();
+    DynamicEntityDaoImpl dynamicEntityDao = new DynamicEntityDaoImpl();
+
+    // Act
+    crossSaleProductCustomPersistenceHandler2.add(persistencePackage, dynamicEntityDao,
+        new AdornedTargetListPersistenceModule());
+  }
+
+  /**
+   * Test
+   * {@link CrossSaleProductCustomPersistenceHandler#add(PersistencePackage, DynamicEntityDao, RecordHelper)}.
    * <ul>
    *   <li>Given {@link Entity} {@link Entity#findProperty(String)} return
    * {@link Property#Property(String, String)} with {@code Name} and value is
@@ -193,6 +259,40 @@ public class CrossSaleProductCustomPersistenceHandlerDiffblueTest {
     verify(entity).addGlobalValidationError(eq("validateProductSelfLink"));
     verify(entity, atLeast(1)).findProperty(Mockito.<String>any());
     verify(property, atLeast(1)).getValue();
+  }
+
+  /**
+   * Test
+   * {@link CrossSaleProductCustomPersistenceHandler#validateCrossSaleProduct(Entity)}.
+   * <p>
+   * Method under test:
+   * {@link CrossSaleProductCustomPersistenceHandler#validateCrossSaleProduct(Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateCrossSaleProduct() throws ValidationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1572 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler2 = new CrossSaleProductCustomPersistenceHandler();
+
+    // Act
+    crossSaleProductCustomPersistenceHandler2.validateCrossSaleProduct(new Entity());
   }
 
   /**
@@ -288,6 +388,40 @@ public class CrossSaleProductCustomPersistenceHandlerDiffblueTest {
   /**
    * Test
    * {@link CrossSaleProductCustomPersistenceHandler#validateSelfLink(Entity, String, String)}.
+   * <p>
+   * Method under test:
+   * {@link CrossSaleProductCustomPersistenceHandler#validateSelfLink(Entity, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateSelfLink() throws ValidationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1878 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler2 = new CrossSaleProductCustomPersistenceHandler();
+
+    // Act
+    crossSaleProductCustomPersistenceHandler2.validateSelfLink(new Entity(), "42", "42");
+  }
+
+  /**
+   * Test
+   * {@link CrossSaleProductCustomPersistenceHandler#validateSelfLink(Entity, String, String)}.
    * <ul>
    *   <li>Then calls {@link Entity#addGlobalValidationError(String)}.</li>
    * </ul>
@@ -335,6 +469,42 @@ public class CrossSaleProductCustomPersistenceHandlerDiffblueTest {
 
   /**
    * Test
+   * {@link CrossSaleProductCustomPersistenceHandler#validateDuplicateChild(Entity, Product, Product)}.
+   * <p>
+   * Method under test:
+   * {@link CrossSaleProductCustomPersistenceHandler#validateDuplicateChild(Entity, Product, Product)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateDuplicateChild() throws ValidationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1706 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler2 = new CrossSaleProductCustomPersistenceHandler();
+    Entity entity = new Entity();
+    ProductBundleImpl relatedProduct = new ProductBundleImpl();
+
+    // Act
+    crossSaleProductCustomPersistenceHandler2.validateDuplicateChild(entity, relatedProduct, new ProductBundleImpl());
+  }
+
+  /**
+   * Test
    * {@link CrossSaleProductCustomPersistenceHandler#validateRecursiveRelationship(Entity, Product, Product)}.
    * <p>
    * Method under test:
@@ -368,6 +538,43 @@ public class CrossSaleProductCustomPersistenceHandlerDiffblueTest {
     verify(relatedProduct).getName();
     verify(product).getId();
     verify(product).getName();
+  }
+
+  /**
+   * Test
+   * {@link CrossSaleProductCustomPersistenceHandler#validateRecursiveRelationship(Entity, Product, Product)}.
+   * <p>
+   * Method under test:
+   * {@link CrossSaleProductCustomPersistenceHandler#validateRecursiveRelationship(Entity, Product, Product)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateRecursiveRelationship2() throws ValidationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1792 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler2 = new CrossSaleProductCustomPersistenceHandler();
+    Entity entity = new Entity();
+    ProductBundleImpl relatedProduct = new ProductBundleImpl();
+
+    // Act
+    crossSaleProductCustomPersistenceHandler2.validateRecursiveRelationship(entity, relatedProduct,
+        new ProductBundleImpl());
   }
 
   /**
@@ -451,6 +658,76 @@ public class CrossSaleProductCustomPersistenceHandlerDiffblueTest {
     verify(product).getId();
     verify(productBundleImpl).getName();
     verify(product).getName();
+  }
+
+  /**
+   * Test
+   * {@link CrossSaleProductCustomPersistenceHandler#validateCrossSaleProducts(Entity, Product, Long, StringBuilder)}.
+   * <p>
+   * Method under test:
+   * {@link CrossSaleProductCustomPersistenceHandler#validateCrossSaleProducts(Entity, Product, Long, StringBuilder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateCrossSaleProducts() throws ValidationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1594 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler2 = new CrossSaleProductCustomPersistenceHandler();
+    Entity entity = new Entity();
+    ProductBundleImpl product = new ProductBundleImpl();
+
+    // Act
+    crossSaleProductCustomPersistenceHandler2.validateCrossSaleProducts(entity, product, 1L, new StringBuilder("foo"));
+  }
+
+  /**
+   * Test
+   * {@link CrossSaleProductCustomPersistenceHandler#addProductLink(StringBuilder, String)}.
+   * <p>
+   * Method under test:
+   * {@link CrossSaleProductCustomPersistenceHandler#addProductLink(StringBuilder, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddProductLink() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1492 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CrossSaleProductCustomPersistenceHandler crossSaleProductCustomPersistenceHandler2 = new CrossSaleProductCustomPersistenceHandler();
+
+    // Act
+    crossSaleProductCustomPersistenceHandler2.addProductLink(new StringBuilder("foo"), "Product Name");
   }
 
   /**

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -34,15 +17,68 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
 import org.broadleafcommerce.common.media.domain.Media;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.persistence.ArchiveStatus;
+import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.catalog.service.dynamic.DynamicSkuPrices;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SkuBundleItemImplDiffblueTest {
+  @Autowired
+  private SkuBundleItemImpl skuBundleItemImpl;
+
+  /**
+   * Test {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}.
+   * <p>
+   * Method under test:
+   * {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDynamicSalePrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass456 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl skuBundleItemImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
+    SkuImpl sku = new SkuImpl();
+
+    // Act
+    skuBundleItemImpl2.getDynamicSalePrice(sku, new BigDecimal("2.3"));
+  }
+
   /**
    * Test {@link SkuBundleItemImpl#getDynamicSalePrice(Sku, BigDecimal)}.
    * <ul>
@@ -169,6 +205,38 @@ public class SkuBundleItemImplDiffblueTest {
     assertEquals(money, absResult2.zero());
     assertEquals(money, absResult.zero());
     assertEquals(money, actualDynamicSalePrice.zero());
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#setSalePrice(Money)}.
+   * <p>
+   * Method under test: {@link SkuBundleItemImpl#setSalePrice(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetSalePrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass510 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl skuBundleItemImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
+
+    // Act
+    skuBundleItemImpl2.setSalePrice(new Money());
   }
 
   /**
@@ -956,6 +1024,35 @@ public class SkuBundleItemImplDiffblueTest {
 
   /**
    * Test {@link SkuBundleItemImpl#getSalePrice()}.
+   * <p>
+   * Method under test: {@link SkuBundleItemImpl#getSalePrice()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSalePrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass494 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl skuBundleItemImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SkuBundleItemImpl()).getSalePrice();
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#getSalePrice()}.
    * <ul>
    *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
    *   <li>Then return {@link Money#Money()}.</li>
@@ -1123,6 +1220,35 @@ public class SkuBundleItemImplDiffblueTest {
 
   /**
    * Test {@link SkuBundleItemImpl#getRetailPrice()}.
+   * <p>
+   * Method under test: {@link SkuBundleItemImpl#getRetailPrice()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRetailPrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass486 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl skuBundleItemImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SkuBundleItemImpl()).getRetailPrice();
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#getRetailPrice()}.
    * <ul>
    *   <li>Given {@link Sku} {@link Sku#getId()} return one.</li>
    *   <li>Then return {@link Money#Money()}.</li>
@@ -1259,6 +1385,35 @@ public class SkuBundleItemImplDiffblueTest {
 
   /**
    * Test {@link SkuBundleItemImpl#getBundle()}.
+   * <p>
+   * Method under test: {@link SkuBundleItemImpl#getBundle()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetBundle() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass448 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl skuBundleItemImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SkuBundleItemImpl()).getBundle();
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#getBundle()}.
    * <ul>
    *   <li>Then return {@link SkuBundleItemImpl} (default constructor)
    * {@link SkuBundleItemImpl#deproxiedBundle}.</li>
@@ -1327,6 +1482,35 @@ public class SkuBundleItemImplDiffblueTest {
     List<Sku> skuList = ((ProductImpl) actualBundle).skus;
     assertSame(skuList, ((ProductBundleImpl) productBundle).skus);
     assertSame(skuList, ((ProductBundleImpl) productBundle2).skus);
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#getSku()}.
+   * <p>
+   * Method under test: {@link SkuBundleItemImpl#getSku()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSku() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass502 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl skuBundleItemImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SkuBundleItemImpl()).getSku();
   }
 
   /**
@@ -1403,6 +1587,35 @@ public class SkuBundleItemImplDiffblueTest {
     Weight weight = ((SkuImpl) actualSku).weight;
     assertSame(weight, ((SkuImpl) sku2).weight);
     assertSame(weight, ((SkuImpl) sku3).weight);
+  }
+
+  /**
+   * Test {@link SkuBundleItemImpl#clearDynamicPrices()}.
+   * <p>
+   * Method under test: {@link SkuBundleItemImpl#clearDynamicPrices()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testClearDynamicPrices() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass410 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl skuBundleItemImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SkuBundleItemImpl()).clearDynamicPrices();
   }
 
   /**
@@ -1534,6 +1747,46 @@ public class SkuBundleItemImplDiffblueTest {
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test
+   * {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test:
+   * {@link SkuBundleItemImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass418 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuBundleItemImpl skuBundleItemImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SkuBundleItemImpl skuBundleItemImpl2 = new SkuBundleItemImpl();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+
+    // Act
+    skuBundleItemImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager()));
   }
 
   /**

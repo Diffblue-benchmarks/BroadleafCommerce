@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.web;
 
 import static org.junit.Assert.assertEquals;
@@ -22,13 +5,34 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import javax.servlet.http.HttpServletRequest;
+import org.broadleafcommerce.cms.page.service.PageService;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.env.Environment;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.DefaultCorsProcessor;
 
+@ContextConfiguration(classes = {PageHandlerMapping.class})
+@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PageHandlerMappingDiffblueTest {
+  @MockBean
+  private Environment environment;
+
+  @Autowired
+  private PageHandlerMapping pageHandlerMapping;
+
+  @MockBean
+  private PageService pageService;
+
   /**
    * Test {@link PageHandlerMapping#getHandlerInternal(HttpServletRequest)}.
    * <p>
@@ -45,6 +49,39 @@ public class PageHandlerMappingDiffblueTest {
 
     // Act and Assert
     assertNull(pageHandlerMapping.getHandlerInternal(new MockHttpServletRequest()));
+  }
+
+  /**
+   * Test {@link PageHandlerMapping#getHandlerInternal(HttpServletRequest)}.
+   * <p>
+   * Method under test:
+   * {@link PageHandlerMapping#getHandlerInternal(HttpServletRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetHandlerInternal2() throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.cms.web.PageHandlerMapping.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass372 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.core.env.Environment environment;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.PageHandlerMapping pageHandlerMapping;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.cms.page.service.PageService pageService;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    pageHandlerMapping.getHandlerInternal(new MockHttpServletRequest());
   }
 
   /**
@@ -109,5 +146,38 @@ public class PageHandlerMappingDiffblueTest {
     assertNull(actualPageHandlerMapping.getPatternParser());
     assertTrue(actualPageHandlerMapping.getUrlPathHelper().isUrlDecode());
     assertEquals(Integer.MAX_VALUE, actualPageHandlerMapping.getOrder());
+  }
+
+  /**
+   * Test new {@link PageHandlerMapping} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link PageHandlerMapping}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewPageHandlerMapping2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.web;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.cms.web.PageHandlerMapping.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass371 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.springframework.core.env.Environment environment;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.web.PageHandlerMapping pageHandlerMapping;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.cms.page.service.PageService pageService;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new PageHandlerMapping();
   }
 }

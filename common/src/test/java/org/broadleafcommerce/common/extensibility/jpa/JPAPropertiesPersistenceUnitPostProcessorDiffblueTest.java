@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -17,16 +17,21 @@
  */
 package org.broadleafcommerce.common.extensibility.jpa;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import javax.persistence.spi.ClassTransformer;
+import org.broadleafcommerce.common.demo.AutoImportSql;
 import org.broadleafcommerce.common.demo.CompositeAutoImportSql;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,17 +39,120 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @ContextConfiguration(classes = {JPAPropertiesPersistenceUnitPostProcessor.class})
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class JPAPropertiesPersistenceUnitPostProcessorDiffblueTest {
   @MockBean(name = "blCompositeAutoImportSql")
   private CompositeAutoImportSql compositeAutoImportSql;
 
   @Autowired
   private JPAPropertiesPersistenceUnitPostProcessor jPAPropertiesPersistenceUnitPostProcessor;
+
+  /**
+   * Test
+   * {@link JPAPropertiesPersistenceUnitPostProcessor#populatePresetProperties()}.
+   * <p>
+   * Method under test:
+   * {@link JPAPropertiesPersistenceUnitPostProcessor#populatePresetProperties()}
+   */
+  @Test
+  public void testPopulatePresetProperties() {
+    // Arrange
+    when(compositeAutoImportSql.compileSqlFilePathList(Mockito.<String>any())).thenReturn("/directory/foo.txt");
+    when(compositeAutoImportSql.constructAutoImportSqlMapForPU(Mockito.<String>any())).thenReturn(new HashMap<>());
+
+    // Act
+    jPAPropertiesPersistenceUnitPostProcessor.populatePresetProperties();
+
+    // Assert
+    verify(compositeAutoImportSql).compileSqlFilePathList(eq("blPU"));
+    verify(compositeAutoImportSql).constructAutoImportSqlMapForPU(eq("blPU"));
+    Map<String, String> stringStringMap = jPAPropertiesPersistenceUnitPostProcessor.persistenceUnitProperties;
+    assertEquals(1, stringStringMap.size());
+    assertEquals("/directory/foo.txt", stringStringMap.get("blPU.hibernate.hbm2ddl.import_files"));
+  }
+
+  /**
+   * Test
+   * {@link JPAPropertiesPersistenceUnitPostProcessor#populatePresetProperties()}.
+   * <p>
+   * Method under test:
+   * {@link JPAPropertiesPersistenceUnitPostProcessor#populatePresetProperties()}
+   */
+  @Test
+  public void testPopulatePresetProperties2() {
+    // Arrange
+    when(compositeAutoImportSql.compileSqlFilePathList(Mockito.<String>any())).thenReturn("");
+    when(compositeAutoImportSql.constructAutoImportSqlMapForPU(Mockito.<String>any())).thenReturn(new HashMap<>());
+
+    // Act
+    jPAPropertiesPersistenceUnitPostProcessor.populatePresetProperties();
+
+    // Assert
+    verify(compositeAutoImportSql).compileSqlFilePathList(eq("blPU"));
+    verify(compositeAutoImportSql).constructAutoImportSqlMapForPU(eq("blPU"));
+    assertTrue(jPAPropertiesPersistenceUnitPostProcessor.persistenceUnitProperties.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link JPAPropertiesPersistenceUnitPostProcessor#populatePresetProperties()}.
+   * <p>
+   * Method under test:
+   * {@link JPAPropertiesPersistenceUnitPostProcessor#populatePresetProperties()}
+   */
+  @Test
+  public void testPopulatePresetProperties3() {
+    // Arrange
+    HashMap<String, List<AutoImportSql>> stringListMap = new HashMap<>();
+    stringListMap.put("${", new ArrayList<>());
+    when(compositeAutoImportSql.compileSqlFilePathList(Mockito.<String>any())).thenReturn("/directory/foo.txt");
+    when(compositeAutoImportSql.constructAutoImportSqlMapForPU(Mockito.<String>any())).thenReturn(stringListMap);
+
+    // Act
+    jPAPropertiesPersistenceUnitPostProcessor.populatePresetProperties();
+
+    // Assert
+    verify(compositeAutoImportSql).compileSqlFilePathList(eq("blPU"));
+    verify(compositeAutoImportSql).constructAutoImportSqlMapForPU(eq("blPU"));
+    Map<String, String> stringStringMap = jPAPropertiesPersistenceUnitPostProcessor.persistenceUnitProperties;
+    assertEquals(1, stringStringMap.size());
+    assertEquals("/directory/foo.txt", stringStringMap.get("blPU.hibernate.hbm2ddl.import_files"));
+  }
+
+  /**
+   * Test
+   * {@link JPAPropertiesPersistenceUnitPostProcessor#populatePresetProperties()}.
+   * <p>
+   * Method under test:
+   * {@link JPAPropertiesPersistenceUnitPostProcessor#populatePresetProperties()}
+   */
+  @Test
+  public void testPopulatePresetProperties4() {
+    // Arrange
+    ArrayList<AutoImportSql> autoImportSqlList = new ArrayList<>();
+    autoImportSqlList.add(new AutoImportSql("${", "/directory/foo.txt", 1));
+
+    HashMap<String, List<AutoImportSql>> stringListMap = new HashMap<>();
+    stringListMap.put("${", autoImportSqlList);
+    when(compositeAutoImportSql.compileSqlFilePathList(Mockito.<String>any())).thenReturn("/directory/foo.txt");
+    when(compositeAutoImportSql.constructAutoImportSqlMapForPU(Mockito.<String>any())).thenReturn(stringListMap);
+
+    // Act
+    jPAPropertiesPersistenceUnitPostProcessor.populatePresetProperties();
+
+    // Assert
+    verify(compositeAutoImportSql).compileSqlFilePathList(eq("blPU"));
+    verify(compositeAutoImportSql).constructAutoImportSqlMapForPU(eq("blPU"));
+    Map<String, String> stringStringMap = jPAPropertiesPersistenceUnitPostProcessor.persistenceUnitProperties;
+    assertEquals(1, stringStringMap.size());
+    assertEquals("/directory/foo.txt", stringStringMap.get("blPU.hibernate.hbm2ddl.import_files"));
+  }
 
   /**
    * Test

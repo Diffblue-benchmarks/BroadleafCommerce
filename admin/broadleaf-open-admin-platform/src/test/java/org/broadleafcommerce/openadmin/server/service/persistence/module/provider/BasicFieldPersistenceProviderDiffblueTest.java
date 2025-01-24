@@ -1,24 +1,8 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
@@ -28,8 +12,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
@@ -53,10 +40,70 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.provide
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BasicFieldPersistenceProviderDiffblueTest {
+  @Autowired
+  private BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandlePersistence() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass414 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    Property property = new Property();
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act
+    basicFieldPersistenceProvider2.canHandlePersistence(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+  }
+
   /**
    * Test
    * {@link BasicFieldPersistenceProvider#canHandlePersistence(PopulateValueRequest, Serializable)}.
@@ -96,6 +143,41 @@ public class BasicFieldPersistenceProviderDiffblueTest {
     verify(addSearchMappingRequest).getMergedProperties();
     verify(addSearchMappingRequest).getPropertyName();
     assertFalse(actualCanHandlePersistenceResult);
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#detectBasicType(FieldMetadata, Property)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetectBasicType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass927 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+
+    // Act
+    basicFieldPersistenceProvider2.detectBasicType(md, new Property());
   }
 
   /**
@@ -513,6 +595,41 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   /**
    * Test
    * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetectAdditionalSearchTypes() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass863 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
+    AdornedTargetCollectionMetadata md = new AdornedTargetCollectionMetadata();
+
+    // Act
+    basicFieldPersistenceProvider2.detectAdditionalSearchTypes(md, new Property());
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#detectAdditionalSearchTypes(FieldMetadata, Property)}.
    * <ul>
    *   <li>Given {@link SupportedFieldType#BROADLEAF_ENUMERATION}.</li>
    *   <li>Then return {@code true}.</li>
@@ -672,6 +789,50 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   /**
    * Test
    * {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleExtraction2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass145 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
+    ArrayList<Property> props = new ArrayList<>();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act
+    basicFieldPersistenceProvider2.canHandleExtraction(extractValueRequest, new Property());
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#canHandleExtraction(ExtractValueRequest, Property)}.
    * <ul>
    *   <li>Given {@code null}.</li>
    *   <li>Then return {@code false}.</li>
@@ -703,6 +864,50 @@ public class BasicFieldPersistenceProviderDiffblueTest {
     verify(addSearchMappingRequest).getPropertyName();
     verify(extractValueRequest).getMetadata();
     assertFalse(actualCanHandleExtractionResult);
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#canHandleSearchMapping(AddSearchMappingRequest, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleSearchMapping() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass718 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    CriteriaTransferObject requestedCto = new CriteriaTransferObject();
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
+        "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
+        new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
+
+    // Act
+    basicFieldPersistenceProvider2.canHandleSearchMapping(addSearchMappingRequest, new ArrayList<>());
   }
 
   /**
@@ -745,6 +950,50 @@ public class BasicFieldPersistenceProviderDiffblueTest {
     verify(persistencePerspective).addPersistencePerspectiveItem(eq(PersistencePerspectiveItemType.FOREIGNKEY),
         isA(PersistencePerspectiveItem.class));
     assertFalse(actualCanHandleSearchMappingResult);
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#populateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1818 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    Property property = new Property();
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act
+    basicFieldPersistenceProvider2.populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
   }
 
   /**
@@ -827,6 +1076,50 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   /**
    * Test
    * {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testExtractValue2() throws PersistenceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass991 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
+    ArrayList<Property> props = new ArrayList<>();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+    ExtractValueRequest extractValueRequest = new ExtractValueRequest(props, fieldManager, metadata, "Requested Value",
+        "Display Val", persistenceManager, recordHelper, new SimpleDateFormat("yyyy/mm/dd"),
+        new String[]{"Custom Criteria"});
+
+    // Act
+    basicFieldPersistenceProvider2.extractValue(extractValueRequest, new Property());
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#extractValue(ExtractValueRequest, Property)}.
    * <ul>
    *   <li>Given {@code null}.</li>
    *   <li>Then return {@code NOT_HANDLED}.</li>
@@ -858,6 +1151,50 @@ public class BasicFieldPersistenceProviderDiffblueTest {
     verify(addSearchMappingRequest).getPropertyName();
     verify(extractValueRequest).getMetadata();
     assertEquals(MetadataProviderResponse.NOT_HANDLED, actualExtractValueResult);
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#addSearchMapping(AddSearchMappingRequest, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddSearchMapping() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass0 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    CriteriaTransferObject requestedCto = new CriteriaTransferObject();
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    AddSearchMappingRequest addSearchMappingRequest = new AddSearchMappingRequest(persistencePerspective, requestedCto,
+        "Dr Jane Doe", mergedProperties, "Property Name", fieldManager, dataFormatProvider,
+        new AdornedTargetListPersistenceModule(), mock(RestrictionFactory.class));
+
+    // Act
+    basicFieldPersistenceProvider2.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
   }
 
   /**
@@ -905,6 +1242,97 @@ public class BasicFieldPersistenceProviderDiffblueTest {
   /**
    * Test
    * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDateFormatToPopulateValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1514 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    Property property = new Property();
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act
+    basicFieldPersistenceProvider2.getDateFormatToPopulateValue(populateValueRequest,
+        new SimpleDateFormat("yyyy/mm/dd"));
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}.
+   * <ul>
+   *   <li>Then NumberFormat return {@link DecimalFormat}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  public void testGetDateFormatToPopulateValue_thenNumberFormatReturnDecimalFormat() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
+    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
+    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
+
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
+    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    Property property = new Property();
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act
+    SimpleDateFormat actualDateFormatToPopulateValue = basicFieldPersistenceProvider
+        .getDateFormatToPopulateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+
+    // Assert
+    verify(addSearchMappingRequest).getMergedProperties();
+    verify(addSearchMappingRequest).getPropertyName();
+    assertTrue(actualDateFormatToPopulateValue.getNumberFormat() instanceof DecimalFormat);
+    Calendar calendar = actualDateFormatToPopulateValue.getCalendar();
+    assertTrue(calendar instanceof GregorianCalendar);
+    assertEquals("yyyy.MM.dd HH:mm:ss", actualDateFormatToPopulateValue.toPattern());
+    assertNull(actualDateFormatToPopulateValue.getTimeZone());
+    assertNull(calendar.getTimeZone());
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#getDateFormatToPopulateValue(PopulateValueRequest, Serializable)}.
    * <ul>
    *   <li>Then return {@link SimpleDateFormat#SimpleDateFormat(String)} with
    * {@code yyyy/mm/dd}.</li>
@@ -941,6 +1369,93 @@ public class BasicFieldPersistenceProviderDiffblueTest {
     verify(addSearchMappingRequest).getPropertyName();
     verify(populateValueRequest).getDataFormatProvider();
     assertSame(simpleDateFormat, actualDateFormatToPopulateValue);
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDateFormatToExtractValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1260 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.provider.BasicFieldPersistenceProvider basicFieldPersistenceProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider2 = new BasicFieldPersistenceProvider();
+    ArrayList<Property> props = new ArrayList<>();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration, new SessionDelegatorBaseImpl(null, null));
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+
+    // Act
+    basicFieldPersistenceProvider2.getDateFormatToExtractValue(
+        new ExtractValueRequest(props, fieldManager, metadata, "Requested Value", "Display Val", persistenceManager,
+            recordHelper, new SimpleDateFormat("yyyy/mm/dd"), new String[]{"Custom Criteria"}));
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}.
+   * <ul>
+   *   <li>Then NumberFormat return {@link DecimalFormat}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BasicFieldPersistenceProvider#getDateFormatToExtractValue(ExtractValueRequest)}
+   */
+  @Test
+  public void testGetDateFormatToExtractValue_thenNumberFormatReturnDecimalFormat() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AddSearchMappingRequest addSearchMappingRequest = mock(AddSearchMappingRequest.class);
+    when(addSearchMappingRequest.getPropertyName()).thenReturn("Property Name");
+    when(addSearchMappingRequest.getMergedProperties()).thenReturn(new HashMap<>());
+
+    BasicFieldPersistenceProvider basicFieldPersistenceProvider = new BasicFieldPersistenceProvider();
+    basicFieldPersistenceProvider.addSearchMapping(addSearchMappingRequest, new ArrayList<>());
+    ArrayList<Property> props = new ArrayList<>();
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule recordHelper = new AdornedTargetListPersistenceModule();
+
+    // Act
+    SimpleDateFormat actualDateFormatToExtractValue = basicFieldPersistenceProvider.getDateFormatToExtractValue(
+        new ExtractValueRequest(props, fieldManager, metadata, "Requested Value", "Display Val", persistenceManager,
+            recordHelper, new SimpleDateFormat("yyyy/mm/dd"), new String[]{"Custom Criteria"}));
+
+    // Assert
+    verify(addSearchMappingRequest).getMergedProperties();
+    verify(addSearchMappingRequest).getPropertyName();
+    assertTrue(actualDateFormatToExtractValue.getNumberFormat() instanceof DecimalFormat);
+    Calendar calendar = actualDateFormatToExtractValue.getCalendar();
+    assertTrue(calendar instanceof GregorianCalendar);
+    assertEquals("yyyy.MM.dd HH:mm:ss", actualDateFormatToExtractValue.toPattern());
+    assertNull(actualDateFormatToExtractValue.getTimeZone());
+    assertNull(calendar.getTimeZone());
   }
 
   /**

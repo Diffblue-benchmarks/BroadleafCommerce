@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -34,6 +34,44 @@ public class NonPersistentSiteThreadLocalCacheDiffblueTest {
   public void testGetSitesCache() {
     // Arrange, Act and Assert
     assertTrue(NonPersistentSiteThreadLocalCache.getSitesCache().getSites().isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link NonPersistentSiteThreadLocalCache#setSitesCache(NonPersistentSiteThreadLocalCache)}.
+   * <ul>
+   *   <li>When {@link NonPersistentSiteThreadLocalCache} (default
+   * constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link NonPersistentSiteThreadLocalCache#setSitesCache(NonPersistentSiteThreadLocalCache)}
+   */
+  @Test
+  public void testSetSitesCache_whenNonPersistentSiteThreadLocalCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    NonPersistentSiteThreadLocalCache.setSitesCache(new NonPersistentSiteThreadLocalCache());
+  }
+
+  /**
+   * Test {@link NonPersistentSiteThreadLocalCache#clear()}.
+   * <ul>
+   *   <li>Given {@link NonPersistentSiteThreadLocalCache} (default
+   * constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link NonPersistentSiteThreadLocalCache#clear()}
+   */
+  @Test
+  public void testClear_givenNonPersistentSiteThreadLocalCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new NonPersistentSiteThreadLocalCache()).clear();
   }
 
   /**

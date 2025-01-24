@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -18,6 +18,7 @@
 package org.broadleafcommerce.common.demo;
 
 import static org.junit.Assert.assertEquals;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,5 +81,24 @@ public class ImportSQLConfigDiffblueTest {
         actualBlCommonLateDataResult.getSqlFilePath());
     assertEquals(AutoImportPersistenceUnit.BL_PU, actualBlCommonLateDataResult.getPersistenceUnit());
     assertEquals(AutoImportStage.PRIMARY_LATE, actualBlCommonLateDataResult.getOrder());
+  }
+
+  /**
+   * Test {@link ImportSQLConfig#blCommonLateData()}.
+   * <p>
+   * Method under test: {@link ImportSQLConfig#blCommonLateData()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBlCommonLateData2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named 'blCommonLateData' available
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    importSQLConfig.blCommonLateData();
   }
 }

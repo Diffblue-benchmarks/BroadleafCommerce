@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.order.service.legacy;
 
 import static org.junit.Assert.assertEquals;
@@ -45,10 +28,130 @@ import org.broadleafcommerce.core.order.service.call.MergeCartResponse;
 import org.broadleafcommerce.core.order.service.type.OrderItemType;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.core.pricing.service.exception.PricingException;
+import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class LegacyMergeCartServiceImplDiffblueTest {
+  /**
+   * Test {@link LegacyMergeCartServiceImpl#mergeCart(Customer, Order, boolean)}
+   * with {@code customer}, {@code anonymousCart}, {@code priceOrder}.
+   * <ul>
+   *   <li>When {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link LegacyMergeCartServiceImpl#mergeCart(Customer, Order, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testMergeCartWithCustomerAnonymousCartPriceOrder_whenNullOrderImpl() throws PricingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.reconstructCart(LegacyMergeCartServiceImpl.java:131)
+    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.mergeCart(LegacyMergeCartServiceImpl.java:82)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
+    CustomerImpl customer = new CustomerImpl();
+
+    // Act
+    legacyMergeCartServiceImpl.mergeCart(customer, new NullOrderImpl(), true);
+  }
+
+  /**
+   * Test {@link LegacyMergeCartServiceImpl#mergeCart(Customer, Order)} with
+   * {@code customer}, {@code anonymousCart}.
+   * <ul>
+   *   <li>When {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link LegacyMergeCartServiceImpl#mergeCart(Customer, Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testMergeCartWithCustomerAnonymousCart_whenNullOrderImpl() throws PricingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.reconstructCart(LegacyMergeCartServiceImpl.java:131)
+    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.mergeCart(LegacyMergeCartServiceImpl.java:82)
+    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.mergeCart(LegacyMergeCartServiceImpl.java:70)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
+    CustomerImpl customer = new CustomerImpl();
+
+    // Act
+    legacyMergeCartServiceImpl.mergeCart(customer, new NullOrderImpl());
+  }
+
+  /**
+   * Test {@link LegacyMergeCartServiceImpl#reconstructCart(Customer, boolean)}
+   * with {@code customer}, {@code priceOrder}.
+   * <ul>
+   *   <li>When {@link CustomerImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link LegacyMergeCartServiceImpl#reconstructCart(Customer, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testReconstructCartWithCustomerPriceOrder_whenCustomerImpl() throws PricingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.reconstructCart(LegacyMergeCartServiceImpl.java:131)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
+
+    // Act
+    legacyMergeCartServiceImpl.reconstructCart(new CustomerImpl(), true);
+  }
+
+  /**
+   * Test {@link LegacyMergeCartServiceImpl#reconstructCart(Customer)} with
+   * {@code customer}.
+   * <ul>
+   *   <li>When {@link CustomerImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link LegacyMergeCartServiceImpl#reconstructCart(Customer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testReconstructCartWithCustomer_whenCustomerImpl() throws PricingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.reconstructCart(LegacyMergeCartServiceImpl.java:131)
+    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.reconstructCart(LegacyMergeCartServiceImpl.java:75)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
+
+    // Act
+    legacyMergeCartServiceImpl.reconstructCart(new CustomerImpl());
+  }
+
   /**
    * Test
    * {@link LegacyMergeCartServiceImpl#mergeGiftWrapOrderItems(MergeCartResponse, Order, Map)}.
@@ -580,6 +683,64 @@ public class LegacyMergeCartServiceImplDiffblueTest {
     // Act and Assert
     assertSame(customerCart, legacyMergeCartServiceImpl.mergeRegularOrderItems(anonymousCart, mergeCartResponse,
         customerCart, new HashMap<>()));
+  }
+
+  /**
+   * Test
+   * {@link LegacyMergeCartServiceImpl#addOrderItemToOrder(Order, OrderItem, Boolean)}.
+   * <ul>
+   *   <li>When {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link LegacyMergeCartServiceImpl#addOrderItemToOrder(Order, OrderItem, Boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddOrderItemToOrder_whenNullOrderImpl() throws PricingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.addOrderItemToOrder(LegacyMergeCartServiceImpl.java:411)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    legacyMergeCartServiceImpl.addOrderItemToOrder(order, new BundleOrderItemImpl(), true);
+  }
+
+  /**
+   * Test
+   * {@link LegacyMergeCartServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)}.
+   * <ul>
+   *   <li>When {@link NullOrderImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link LegacyMergeCartServiceImpl#removeItemFromOrder(Order, OrderItem, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveItemFromOrder_whenNullOrderImpl() throws PricingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.order.service.legacy.LegacyMergeCartServiceImpl.removeItemFromOrder(LegacyMergeCartServiceImpl.java:420)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    LegacyMergeCartServiceImpl legacyMergeCartServiceImpl = new LegacyMergeCartServiceImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    legacyMergeCartServiceImpl.removeItemFromOrder(order, new BundleOrderItemImpl(), true);
   }
 
   /**

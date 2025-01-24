@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -32,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.openadmin.server.service.type.ChangeType;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -425,6 +409,26 @@ public class PersistencePackageDiffblueTest {
 
   /**
    * Test {@link PersistencePackage#findProperty(String)}.
+   * <p>
+   * Method under test: {@link PersistencePackage#findProperty(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindProperty() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.dto.PersistencePackage.findProperty(PersistencePackage.java:77)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    persistencePackage.findProperty("Name");
+  }
+
+  /**
+   * Test {@link PersistencePackage#findProperty(String)}.
    * <ul>
    *   <li>Given {@link Entity} {@link Entity#findProperty(String)} return
    * {@link Property#Property()}.</li>
@@ -615,6 +619,20 @@ public class PersistencePackageDiffblueTest {
 
     // Assert that nothing has changed
     assertEquals(1, persistencePackage.getCustomCriteria().length);
+  }
+
+  /**
+   * Test {@link PersistencePackage#removeCustomCriteria(String)}.
+   * <p>
+   * Method under test: {@link PersistencePackage#removeCustomCriteria(String)}
+   */
+  @Test
+  public void testRemoveCustomCriteria3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    persistencePackage.removeCustomCriteria("Criteria");
   }
 
   /**

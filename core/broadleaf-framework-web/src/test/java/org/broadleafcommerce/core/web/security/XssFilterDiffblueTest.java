@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.security;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -44,9 +27,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -54,8 +40,117 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.mock.web.MockSessionCookieConfig;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@WebAppConfiguration
+@ExtendWith(SpringExtension.class)
 class XssFilterDiffblueTest {
+  @Autowired
+  private XssFilter xssFilter;
+
+  /**
+   * Test {@link XssFilter#destroy()}.
+   * <p>
+   * Method under test: {@link XssFilter#destroy()}
+   */
+  @Test
+  @DisplayName("Test destroy()")
+  void testDestroy() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     XssFilter.environment
+    //     XssFilter.siteXssWrapperEnabled
+    //     XssFilter.whiteListParamNames
+    //     XssFilter.whiteListUris
+    //     GenericFilterBean.beanName
+    //     GenericFilterBean.environment
+    //     GenericFilterBean.filterConfig
+    //     GenericFilterBean.logger
+    //     GenericFilterBean.requiredProperties
+    //     GenericFilterBean.servletContext
+
+    // Arrange and Act
+    (new XssFilter()).destroy();
+  }
+
+  /**
+   * Test {@link XssFilter#init()}.
+   * <p>
+   * Method under test: {@link XssFilter#init()}
+   */
+  @Test
+  @DisplayName("Test init()")
+  @Disabled("TODO: Complete this test")
+  void testInit() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.security;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1125 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.security.XssFilter xssFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new XssFilter()).init();
+  }
+
+  /**
+   * Test
+   * {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <p>
+   * Method under test:
+   * {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @DisplayName("Test doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)")
+  @Disabled("TODO: Complete this test")
+  void testDoFilterInternalUnlessIgnored() throws IOException, ServletException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.security;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass912 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.security.XssFilter xssFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    XssFilter xssFilter2 = new XssFilter();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper httpServletRequest = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+
+    // Act
+    xssFilter2.doFilterInternalUnlessIgnored(httpServletRequest, new MockHttpServletResponse(),
+        mock(FilterChain.class));
+  }
+
   /**
    * Test
    * {@link XssFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
@@ -120,6 +215,42 @@ class XssFilterDiffblueTest {
 
     // Assert that nothing has changed
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+  }
+
+  /**
+   * Test {@link XssFilter#wrapRequest(HttpServletRequest)}.
+   * <p>
+   * Method under test: {@link XssFilter#wrapRequest(HttpServletRequest)}
+   */
+  @Test
+  @DisplayName("Test wrapRequest(HttpServletRequest)")
+  @Disabled("TODO: Complete this test")
+  void testWrapRequest() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.security;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1218 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.security.XssFilter xssFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    XssFilter xssFilter2 = new XssFilter();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+
+    // Act
+    xssFilter2.wrapRequest(new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"})));
   }
 
   /**
@@ -270,6 +401,68 @@ class XssFilterDiffblueTest {
     assertSame(extensionKeys, locale.getUnicodeLocaleKeys());
     assertSame(defaultSessionTrackingModes, servletContext.getEffectiveSessionTrackingModes());
     assertSame(servletContext, session.getServletContext());
+  }
+
+  /**
+   * Test {@link XssFilter#isWhiteListUrl(String)}.
+   * <p>
+   * Method under test: {@link XssFilter#isWhiteListUrl(String)}
+   */
+  @Test
+  @DisplayName("Test isWhiteListUrl(String)")
+  @Disabled("TODO: Complete this test")
+  void testIsWhiteListUrl() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.security;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1129 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.security.XssFilter xssFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new XssFilter()).isWhiteListUrl("https://example.org/example");
+  }
+
+  /**
+   * Test {@link XssFilter#getOrder()}.
+   * <p>
+   * Method under test: {@link XssFilter#getOrder()}
+   */
+  @Test
+  @DisplayName("Test getOrder()")
+  @Disabled("TODO: Complete this test")
+  void testGetOrder() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.security;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1120 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.security.XssFilter xssFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new XssFilter()).getOrder();
   }
 
   /**

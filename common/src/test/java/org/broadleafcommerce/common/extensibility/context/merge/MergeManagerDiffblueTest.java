@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -40,6 +40,25 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class MergeManagerDiffblueTest {
+  /**
+   * Test {@link MergeManager#MergeManager()}.
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link MergeManager}
+   */
+  @Test
+  public void testNewMergeManager() throws MergeManagerSetupException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     MergeManager.builder
+    //     MergeManager.handlers
+
+    // Arrange and Act
+    new MergeManager();
+  }
+
   /**
    * Test {@link MergeManager#merge(ResourceInputStream, ResourceInputStream)}.
    * <ul>

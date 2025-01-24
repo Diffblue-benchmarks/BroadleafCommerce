@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
 
 import static org.junit.Assert.assertEquals;
@@ -44,10 +27,57 @@ import org.broadleafcommerce.core.order.domain.FulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.fulfillment.domain.BandedPriceFulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.fulfillment.domain.BandedWeightFulfillmentOptionImpl;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext-entity.xml", "/bl-framework-applicationContext-persistence.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BandedFulfillmentPricingProviderDiffblueTest {
+  @Autowired
+  private BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
+
+  /**
+   * Test
+   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
+   * <p>
+   * Method under test:
+   * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanCalculateCostForFulfillmentGroup() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3666 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+
+    // Act
+    bandedFulfillmentPricingProvider.canCalculateCostForFulfillmentGroup(fulfillmentGroup, new FulfillmentOptionImpl());
+  }
+
   /**
    * Test
    * {@link BandedFulfillmentPricingProvider#canCalculateCostForFulfillmentGroup(FulfillmentGroup, FulfillmentOption)}.
@@ -220,6 +250,37 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
         () -> bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(fulfillmentGroup));
     verify(fulfillmentGroup).getFulfillmentGroupItems();
     verify(fulfillmentGroup, atLeast(1)).getFulfillmentOption();
+  }
+
+  /**
+   * Test
+   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}.
+   * <p>
+   * Method under test:
+   * {@link BandedFulfillmentPricingProvider#calculateCostForFulfillmentGroup(FulfillmentGroup)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCalculateCostForFulfillmentGroup3() throws FulfillmentPriceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3636 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    bandedFulfillmentPricingProvider.calculateCostForFulfillmentGroup(new FulfillmentGroupImpl());
   }
 
   /**
@@ -448,6 +509,40 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   /**
    * Test
    * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
+   * <p>
+   * Method under test:
+   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEstimateCostForFulfillmentGroup3() throws FulfillmentPriceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3726 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+
+    // Act
+    bandedFulfillmentPricingProvider.estimateCostForFulfillmentGroup(fulfillmentGroup, new HashSet<>());
+  }
+
+  /**
+   * Test
+   * {@link BandedFulfillmentPricingProvider#estimateCostForFulfillmentGroup(FulfillmentGroup, Set)}.
    * <ul>
    *   <li>Given {@link FulfillmentOptionImpl} (default constructor).</li>
    * </ul>
@@ -582,6 +677,40 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
   /**
    * Test
    * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
+   * <p>
+   * Method under test:
+   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConvertWeight() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.pricing.service.fulfillment.provider;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3696 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.pricing.service.fulfillment.provider.BandedFulfillmentPricingProvider bandedFulfillmentPricingProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BigDecimal weight = new BigDecimal("2.3");
+
+    // Act
+    bandedFulfillmentPricingProvider.convertWeight(weight, new WeightUnitOfMeasureType("Type", "Friendly Type"));
+  }
+
+  /**
+   * Test
+   * {@link BandedFulfillmentPricingProvider#convertWeight(BigDecimal, WeightUnitOfMeasureType)}.
    * <ul>
    *   <li>Then return {@link BigDecimal#BigDecimal(String)} with
    * {@code 1.043262451}.</li>
@@ -685,5 +814,22 @@ public class BandedFulfillmentPricingProviderDiffblueTest {
 
     // Assert
     assertEquals(new BigDecimal("2.3"), actualConvertWeightResult);
+  }
+
+  /**
+   * Test new {@link BandedFulfillmentPricingProvider} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link BandedFulfillmentPricingProvider}
+   */
+  @Test
+  public void testNewBandedFulfillmentPricingProvider() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new BandedFulfillmentPricingProvider();
   }
 }

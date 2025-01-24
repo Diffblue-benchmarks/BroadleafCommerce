@@ -1,26 +1,14 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.controller.account.validator;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.broadleafcommerce.core.web.controller.account.CustomerAddressForm;
+import org.broadleafcommerce.profile.core.domain.AddressImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.validation.BindException;
+import org.springframework.validation.Errors;
 
 class CustomerAddressValidatorDiffblueTest {
   /**
@@ -60,5 +48,40 @@ class CustomerAddressValidatorDiffblueTest {
 
     // Act and Assert
     assertFalse(customerAddressValidator.supports(clazz));
+  }
+
+  /**
+   * Test {@link CustomerAddressValidator#validate(Object, Errors)} with
+   * {@code obj}, {@code errors}.
+   * <p>
+   * Method under test: {@link CustomerAddressValidator#validate(Object, Errors)}
+   */
+  @Test
+  @DisplayName("Test validate(Object, Errors) with 'obj', 'errors'")
+  @Disabled("TODO: Complete this test")
+  void testValidateWithObjErrors() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.util.BLCSystemProperty.getSystemPropertiesService(BLCSystemProperty.java:94)
+    //       at org.broadleafcommerce.common.util.BLCSystemProperty.resolveBooleanSystemProperty(BLCSystemProperty.java:72)
+    //       at org.broadleafcommerce.common.web.validator.BroadleafCommonAddressValidator.isCustomValidationEnabled(BroadleafCommonAddressValidator.java:49)
+    //       at org.broadleafcommerce.common.web.validator.BroadleafCommonAddressValidator.validate(BroadleafCommonAddressValidator.java:53)
+    //       at org.broadleafcommerce.core.web.controller.account.validator.CustomerAddressValidator.validate(CustomerAddressValidator.java:37)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    CustomerAddressValidator customerAddressValidator = new CustomerAddressValidator();
+
+    CustomerAddressForm customerAddressForm = new CustomerAddressForm();
+    customerAddressForm.setAddress(new AddressImpl());
+    customerAddressForm.setAddressName("42 Main St");
+    customerAddressForm.setCustomerAddressId(1L);
+
+    // Act
+    customerAddressValidator.validate(customerAddressForm, new BindException(customerAddressForm,
+        "org.broadleafcommerce.core.web.controller.account.validator.CustomerAddressValidator"));
   }
 }

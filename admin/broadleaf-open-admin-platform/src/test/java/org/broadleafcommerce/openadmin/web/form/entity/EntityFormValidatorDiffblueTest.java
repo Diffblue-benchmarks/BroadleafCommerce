@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.form.entity;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -33,8 +16,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.openadmin.dto.Entity;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -42,7 +30,17 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class EntityFormValidatorDiffblueTest {
+  @Autowired
+  private EntityFormValidator entityFormValidator;
+
   /**
    * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with
    * {@code form}, {@code entity}, {@code errors}.
@@ -161,6 +159,42 @@ public class EntityFormValidatorDiffblueTest {
     assertEquals(allErrors, errors.getFieldErrors());
     assertSame(fieldError, allErrors.get(0));
     assertArrayEquals(new String[]{"foo...foo", "foo.foo", "foo"}, fieldError.getCodes());
+  }
+
+  /**
+   * Test {@link EntityFormValidator#validate(EntityForm, Entity, Errors)} with
+   * {@code form}, {@code entity}, {@code errors}.
+   * <p>
+   * Method under test:
+   * {@link EntityFormValidator#validate(EntityForm, Entity, Errors)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateWithFormEntityErrors3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.form.entity;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12618 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    EntityFormValidator entityFormValidator2 = new EntityFormValidator();
+    EntityForm form = new EntityForm();
+    Entity entity = new Entity();
+
+    // Act
+    entityFormValidator2.validate(form, entity, new BindException("Target", "Object Name"));
   }
 
   /**
@@ -363,6 +397,42 @@ public class EntityFormValidatorDiffblueTest {
   /**
    * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with
    * {@code form}, {@code propertyErrors}, {@code errors}.
+   * <p>
+   * Method under test:
+   * {@link EntityFormValidator#validate(EntityForm, Map, Errors)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateWithFormPropertyErrorsErrors() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.form.entity;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12540 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    EntityFormValidator entityFormValidator2 = new EntityFormValidator();
+    EntityForm form = new EntityForm();
+    HashMap<String, List<String>> propertyErrors = new HashMap<>();
+
+    // Act
+    entityFormValidator2.validate(form, propertyErrors, new BindException("Target", "Object Name"));
+  }
+
+  /**
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, Errors)} with
+   * {@code form}, {@code propertyErrors}, {@code errors}.
    * <ul>
    *   <li>Given {@code foo}.</li>
    *   <li>Then return {@code false}.</li>
@@ -544,6 +614,43 @@ public class EntityFormValidatorDiffblueTest {
     assertSame(globalError, globalErrors3.get(0));
     assertArrayEquals(new String[]{"42.Object Name", "42"}, globalError.getCodes());
     assertArrayEquals(new String[]{"foo.Object Name", "foo"}, getResult.getCodes());
+  }
+
+  /**
+   * Test {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)} with
+   * {@code form}, {@code propertyErrors}, {@code globalErrors}, {@code errors}.
+   * <p>
+   * Method under test:
+   * {@link EntityFormValidator#validate(EntityForm, Map, List, Errors)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateWithFormPropertyErrorsGlobalErrorsErrors3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.form.entity;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12458 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    EntityFormValidator entityFormValidator2 = new EntityFormValidator();
+    EntityForm form = new EntityForm();
+    HashMap<String, List<String>> propertyErrors = new HashMap<>();
+    ArrayList<String> globalErrors = new ArrayList<>();
+
+    // Act
+    entityFormValidator2.validate(form, propertyErrors, globalErrors, new BindException("Target", "Object Name"));
   }
 
   /**

@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.structure.dto.ItemCriteriaDTO;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,49 @@ public class PageDTODiffblueTest {
   public void testGetPropertyValue_whenPropertyName() {
     // Arrange, Act and Assert
     assertNull(pageDTO.getPropertyValue("Property Name"));
+  }
+
+  /**
+   * Test {@link PageDTO#copy(PageDTO)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageDTO#copy(PageDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCopy_whenNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.page.dto.PageDTO.copy(PageDTO.java:160)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    (new PageDTO()).copy(null);
+  }
+
+  /**
+   * Test {@link PageDTO#copy(PageDTO)}.
+   * <ul>
+   *   <li>When {@link PageDTO} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link PageDTO#copy(PageDTO)}
+   */
+  @Test
+  public void testCopy_whenPageDTO() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    PageDTO pageDTO = new PageDTO();
+
+    // Act
+    pageDTO.copy(new PageDTO());
   }
 
   /**

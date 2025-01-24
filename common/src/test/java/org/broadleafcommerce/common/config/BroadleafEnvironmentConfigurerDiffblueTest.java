@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -17,6 +17,7 @@
  */
 package org.broadleafcommerce.common.config;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
@@ -33,15 +34,22 @@ import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.broadleafcommerce.common.resource.GeneratedResource;
 import org.broadleafcommerce.test.common.properties.sources.CommonFrameworkTestProperties;
 import org.broadleafcommerce.test.common.properties.sources.ProfileAwareProperties;
 import org.broadleafcommerce.test.common.properties.sources.ProfileAwareSharedProperties;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.reactive.context.StandardReactiveWebEnvironment;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MutablePropertySources;
@@ -107,6 +115,99 @@ public class BroadleafEnvironmentConfigurerDiffblueTest {
     assertEquals("common-test-properties/profile-aware-properties", getResult2.getClasspathFolder());
     assertEquals("common-test-properties/profile-aware-shared-properties", getResult3.getClasspathFolder());
     assertEquals("runtime-properties", getResult.getClasspathFolder());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafEnvironmentConfigurer#configure(ConfigurableEnvironment)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafEnvironmentConfigurer#configure(ConfigurableEnvironment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConfigure() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    BroadleafEnvironmentConfigurer broadleafEnvironmentConfigurer = new BroadleafEnvironmentConfigurer();
+    StandardReactiveWebEnvironment environment = new StandardReactiveWebEnvironment();
+
+    // Act
+    broadleafEnvironmentConfigurer.configure(environment);
+
+    // Assert
+    String[] defaultProfiles = environment.getDefaultProfiles();
+    MutablePropertySources propertySources = environment.getPropertySources();
+    Stream<PropertySource<?>> streamResult = propertySources.stream();
+    List<PropertySource<?>> collectResult = streamResult.limit(5).collect(Collectors.toList());
+    assertEquals(4, collectResult.size());
+    PropertySource<?> getResult = collectResult.get(3);
+    Collection<PropertySource<?>> propertySources2 = ((CompositePropertySource) getResult).getPropertySources();
+    assertEquals(2, propertySources2.size());
+    assertTrue(propertySources2 instanceof Set);
+    Iterator<PropertySource<?>> iteratorResult = propertySources.iterator();
+    PropertySource<?> nextResult = iteratorResult.next();
+    assertTrue(nextResult instanceof CompositePropertySource);
+    assertTrue(getResult instanceof CompositePropertySource);
+    assertEquals("development", defaultProfiles[1]);
+    assertEquals(2, defaultProfiles.length);
+    assertEquals(4, propertySources.size());
+    assertEquals(4L, propertySources.spliterator().getExactSizeIfKnown());
+    assertTrue(iteratorResult.hasNext());
+    assertEquals(BroadleafEnvironmentConfigurer.FRAMEWORK_SOURCES_NAME, getResult.getName());
+    assertEquals(BroadleafEnvironmentConfigurer.PROFILE_AWARE_SOURCES_NAME, nextResult.getName());
+    assertArrayEquals(new String[]{"test.property.source", "dev.only.property"},
+        ((CompositePropertySource) nextResult).getPropertyNames());
+    assertArrayEquals(new String[]{"shared.override.test", "test.property.source",
+        "spring.main.allow-circular-references", "global.admin.url",
+        "asset.server.max.generated.file.system.directories", "site.domain.resolver.strip.subdomains",
+        "i18n.translation.enabled", "stateless.request.path", "sitemap.createIfNotFound",
+        "seo.category.description.pattern", "staticResourceBrowserCacheSeconds", "thymeleaf.threadLocalCleanup.enabled",
+        "messages.useCodeAsDefaultMessage", "streaming.transaction.lock.retry.max", "messages.cacheSeconds",
+        "default.schema.sequence.generator", "site.strict.validate.production.changes", "bundle.enabled",
+        "ignore.no.process.detail.logger.configuration", "url.fragment.separator", "seo.product.description.pattern",
+        "admin.strict.validate.production.changes", "enterprise.use.production.sandbox.mode",
+        "allow.product.parent.category.sorting", "cache.page.templates", "exploitProtection.xssEnabled",
+        "seo.category.title.pattern", "minify.closure.compiler.warningLevel", "seo.product.title.pattern",
+        "workflow.auto.rollback.on.error", "cache.page.templates.ttl", "spring.main.allow-bean-definition-overriding",
+        "exploitProtection.xsrfEnabled", "admin.baseurl", "cache.stat.log.resolution", "googleAnalytics.testLocal",
+        "file.service.temp.file.base.directory", "minify.enabled", "asset.server.file.classpath.directory",
+        "resource.transformer.caching.enabled", "hibernate.id.generator.stored_last_used",
+        "auto.correct.sequence.generator.inconsistencies", "site.baseurl", "asset.server.file.system.path",
+        "minify.closure.compiler.languageOut", "detect.sequence.generator.inconsistencies",
+        "streaming.transaction.item.page.size", "resource.versioning.enabled", "query.cacheable",
+        "spring.cache.jcache.config", "disable.all.process.detail.logging", "cookies.use.secure",
+        "sitemap.cache.seconds", "thymeleaf.useLayoutDialect", "sitemap.gzip.files", "system.property.cache.timeout",
+        "minify.closure.compiler.languageIn", "resource.caching.enabled", "global.admin.prefix"},
+        ((CompositePropertySource) getResult).getPropertyNames());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafEnvironmentConfigurer#configure(ConfigurableEnvironment)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BroadleafEnvironmentConfigurer#configure(ConfigurableEnvironment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConfigure_whenNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.config.BroadleafEnvironmentConfigurer.addToEnvironment(BroadleafEnvironmentConfigurer.java:228)
+    //       at org.broadleafcommerce.common.config.BroadleafEnvironmentConfigurer.configure(BroadleafEnvironmentConfigurer.java:113)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    (new BroadleafEnvironmentConfigurer()).configure(null);
   }
 
   /**

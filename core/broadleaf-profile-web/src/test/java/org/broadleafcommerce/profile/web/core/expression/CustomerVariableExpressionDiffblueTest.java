@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Profile Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.profile.web.core.expression;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,10 +11,23 @@ import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-profile-web-applicationContext.xml",
+    "/blc-config/site/bl-profile-web-applicationContext-servlet.xml",
+    "/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class CustomerVariableExpressionDiffblueTest {
+  @Autowired
+  private CustomerVariableExpression customerVariableExpression;
+
   /**
    * Test {@link CustomerVariableExpression#getName()}.
    * <p>
@@ -56,6 +52,161 @@ class CustomerVariableExpressionDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new CustomerVariableExpression()).getCurrent());
+  }
+
+  /**
+   * Test {@link CustomerVariableExpression#getCurrent()}.
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#getCurrent()}
+   */
+  @Test
+  @DisplayName("Test getCurrent()")
+  @Disabled("TODO: Complete this test")
+  void testGetCurrent2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.core.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass909 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression customerVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CustomerVariableExpression()).getCurrent();
+  }
+
+  /**
+   * Test {@link CustomerVariableExpression#getCustomerAddresses()}.
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#getCustomerAddresses()}
+   */
+  @Test
+  @DisplayName("Test getCustomerAddresses()")
+  @Disabled("TODO: Complete this test")
+  void testGetCustomerAddresses() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.core.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass910 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression customerVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CustomerVariableExpression()).getCustomerAddresses();
+  }
+
+  /**
+   * Test {@link CustomerVariableExpression#savedPaymentsAreEnabled()}.
+   * <p>
+   * Method under test:
+   * {@link CustomerVariableExpression#savedPaymentsAreEnabled()}
+   */
+  @Test
+  @DisplayName("Test savedPaymentsAreEnabled()")
+  @Disabled("TODO: Complete this test")
+  void testSavedPaymentsAreEnabled() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.core.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass912 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression customerVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CustomerVariableExpression()).savedPaymentsAreEnabled();
+  }
+
+  /**
+   * Test {@link CustomerVariableExpression#getCustomerPayments()}.
+   * <p>
+   * Method under test: {@link CustomerVariableExpression#getCustomerPayments()}
+   */
+  @Test
+  @DisplayName("Test getCustomerPayments()")
+  @Disabled("TODO: Complete this test")
+  void testGetCustomerPayments() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.core.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass911 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression customerVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CustomerVariableExpression()).getCustomerPayments();
+  }
+
+  /**
+   * Test {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}.
+   * <p>
+   * Method under test:
+   * {@link CustomerVariableExpression#sortCustomerPaymentsByDefault(List)}
+   */
+  @Test
+  @DisplayName("Test sortCustomerPaymentsByDefault(List)")
+  @Disabled("TODO: Complete this test")
+  void testSortCustomerPaymentsByDefault() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.core.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass913 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.expression.CustomerVariableExpression customerVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerVariableExpression customerVariableExpression2 = new CustomerVariableExpression();
+
+    // Act
+    customerVariableExpression2.sortCustomerPaymentsByDefault(new ArrayList<>());
   }
 
   /**

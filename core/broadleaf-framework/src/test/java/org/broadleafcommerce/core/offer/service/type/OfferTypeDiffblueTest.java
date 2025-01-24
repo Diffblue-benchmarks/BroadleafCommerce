@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.service.type;
 
 import static org.junit.Assert.assertEquals;
@@ -26,9 +9,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {OfferType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class OfferTypeDiffblueTest {
   @Autowired
   private OfferType offerType;
@@ -175,6 +158,31 @@ public class OfferTypeDiffblueTest {
     // Arrange
     OfferType offerType = new OfferType();
     OfferType offerType2 = new OfferType();
+
+    // Act and Assert
+    assertEquals(offerType, offerType2);
+    int expectedHashCodeResult = offerType.hashCode();
+    assertEquals(expectedHashCodeResult, offerType2.hashCode());
+  }
+
+  /**
+   * Test {@link OfferType#equals(Object)}, and {@link OfferType#hashCode()}.
+   * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link OfferType#equals(Object)}
+   *   <li>{@link OfferType#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    OfferType offerType = new OfferType("FULFILLMENT_GROUP", "Friendly Type", 1);
+    OfferType offerType2 = OfferType.FULFILLMENT_GROUP;
 
     // Act and Assert
     assertEquals(offerType, offerType2);

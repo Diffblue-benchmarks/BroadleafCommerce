@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.structure.service.type;
 
 import static org.junit.Assert.assertEquals;
@@ -27,12 +10,27 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {StructuredContentRuleType.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class StructuredContentRuleTypeDiffblueTest {
   @Autowired
   private StructuredContentRuleType structuredContentRuleType;
+
+  /**
+   * Test {@link StructuredContentRuleType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link StructuredContentRuleType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    StructuredContentRuleType actualInstance = StructuredContentRuleType.getInstance("Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+  }
 
   /**
    * Test getters and setters.
@@ -187,6 +185,32 @@ public class StructuredContentRuleTypeDiffblueTest {
     // Arrange
     StructuredContentRuleType structuredContentRuleType = new StructuredContentRuleType();
     StructuredContentRuleType structuredContentRuleType2 = new StructuredContentRuleType();
+
+    // Act and Assert
+    assertEquals(structuredContentRuleType, structuredContentRuleType2);
+    int expectedHashCodeResult = structuredContentRuleType.hashCode();
+    assertEquals(expectedHashCodeResult, structuredContentRuleType2.hashCode());
+  }
+
+  /**
+   * Test {@link StructuredContentRuleType#equals(Object)}, and
+   * {@link StructuredContentRuleType#hashCode()}.
+   * <ul>
+   *   <li>When other is equal.</li>
+   *   <li>Then return equal.</li>
+   * </ul>
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link StructuredContentRuleType#equals(Object)}
+   *   <li>{@link StructuredContentRuleType#hashCode()}
+   * </ul>
+   */
+  @Test
+  public void testEqualsAndHashCode_whenOtherIsEqual_thenReturnEqual3() {
+    // Arrange
+    StructuredContentRuleType structuredContentRuleType = new StructuredContentRuleType("CUSTOMER", "Friendly Type");
+    StructuredContentRuleType structuredContentRuleType2 = StructuredContentRuleType.CUSTOMER;
 
     // Act and Assert
     assertEquals(structuredContentRuleType, structuredContentRuleType2);

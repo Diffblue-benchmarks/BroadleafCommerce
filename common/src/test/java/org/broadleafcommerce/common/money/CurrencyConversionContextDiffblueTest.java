@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -18,6 +18,8 @@
 package org.broadleafcommerce.common.money;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import java.util.HashMap;
 import org.junit.Test;
 
 public class CurrencyConversionContextDiffblueTest {
@@ -31,5 +33,39 @@ public class CurrencyConversionContextDiffblueTest {
   public void testGetCurrencyConversionContext() {
     // Arrange, Act and Assert
     assertTrue(CurrencyConversionContext.getCurrencyConversionContext().isEmpty());
+  }
+
+  /**
+   * Test {@link CurrencyConversionContext#setCurrencyConversionContext(HashMap)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link CurrencyConversionContext#setCurrencyConversionContext(HashMap)}
+   */
+  @Test
+  public void testSetCurrencyConversionContext_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    CurrencyConversionContext.setCurrencyConversionContext(new HashMap());
+  }
+
+  /**
+   * Test
+   * {@link CurrencyConversionContext#setCurrencyConversionService(CurrencyConversionService)}.
+   * <p>
+   * Method under test:
+   * {@link CurrencyConversionContext#setCurrencyConversionService(CurrencyConversionService)}
+   */
+  @Test
+  public void testSetCurrencyConversionService() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    CurrencyConversionContext.setCurrencyConversionService(mock(CurrencyConversionService.class));
   }
 }

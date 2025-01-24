@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.checkout.service.strategy;
 
 import static org.junit.Assert.assertEquals;
@@ -58,9 +41,57 @@ import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.WorkflowException;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OrderPaymentConfirmationStrategyImplDiffblueTest {
+  @Autowired
+  private OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransaction(PaymentTransaction, ProcessContext)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransaction(PaymentTransaction, ProcessContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConfirmTransaction() throws PaymentException, CheckoutException, WorkflowException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass975 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    PaymentTransactionImpl tx = new PaymentTransactionImpl();
+
+    // Act
+    orderPaymentConfirmationStrategyImpl2.confirmTransaction(tx, new DefaultProcessContextImpl<>());
+  }
+
   /**
    * Test
    * {@link OrderPaymentConfirmationStrategyImpl#confirmTransaction(PaymentTransaction, ProcessContext)}.
@@ -89,6 +120,41 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
   /**
    * Test
    * {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConfirmPendingTransaction() throws PaymentException, CheckoutException, WorkflowException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass951 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    PaymentTransactionImpl tx = new PaymentTransactionImpl();
+
+    // Act
+    orderPaymentConfirmationStrategyImpl2.confirmPendingTransaction(tx, new DefaultProcessContextImpl<>());
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#confirmPendingTransaction(PaymentTransaction, ProcessContext)}.
    * <ul>
    *   <li>Then throw {@link CheckoutException}.</li>
    * </ul>
@@ -108,6 +174,41 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
     // Act and Assert
     assertThrows(CheckoutException.class,
         () -> orderPaymentConfirmationStrategyImpl.confirmPendingTransaction(tx, new DefaultProcessContextImpl<>()));
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransactionInternal(PaymentTransaction, ProcessContext, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#confirmTransactionInternal(PaymentTransaction, ProcessContext, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConfirmTransactionInternal() throws PaymentException, CheckoutException, WorkflowException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass999 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    PaymentTransactionImpl tx = new PaymentTransactionImpl();
+
+    // Act
+    orderPaymentConfirmationStrategyImpl2.confirmTransactionInternal(tx, new DefaultProcessContextImpl<>(), true);
   }
 
   /**
@@ -198,6 +299,40 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
     verify(orderPaymentImpl).isActive();
     verify(orderPaymentImpl).isFinalPayment();
     assertFalse(actualOrderContainsMultipleFinalPaymentsResult);
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#orderContainsMultipleFinalPayments(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testOrderContainsMultipleFinalPayments3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1063 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+
+    // Act
+    orderPaymentConfirmationStrategyImpl2.orderContainsMultipleFinalPayments(new NullOrderImpl());
   }
 
   /**
@@ -319,6 +454,40 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
   /**
    * Test
    * {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTransactionIsDetachedCreditRequest() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1192 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+
+    // Act
+    orderPaymentConfirmationStrategyImpl2.transactionIsDetachedCreditRequest(new PaymentTransactionImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#transactionIsDetachedCreditRequest(PaymentTransaction)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()}.</li>
    *   <li>Then calls {@link PaymentTransactionImpl#getAdditionalFields()}.</li>
@@ -364,6 +533,44 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
 
     // Act and Assert
     assertFalse(orderPaymentConfirmationStrategyImpl.transactionIsDetachedCreditRequest(new PaymentTransactionImpl()));
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#constructPendingTransaction(PaymentType, PaymentGatewayType, PaymentRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConstructPendingTransaction() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1031 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    PaymentType paymentType = new PaymentType("Type", "Friendly Type");
+
+    PaymentGatewayType gatewayType = new PaymentGatewayType("Type", "Friendly Type");
+
+    // Act
+    orderPaymentConfirmationStrategyImpl2.constructPendingTransaction(paymentType, gatewayType,
+        new PaymentRequestDTO());
   }
 
   /**
@@ -511,5 +718,238 @@ public class OrderPaymentConfirmationStrategyImplDiffblueTest {
     assertSame(gatewayType, actualConstructPendingTransactionResult.getPaymentGatewayType());
     assertSame(paymentType, actualConstructPendingTransactionResult.getPaymentType());
     assertSame(currency, zeroResult.getCurrency());
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#populateCreditCardOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#populateCreditCardOnRequest(PaymentRequestDTO, OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateCreditCardOnRequest() throws WorkflowException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1105 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    PaymentRequestDTO requestDTO = new PaymentRequestDTO();
+
+    // Act
+    orderPaymentConfirmationStrategyImpl2.populateCreditCardOnRequest(requestDTO, new OrderPaymentImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#populateBillingAddressOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#populateBillingAddressOnRequest(PaymentRequestDTO, OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateBillingAddressOnRequest() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1076 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    PaymentRequestDTO requestDTO = new PaymentRequestDTO();
+
+    // Act
+    orderPaymentConfirmationStrategyImpl2.populateBillingAddressOnRequest(requestDTO, new OrderPaymentImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#populateCustomerOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#populateCustomerOnRequest(PaymentRequestDTO, OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateCustomerOnRequest() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1134 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    PaymentRequestDTO requestDTO = new PaymentRequestDTO();
+
+    // Act
+    orderPaymentConfirmationStrategyImpl2.populateCustomerOnRequest(requestDTO, new OrderPaymentImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#populateShippingAddressOnRequest(PaymentRequestDTO, OrderPayment)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#populateShippingAddressOnRequest(PaymentRequestDTO, OrderPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateShippingAddressOnRequest() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1163 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl2 = new OrderPaymentConfirmationStrategyImpl();
+    PaymentRequestDTO requestDTO = new PaymentRequestDTO();
+
+    // Act
+    orderPaymentConfirmationStrategyImpl2.populateShippingAddressOnRequest(requestDTO, new OrderPaymentImpl());
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#constructExpirationDate(Integer, Integer)}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#constructExpirationDate(Integer, Integer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConstructExpirationDate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1024 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OrderPaymentConfirmationStrategyImpl()).constructExpirationDate(1, 1);
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#getGatewayExpirationDateFormat()}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#getGatewayExpirationDateFormat()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetGatewayExpirationDateFormat() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1062 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OrderPaymentConfirmationStrategyImpl()).getGatewayExpirationDateFormat();
+  }
+
+  /**
+   * Test
+   * {@link OrderPaymentConfirmationStrategyImpl#enablePendingPaymentsOnCheckoutConfirmation()}.
+   * <p>
+   * Method under test:
+   * {@link OrderPaymentConfirmationStrategyImpl#enablePendingPaymentsOnCheckoutConfirmation()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEnablePendingPaymentsOnCheckoutConfirmation() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.checkout.service.strategy;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1061 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.checkout.service.strategy.OrderPaymentConfirmationStrategyImpl orderPaymentConfirmationStrategyImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OrderPaymentConfirmationStrategyImpl()).enablePendingPaymentsOnCheckoutConfirmation();
   }
 }

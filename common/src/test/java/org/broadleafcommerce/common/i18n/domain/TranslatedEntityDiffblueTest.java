@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -20,6 +20,7 @@ package org.broadleafcommerce.common.i18n.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import java.util.Map;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,50 @@ public class TranslatedEntityDiffblueTest {
   public void testGetInstanceFromFriendlyType_when42_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(TranslatedEntity.getInstanceFromFriendlyType("42"));
+  }
+
+  /**
+   * Test {@link TranslatedEntity#getInstanceFromFriendlyType(String)}.
+   * <ul>
+   *   <li>When {@code Friendly Type}.</li>
+   *   <li>Then return {@code Friendly Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link TranslatedEntity#getInstanceFromFriendlyType(String)}
+   */
+  @Test
+  public void testGetInstanceFromFriendlyType_whenFriendlyType_thenReturnFriendlyType() {
+    // Arrange and Act
+    TranslatedEntity actualInstanceFromFriendlyType = TranslatedEntity.getInstanceFromFriendlyType("Friendly Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstanceFromFriendlyType.getFriendlyType());
+    assertEquals("Type", actualInstanceFromFriendlyType.getType());
+  }
+
+  /**
+   * Test getters and setters.
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link TranslatedEntity#TranslatedEntity()}
+   *   <li>{@link TranslatedEntity#getTypes()}
+   *   <li>{@link TranslatedEntity#getFriendlyType()}
+   *   <li>{@link TranslatedEntity#getType()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange and Act
+    TranslatedEntity actualTranslatedEntity = new TranslatedEntity();
+    Map<String, TranslatedEntity> actualTypes = actualTranslatedEntity.getTypes();
+    String actualFriendlyType = actualTranslatedEntity.getFriendlyType();
+
+    // Assert
+    assertNull(actualFriendlyType);
+    assertNull(actualTranslatedEntity.getType());
+    assertEquals(47, actualTypes.size());
   }
 
   /**

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.expression;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,10 +13,22 @@ import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class SeoElementVariableExpressionDiffblueTest {
+  @Autowired
+  private SeoElementVariableExpression seoElementVariableExpression;
+
   /**
    * Test {@link SeoElementVariableExpression#getName()}.
    * <p>
@@ -44,6 +39,70 @@ class SeoElementVariableExpressionDiffblueTest {
   void testGetName() {
     // Arrange, Act and Assert
     assertEquals("seoElement", (new SeoElementVariableExpression()).getName());
+  }
+
+  /**
+   * Test {@link SeoElementVariableExpression#getSiteSimpleURL()}.
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getSiteSimpleURL()}
+   */
+  @Test
+  @DisplayName("Test getSiteSimpleURL()")
+  @Disabled("TODO: Complete this test")
+  void testGetSiteSimpleURL() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3336 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.SeoElementVariableExpression seoElementVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SeoElementVariableExpression()).getSiteSimpleURL();
+  }
+
+  /**
+   * Test {@link SeoElementVariableExpression#getTitle(Category)} with
+   * {@code category}.
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getTitle(Category)}
+   */
+  @Test
+  @DisplayName("Test getTitle(Category) with 'category'")
+  @Disabled("TODO: Complete this test")
+  void testGetTitleWithCategory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3337 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.SeoElementVariableExpression seoElementVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SeoElementVariableExpression seoElementVariableExpression2 = new SeoElementVariableExpression();
+
+    // Act
+    seoElementVariableExpression2.getTitle(new CategoryImpl());
   }
 
   /**
@@ -126,6 +185,40 @@ class SeoElementVariableExpressionDiffblueTest {
 
     // Act and Assert
     assertNull(seoElementVariableExpression.getTitle(new CategoryImpl()));
+  }
+
+  /**
+   * Test {@link SeoElementVariableExpression#getTitle(Product)} with
+   * {@code product}.
+   * <p>
+   * Method under test: {@link SeoElementVariableExpression#getTitle(Product)}
+   */
+  @Test
+  @DisplayName("Test getTitle(Product) with 'product'")
+  @Disabled("TODO: Complete this test")
+  void testGetTitleWithProduct() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3371 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.SeoElementVariableExpression seoElementVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SeoElementVariableExpression seoElementVariableExpression2 = new SeoElementVariableExpression();
+
+    // Act
+    seoElementVariableExpression2.getTitle(new ProductBundleImpl());
   }
 
   /**
@@ -243,6 +336,41 @@ class SeoElementVariableExpressionDiffblueTest {
   /**
    * Test {@link SeoElementVariableExpression#getDescription(Category)} with
    * {@code category}.
+   * <p>
+   * Method under test:
+   * {@link SeoElementVariableExpression#getDescription(Category)}
+   */
+  @Test
+  @DisplayName("Test getDescription(Category) with 'category'")
+  @Disabled("TODO: Complete this test")
+  void testGetDescriptionWithCategory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3269 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.SeoElementVariableExpression seoElementVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SeoElementVariableExpression seoElementVariableExpression2 = new SeoElementVariableExpression();
+
+    // Act
+    seoElementVariableExpression2.getDescription(new CategoryImpl());
+  }
+
+  /**
+   * Test {@link SeoElementVariableExpression#getDescription(Category)} with
+   * {@code category}.
    * <ul>
    *   <li>Given empty string.</li>
    *   <li>Then return {@code Long Description}.</li>
@@ -350,6 +478,41 @@ class SeoElementVariableExpressionDiffblueTest {
     verify(product).getLongDescription();
     verify(product).getMetaDescription();
     assertEquals("", actualDescription);
+  }
+
+  /**
+   * Test {@link SeoElementVariableExpression#getDescription(Product)} with
+   * {@code product}.
+   * <p>
+   * Method under test:
+   * {@link SeoElementVariableExpression#getDescription(Product)}
+   */
+  @Test
+  @DisplayName("Test getDescription(Product) with 'product'")
+  @Disabled("TODO: Complete this test")
+  void testGetDescriptionWithProduct2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3303 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.SeoElementVariableExpression seoElementVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SeoElementVariableExpression seoElementVariableExpression2 = new SeoElementVariableExpression();
+
+    // Act
+    seoElementVariableExpression2.getDescription(new ProductBundleImpl());
   }
 
   /**
@@ -466,6 +629,40 @@ class SeoElementVariableExpressionDiffblueTest {
 
     // Act and Assert
     assertEquals("", seoElementVariableExpression.getDescription(product));
+  }
+
+  /**
+   * Test {@link SeoElementVariableExpression#buildTitleString(List, String)}.
+   * <p>
+   * Method under test:
+   * {@link SeoElementVariableExpression#buildTitleString(List, String)}
+   */
+  @Test
+  @DisplayName("Test buildTitleString(List, String)")
+  @Disabled("TODO: Complete this test")
+  void testBuildTitleString() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.expression;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3261 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.expression.SeoElementVariableExpression seoElementVariableExpression;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SeoElementVariableExpression seoElementVariableExpression2 = new SeoElementVariableExpression();
+
+    // Act
+    seoElementVariableExpression2.buildTitleString(new ArrayList<>(), "Element Delimiter");
   }
 
   /**

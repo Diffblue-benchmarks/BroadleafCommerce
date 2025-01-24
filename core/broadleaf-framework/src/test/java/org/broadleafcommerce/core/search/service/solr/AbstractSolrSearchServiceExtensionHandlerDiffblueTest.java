@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.search.service.solr;
 
 import static org.junit.Assert.assertEquals;
@@ -53,10 +36,155 @@ import org.broadleafcommerce.core.search.domain.SearchFacetRange;
 import org.broadleafcommerce.core.search.domain.SearchFacetRangeImpl;
 import org.broadleafcommerce.core.search.domain.SearchFacetResultDTO;
 import org.broadleafcommerce.core.search.domain.solr.FieldType;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
+  @MockBean
+  private AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#buildPrefixListForIndexField(IndexField, FieldType, List)}.
+   * <ul>
+   *   <li>Given {@code 42}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#buildPrefixListForIndexField(IndexField, FieldType, List)}
+   */
+  @Test
+  public void testBuildPrefixListForIndexField_given42_whenArrayListAdd42() {
+    // Arrange
+    when(abstractSolrSearchServiceExtensionHandler.buildPrefixListForIndexField(Mockito.<IndexField>any(),
+        Mockito.<FieldType>any(), Mockito.<List<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    IndexFieldImpl field = new IndexFieldImpl();
+
+    ArrayList<String> prefixList = new ArrayList<>();
+    prefixList.add("42");
+    prefixList.add("foo");
+
+    // Act
+    ExtensionResultStatusType actualBuildPrefixListForIndexFieldResult = abstractSolrSearchServiceExtensionHandler
+        .buildPrefixListForIndexField(field, FieldType.BOOLEAN, prefixList);
+
+    // Assert
+    verify(abstractSolrSearchServiceExtensionHandler).buildPrefixListForIndexField(isA(IndexField.class),
+        isA(FieldType.class), isA(List.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualBuildPrefixListForIndexFieldResult);
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#buildPrefixListForIndexField(IndexField, FieldType, List)}.
+   * <ul>
+   *   <li>Given {@code foo}.</li>
+   *   <li>When {@link ArrayList#ArrayList()} add {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#buildPrefixListForIndexField(IndexField, FieldType, List)}
+   */
+  @Test
+  public void testBuildPrefixListForIndexField_givenFoo_whenArrayListAddFoo() {
+    // Arrange
+    when(abstractSolrSearchServiceExtensionHandler.buildPrefixListForIndexField(Mockito.<IndexField>any(),
+        Mockito.<FieldType>any(), Mockito.<List<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    IndexFieldImpl field = new IndexFieldImpl();
+
+    ArrayList<String> prefixList = new ArrayList<>();
+    prefixList.add("foo");
+
+    // Act
+    ExtensionResultStatusType actualBuildPrefixListForIndexFieldResult = abstractSolrSearchServiceExtensionHandler
+        .buildPrefixListForIndexField(field, FieldType.BOOLEAN, prefixList);
+
+    // Assert
+    verify(abstractSolrSearchServiceExtensionHandler).buildPrefixListForIndexField(isA(IndexField.class),
+        isA(FieldType.class), isA(List.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualBuildPrefixListForIndexFieldResult);
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#buildPrefixListForIndexField(IndexField, FieldType, List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#buildPrefixListForIndexField(IndexField, FieldType, List)}
+   */
+  @Test
+  public void testBuildPrefixListForIndexField_whenArrayList() {
+    // Arrange
+    when(abstractSolrSearchServiceExtensionHandler.buildPrefixListForIndexField(Mockito.<IndexField>any(),
+        Mockito.<FieldType>any(), Mockito.<List<String>>any())).thenReturn(ExtensionResultStatusType.HANDLED);
+    IndexFieldImpl field = new IndexFieldImpl();
+
+    // Act
+    ExtensionResultStatusType actualBuildPrefixListForIndexFieldResult = abstractSolrSearchServiceExtensionHandler
+        .buildPrefixListForIndexField(field, FieldType.BOOLEAN, new ArrayList<>());
+
+    // Assert
+    verify(abstractSolrSearchServiceExtensionHandler).buildPrefixListForIndexField(isA(IndexField.class),
+        isA(FieldType.class), isA(List.class));
+    assertEquals(ExtensionResultStatusType.HANDLED, actualBuildPrefixListForIndexFieldResult);
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#filterSearchFacetRanges(SearchFacetDTO, List)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#filterSearchFacetRanges(SearchFacetDTO, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFilterSearchFacetRanges() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2665 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+
+    SearchFacetDTO dto = new SearchFacetDTO();
+    dto.setAbbreviation("Abbreviation");
+    dto.setActive(true);
+    dto.setFacet(new SearchFacetImpl());
+    dto.setFacetValues(new ArrayList<>());
+    dto.setShowQuantity(true);
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.filterSearchFacetRanges(dto, new ArrayList<>());
+  }
+
   /**
    * Test
    * {@link AbstractSolrSearchServiceExtensionHandler#filterSearchFacetRanges(SearchFacetDTO, List)}.
@@ -362,6 +490,48 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
 
   /**
    * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#modifySolrQuery(SearchContextDTO, SolrQuery, String, List, SearchCriteria, String)}
+   * with {@code context}, {@code query}, {@code qualifiedSolrQuery},
+   * {@code facets}, {@code searchCriteria}, {@code defaultSort}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#modifySolrQuery(SearchContextDTO, SolrQuery, String, List, SearchCriteria, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testModifySolrQueryWithContextQueryQualifiedSolrQueryFacetsSearchCriteriaDefaultSort5() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2870 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+
+    SearchContextDTO context = new SearchContextDTO();
+    context.setAttributes(new HashMap<>());
+    SolrQuery query = new SolrQuery("foo");
+    ArrayList<SearchFacetDTO> facets = new ArrayList<>();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.modifySolrQuery(context, query, "Qualified Solr Query", facets,
+        new SearchCriteria(), "Default Sort");
+  }
+
+  /**
+   * Test
    * {@link AbstractSolrSearchServiceExtensionHandler#modifySolrQuery(SolrQuery, String, List, SearchCriteria, String)}
    * with {@code query}, {@code qualifiedSolrQuery}, {@code facets},
    * {@code searchCriteria}, {@code defaultSort}.
@@ -480,6 +650,86 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
 
   /**
    * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#modifySolrQuery(SolrQuery, String, List, SearchCriteria, String)}
+   * with {@code query}, {@code qualifiedSolrQuery}, {@code facets},
+   * {@code searchCriteria}, {@code defaultSort}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#modifySolrQuery(SolrQuery, String, List, SearchCriteria, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testModifySolrQueryWithQueryQualifiedSolrQueryFacetsSearchCriteriaDefaultSort5() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2840 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+    SolrQuery query = new SolrQuery("foo");
+    ArrayList<SearchFacetDTO> facets = new ArrayList<>();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.modifySolrQuery(query, "Qualified Solr Query", facets, new SearchCriteria(),
+        "Default Sort");
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#getQueryField(SolrQuery, SearchCriteria, IndexFieldType, ExtensionResultHolder)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#getQueryField(SolrQuery, SearchCriteria, IndexFieldType, ExtensionResultHolder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetQueryField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2785 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+    SolrQuery query = new SolrQuery("foo");
+    SearchCriteria searchCriteria = new SearchCriteria();
+    IndexFieldTypeImpl indexFieldType = new IndexFieldTypeImpl();
+
+    ExtensionResultHolder<List<String>> queryFieldsResult = new ExtensionResultHolder<>();
+    queryFieldsResult.setResult(new ArrayList<>());
+    queryFieldsResult.setThrowable(new Throwable());
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.getQueryField(query, searchCriteria, indexFieldType, queryFieldsResult);
+  }
+
+  /**
+   * Test
    * {@link AbstractSolrSearchServiceExtensionHandler#getQueryField(SolrQuery, SearchCriteria, IndexFieldType, ExtensionResultHolder)}.
    * <ul>
    *   <li>When {@link SolrQuery}.</li>
@@ -534,6 +784,41 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         i18nSolrSearchServiceExtensionHandler.getQueryField(query, searchCriteria, indexFieldType, queryFieldsResult));
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#modifySearchResults(List, List)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#modifySearchResults(List, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testModifySearchResults() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2829 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+    ArrayList<SolrDocument> responseDocuments = new ArrayList<>();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.modifySearchResults(responseDocuments, new ArrayList<>());
   }
 
   /**
@@ -700,6 +985,39 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link AbstractSolrSearchServiceExtensionHandler#getSearchFacets(List)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#getSearchFacets(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSearchFacets() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2815 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.getSearchFacets(new ArrayList<>());
+  }
+
+  /**
+   * Test {@link AbstractSolrSearchServiceExtensionHandler#getSearchFacets(List)}.
    * <ul>
    *   <li>Given {@link SearchFacetImpl} (default constructor).</li>
    *   <li>When {@link ArrayList#ArrayList()} add {@link SearchFacetImpl} (default
@@ -795,6 +1113,92 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         i18nSolrSearchServiceExtensionHandler.getSearchFacets(new ArrayList<>()));
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#attachFacet(SolrQuery, String, SearchFacetDTO)}
+   * with {@code query}, {@code indexField}, {@code dto}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#attachFacet(SolrQuery, String, SearchFacetDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAttachFacetWithQueryIndexFieldDto() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2515 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+    SolrQuery query = new SolrQuery("foo");
+
+    SearchFacetDTO dto = new SearchFacetDTO();
+    dto.setAbbreviation("Abbreviation");
+    dto.setActive(true);
+    dto.setFacet(new SearchFacetImpl());
+    dto.setFacetValues(new ArrayList<>());
+    dto.setShowQuantity(true);
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.attachFacet(query, "Index Field", dto);
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#attachFacet(SolrQuery, String, SearchFacetDTO, SearchCriteria)}
+   * with {@code query}, {@code indexField}, {@code dto}, {@code searchCriteria}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#attachFacet(SolrQuery, String, SearchFacetDTO, SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAttachFacetWithQueryIndexFieldDtoSearchCriteria() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2545 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+    SolrQuery query = new SolrQuery("foo");
+
+    SearchFacetDTO dto = new SearchFacetDTO();
+    dto.setAbbreviation("Abbreviation");
+    dto.setActive(true);
+    dto.setFacet(new SearchFacetImpl());
+    dto.setFacetValues(new ArrayList<>());
+    dto.setShowQuantity(true);
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.attachFacet(query, "Index Field", dto, new SearchCriteria());
   }
 
   /**
@@ -919,6 +1323,41 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         i18nSolrSearchServiceExtensionHandler.attachFacet(query, "Index Field", dto));
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#setFacetResults(Map, QueryResponse)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#setFacetResults(Map, QueryResponse)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetFacetResults() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2900 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+    HashMap<String, SearchFacetDTO> namedFacetMap = new HashMap<>();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.setFacetResults(namedFacetMap, new QueryResponse());
   }
 
   /**
@@ -1060,6 +1499,43 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
 
   /**
    * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#buildActiveFacetFilter(FieldEntity, String, String[], List)}
+   * with {@code entityType}, {@code solrKey}, {@code selectedValues},
+   * {@code valueStrings}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#buildActiveFacetFilter(FieldEntity, String, String[], List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildActiveFacetFilterWithEntityTypeSolrKeySelectedValuesValueStrings5() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2612 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.buildActiveFacetFilter(FieldEntity.CATEGORY, "Solr Key", new String[]{"42"},
+        new ArrayList<>());
+  }
+
+  /**
+   * Test
    * {@link AbstractSolrSearchServiceExtensionHandler#buildActiveFacetFilter(SearchFacet, String[], List)}
    * with {@code facet}, {@code selectedValues}, {@code valueStrings}.
    * <p>
@@ -1082,6 +1558,42 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
     // Assert
     verify(facet, atLeast(1)).getField();
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualBuildActiveFacetFilterResult);
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#buildActiveFacetFilter(SearchFacet, String[], List)}
+   * with {@code facet}, {@code selectedValues}, {@code valueStrings}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#buildActiveFacetFilter(SearchFacet, String[], List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildActiveFacetFilterWithFacetSelectedValuesValueStrings2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2637 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+    SearchFacetImpl facet = new SearchFacetImpl();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.buildActiveFacetFilter(facet, new String[]{"42"}, new ArrayList<>());
   }
 
   /**
@@ -1147,6 +1659,42 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
     // Assert
     verify(facet, atLeast(1)).getField();
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, actualBuildActiveFacetFilterResult);
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#addAdditionalCategoryIds(Category, SearchCriteria, List)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#addAdditionalCategoryIds(Category, SearchCriteria, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddAdditionalCategoryIds() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2485 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+    CategoryImpl category = new CategoryImpl();
+    SearchCriteria searchCriteria = new SearchCriteria();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.addAdditionalCategoryIds(category, searchCriteria, new ArrayList<>());
   }
 
   /**
@@ -1257,6 +1805,41 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
   /**
    * Test
    * {@link AbstractSolrSearchServiceExtensionHandler#getCategorySearchFacets(Category, List)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#getCategorySearchFacets(Category, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCategorySearchFacets() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2725 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+    CategoryImpl category = new CategoryImpl();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.getCategorySearchFacets(category, new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#getCategorySearchFacets(Category, List)}.
    * <ul>
    *   <li>Given {@link SearchFacetImpl} (default constructor).</li>
    *   <li>When {@link ArrayList#ArrayList()} add {@link SearchFacetImpl} (default
@@ -1355,6 +1938,40 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         i18nSolrSearchServiceExtensionHandler.getCategorySearchFacets(category, new ArrayList<>()));
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#getSearchableIndexFields(List)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#getSearchableIndexFields(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSearchableIndexFields() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2822 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.getSearchableIndexFields(new ArrayList<>());
   }
 
   /**
@@ -1463,6 +2080,40 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
   /**
    * Test
    * {@link AbstractSolrSearchServiceExtensionHandler#getCategoryId(Category, Long[])}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#getCategoryId(Category, Long[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCategoryId() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2695 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.getCategoryId(new CategoryImpl(), new Long[]{1L});
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#getCategoryId(Category, Long[])}.
    * <ul>
    *   <li>When {@link CategoryImpl} (default constructor).</li>
    * </ul>
@@ -1499,6 +2150,40 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
     // Arrange, Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         (new I18nSolrSearchServiceExtensionHandler()).getCategoryId(mock(CategoryImpl.class), new Long[]{1L}));
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#batchFetchCatalogData(List)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#batchFetchCatalogData(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBatchFetchCatalogData() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2605 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.batchFetchCatalogData(new ArrayList<>());
   }
 
   /**
@@ -1602,6 +2287,41 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
   /**
    * Test
    * {@link AbstractSolrSearchServiceExtensionHandler#attachSortField(SolrQuery, String, ORDER)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#attachSortField(SolrQuery, String, SolrQuery.ORDER)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAttachSortField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2575 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.attachSortField(new SolrQuery("foo"), "Requested Sort Field Name",
+        SolrQuery.ORDER.desc);
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#attachSortField(SolrQuery, String, ORDER)}.
    * <ul>
    *   <li>When {@link SolrQuery}.</li>
    * </ul>
@@ -1638,6 +2358,45 @@ public class AbstractSolrSearchServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED, i18nSolrSearchServiceExtensionHandler
         .attachSortField(new SolrQuery("foo"), "Requested Sort Field Name", SolrQuery.ORDER.desc));
+  }
+
+  /**
+   * Test
+   * {@link AbstractSolrSearchServiceExtensionHandler#getPropertyNameForIndexField(IndexField, FieldType, String, ExtensionResultHolder)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSolrSearchServiceExtensionHandler#getPropertyNameForIndexField(IndexField, FieldType, String, ExtensionResultHolder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertyNameForIndexField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2755 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.AbstractSolrSearchServiceExtensionHandler abstractSolrSearchServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    I18nSolrSearchServiceExtensionHandler i18nSolrSearchServiceExtensionHandler = new I18nSolrSearchServiceExtensionHandler();
+    IndexFieldImpl field = new IndexFieldImpl();
+
+    ExtensionResultHolder<String> erh = new ExtensionResultHolder<>();
+    erh.setResult("Result");
+    erh.setThrowable(new Throwable());
+
+    // Act
+    i18nSolrSearchServiceExtensionHandler.getPropertyNameForIndexField(field, FieldType.BOOLEAN, "Prefix", erh);
   }
 
   /**

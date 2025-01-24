@@ -1,36 +1,31 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.catalog.service.dynamic;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Currency;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
+  @MockBean
+  private DefaultDynamicSkuPricingInvocationHandler defaultDynamicSkuPricingInvocationHandler;
+
   /**
    * Test
    * {@link DefaultDynamicSkuPricingInvocationHandler#DefaultDynamicSkuPricingInvocationHandler(BigDecimal)}.
@@ -875,6 +870,50 @@ public class DefaultDynamicSkuPricingInvocationHandlerDiffblueTest {
     assertEquals(expectedAmount, margin.getAmount());
     assertEquals(margin, margin.abs());
     assertEquals(margin, margin.zero());
+  }
+
+  /**
+   * Test
+   * {@link DefaultDynamicSkuPricingInvocationHandler#getSingleField(Class, String)}.
+   * <p>
+   * Method under test:
+   * {@link DefaultDynamicSkuPricingInvocationHandler#getSingleField(Class, String)}
+   */
+  @Test
+  public void testGetSingleField() throws IllegalStateException {
+    // Arrange
+    when(defaultDynamicSkuPricingInvocationHandler.getSingleField(Mockito.<Class<Object>>any(), Mockito.<String>any()))
+        .thenReturn(null);
+    Class<Object> clazz = Object.class;
+
+    // Act
+    Field actualSingleField = defaultDynamicSkuPricingInvocationHandler.getSingleField(clazz, "Field Name");
+
+    // Assert
+    verify(defaultDynamicSkuPricingInvocationHandler).getSingleField(isA(Class.class), eq("Field Name"));
+    assertNull(actualSingleField);
+  }
+
+  /**
+   * Test
+   * {@link DefaultDynamicSkuPricingInvocationHandler#invoke(Object, Method, Object[])}.
+   * <p>
+   * Method under test:
+   * {@link DefaultDynamicSkuPricingInvocationHandler#invoke(Object, Method, Object[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testInvoke() throws Throwable {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.catalog.service.dynamic.DefaultDynamicSkuPricingInvocationHandler.invoke(DefaultDynamicSkuPricingInvocationHandler.java:113)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    (new DefaultDynamicSkuPricingInvocationHandler(new BigDecimal("2.3"))).invoke("Proxy", null, new Object[]{"Args"});
   }
 
   /**

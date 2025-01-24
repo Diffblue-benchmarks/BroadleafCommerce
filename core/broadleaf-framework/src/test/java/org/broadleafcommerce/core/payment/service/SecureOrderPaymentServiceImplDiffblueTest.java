@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.payment.service;
 
 import static org.junit.Assert.assertNull;
@@ -24,9 +7,83 @@ import static org.mockito.Mockito.when;
 import org.broadleafcommerce.common.payment.PaymentType;
 import org.broadleafcommerce.core.payment.domain.secure.Referenced;
 import org.broadleafcommerce.core.workflow.WorkflowException;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SecureOrderPaymentServiceImplDiffblueTest {
+  @Autowired
+  private SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl;
+
+  /**
+   * Test {@link SecureOrderPaymentServiceImpl#save(Referenced)}.
+   * <p>
+   * Method under test: {@link SecureOrderPaymentServiceImpl#save(Referenced)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSave() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2896 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SecureOrderPaymentServiceImpl()).save(mock(Referenced.class));
+  }
+
+  /**
+   * Test {@link SecureOrderPaymentServiceImpl#create(PaymentType)}.
+   * <p>
+   * Method under test: {@link SecureOrderPaymentServiceImpl#create(PaymentType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2814 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl2 = new SecureOrderPaymentServiceImpl();
+
+    // Act
+    secureOrderPaymentServiceImpl2.create(new PaymentType("Type", "Friendly Type"));
+  }
+
   /**
    * Test {@link SecureOrderPaymentServiceImpl#create(PaymentType)}.
    * <ul>
@@ -97,6 +154,40 @@ public class SecureOrderPaymentServiceImplDiffblueTest {
   /**
    * Test
    * {@link SecureOrderPaymentServiceImpl#findSecurePaymentInfo(String, PaymentType)}.
+   * <p>
+   * Method under test:
+   * {@link SecureOrderPaymentServiceImpl#findSecurePaymentInfo(String, PaymentType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindSecurePaymentInfo() throws WorkflowException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2881 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl2 = new SecureOrderPaymentServiceImpl();
+
+    // Act
+    secureOrderPaymentServiceImpl2.findSecurePaymentInfo("42", new PaymentType("Type", "Friendly Type"));
+  }
+
+  /**
+   * Test
+   * {@link SecureOrderPaymentServiceImpl#findSecurePaymentInfo(String, PaymentType)}.
    * <ul>
    *   <li>When {@link PaymentType#PaymentType(String, String)} with {@code Type}
    * and {@code Friendly Type}.</li>
@@ -116,5 +207,158 @@ public class SecureOrderPaymentServiceImplDiffblueTest {
 
     // Act and Assert
     assertNull(secureOrderPaymentServiceImpl.findSecurePaymentInfo("42", new PaymentType("Type", "Friendly Type")));
+  }
+
+  /**
+   * Test
+   * {@link SecureOrderPaymentServiceImpl#findAndRemoveSecurePaymentInfo(String, PaymentType)}.
+   * <p>
+   * Method under test:
+   * {@link SecureOrderPaymentServiceImpl#findAndRemoveSecurePaymentInfo(String, PaymentType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindAndRemoveSecurePaymentInfo() throws WorkflowException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2824 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl2 = new SecureOrderPaymentServiceImpl();
+
+    // Act
+    secureOrderPaymentServiceImpl2.findAndRemoveSecurePaymentInfo("42", new PaymentType("Type", "Friendly Type"));
+  }
+
+  /**
+   * Test {@link SecureOrderPaymentServiceImpl#remove(Referenced)}.
+   * <p>
+   * Method under test: {@link SecureOrderPaymentServiceImpl#remove(Referenced)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemove() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2895 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SecureOrderPaymentServiceImpl()).remove(mock(Referenced.class));
+  }
+
+  /**
+   * Test {@link SecureOrderPaymentServiceImpl#findBankAccountInfo(String)}.
+   * <p>
+   * Method under test:
+   * {@link SecureOrderPaymentServiceImpl#findBankAccountInfo(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindBankAccountInfo() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2836 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SecureOrderPaymentServiceImpl()).findBankAccountInfo("42");
+  }
+
+  /**
+   * Test {@link SecureOrderPaymentServiceImpl#findCreditCardInfo(String)}.
+   * <p>
+   * Method under test:
+   * {@link SecureOrderPaymentServiceImpl#findCreditCardInfo(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindCreditCardInfo() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2851 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SecureOrderPaymentServiceImpl()).findCreditCardInfo("42");
+  }
+
+  /**
+   * Test {@link SecureOrderPaymentServiceImpl#findGiftCardInfo(String)}.
+   * <p>
+   * Method under test:
+   * {@link SecureOrderPaymentServiceImpl#findGiftCardInfo(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindGiftCardInfo() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2866 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.SecureOrderPaymentServiceImpl secureOrderPaymentServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SecureOrderPaymentServiceImpl()).findGiftCardInfo("42");
   }
 }

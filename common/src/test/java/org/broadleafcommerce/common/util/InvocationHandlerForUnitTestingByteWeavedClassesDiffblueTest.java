@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -21,9 +21,63 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import java.lang.reflect.Method;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class InvocationHandlerForUnitTestingByteWeavedClassesDiffblueTest {
+  /**
+   * Test
+   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#createProxy(Class, Class[], Object[])}.
+   * <ul>
+   *   <li>When array of {@link Class} with {@link Object}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#createProxy(Class, Class[], Object[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateProxy_whenArrayOfClassWithObject() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: java.lang.Object is not an interface
+    //       at org.broadleafcommerce.common.util.InvocationHandlerForUnitTestingByteWeavedClasses.createProxy(InvocationHandlerForUnitTestingByteWeavedClasses.java:43)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Class<Object> proxyType = Object.class;
+    Class<Object> forNameResult = Object.class;
+
+    // Act
+    InvocationHandlerForUnitTestingByteWeavedClasses.createProxy(proxyType, new Class[]{forNameResult},
+        new Object[]{BLCFieldUtils.NULL_FIELD});
+  }
+
+  /**
+   * Test
+   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#createProxy(Class, Class[], Object[])}.
+   * <ul>
+   *   <li>When empty array of {@link Class}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link InvocationHandlerForUnitTestingByteWeavedClasses#createProxy(Class, Class[], Object[])}
+   */
+  @Test
+  public void testCreateProxy_whenEmptyArrayOfClass() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    Class<Object> proxyType = Object.class;
+
+    // Act
+    InvocationHandlerForUnitTestingByteWeavedClasses.createProxy(proxyType, new Class[]{},
+        new Object[]{BLCFieldUtils.NULL_FIELD});
+  }
+
   /**
    * Test getters and setters.
    * <p>

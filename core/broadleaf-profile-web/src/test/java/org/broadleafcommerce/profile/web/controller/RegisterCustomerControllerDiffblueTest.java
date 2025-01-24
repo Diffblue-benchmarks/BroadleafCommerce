@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Profile Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.profile.web.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,20 +15,49 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.broadleafcommerce.profile.core.service.ChallengeQuestionService;
+import org.broadleafcommerce.profile.core.service.CustomerService;
 import org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator;
 import org.broadleafcommerce.profile.web.core.form.RegisterCustomerForm;
+import org.broadleafcommerce.profile.web.core.service.login.LoginService;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.servlet.ModelAndView;
 
+@ContextConfiguration(classes = {RegisterCustomerController.class})
+@ExtendWith(SpringExtension.class)
 class RegisterCustomerControllerDiffblueTest {
+  @MockBean
+  private ChallengeQuestionService challengeQuestionService;
+
+  @MockBean
+  private CustomerService customerService;
+
+  @MockBean
+  private LoginService loginService;
+
+  @Autowired
+  private RegisterCustomerController registerCustomerController;
+
+  @MockBean(name = "blRegisterCustomerValidator")
+  private RegisterCustomerValidator registerCustomerValidator;
+
   /**
    * Test {@link RegisterCustomerController#registerCustomer()}.
    * <p>
@@ -62,6 +74,43 @@ class RegisterCustomerControllerDiffblueTest {
 
     // Act and Assert
     assertEquals("/account/registration/registerCustomer", registerCustomerController.registerCustomer());
+  }
+
+  /**
+   * Test {@link RegisterCustomerController#registerCustomer()}.
+   * <p>
+   * Method under test: {@link RegisterCustomerController#registerCustomer()}
+   */
+  @Test
+  @DisplayName("Test registerCustomer()")
+  @Disabled("TODO: Complete this test")
+  void testRegisterCustomer2() throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.profile.web.controller.RegisterCustomerController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.ChallengeQuestionService challengeQuestionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.web.core.service.login.LoginService loginService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.controller.RegisterCustomerController registerCustomerController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blRegisterCustomerValidator") org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator registerCustomerValidator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/registerCustomer/registerCustomer");
+
+    // Act
+    MockMvcBuilders.standaloneSetup(registerCustomerController).build().perform(requestBuilder);
   }
 
   /**
@@ -120,6 +169,48 @@ class RegisterCustomerControllerDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link RegisterCustomerController#registerCustomer(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse)}
+   * with {@code RegisterCustomerForm}, {@code BindingResult},
+   * {@code HttpServletRequest}, {@code HttpServletResponse}.
+   * <p>
+   * Method under test:
+   * {@link RegisterCustomerController#registerCustomer(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  @DisplayName("Test registerCustomer(RegisterCustomerForm, BindingResult, HttpServletRequest, HttpServletResponse) with 'RegisterCustomerForm', 'BindingResult', 'HttpServletRequest', 'HttpServletResponse'")
+  @Disabled("TODO: Complete this test")
+  void testRegisterCustomerWithRegisterCustomerFormBindingResultHttpServletRequestHttpServletResponse2()
+      throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.profile.web.controller.RegisterCustomerController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.ChallengeQuestionService challengeQuestionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.web.core.service.login.LoginService loginService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.controller.RegisterCustomerController registerCustomerController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blRegisterCustomerValidator") org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator registerCustomerValidator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/registerCustomer/registerCustomer");
+
+    // Act
+    MockMvcBuilders.standaloneSetup(registerCustomerController).build().perform(requestBuilder);
+  }
+
+  /**
    * Test {@link RegisterCustomerController#registerCustomer()}.
    * <ul>
    *   <li>Given {@link RegisterCustomerController} (default constructor).</li>
@@ -157,6 +248,45 @@ class RegisterCustomerControllerDiffblueTest {
 
   /**
    * Test {@link RegisterCustomerController#registerCustomerSuccess()}.
+   * <p>
+   * Method under test:
+   * {@link RegisterCustomerController#registerCustomerSuccess()}
+   */
+  @Test
+  @DisplayName("Test registerCustomerSuccess()")
+  @Disabled("TODO: Complete this test")
+  void testRegisterCustomerSuccess2() throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.profile.web.controller.RegisterCustomerController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.ChallengeQuestionService challengeQuestionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.web.core.service.login.LoginService loginService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.controller.RegisterCustomerController registerCustomerController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blRegisterCustomerValidator") org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator registerCustomerValidator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+        .get("/registerCustomer/registerCustomerSuccess");
+
+    // Act
+    MockMvcBuilders.standaloneSetup(registerCustomerController).build().perform(requestBuilder);
+  }
+
+  /**
+   * Test {@link RegisterCustomerController#registerCustomerSuccess()}.
    * <ul>
    *   <li>Given {@link RegisterCustomerController} (default constructor).</li>
    * </ul>
@@ -172,6 +302,75 @@ class RegisterCustomerControllerDiffblueTest {
     // Arrange, Act and Assert
     assertEquals("/account/registration/registerCustomerSuccess",
         (new RegisterCustomerController()).registerCustomerSuccess());
+  }
+
+  /**
+   * Test {@link RegisterCustomerController#initCustomerRegistrationForm()}.
+   * <p>
+   * Method under test:
+   * {@link RegisterCustomerController#initCustomerRegistrationForm()}
+   */
+  @Test
+  @DisplayName("Test initCustomerRegistrationForm()")
+  @Disabled("TODO: Complete this test")
+  void testInitCustomerRegistrationForm() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.profile.web.controller.RegisterCustomerController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.ChallengeQuestionService challengeQuestionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.web.core.service.login.LoginService loginService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.controller.RegisterCustomerController registerCustomerController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blRegisterCustomerValidator") org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator registerCustomerValidator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    registerCustomerController.initCustomerRegistrationForm();
+  }
+
+  /**
+   * Test {@link RegisterCustomerController#getChallengeQuestions()}.
+   * <p>
+   * Method under test: {@link RegisterCustomerController#getChallengeQuestions()}
+   */
+  @Test
+  @DisplayName("Test getChallengeQuestions()")
+  @Disabled("TODO: Complete this test")
+  void testGetChallengeQuestions() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.profile.web.controller.RegisterCustomerController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.ChallengeQuestionService challengeQuestionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.core.service.CustomerService customerService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.profile.web.core.service.login.LoginService loginService;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.controller.RegisterCustomerController registerCustomerController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blRegisterCustomerValidator") org.broadleafcommerce.profile.web.controller.validator.RegisterCustomerValidator registerCustomerValidator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    registerCustomerController.getChallengeQuestions();
   }
 
   /**

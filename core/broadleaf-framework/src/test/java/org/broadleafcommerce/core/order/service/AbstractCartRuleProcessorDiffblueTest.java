@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.order.service;
 
 import static org.junit.Assert.assertFalse;
@@ -30,6 +13,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
+import org.broadleafcommerce.common.page.dto.PageDTO;
 import org.broadleafcommerce.common.structure.dto.ItemCriteriaDTO;
 import org.broadleafcommerce.core.order.dao.OrderDao;
 import org.broadleafcommerce.core.order.dao.OrderDaoImpl;
@@ -39,10 +23,59 @@ import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-applicationContext.xml",
+    "/bl-framework-applicationContext-entity.xml", "/bl-framework-applicationContext-persistence.xml",
+    "/bl-framework-applicationContext-workflow.xml",
+    "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractCartRuleProcessorDiffblueTest {
+  @Autowired
+  private AbstractCartRuleProcessor<PageDTO> abstractCartRuleProcessor;
+
+  /**
+   * Test {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupOrderForCustomer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1485 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.AbstractCartRuleProcessor<Lorg.broadleafcommerce.common.page.dto.PageDTO;> abstractCartRuleProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+
+    // Act
+    pageCartRuleProcessor.lookupOrderForCustomer(new CustomerImpl());
+  }
+
   /**
    * Test {@link AbstractCartRuleProcessor#lookupOrderForCustomer(Customer)}.
    * <ul>
@@ -89,6 +122,44 @@ public class AbstractCartRuleProcessorDiffblueTest {
     // Assert
     verify(orderDao).readCartForCustomer(isA(Customer.class));
     assertSame(nullOrderImpl, actualLookupOrderForCustomerResult);
+  }
+
+  /**
+   * Test
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractCartRuleProcessor#checkItemCriteria(ItemCriteriaDTO, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCheckItemCriteria() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1454 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.AbstractCartRuleProcessor<Lorg.broadleafcommerce.common.page.dto.PageDTO;> abstractCartRuleProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+
+    ItemCriteriaDTO itemCriteria = new ItemCriteriaDTO();
+    itemCriteria.setMatchRule("Match Rule");
+    itemCriteria.setQty(1);
+
+    // Act
+    pageCartRuleProcessor.checkItemCriteria(itemCriteria, new ArrayList<>());
   }
 
   /**
@@ -655,6 +726,38 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
   /**
    * Test {@link AbstractCartRuleProcessor#setOrderDao(OrderDao)}.
+   * <p>
+   * Method under test: {@link AbstractCartRuleProcessor#setOrderDao(OrderDao)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetOrderDao() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1515 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.AbstractCartRuleProcessor<Lorg.broadleafcommerce.common.page.dto.PageDTO;> abstractCartRuleProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PageCartRuleProcessor pageCartRuleProcessor = new PageCartRuleProcessor();
+
+    // Act
+    pageCartRuleProcessor.setOrderDao(new OrderDaoImpl());
+  }
+
+  /**
+   * Test {@link AbstractCartRuleProcessor#setOrderDao(OrderDao)}.
    * <ul>
    *   <li>When {@link OrderDaoImpl} (default constructor).</li>
    *   <li>Then {@link PageCartRuleProcessor} (default constructor) OrderDao is
@@ -701,6 +804,35 @@ public class AbstractCartRuleProcessorDiffblueTest {
 
     // Assert
     assertSame(orderDao, pageCartRuleProcessor.getOrderDao());
+  }
+
+  /**
+   * Test {@link AbstractCartRuleProcessor#getOrderDao()}.
+   * <p>
+   * Method under test: {@link AbstractCartRuleProcessor#getOrderDao()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetOrderDao() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1481 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.AbstractCartRuleProcessor<Lorg.broadleafcommerce.common.page.dto.PageDTO;> abstractCartRuleProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PageCartRuleProcessor()).getOrderDao();
   }
 
   /**

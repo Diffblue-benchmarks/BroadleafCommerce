@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -49,9 +32,59 @@ import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FulfillmentGroupAdjustmentImplDiffblueTest {
+  @Autowired
+  private FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl;
+
+  /**
+   * Test
+   * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}.
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testInit() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass696 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+
+    // Act
+    fulfillmentGroupAdjustmentImpl2.init(fulfillmentGroup, new OfferImpl(), "Just cause");
+  }
+
   /**
    * Test
    * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}.
@@ -147,6 +180,40 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     // Assert
     verify(offer).getAdjustmentType();
     assertFalse(fulfillmentGroupAdjustmentImpl.isFutureCredit());
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
+    assertSame(offer, fulfillmentGroupAdjustmentImpl.deproxiedOffer);
+  }
+
+  /**
+   * Test
+   * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}.
+   * <ul>
+   *   <li>Given {@link OfferAdjustmentType#OfferAdjustmentType(String, String)}
+   * with type is {@code FUTURE_CREDIT} and {@code Friendly Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FulfillmentGroupAdjustmentImpl#init(FulfillmentGroup, Offer, String)}
+   */
+  @Test
+  public void testInit_givenOfferAdjustmentTypeWithTypeIsFutureCreditAndFriendlyType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl = new FulfillmentGroupAdjustmentImpl();
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    Offer offer = mock(Offer.class);
+    when(offer.getName()).thenReturn("Name");
+    when(offer.getAdjustmentType()).thenReturn(new OfferAdjustmentType("FUTURE_CREDIT", "Friendly Type"));
+
+    // Act
+    fulfillmentGroupAdjustmentImpl.init(fulfillmentGroup, offer, null);
+
+    // Assert
+    verify(offer).getAdjustmentType();
+    verify(offer).getName();
+    assertEquals("Name", fulfillmentGroupAdjustmentImpl.getReason());
+    assertTrue(fulfillmentGroupAdjustmentImpl.isFutureCredit());
     assertSame(offer, fulfillmentGroupAdjustmentImpl.getOffer());
     assertSame(offer, fulfillmentGroupAdjustmentImpl.deproxiedOffer);
   }
@@ -409,6 +476,35 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupAdjustmentImpl#getOffer()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#getOffer()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetOffer2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass682 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupAdjustmentImpl()).getOffer();
+  }
+
+  /**
+   * Test {@link FulfillmentGroupAdjustmentImpl#getOffer()}.
    * <ul>
    *   <li>Given {@link FulfillmentGroupAdjustmentImpl} (default constructor).</li>
    * </ul>
@@ -421,6 +517,38 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new FulfillmentGroupAdjustmentImpl()).getOffer());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupAdjustmentImpl#setOffer(Offer)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#setOffer(Offer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetOffer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass785 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
+
+    // Act
+    fulfillmentGroupAdjustmentImpl2.setOffer(new OfferImpl());
   }
 
   /**
@@ -530,6 +658,35 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     Set<OfferTargetCriteriaXref> offerTargetCriteriaXrefSet = offer.targetItemCriteria;
     assertSame(offerTargetCriteriaXrefSet, offer2.getTargetItemCriteriaXref());
     assertSame(offerTargetCriteriaXrefSet, ((OfferImpl) offer2).targetItemCriteria);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupAdjustmentImpl#getValue()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#getValue()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass689 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupAdjustmentImpl()).getValue();
   }
 
   /**
@@ -755,6 +912,38 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
 
   /**
    * Test {@link FulfillmentGroupAdjustmentImpl#setValue(Money)}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#setValue(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass831 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl2 = new FulfillmentGroupAdjustmentImpl();
+
+    // Act
+    fulfillmentGroupAdjustmentImpl2.setValue(new Money());
+  }
+
+  /**
+   * Test {@link FulfillmentGroupAdjustmentImpl#setValue(Money)}.
    * <ul>
    *   <li>Then {@link FulfillmentGroupAdjustmentImpl} (default constructor)
    * {@link FulfillmentGroupAdjustmentImpl#value} is
@@ -802,6 +991,35 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     // Assert
     verify(value).getAmount();
     assertEquals(new BigDecimal("2.3"), fulfillmentGroupAdjustmentImpl.value);
+  }
+
+  /**
+   * Test {@link FulfillmentGroupAdjustmentImpl#getCurrencyCode()}.
+   * <p>
+   * Method under test: {@link FulfillmentGroupAdjustmentImpl#getCurrencyCode()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCurrencyCode() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass675 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FulfillmentGroupAdjustmentImpl()).getCurrencyCode();
   }
 
   /**
@@ -1362,5 +1580,35 @@ public class FulfillmentGroupAdjustmentImplDiffblueTest {
     assertNull(actualFulfillmentGroupAdjustmentImpl.getFulfillmentGroup());
     assertFalse(actualFulfillmentGroupAdjustmentImpl.isFutureCredit());
     assertEquals(new BigDecimal("0.00"), actualFulfillmentGroupAdjustmentImpl.value);
+  }
+
+  /**
+   * Test new {@link FulfillmentGroupAdjustmentImpl} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link FulfillmentGroupAdjustmentImpl}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewFulfillmentGroupAdjustmentImpl2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass674 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.domain.FulfillmentGroupAdjustmentImpl fulfillmentGroupAdjustmentImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new FulfillmentGroupAdjustmentImpl();
   }
 }

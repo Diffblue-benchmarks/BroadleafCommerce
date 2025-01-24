@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -27,7 +10,9 @@ import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import com.fasterxml.classmate.types.TypePlaceHolder;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,24 +25,84 @@ import org.broadleafcommerce.common.presentation.OptionFilterParam;
 import org.broadleafcommerce.common.presentation.OptionFilterParamType;
 import org.broadleafcommerce.common.presentation.RequiredOverride;
 import org.broadleafcommerce.common.presentation.ValidationConfiguration;
+import org.broadleafcommerce.common.presentation.client.AddMethodType;
+import org.broadleafcommerce.common.presentation.client.AdornedTargetAddMethodType;
 import org.broadleafcommerce.common.presentation.client.LookupType;
+import org.broadleafcommerce.common.presentation.client.OperationType;
 import org.broadleafcommerce.common.presentation.client.RuleBuilderDisplayType;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.broadleafcommerce.common.presentation.client.UnspecifiedBooleanType;
 import org.broadleafcommerce.common.presentation.client.VisibilityEnum;
 import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeEntry;
 import org.broadleafcommerce.common.presentation.override.AdminPresentationMergeOverride;
+import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
 import org.broadleafcommerce.openadmin.dto.override.FieldMetadataOverride;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDao;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
 import org.broadleafcommerce.openadmin.server.dao.FieldInfo;
+import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddFieldMetadataRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BasicFieldMetadataProviderDiffblueTest {
+  @Autowired
+  private BasicFieldMetadataProvider basicFieldMetadataProvider;
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#canHandleFieldForConfiguredMetadata(AddFieldMetadataRequest, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#canHandleFieldForConfiguredMetadata(AddFieldMetadataRequest, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleFieldForConfiguredMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass21278 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider2 = new BasicFieldMetadataProvider();
+    Class<Object> parentClass = Object.class;
+    Class<Object> targetClass = Object.class;
+    AddFieldMetadataRequest addMetadataRequest = new AddFieldMetadataRequest(null, parentClass, targetClass,
+        new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act
+    basicFieldMetadataProvider2.canHandleFieldForConfiguredMetadata(addMetadataRequest, new HashMap<>());
+  }
+
   /**
    * Test
    * {@link BasicFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}.
@@ -98,6 +143,81 @@ public class BasicFieldMetadataProviderDiffblueTest {
 
     // Act and Assert
     assertFalse(basicFieldMetadataProvider.canHandleAnnotationOverride(overrideViaAnnotationRequest, new HashMap<>()));
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#canHandleAnnotationOverride(OverrideViaAnnotationRequest, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandleAnnotationOverride3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20954 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider2 = new BasicFieldMetadataProvider();
+    Class<Object> requestedEntity = Object.class;
+    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
+        new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act
+    basicFieldMetadataProvider2.canHandleAnnotationOverride(overrideViaAnnotationRequest, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20348 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider2 = new BasicFieldMetadataProvider();
+    Class<Object> parentClass = Object.class;
+    Class<Object> targetClass = Object.class;
+    AddFieldMetadataRequest addMetadataRequest = new AddFieldMetadataRequest(null, parentClass, targetClass,
+        new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act
+    basicFieldMetadataProvider2.addMetadata(addMetadataRequest, new HashMap<>());
   }
 
   /**
@@ -146,6 +266,43 @@ public class BasicFieldMetadataProviderDiffblueTest {
 
   /**
    * Test
+   * {@link BasicFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testOverrideViaAnnotation3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass21610 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider2 = new BasicFieldMetadataProvider();
+    Class<Object> requestedEntity = Object.class;
+    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
+        new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act
+    basicFieldMetadataProvider2.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>());
+  }
+
+  /**
+   * Test
    * {@link BasicFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
    * <p>
    * Method under test:
@@ -163,6 +320,42 @@ public class BasicFieldMetadataProviderDiffblueTest {
     // Act and Assert
     assertEquals(MetadataProviderResponse.HANDLED,
         basicFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest, new HashMap<>()));
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testOverrideViaXml2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass21934 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider2 = new BasicFieldMetadataProvider();
+    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
+        "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
+
+    // Act
+    basicFieldMetadataProvider2.overrideViaXml(overrideViaXmlRequest, new HashMap<>());
   }
 
   /**
@@ -223,6 +416,37 @@ public class BasicFieldMetadataProviderDiffblueTest {
     assertNull(actualOverrideMergeMetadataResult.getGroup());
     assertNull(actualOverrideMergeMetadataResult.getSecurityLevel());
     assertNull(actualOverrideMergeMetadataResult.getTab());
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#overrideMergeMetadata(AdminPresentationMergeOverride)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#overrideMergeMetadata(AdminPresentationMergeOverride)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testOverrideMergeMetadata2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass21605 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new BasicFieldMetadataProvider()).overrideMergeMetadata(mock(AdminPresentationMergeOverride.class));
   }
 
   /**
@@ -890,6 +1114,38 @@ public class BasicFieldMetadataProviderDiffblueTest {
     assertThrows(IllegalArgumentException.class,
         () -> basicFieldMetadataProvider.constructBasicMetadataOverride(annot, null, null));
     verify(annot).broadleafEnumeration();
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#constructBasicMetadataOverride(AdminPresentation, AdminPresentationToOneLookup, AdminPresentationDataDrivenEnumeration)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#constructBasicMetadataOverride(AdminPresentation, AdminPresentationToOneLookup, AdminPresentationDataDrivenEnumeration)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConstructBasicMetadataOverride5() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass21600 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new BasicFieldMetadataProvider()).constructBasicMetadataOverride(mock(AdminPresentation.class),
+        mock(AdminPresentationToOneLookup.class), mock(AdminPresentationDataDrivenEnumeration.class));
   }
 
   /**
@@ -1859,6 +2115,178 @@ public class BasicFieldMetadataProviderDiffblueTest {
   /**
    * Test
    * {@link BasicFieldMetadataProvider#processValidationAnnotations(ValidationConfiguration[], FieldMetadataOverride)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#processValidationAnnotations(ValidationConfiguration[], FieldMetadataOverride)}
+   */
+  @Test
+  public void testProcessValidationAnnotations() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider = new BasicFieldMetadataProvider();
+    ConfigurationItem configurationItem = mock(ConfigurationItem.class);
+    when(configurationItem.itemName()).thenReturn("Item Name");
+    when(configurationItem.itemValue()).thenReturn("42");
+    ValidationConfiguration validationConfiguration = mock(ValidationConfiguration.class);
+    when(validationConfiguration.configurationItems()).thenReturn(new ConfigurationItem[]{configurationItem});
+    FieldMetadataOverride override = mock(FieldMetadataOverride.class);
+    when(override.getValidationConfigurations()).thenThrow(new RuntimeException("foo"));
+
+    // Act
+    basicFieldMetadataProvider.processValidationAnnotations(new ValidationConfiguration[]{validationConfiguration},
+        override);
+
+    // Assert
+    verify(configurationItem).itemName();
+    verify(configurationItem).itemValue();
+    verify(validationConfiguration).configurationItems();
+    verify(override).getValidationConfigurations();
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#processValidationAnnotations(ValidationConfiguration[], FieldMetadataOverride)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#processValidationAnnotations(ValidationConfiguration[], FieldMetadataOverride)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testProcessValidationAnnotations2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass22142 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider2 = new BasicFieldMetadataProvider();
+
+    FieldMetadataOverride override = new FieldMetadataOverride();
+    override.setAddFriendlyName("Add Friendly Name");
+    override.setAddMethodType(AddMethodType.PERSIST);
+    override.setAddType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setAdornedTargetAddMethodType(AdornedTargetAddMethodType.LOOKUP);
+    override.setAllowNoValueEnumOption(true);
+    override.setAssociatedFieldName("Associated Field Name");
+    override.setBroadleafEnumeration("Broadleaf Enumeration");
+    override.setCanLinkToExternalEntity(true);
+    override.setColumnWidth("Column Width");
+    override.setCurrencyCodeField("GBP");
+    override.setCustomCriteria(new String[]{"Custom Criteria"});
+    override.setDeleteEntityUponRemove(true);
+    override.setDerived(true);
+    override.setDisplayType(RuleBuilderDisplayType.NORMAL);
+    override.setEnableTypeaheadLookup(true);
+    override.setEnumerationClass("Enumeration Class");
+    override.setEnumerationValues(new String[][]{new String[]{"42"}});
+    override.setExcluded(true);
+    override.setExplicitFieldType(SupportedFieldType.UNKNOWN);
+    override.setFetchType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setFieldComponentRendererTemplate("Field Component Renderer Template");
+    override.setFieldType(SupportedFieldType.UNKNOWN);
+    override.setForceFreeFormKeys(true);
+    override.setForcePopulateChildProperties(true);
+    override.setForeignKeyClass("Foreign Key Class");
+    override.setForeignKeyCollection(true);
+    override.setForeignKeyDisplayValueProperty("42");
+    override.setForeignKeyProperty("Foreign Key Property");
+    override.setFriendlyName("Friendly Name");
+    override.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
+    override.setGridOrder(1);
+    override.setGridVisibleFields(new String[]{"Grid Visible Fields"});
+    override.setGroup("Group");
+    override.setGroupCollapsed(true);
+    override.setGroupOrder(1);
+    override.setHelpText("Help Text");
+    override.setHideEnumerationIfEmpty(true);
+    override.setHint("Hint");
+    override.setIgnoreAdornedProperties(true);
+    override.setInspectType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setJoinEntityClass("Join Entity Class");
+    override.setKeyClass("Key Class");
+    override.setKeyPropertyFriendlyName("Key Property Friendly Name");
+    override.setKeys(new String[][]{new String[]{"Keys"}});
+    override.setLargeEntry(true);
+    override.setLazyFetch(true);
+    override.setLength(3);
+    override.setLookupDisplayProperty("Lookup Display Property");
+    override.setLookupType(LookupType.STANDARD);
+    override.setMaintainedAdornedTargetFields(new String[]{"Maintained Adorned Target Fields"});
+    override.setManualFetch(true);
+    override.setManyToField("Many To Field");
+    override.setMapFieldValueClass("42");
+    override.setMapKeyOptionEntityClass("Map Key Option Entity Class");
+    override.setMapKeyOptionEntityDisplayField("Map Key Option Entity Display Field");
+    override.setMapKeyOptionEntityValueField("42");
+    override.setMapKeyValueProperty("42");
+    override.setMediaField("Media Field");
+    override.setMergedPropertyType(MergedPropertyType.PRIMARY);
+    override.setName("Name");
+    override.setOptionCanEditValues(true);
+    override.setOptionDisplayFieldName("Option Display Field Name");
+    override.setOptionFilterValues(new Serializable[][]{new Serializable[]{new SimpleDateFormat("yyyy/mm/dd")}});
+    override.setOptionListEntity("Option List Entity");
+    override.setOptionValueFieldName("42");
+    override.setOrder(1);
+    override.setParentObjectIdProperty("Parent Object Id Property");
+    override.setParentObjectProperty("Parent Object Property");
+    override.setPrecision(1);
+    override.setProminent(true);
+    override.setReadOnly(true);
+    override.setRemoveType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setRequired(true);
+    override.setRequiredOverride(true);
+    override.setRuleIdentifier("42");
+    override.setScale(1);
+    override.setSearchable(true);
+    override.setSecondaryType(SupportedFieldType.UNKNOWN);
+    override.setSecurityLevel("Security Level");
+    override.setSelectizeVisibleField("Selectize Visible Field");
+    override.setShowIfFieldEquals(new HashMap<>());
+    override.setShowIfProperty("Show If Property");
+    override.setSimpleValue(UnspecifiedBooleanType.TRUE);
+    override.setSortAscending(true);
+    override.setSortProperty("Sort Property");
+    override.setTab("Tab");
+    override.setTabOrder(1);
+    override.setTargetObjectIdProperty("Target Object Id Property");
+    override.setTargetObjectProperty("Target Object Property");
+    override.setToOneLookupCreatedViaAnnotation(true);
+    override.setToOneParentProperty("To One Parent Property");
+    override.setToOneTargetProperty("To One Target Property");
+    override.setTooltip("127.0.0.1");
+    override.setTranslatable(true);
+    override.setUnique(true);
+    override.setUpdateType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setUseServerSideInspectionCache(true);
+    override.setValidationConfigurations(new HashMap<>());
+    override.setValueClass("42");
+    override.setValuePropertyFriendlyName("42");
+    override.setVisibility(VisibilityEnum.HIDDEN_ALL);
+
+    // Act
+    basicFieldMetadataProvider2
+        .processValidationAnnotations(new ValidationConfiguration[]{mock(ValidationConfiguration.class)}, override);
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#processValidationAnnotations(ValidationConfiguration[], FieldMetadataOverride)}.
    * <ul>
    *   <li>Then calls
    * {@link ValidationConfiguration#validationImplementation()}.</li>
@@ -1950,6 +2378,174 @@ public class BasicFieldMetadataProviderDiffblueTest {
             new ValidationConfiguration[]{validationConfiguration, mock(ValidationConfiguration.class)},
             mock(FieldMetadataOverride.class)));
     verify(validationConfiguration).configurationItems();
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testProcessShowIfFieldEqualsAnnotations() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass21965 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider2 = new BasicFieldMetadataProvider();
+
+    FieldMetadataOverride override = new FieldMetadataOverride();
+    override.setAddFriendlyName("Add Friendly Name");
+    override.setAddMethodType(AddMethodType.PERSIST);
+    override.setAddType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setAdornedTargetAddMethodType(AdornedTargetAddMethodType.LOOKUP);
+    override.setAllowNoValueEnumOption(true);
+    override.setAssociatedFieldName("Associated Field Name");
+    override.setBroadleafEnumeration("Broadleaf Enumeration");
+    override.setCanLinkToExternalEntity(true);
+    override.setColumnWidth("Column Width");
+    override.setCurrencyCodeField("GBP");
+    override.setCustomCriteria(new String[]{"Custom Criteria"});
+    override.setDeleteEntityUponRemove(true);
+    override.setDerived(true);
+    override.setDisplayType(RuleBuilderDisplayType.NORMAL);
+    override.setEnableTypeaheadLookup(true);
+    override.setEnumerationClass("Enumeration Class");
+    override.setEnumerationValues(new String[][]{new String[]{"42"}});
+    override.setExcluded(true);
+    override.setExplicitFieldType(SupportedFieldType.UNKNOWN);
+    override.setFetchType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setFieldComponentRendererTemplate("Field Component Renderer Template");
+    override.setFieldType(SupportedFieldType.UNKNOWN);
+    override.setForceFreeFormKeys(true);
+    override.setForcePopulateChildProperties(true);
+    override.setForeignKeyClass("Foreign Key Class");
+    override.setForeignKeyCollection(true);
+    override.setForeignKeyDisplayValueProperty("42");
+    override.setForeignKeyProperty("Foreign Key Property");
+    override.setFriendlyName("Friendly Name");
+    override.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    override.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
+    override.setGridOrder(1);
+    override.setGridVisibleFields(new String[]{"Grid Visible Fields"});
+    override.setGroup("Group");
+    override.setGroupCollapsed(true);
+    override.setGroupOrder(1);
+    override.setHelpText("Help Text");
+    override.setHideEnumerationIfEmpty(true);
+    override.setHint("Hint");
+    override.setIgnoreAdornedProperties(true);
+    override.setInspectType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setJoinEntityClass("Join Entity Class");
+    override.setKeyClass("Key Class");
+    override.setKeyPropertyFriendlyName("Key Property Friendly Name");
+    override.setKeys(new String[][]{new String[]{"Keys"}});
+    override.setLargeEntry(true);
+    override.setLazyFetch(true);
+    override.setLength(3);
+    override.setLookupDisplayProperty("Lookup Display Property");
+    override.setLookupType(LookupType.STANDARD);
+    override.setMaintainedAdornedTargetFields(new String[]{"Maintained Adorned Target Fields"});
+    override.setManualFetch(true);
+    override.setManyToField("Many To Field");
+    override.setMapFieldValueClass("42");
+    override.setMapKeyOptionEntityClass("Map Key Option Entity Class");
+    override.setMapKeyOptionEntityDisplayField("Map Key Option Entity Display Field");
+    override.setMapKeyOptionEntityValueField("42");
+    override.setMapKeyValueProperty("42");
+    override.setMediaField("Media Field");
+    override.setMergedPropertyType(MergedPropertyType.PRIMARY);
+    override.setName("Name");
+    override.setOptionCanEditValues(true);
+    override.setOptionDisplayFieldName("Option Display Field Name");
+    override.setOptionFilterValues(new Serializable[][]{new Serializable[]{new SimpleDateFormat("yyyy/mm/dd")}});
+    override.setOptionListEntity("Option List Entity");
+    override.setOptionValueFieldName("42");
+    override.setOrder(1);
+    override.setParentObjectIdProperty("Parent Object Id Property");
+    override.setParentObjectProperty("Parent Object Property");
+    override.setPrecision(1);
+    override.setProminent(true);
+    override.setReadOnly(true);
+    override.setRemoveType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setRequired(true);
+    override.setRequiredOverride(true);
+    override.setRuleIdentifier("42");
+    override.setScale(1);
+    override.setSearchable(true);
+    override.setSecondaryType(SupportedFieldType.UNKNOWN);
+    override.setSecurityLevel("Security Level");
+    override.setSelectizeVisibleField("Selectize Visible Field");
+    override.setShowIfFieldEquals(new HashMap<>());
+    override.setShowIfProperty("Show If Property");
+    override.setSimpleValue(UnspecifiedBooleanType.TRUE);
+    override.setSortAscending(true);
+    override.setSortProperty("Sort Property");
+    override.setTab("Tab");
+    override.setTabOrder(1);
+    override.setTargetObjectIdProperty("Target Object Id Property");
+    override.setTargetObjectProperty("Target Object Property");
+    override.setToOneLookupCreatedViaAnnotation(true);
+    override.setToOneParentProperty("To One Parent Property");
+    override.setToOneTargetProperty("To One Target Property");
+    override.setTooltip("127.0.0.1");
+    override.setTranslatable(true);
+    override.setUnique(true);
+    override.setUpdateType(OperationType.NONDESTRUCTIVEREMOVE);
+    override.setUseServerSideInspectionCache(true);
+    override.setValidationConfigurations(new HashMap<>());
+    override.setValueClass("42");
+    override.setValuePropertyFriendlyName("42");
+    override.setVisibility(VisibilityEnum.HIDDEN_ALL);
+
+    // Act
+    basicFieldMetadataProvider2.processShowIfFieldEqualsAnnotations(
+        new FieldValueConfiguration[]{mock(FieldValueConfiguration.class)}, override);
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}.
+   * <ul>
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
+   * {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#processShowIfFieldEqualsAnnotations(FieldValueConfiguration[], FieldMetadataOverride)}
+   */
+  @Test
+  public void testProcessShowIfFieldEqualsAnnotations_givenRuntimeExceptionWithFoo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider = new BasicFieldMetadataProvider();
+    FieldMetadataOverride override = mock(FieldMetadataOverride.class);
+    when(override.getShowIfFieldEquals()).thenThrow(new RuntimeException("foo"));
+
+    // Act
+    basicFieldMetadataProvider.processShowIfFieldEqualsAnnotations(
+        new FieldValueConfiguration[]{mock(FieldValueConfiguration.class)}, override);
+
+    // Assert
+    verify(override).getShowIfFieldEquals();
   }
 
   /**
@@ -2224,6 +2820,261 @@ public class BasicFieldMetadataProviderDiffblueTest {
     verify(basicFieldMetadata, atLeast(1)).isProminent();
     verify(basicFieldMetadata, atLeast(1)).getOrder();
     verify(field, atLeast(1)).getName();
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#buildBasicMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#buildBasicMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildBasicMetadata3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20670 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider2 = new BasicFieldMetadataProvider();
+    Class<Object> parentClass = Object.class;
+    Class<Object> targetClass = Object.class;
+    HashMap<String, FieldMetadata> attributes = new HashMap<>();
+
+    FieldInfo field = new FieldInfo();
+    field.setGenericType(new TypePlaceHolder(1));
+    field.setManyToManyMappedBy("Many To Many Mapped By");
+    field.setManyToManyTargetEntity("Many To Many Target Entity");
+    field.setMapKey("Map Key");
+    field.setName("Name");
+    field.setOneToManyMappedBy("One To Many Mapped By");
+    field.setOneToManyTargetEntity("One To Many Target Entity");
+
+    FieldMetadataOverride basicFieldMetadata = new FieldMetadataOverride();
+    basicFieldMetadata.setAddFriendlyName("Add Friendly Name");
+    basicFieldMetadata.setAddMethodType(AddMethodType.PERSIST);
+    basicFieldMetadata.setAddType(OperationType.NONDESTRUCTIVEREMOVE);
+    basicFieldMetadata.setAdornedTargetAddMethodType(AdornedTargetAddMethodType.LOOKUP);
+    basicFieldMetadata.setAllowNoValueEnumOption(true);
+    basicFieldMetadata.setAssociatedFieldName("Associated Field Name");
+    basicFieldMetadata.setBroadleafEnumeration("Broadleaf Enumeration");
+    basicFieldMetadata.setCanLinkToExternalEntity(true);
+    basicFieldMetadata.setColumnWidth("Column Width");
+    basicFieldMetadata.setCurrencyCodeField("GBP");
+    basicFieldMetadata.setCustomCriteria(new String[]{"Custom Criteria"});
+    basicFieldMetadata.setDeleteEntityUponRemove(true);
+    basicFieldMetadata.setDerived(true);
+    basicFieldMetadata.setDisplayType(RuleBuilderDisplayType.NORMAL);
+    basicFieldMetadata.setEnableTypeaheadLookup(true);
+    basicFieldMetadata.setEnumerationClass("Enumeration Class");
+    basicFieldMetadata.setEnumerationValues(new String[][]{new String[]{"42"}});
+    basicFieldMetadata.setExcluded(true);
+    basicFieldMetadata.setExplicitFieldType(SupportedFieldType.UNKNOWN);
+    basicFieldMetadata.setFetchType(OperationType.NONDESTRUCTIVEREMOVE);
+    basicFieldMetadata.setFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    basicFieldMetadata.setFieldComponentRendererTemplate("Field Component Renderer Template");
+    basicFieldMetadata.setFieldType(SupportedFieldType.UNKNOWN);
+    basicFieldMetadata.setForceFreeFormKeys(true);
+    basicFieldMetadata.setForcePopulateChildProperties(true);
+    basicFieldMetadata.setForeignKeyClass("Foreign Key Class");
+    basicFieldMetadata.setForeignKeyCollection(true);
+    basicFieldMetadata.setForeignKeyDisplayValueProperty("42");
+    basicFieldMetadata.setForeignKeyProperty("Foreign Key Property");
+    basicFieldMetadata.setFriendlyName("Friendly Name");
+    basicFieldMetadata.setGridFieldComponentRenderer(SupportedFieldType.UNKNOWN);
+    basicFieldMetadata.setGridFieldComponentRendererTemplate("Grid Field Component Renderer Template");
+    basicFieldMetadata.setGridOrder(1);
+    basicFieldMetadata.setGridVisibleFields(new String[]{"Grid Visible Fields"});
+    basicFieldMetadata.setGroup("Group");
+    basicFieldMetadata.setGroupCollapsed(true);
+    basicFieldMetadata.setGroupOrder(1);
+    basicFieldMetadata.setHelpText("Help Text");
+    basicFieldMetadata.setHideEnumerationIfEmpty(true);
+    basicFieldMetadata.setHint("Hint");
+    basicFieldMetadata.setIgnoreAdornedProperties(true);
+    basicFieldMetadata.setInspectType(OperationType.NONDESTRUCTIVEREMOVE);
+    basicFieldMetadata.setJoinEntityClass("Join Entity Class");
+    basicFieldMetadata.setKeyClass("Key Class");
+    basicFieldMetadata.setKeyPropertyFriendlyName("Key Property Friendly Name");
+    basicFieldMetadata.setKeys(new String[][]{new String[]{"Keys"}});
+    basicFieldMetadata.setLargeEntry(true);
+    basicFieldMetadata.setLazyFetch(true);
+    basicFieldMetadata.setLength(3);
+    basicFieldMetadata.setLookupDisplayProperty("Lookup Display Property");
+    basicFieldMetadata.setLookupType(LookupType.STANDARD);
+    basicFieldMetadata.setMaintainedAdornedTargetFields(new String[]{"Maintained Adorned Target Fields"});
+    basicFieldMetadata.setManualFetch(true);
+    basicFieldMetadata.setManyToField("Many To Field");
+    basicFieldMetadata.setMapFieldValueClass("42");
+    basicFieldMetadata.setMapKeyOptionEntityClass("Map Key Option Entity Class");
+    basicFieldMetadata.setMapKeyOptionEntityDisplayField("Map Key Option Entity Display Field");
+    basicFieldMetadata.setMapKeyOptionEntityValueField("42");
+    basicFieldMetadata.setMapKeyValueProperty("42");
+    basicFieldMetadata.setMediaField("Media Field");
+    basicFieldMetadata.setMergedPropertyType(MergedPropertyType.PRIMARY);
+    basicFieldMetadata.setName("Name");
+    basicFieldMetadata.setOptionCanEditValues(true);
+    basicFieldMetadata.setOptionDisplayFieldName("Option Display Field Name");
+    basicFieldMetadata
+        .setOptionFilterValues(new Serializable[][]{new Serializable[]{new SimpleDateFormat("yyyy/mm/dd")}});
+    basicFieldMetadata.setOptionListEntity("Option List Entity");
+    basicFieldMetadata.setOptionValueFieldName("42");
+    basicFieldMetadata.setOrder(1);
+    basicFieldMetadata.setParentObjectIdProperty("Parent Object Id Property");
+    basicFieldMetadata.setParentObjectProperty("Parent Object Property");
+    basicFieldMetadata.setPrecision(1);
+    basicFieldMetadata.setProminent(true);
+    basicFieldMetadata.setReadOnly(true);
+    basicFieldMetadata.setRemoveType(OperationType.NONDESTRUCTIVEREMOVE);
+    basicFieldMetadata.setRequired(true);
+    basicFieldMetadata.setRequiredOverride(true);
+    basicFieldMetadata.setRuleIdentifier("42");
+    basicFieldMetadata.setScale(1);
+    basicFieldMetadata.setSearchable(true);
+    basicFieldMetadata.setSecondaryType(SupportedFieldType.UNKNOWN);
+    basicFieldMetadata.setSecurityLevel("Security Level");
+    basicFieldMetadata.setSelectizeVisibleField("Selectize Visible Field");
+    basicFieldMetadata.setShowIfFieldEquals(new HashMap<>());
+    basicFieldMetadata.setShowIfProperty("Show If Property");
+    basicFieldMetadata.setSimpleValue(UnspecifiedBooleanType.TRUE);
+    basicFieldMetadata.setSortAscending(true);
+    basicFieldMetadata.setSortProperty("Sort Property");
+    basicFieldMetadata.setTab("Tab");
+    basicFieldMetadata.setTabOrder(1);
+    basicFieldMetadata.setTargetObjectIdProperty("Target Object Id Property");
+    basicFieldMetadata.setTargetObjectProperty("Target Object Property");
+    basicFieldMetadata.setToOneLookupCreatedViaAnnotation(true);
+    basicFieldMetadata.setToOneParentProperty("To One Parent Property");
+    basicFieldMetadata.setToOneTargetProperty("To One Target Property");
+    basicFieldMetadata.setTooltip("127.0.0.1");
+    basicFieldMetadata.setTranslatable(true);
+    basicFieldMetadata.setUnique(true);
+    basicFieldMetadata.setUpdateType(OperationType.NONDESTRUCTIVEREMOVE);
+    basicFieldMetadata.setUseServerSideInspectionCache(true);
+    basicFieldMetadata.setValidationConfigurations(new HashMap<>());
+    basicFieldMetadata.setValueClass("42");
+    basicFieldMetadata.setValuePropertyFriendlyName("42");
+    basicFieldMetadata.setVisibility(VisibilityEnum.HIDDEN_ALL);
+
+    // Act
+    basicFieldMetadataProvider2.buildBasicMetadata(parentClass, targetClass, attributes, field, basicFieldMetadata,
+        new DynamicEntityDaoImpl());
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#buildBasicMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}.
+   * <ul>
+   *   <li>Given {@link IllegalArgumentException#IllegalArgumentException(String)}
+   * with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#buildBasicMetadata(Class, Class, Map, FieldInfo, FieldMetadataOverride, DynamicEntityDao)}
+   */
+  @Test
+  public void testBuildBasicMetadata_givenIllegalArgumentExceptionWithFoo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider = new BasicFieldMetadataProvider();
+    Class<Object> parentClass = Object.class;
+    Class<Object> targetClass = Object.class;
+    HashMap<String, FieldMetadata> attributes = new HashMap<>();
+    FieldInfo field = mock(FieldInfo.class);
+    when(field.getName()).thenReturn("Name");
+    FieldMetadataOverride basicFieldMetadata = mock(FieldMetadataOverride.class);
+    when(basicFieldMetadata.getFieldType()).thenThrow(new IllegalArgumentException("foo"));
+
+    // Act
+    basicFieldMetadataProvider.buildBasicMetadata(parentClass, targetClass, attributes, field, basicFieldMetadata,
+        mock(DynamicEntityDao.class));
+
+    // Assert
+    verify(basicFieldMetadata).getFieldType();
+    verify(field, atLeast(1)).getName();
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#buildDataDrivenEnumList(BasicFieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#buildDataDrivenEnumList(BasicFieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildDataDrivenEnumList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20861 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider2 = new BasicFieldMetadataProvider();
+
+    // Act
+    basicFieldMetadataProvider2.buildDataDrivenEnumList(new BasicFieldMetadata());
+  }
+
+  /**
+   * Test
+   * {@link BasicFieldMetadataProvider#refreshDataDrivenEnumMetadata(BasicFieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link BasicFieldMetadataProvider#refreshDataDrivenEnumMetadata(BasicFieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRefreshDataDrivenEnumMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass22319 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider basicFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicFieldMetadataProvider basicFieldMetadataProvider2 = new BasicFieldMetadataProvider();
+
+    // Act
+    basicFieldMetadataProvider2.refreshDataDrivenEnumMetadata(new BasicFieldMetadata());
   }
 
   /**

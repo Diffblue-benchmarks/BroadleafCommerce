@@ -1,30 +1,42 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.web.controller;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 
 public class BroadleafRobotsControllerDiffblueTest {
+  /**
+   * Test
+   * {@link BroadleafRobotsController#getRobotsFile(HttpServletRequest, HttpServletResponse)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafRobotsController#getRobotsFile(HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRobotsFile() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.cms.web.controller.BroadleafRobotsController.getRobotsFile(BroadleafRobotsController.java:60)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    BroadleafRobotsController broadleafRobotsController = new BroadleafRobotsController();
+    MockHttpServletRequest request = new MockHttpServletRequest();
+
+    // Act
+    broadleafRobotsController.getRobotsFile(request, new MockHttpServletResponse());
+  }
+
   /**
    * Test {@link BroadleafRobotsController#isSecure(HttpServletRequest)}.
    * <ul>
@@ -82,6 +94,26 @@ public class BroadleafRobotsControllerDiffblueTest {
   public void testIsSecure_whenNull_thenReturnFalse() {
     // Arrange, Act and Assert
     assertFalse((new BroadleafRobotsController()).isSecure(null));
+  }
+
+  /**
+   * Test {@link BroadleafRobotsController#getDefaultRobotsTxt()}.
+   * <p>
+   * Method under test: {@link BroadleafRobotsController#getDefaultRobotsTxt()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDefaultRobotsTxt() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.cms.web.controller.BroadleafRobotsController.getDefaultRobotsTxt(BroadleafRobotsController.java:96)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    (new BroadleafRobotsController()).getDefaultRobotsTxt();
   }
 
   /**

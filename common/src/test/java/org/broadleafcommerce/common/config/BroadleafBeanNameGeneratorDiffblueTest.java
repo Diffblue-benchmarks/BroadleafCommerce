@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -118,5 +118,23 @@ public class BroadleafBeanNameGeneratorDiffblueTest {
     verify(metadataReader).getAnnotationMetadata();
     verify(metadataReader).getResource();
     assertEquals("blObject", actualGenerateBeanNameResult);
+  }
+
+  /**
+   * Test new {@link BroadleafBeanNameGenerator} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link BroadleafBeanNameGenerator}
+   */
+  @Test
+  public void testNewBroadleafBeanNameGenerator() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     AnnotationBeanNameGenerator.metaAnnotationTypesCache
+
+    // Arrange and Act
+    new BroadleafBeanNameGenerator();
   }
 }

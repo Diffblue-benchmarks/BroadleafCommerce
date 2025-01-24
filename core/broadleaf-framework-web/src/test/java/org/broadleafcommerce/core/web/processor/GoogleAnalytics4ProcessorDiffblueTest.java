@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,6 +11,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
@@ -45,11 +29,24 @@ import org.broadleafcommerce.core.order.domain.OrderItemAttribute;
 import org.broadleafcommerce.core.order.domain.OrderItemAttributeImpl;
 import org.broadleafcommerce.core.order.domain.OrderItemImpl;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
+import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class GoogleAnalytics4ProcessorDiffblueTest {
+  @Autowired
+  private GoogleAnalytics4Processor googleAnalytics4Processor;
+
   /**
    * Test getters and setters.
    * <p>
@@ -71,6 +68,74 @@ class GoogleAnalytics4ProcessorDiffblueTest {
     // Assert
     assertEquals("google_analytics_4", actualName);
     assertEquals(0, googleAnalytics4Processor.getPrecedence());
+  }
+
+  /**
+   * Test
+   * {@link GoogleAnalytics4Processor#getReplacementModel(String, Map, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test:
+   * {@link GoogleAnalytics4Processor#getReplacementModel(String, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName("Test getReplacementModel(String, Map, BroadleafTemplateContext)")
+  @Disabled("TODO: Complete this test")
+  void testGetReplacementModel() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9978 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleAnalytics4Processor googleAnalytics4Processor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    GoogleAnalytics4Processor googleAnalytics4Processor2 = new GoogleAnalytics4Processor();
+
+    // Act
+    googleAnalytics4Processor2.getReplacementModel("Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
+  }
+
+  /**
+   * Test {@link GoogleAnalytics4Processor#getTransactionJs(Order)}.
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getTransactionJs(Order)}
+   */
+  @Test
+  @DisplayName("Test getTransactionJs(Order)")
+  @Disabled("TODO: Complete this test")
+  void testGetTransactionJs() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9997 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleAnalytics4Processor googleAnalytics4Processor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    GoogleAnalytics4Processor googleAnalytics4Processor2 = new GoogleAnalytics4Processor();
+
+    // Act
+    googleAnalytics4Processor2.getTransactionJs(new NullOrderImpl());
   }
 
   /**
@@ -100,6 +165,39 @@ class GoogleAnalytics4ProcessorDiffblueTest {
     // Assert
     verify(order).getFulfillmentGroups();
     assertEquals(",items:[]", actualItemJs);
+  }
+
+  /**
+   * Test {@link GoogleAnalytics4Processor#getItemJs(Order)}.
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getItemJs(Order)}
+   */
+  @Test
+  @DisplayName("Test getItemJs(Order)")
+  @Disabled("TODO: Complete this test")
+  void testGetItemJs2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9966 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleAnalytics4Processor googleAnalytics4Processor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    GoogleAnalytics4Processor googleAnalytics4Processor2 = new GoogleAnalytics4Processor();
+
+    // Act
+    googleAnalytics4Processor2.getItemJs(new NullOrderImpl());
   }
 
   /**
@@ -211,6 +309,39 @@ class GoogleAnalytics4ProcessorDiffblueTest {
 
   /**
    * Test {@link GoogleAnalytics4Processor#getVariation(OrderItem)}.
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getVariation(OrderItem)}
+   */
+  @Test
+  @DisplayName("Test getVariation(OrderItem)")
+  @Disabled("TODO: Complete this test")
+  void testGetVariation() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10009 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleAnalytics4Processor googleAnalytics4Processor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    GoogleAnalytics4Processor googleAnalytics4Processor2 = new GoogleAnalytics4Processor();
+
+    // Act
+    googleAnalytics4Processor2.getVariation(new BundleOrderItemImpl());
+  }
+
+  /**
+   * Test {@link GoogleAnalytics4Processor#getVariation(OrderItem)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()} {@code name} is
    * {@link OrderItemAttributeImpl} (default constructor).</li>
@@ -288,5 +419,157 @@ class GoogleAnalytics4ProcessorDiffblueTest {
 
     // Act and Assert
     assertEquals("", googleAnalytics4Processor.getVariation(new BundleOrderItemImpl()));
+  }
+
+  /**
+   * Test {@link GoogleAnalytics4Processor#getTagIdForProperty()}.
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getTagIdForProperty()}
+   */
+  @Test
+  @DisplayName("Test getTagIdForProperty()")
+  @Disabled("TODO: Complete this test")
+  void testGetTagIdForProperty() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9996 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleAnalytics4Processor googleAnalytics4Processor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new GoogleAnalytics4Processor()).getTagIdForProperty();
+  }
+
+  /**
+   * Test {@link GoogleAnalytics4Processor#getWebPropertyId()}.
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getWebPropertyId()}
+   */
+  @Test
+  @DisplayName("Test getWebPropertyId()")
+  @Disabled("TODO: Complete this test")
+  void testGetWebPropertyId() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10061 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleAnalytics4Processor googleAnalytics4Processor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new GoogleAnalytics4Processor()).getWebPropertyId();
+  }
+
+  /**
+   * Test {@link GoogleAnalytics4Processor#getAffiliation()}.
+   * <p>
+   * Method under test: {@link GoogleAnalytics4Processor#getAffiliation()}
+   */
+  @Test
+  @DisplayName("Test getAffiliation()")
+  @Disabled("TODO: Complete this test")
+  void testGetAffiliation() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9965 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleAnalytics4Processor googleAnalytics4Processor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new GoogleAnalytics4Processor()).getAffiliation();
+  }
+
+  /**
+   * Test {@link GoogleAnalytics4Processor#isIncludeLinkAttribution()}.
+   * <p>
+   * Method under test:
+   * {@link GoogleAnalytics4Processor#isIncludeLinkAttribution()}
+   */
+  @Test
+  @DisplayName("Test isIncludeLinkAttribution()")
+  @Disabled("TODO: Complete this test")
+  void testIsIncludeLinkAttribution() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10063 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleAnalytics4Processor googleAnalytics4Processor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new GoogleAnalytics4Processor()).isIncludeLinkAttribution();
+  }
+
+  /**
+   * Test {@link GoogleAnalytics4Processor#isIncludeDisplayAdvertising()}.
+   * <p>
+   * Method under test:
+   * {@link GoogleAnalytics4Processor#isIncludeDisplayAdvertising()}
+   */
+  @Test
+  @DisplayName("Test isIncludeDisplayAdvertising()")
+  @Disabled("TODO: Complete this test")
+  void testIsIncludeDisplayAdvertising() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10062 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.GoogleAnalytics4Processor googleAnalytics4Processor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new GoogleAnalytics4Processor()).isIncludeDisplayAdvertising();
   }
 }

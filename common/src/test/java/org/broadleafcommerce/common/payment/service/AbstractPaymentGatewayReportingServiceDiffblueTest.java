@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -38,5 +38,23 @@ public class AbstractPaymentGatewayReportingServiceDiffblueTest {
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> abstractPaymentGatewayReportingService.findDetailsByTransaction(new PaymentRequestDTO()));
+  }
+
+  /**
+   * Test new {@link AbstractPaymentGatewayReportingService} (default
+   * constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link AbstractPaymentGatewayReportingService}
+   */
+  @Test
+  public void testNewAbstractPaymentGatewayReportingService() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new AbstractPaymentGatewayReportingService();
   }
 }

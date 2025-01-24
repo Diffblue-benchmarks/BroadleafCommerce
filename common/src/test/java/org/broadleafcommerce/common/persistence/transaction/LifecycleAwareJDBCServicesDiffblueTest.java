@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -18,9 +18,33 @@
 package org.broadleafcommerce.common.persistence.transaction;
 
 import static org.junit.Assert.assertNull;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class LifecycleAwareJDBCServicesDiffblueTest {
+  /**
+   * Test {@link LifecycleAwareJDBCServices#getSqlStatementLogger()}.
+   * <ul>
+   *   <li>Given {@link LifecycleAwareJDBCServices} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link LifecycleAwareJDBCServices#getSqlStatementLogger()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSqlStatementLogger_givenLifecycleAwareJDBCServices() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.persistence.transaction.LifecycleAwareJDBCServices.getSqlStatementLogger(LifecycleAwareJDBCServices.java:36)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    (new LifecycleAwareJDBCServices()).getSqlStatementLogger();
+  }
+
   /**
    * Test new {@link LifecycleAwareJDBCServices} (default constructor).
    * <p>

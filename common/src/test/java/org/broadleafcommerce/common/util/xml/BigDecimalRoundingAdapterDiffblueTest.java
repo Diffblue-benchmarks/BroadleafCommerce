@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -64,5 +64,22 @@ public class BigDecimalRoundingAdapterDiffblueTest {
   public void testMarshalWithBigDecimal_whenZero_thenReturn000() throws Exception {
     // Arrange, Act and Assert
     assertEquals("0.00", (new BigDecimalRoundingAdapter()).marshal(BankersRounding.ZERO));
+  }
+
+  /**
+   * Test new {@link BigDecimalRoundingAdapter} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link BigDecimalRoundingAdapter}
+   */
+  @Test
+  public void testNewBigDecimalRoundingAdapter() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new BigDecimalRoundingAdapter();
   }
 }

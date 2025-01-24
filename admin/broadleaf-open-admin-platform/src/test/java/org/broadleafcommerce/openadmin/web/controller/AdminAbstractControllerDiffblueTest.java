@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.controller;
 
 import static org.junit.Assert.assertEquals;
@@ -34,29 +17,252 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import org.broadleafcommerce.common.exception.ServiceException;
+import org.broadleafcommerce.common.persistence.EntityConfiguration;
+import org.broadleafcommerce.common.security.service.ExploitProtectionService;
 import org.broadleafcommerce.common.web.JsonResponse;
 import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassTree;
+import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.dto.TabMetadata;
+import org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService;
+import org.broadleafcommerce.openadmin.server.domain.PersistencePackageRequest;
+import org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier;
+import org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService;
+import org.broadleafcommerce.openadmin.server.service.AdminEntityService;
+import org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService;
 import org.broadleafcommerce.openadmin.server.service.export.AdminExporter;
+import org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceResponse;
+import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
 import org.broadleafcommerce.openadmin.web.form.component.ListGrid;
 import org.broadleafcommerce.openadmin.web.form.entity.CodeField;
 import org.broadleafcommerce.openadmin.web.form.entity.DynamicEntityFormInfo;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
+import org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
 import org.broadleafcommerce.openadmin.web.form.entity.FieldGroup;
 import org.broadleafcommerce.openadmin.web.form.entity.Tab;
+import org.broadleafcommerce.openadmin.web.service.FormBuilderService;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.ui.ConcurrentModel;
+import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
+@ContextConfiguration(classes = {AdminExportController.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminAbstractControllerDiffblueTest {
+  @Autowired
+  private AdminAbstractController adminAbstractController;
+
+  @MockBean(name = "blAdminAbstractControllerExtensionManager")
+  private AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+
+  @MockBean
+  private AdminEntityService adminEntityService;
+
+  @MockBean
+  private AdminExporter adminExporter;
+
+  @MockBean
+  private AdminNavigationService adminNavigationService;
+
+  @MockBean
+  private AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+
+  @MockBean
+  private ClassNameRequestParamValidationService classNameRequestParamValidationService;
+
+  @MockBean(name = "blEntityConfiguration")
+  private EntityConfiguration entityConfiguration;
+
+  @MockBean(name = "blEntityFormValidator")
+  private EntityFormValidator entityFormValidator;
+
+  @MockBean
+  private ExploitProtectionService exploitProtectionService;
+
+  @MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager")
+  private FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+
+  @MockBean
+  private FormBuilderService formBuilderService;
+
+  @Autowired
+  private List<AdminExporter> list;
+
+  @MockBean
+  private SecurityVerifier securityVerifier;
+
+  /**
+   * Test
+   * {@link AdminAbstractController#getEntityForm(DynamicEntityFormInfo, EntityForm)}
+   * with {@code info}, {@code dynamicFormOverride}.
+   * <ul>
+   *   <li>When {@link DynamicEntityFormInfo} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getEntityForm(DynamicEntityFormInfo, EntityForm)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetEntityFormWithInfoDynamicFormOverride_whenDynamicEntityFormInfo() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.web.controller.AdminAbstractController.getEntityForm(AdminAbstractController.java:272)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    AdminExportController adminExportController = new AdminExportController();
+    DynamicEntityFormInfo info = new DynamicEntityFormInfo();
+
+    // Act
+    adminExportController.getEntityForm(info, new EntityForm());
+  }
+
+  /**
+   * Test {@link AdminAbstractController#getEntityForm(DynamicEntityFormInfo)}
+   * with {@code info}.
+   * <ul>
+   *   <li>Given {@link AdminExportController} (default constructor).</li>
+   *   <li>When {@link DynamicEntityFormInfo} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getEntityForm(DynamicEntityFormInfo)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetEntityFormWithInfo_givenAdminExportController_whenDynamicEntityFormInfo() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.web.controller.AdminAbstractController.getEntityForm(AdminAbstractController.java:272)
+    //       at org.broadleafcommerce.openadmin.web.controller.AdminAbstractController.getEntityForm(AdminAbstractController.java:262)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    AdminExportController adminExportController = new AdminExportController();
+
+    // Act
+    adminExportController.getEntityForm(new DynamicEntityFormInfo());
+  }
+
+  /**
+   * Test {@link AdminAbstractController#getEntityForm(String, String, String)}
+   * with {@code sectionKey}, {@code sectionClassName}, {@code id}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getEntityForm(String, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetEntityFormWithSectionKeySectionClassNameId() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7713 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminAbstractController.getEntityForm("Section Key", "Section Class Name", "42");
+  }
+
+  /**
+   * Test
+   * {@link AdminAbstractController#getDynamicFieldTemplateForm(DynamicEntityFormInfo, String, EntityForm)}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getDynamicFieldTemplateForm(DynamicEntityFormInfo, String, EntityForm)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDynamicFieldTemplateForm() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7712 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityFormInfo info = new DynamicEntityFormInfo();
+
+    // Act
+    adminAbstractController.getDynamicFieldTemplateForm(info, "42", new EntityForm());
+  }
+
   /**
    * Test
    * {@link AdminAbstractController#setSpecializedNameForFields(DynamicEntityFormInfo, EntityForm)}.
@@ -612,68 +818,158 @@ public class AdminAbstractControllerDiffblueTest {
 
   /**
    * Test
-   * {@link AdminAbstractController#setSpecializedNameForFields(DynamicEntityFormInfo, EntityForm)}.
+   * {@link AdminAbstractController#getDynamicForm(HttpServletRequest, HttpServletResponse, Model, Map, DynamicEntityFormInfo)}.
    * <ul>
-   *   <li>Then calls {@link Field#getFriendlyName()}.</li>
+   *   <li>When {@link ConcurrentModel#ConcurrentModel()}.</li>
    * </ul>
    * <p>
    * Method under test:
-   * {@link AdminAbstractController#setSpecializedNameForFields(DynamicEntityFormInfo, EntityForm)}
+   * {@link AdminAbstractController#getDynamicForm(HttpServletRequest, HttpServletResponse, Model, Map, DynamicEntityFormInfo)}
    */
   @Test
-  public void testSetSpecializedNameForFields_thenCallsGetFriendlyName() {
+  @Ignore("TODO: Complete this test")
+  public void testGetDynamicForm_whenConcurrentModel() throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.web.controller.AdminAbstractController.getEntityForm(AdminAbstractController.java:272)
+    //       at org.broadleafcommerce.openadmin.web.controller.AdminAbstractController.getEntityForm(AdminAbstractController.java:262)
+    //       at org.broadleafcommerce.openadmin.web.controller.AdminAbstractController.getDynamicForm(AdminAbstractController.java:181)
+    //   See https://diff.blue/R013 to resolve this issue.
+
     // Arrange
     AdminExportController adminExportController = new AdminExportController();
-    DynamicEntityFormInfo info = new DynamicEntityFormInfo();
-    EntityForm dynamicForm = mock(EntityForm.class);
-
-    HashSet<Tab> tabSet = new HashSet<>();
-    Tab tab = mock(Tab.class);
-
-    HashSet<FieldGroup> fieldGroupSet = new HashSet<>();
-
-    FieldGroup fieldGroup = new FieldGroup();
-    CodeField field = mock(CodeField.class);
-    when(field.getOrder()).thenReturn(1);
-    when(field.getFriendlyName()).thenReturn("Friendly Name");
-    when(field.getAlternateOrdering()).thenReturn(true);
-    when(field.getName()).thenReturn("Name");
-    doNothing().when(field).setName(Mockito.<String>any());
-    fieldGroup.addField(field);
-    CodeField field2 = mock(CodeField.class);
-    when(field2.getFriendlyName()).thenReturn("Friendly Name");
-    when(field2.getOrder()).thenReturn(1);
-    when(field2.getAlternateOrdering()).thenReturn(true);
-    when(field2.getName()).thenReturn("Name");
-    doNothing().when(field2).setName(Mockito.<String>any());
-    fieldGroup.addField(field2);
-    fieldGroupSet.add(fieldGroup);
-    FieldGroup fieldGroup2 = mock(FieldGroup.class);
-    when(fieldGroup2.getFields()).thenReturn(new HashSet<>());
-    fieldGroupSet.add(fieldGroup2);
-    when(tab.getFieldGroups()).thenReturn(fieldGroupSet);
-    tabSet.add(tab);
-    when(dynamicForm.getTabs()).thenReturn(tabSet);
-    doNothing().when(dynamicForm).clearFieldsMap();
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+    HashMap<String, String> pathVars = new HashMap<>();
 
     // Act
-    adminExportController.setSpecializedNameForFields(info, dynamicForm);
+    adminExportController.getDynamicForm(request, response, model, pathVars, new DynamicEntityFormInfo());
+  }
 
-    // Assert
-    verify(dynamicForm).clearFieldsMap();
-    verify(dynamicForm).getTabs();
-    verify(field).getAlternateOrdering();
-    verify(field2).getAlternateOrdering();
-    verify(field).getFriendlyName();
-    verify(field2).getFriendlyName();
-    verify(field, atLeast(1)).getName();
-    verify(field2, atLeast(1)).getName();
-    verify(field, atLeast(1)).getOrder();
-    verify(field2, atLeast(1)).getOrder();
-    verify(field).setName(eq("null|Name"));
-    verify(field2).setName(eq("null|Name"));
-    verify(fieldGroup2).getFields();
-    verify(tab).getFieldGroups();
+  /**
+   * Test
+   * {@link AdminAbstractController#getCollectionListGrid(ClassMetadata, Entity, Property, MultiValueMap, String, PersistenceResponse, List)}
+   * with {@code mainMetadata}, {@code entity}, {@code collectionProperty},
+   * {@code requestParams}, {@code sectionKey}, {@code persistenceResponse},
+   * {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getCollectionListGrid(ClassMetadata, Entity, Property, MultiValueMap, String, PersistenceResponse, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCollectionListGridWithMainMetadataEntityCollectionPropertyRequestParamsSectionKeyPersistenceResponseSectionCrumbs()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7711 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ClassMetadata mainMetadata = new ClassMetadata();
+    mainMetadata.setCeilingType("Type");
+    mainMetadata.setCurrencyCode("GBP");
+    mainMetadata.setPolymorphicEntities(new ClassTree());
+    mainMetadata.setProperties(new Property[]{new Property()});
+    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
+    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+    Property collectionProperty = new Property();
+    HttpHeaders requestParams = new HttpHeaders();
+    PersistenceResponse persistenceResponse = new PersistenceResponse();
+
+    // Act
+    adminAbstractController.getCollectionListGrid(mainMetadata, entity, collectionProperty, requestParams,
+        "Section Key", persistenceResponse, new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link AdminAbstractController#getCollectionListGrid(ClassMetadata, Entity, Property, MultiValueMap, String, List)}
+   * with {@code mainMetadata}, {@code entity}, {@code collectionProperty},
+   * {@code requestParams}, {@code sectionKey}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getCollectionListGrid(ClassMetadata, Entity, Property, MultiValueMap, String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCollectionListGridWithMainMetadataEntityCollectionPropertyRequestParamsSectionKeySectionCrumbs()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7710 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ClassMetadata mainMetadata = new ClassMetadata();
+    mainMetadata.setCeilingType("Type");
+    mainMetadata.setCurrencyCode("GBP");
+    mainMetadata.setPolymorphicEntities(new ClassTree());
+    mainMetadata.setProperties(new Property[]{new Property()});
+    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
+    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+    Property collectionProperty = new Property();
+    HttpHeaders requestParams = new HttpHeaders();
+
+    // Act
+    adminAbstractController.getCollectionListGrid(mainMetadata, entity, collectionProperty, requestParams,
+        "Section Key", new ArrayList<>());
   }
 
   /**
@@ -1089,6 +1385,26 @@ public class AdminAbstractControllerDiffblueTest {
   }
 
   /**
+   * Test {@link AdminAbstractController#modifyCriteria(Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link AdminAbstractController#modifyCriteria(Map)}
+   */
+  @Test
+  public void testModifyCriteria_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AdminExportController adminExportController = new AdminExportController();
+
+    // Act
+    adminExportController.modifyCriteria(new HashMap<>());
+  }
+
+  /**
    * Test {@link AdminAbstractController#getSortDirections(Map)}.
    * <ul>
    *   <li>Given {@code sortDirection}.</li>
@@ -1160,6 +1476,49 @@ public class AdminAbstractControllerDiffblueTest {
 
     // Act and Assert
     assertNull(adminExportController.getSortPropertyNames(new HashMap<>()));
+  }
+
+  /**
+   * Test {@link AdminAbstractController#getClassNameForSection(String)}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getClassNameForSection(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetClassNameForSection() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7709 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminAbstractController.getClassNameForSection("Section Key");
   }
 
   /**
@@ -1282,6 +1641,97 @@ public class AdminAbstractControllerDiffblueTest {
 
     // Act and Assert
     assertNull(adminExportController.getSectionCustomCriteria());
+  }
+
+  /**
+   * Test
+   * {@link AdminAbstractController#attachSectionSpecificInfo(PersistencePackageRequest, Map)}
+   * with {@code ppr}, {@code pathVars}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#attachSectionSpecificInfo(PersistencePackageRequest, Map)}
+   */
+  @Test
+  public void testAttachSectionSpecificInfoWithPprPathVars_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AdminExportController adminExportController = new AdminExportController();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+
+    // Act
+    adminExportController.attachSectionSpecificInfo(ppr, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link AdminAbstractController#attachSectionSpecificInfo(PersistencePackageRequest)}
+   * with {@code ppr}.
+   * <ul>
+   *   <li>Given {@link AdminExportController} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#attachSectionSpecificInfo(PersistencePackageRequest)}
+   */
+  @Test
+  public void testAttachSectionSpecificInfoWithPpr_givenAdminExportController() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AdminExportController adminExportController = new AdminExportController();
+
+    // Act
+    adminExportController.attachSectionSpecificInfo(PersistencePackageRequest.adorned());
+  }
+
+  /**
+   * Test {@link AdminAbstractController#modifyEntityForm(EntityForm, Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#modifyEntityForm(EntityForm, Map)}
+   */
+  @Test
+  public void testModifyEntityForm_whenHashMap() throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AdminExportController adminExportController = new AdminExportController();
+    EntityForm entityForm = new EntityForm();
+
+    // Act
+    adminExportController.modifyEntityForm(entityForm, new HashMap<>());
+  }
+
+  /**
+   * Test {@link AdminAbstractController#modifyAddEntityForm(EntityForm, Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#modifyAddEntityForm(EntityForm, Map)}
+   */
+  @Test
+  public void testModifyAddEntityForm_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AdminExportController adminExportController = new AdminExportController();
+    EntityForm entityForm = new EntityForm();
+
+    // Act
+    adminExportController.modifyAddEntityForm(entityForm, new HashMap<>());
   }
 
   /**
@@ -2285,6 +2735,359 @@ public class AdminAbstractControllerDiffblueTest {
   }
 
   /**
+   * Test {@link AdminAbstractController#setModelAttributes(Model, String)}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#setModelAttributes(Model, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetModelAttributes() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7719 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminAbstractController.setModelAttributes(new ConcurrentModel(), "Section Key");
+  }
+
+  /**
+   * Test
+   * {@link AdminAbstractController#getSectionPersistencePackageRequest(String, MultiValueMap, List)}
+   * with {@code sectionClassName}, {@code requestParams}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getSectionPersistencePackageRequest(String, MultiValueMap, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSectionPersistencePackageRequestWithSectionClassNameRequestParamsSectionCrumbs() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7717 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    HttpHeaders requestParams = new HttpHeaders();
+
+    // Act
+    adminAbstractController.getSectionPersistencePackageRequest("Section Class Name", requestParams, new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link AdminAbstractController#getSectionPersistencePackageRequest(String, MultiValueMap, List, Map)}
+   * with {@code sectionClassName}, {@code requestParams}, {@code sectionCrumbs},
+   * {@code pathVars}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getSectionPersistencePackageRequest(String, MultiValueMap, List, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSectionPersistencePackageRequestWithSectionClassNameRequestParamsSectionCrumbsPathVars() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7718 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    HttpHeaders requestParams = new HttpHeaders();
+    ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
+
+    // Act
+    adminAbstractController.getSectionPersistencePackageRequest("Section Class Name", requestParams, sectionCrumbs,
+        new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link AdminAbstractController#getSectionPersistencePackageRequest(String, List)}
+   * with {@code sectionClassName}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getSectionPersistencePackageRequest(String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSectionPersistencePackageRequestWithSectionClassNameSectionCrumbs() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7715 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminAbstractController.getSectionPersistencePackageRequest("Section Class Name", new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link AdminAbstractController#getSectionPersistencePackageRequest(String, List, Map)}
+   * with {@code sectionClassName}, {@code sectionCrumbs}, {@code pathVars}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getSectionPersistencePackageRequest(String, List, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSectionPersistencePackageRequestWithSectionClassNameSectionCrumbsPathVars() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7716 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ArrayList<SectionCrumb> sectionCrumbs = new ArrayList<>();
+
+    // Act
+    adminAbstractController.getSectionPersistencePackageRequest("Section Class Name", sectionCrumbs, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link AdminAbstractController#getPersistencePackageRequest(MultiValueMap, Class)}.
+   * <ul>
+   *   <li>When {@link HttpHeaders#HttpHeaders()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getPersistencePackageRequest(MultiValueMap, Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPersistencePackageRequest_whenHttpHeaders() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.web.controller.AdminAbstractController.getPersistencePackageRequest(AdminAbstractController.java:796)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    AdminExportController adminExportController = new AdminExportController();
+    HttpHeaders requestParams = new HttpHeaders();
+    Class<Object> ceilingEntityClass = Object.class;
+
+    // Act
+    adminExportController.getPersistencePackageRequest(requestParams, ceilingEntityClass);
+  }
+
+  /**
+   * Test
+   * {@link AdminAbstractController#getSectionCrumbs(HttpServletRequest, String, String)}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#getSectionCrumbs(HttpServletRequest, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSectionCrumbs() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7714 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminAbstractController.getSectionCrumbs(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()),
+        "Current Section", "42");
+  }
+
+  /**
+   * Test {@link AdminAbstractController#createSectionCrumb(String, String)}.
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#createSectionCrumb(String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateSectionCrumb() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.AdminExportController.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7708 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.AdminAbstractController adminAbstractController;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blAdminAbstractControllerExtensionManager") org.broadleafcommerce.openadmin.web.controller.AdminAbstractControllerExtensionManager adminAbstractControllerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminEntityService adminEntityService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.export.AdminExporter adminExporter;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.service.navigation.AdminNavigationService adminNavigationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.service.AdminSectionCustomCriteriaService adminSectionCustomCriteriaService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.security.ClassNameRequestParamValidationService classNameRequestParamValidationService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityConfiguration") org.broadleafcommerce.common.persistence.EntityConfiguration entityConfiguration;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blEntityFormValidator") org.broadleafcommerce.openadmin.web.form.entity.EntityFormValidator entityFormValidator;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.security.service.ExploitProtectionService exploitProtectionService;
+    //     @org.springframework.boot.test.mock.mockito.MockBean(name = "blFilterProductTypePersistenceHandlerExtensionManager") org.broadleafcommerce.openadmin.server.service.extension.FilterProductTypePersistenceHandlerExtensionManager filterProductTypePersistenceHandlerExtensionManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.web.service.FormBuilderService formBuilderService;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.openadmin.server.service.export.AdminExporter;> list;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.openadmin.server.security.remote.SecurityVerifier securityVerifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminAbstractController.createSectionCrumb("Current Section", "42");
+  }
+
+  /**
    * Test {@link AdminAbstractController#createSectionCrumb(String, String)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()} add {@link AdminExporter}.</li>
@@ -2466,5 +3269,23 @@ public class AdminAbstractControllerDiffblueTest {
 
     // Act and Assert
     assertNull(adminExportController.translateErrorMessage(new ObjectError("Object Name", "Default Message")));
+  }
+
+  /**
+   * Test {@link AdminAbstractController#declareForceUseAdditionStatusFilter()}.
+   * <ul>
+   *   <li>Given {@link AdminExportController} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminAbstractController#declareForceUseAdditionStatusFilter()}
+   */
+  @Test
+  public void testDeclareForceUseAdditionStatusFilter_givenAdminExportController() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new AdminExportController()).declareForceUseAdditionStatusFilter();
   }
 }

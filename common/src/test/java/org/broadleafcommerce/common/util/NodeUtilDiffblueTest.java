@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -594,5 +594,24 @@ public class NodeUtilDiffblueTest {
 
     // Act and Assert
     assertEquals(-1, nodeComparatorBySingleAttribute.compare(o1, new DefaultDocument()));
+  }
+
+  /**
+   * Test NodeComparatorBySingleAttribute
+   * {@link NodeComparatorBySingleAttribute#NodeComparatorBySingleAttribute(String)}.
+   * <p>
+   * Method under test:
+   * {@link NodeUtil.NodeComparatorBySingleAttribute#NodeComparatorBySingleAttribute(String)}
+   */
+  @Test
+  public void testNodeComparatorBySingleAttributeNewNodeComparatorBySingleAttribute() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     NodeComparatorBySingleAttribute.attributeName
+
+    // Arrange and Act
+    new NodeUtil.NodeComparatorBySingleAttribute("Attribute Name");
   }
 }

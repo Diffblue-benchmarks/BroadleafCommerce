@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.controller.config;
 
 import static org.junit.Assert.assertEquals;
@@ -29,8 +12,14 @@ import org.broadleafcommerce.common.web.BroadleafCookieLocaleResolver;
 import org.broadleafcommerce.openadmin.web.compatibility.JSFieldNameCompatibilityInterceptor;
 import org.broadleafcommerce.openadmin.web.controller.AdminRequestMappingHandlerMapping;
 import org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations;
+import org.springframework.mock.web.MockServletContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.accept.ContentNegotiationStrategy;
@@ -38,13 +27,50 @@ import org.springframework.web.accept.HeaderContentNegotiationStrategy;
 import org.springframework.web.cors.DefaultCorsProcessor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.handler.MappedInterceptor;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfo;
 import org.springframework.web.servlet.mvc.method.RequestMappingInfoHandlerMethodMappingNamingStrategy;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
+@ContextConfiguration(classes = {AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminWebMvcConfigurationDiffblueTest {
+  @Autowired
+  private AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter adminDefaultWebMvcConfigurerAdapter;
+
+  /**
+   * Test AdminDefaultWebMvcConfigurerAdapter
+   * {@link AdminDefaultWebMvcConfigurerAdapter#basicErrorController()}.
+   * <p>
+   * Method under test:
+   * {@link AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter#basicErrorController()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdminDefaultWebMvcConfigurerAdapterBasicErrorController() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller.config;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass0 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter adminDefaultWebMvcConfigurerAdapter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminDefaultWebMvcConfigurerAdapter.basicErrorController();
+  }
+
   /**
    * Test AdminDefaultWebMvcConfigurerAdapter
    * {@link AdminDefaultWebMvcConfigurerAdapter#blAdminMvcRegistrations()}.
@@ -99,6 +125,37 @@ public class AdminWebMvcConfigurationDiffblueTest {
 
   /**
    * Test AdminDefaultWebMvcConfigurerAdapter
+   * {@link AdminDefaultWebMvcConfigurerAdapter#blAdminMvcRegistrations()}.
+   * <p>
+   * Method under test:
+   * {@link AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter#blAdminMvcRegistrations()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdminDefaultWebMvcConfigurerAdapterBlAdminMvcRegistrations2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller.config;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter adminDefaultWebMvcConfigurerAdapter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminDefaultWebMvcConfigurerAdapter.blAdminMvcRegistrations();
+  }
+
+  /**
+   * Test AdminDefaultWebMvcConfigurerAdapter
    * {@link AdminDefaultWebMvcConfigurerAdapter#blJsFieldNameCompatibilityInterceptor()}.
    * <p>
    * Method under test:
@@ -117,6 +174,37 @@ public class AdminWebMvcConfigurationDiffblueTest {
         .getInterceptor() instanceof JSFieldNameCompatibilityInterceptor);
     assertTrue(actualBlJsFieldNameCompatibilityInterceptorResult.getPathMatcher() instanceof AntPathMatcher);
     assertNull(actualBlJsFieldNameCompatibilityInterceptorResult.getPathPatterns());
+  }
+
+  /**
+   * Test AdminDefaultWebMvcConfigurerAdapter
+   * {@link AdminDefaultWebMvcConfigurerAdapter#blJsFieldNameCompatibilityInterceptor()}.
+   * <p>
+   * Method under test:
+   * {@link AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter#blJsFieldNameCompatibilityInterceptor()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdminDefaultWebMvcConfigurerAdapterBlJsFieldNameCompatibilityInterceptor2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller.config;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter adminDefaultWebMvcConfigurerAdapter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminDefaultWebMvcConfigurerAdapter.blJsFieldNameCompatibilityInterceptor();
   }
 
   /**
@@ -147,6 +235,69 @@ public class AdminWebMvcConfigurationDiffblueTest {
 
   /**
    * Test AdminDefaultWebMvcConfigurerAdapter
+   * {@link AdminDefaultWebMvcConfigurerAdapter#blLocaleChangeInterceptor()}.
+   * <p>
+   * Method under test:
+   * {@link AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter#blLocaleChangeInterceptor()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdminDefaultWebMvcConfigurerAdapterBlLocaleChangeInterceptor2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller.config;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter adminDefaultWebMvcConfigurerAdapter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminDefaultWebMvcConfigurerAdapter.blLocaleChangeInterceptor();
+  }
+
+  /**
+   * Test AdminDefaultWebMvcConfigurerAdapter
+   * {@link AdminDefaultWebMvcConfigurerAdapter#configureContentNegotiation(ContentNegotiationConfigurer)}.
+   * <p>
+   * Method under test:
+   * {@link AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter#configureContentNegotiation(ContentNegotiationConfigurer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdminDefaultWebMvcConfigurerAdapterConfigureContentNegotiation() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller.config;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter adminDefaultWebMvcConfigurerAdapter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminDefaultWebMvcConfigurerAdapter
+        .configureContentNegotiation(new ContentNegotiationConfigurer(new MockServletContext()));
+  }
+
+  /**
+   * Test AdminDefaultWebMvcConfigurerAdapter
    * {@link AdminDefaultWebMvcConfigurerAdapter#localeResolver()}.
    * <p>
    * Method under test:
@@ -171,5 +322,36 @@ public class AdminWebMvcConfigurationDiffblueTest {
     assertTrue(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isLanguageTagCompliant());
     assertTrue(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isRejectInvalidCookies());
     assertTrue(((BroadleafCookieLocaleResolver) actualLocaleResolverResult).isCookieHttpOnly());
+  }
+
+  /**
+   * Test AdminDefaultWebMvcConfigurerAdapter
+   * {@link AdminDefaultWebMvcConfigurerAdapter#localeResolver()}.
+   * <p>
+   * Method under test:
+   * {@link AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter#localeResolver()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdminDefaultWebMvcConfigurerAdapterLocaleResolver2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.controller.config;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.controller.config.AdminWebMvcConfiguration.AdminDefaultWebMvcConfigurerAdapter adminDefaultWebMvcConfigurerAdapter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    adminDefaultWebMvcConfigurerAdapter.localeResolver();
   }
 }

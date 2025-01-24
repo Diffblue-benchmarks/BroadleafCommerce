@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -39,18 +22,101 @@ import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
+import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroup;
+import org.broadleafcommerce.core.order.domain.FulfillmentGroupImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.broadleafcommerce.core.order.domain.OrderItem;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mvel2.util.InternalNumber;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PromotableItemFactoryImplDiffblueTest {
+  @Autowired
+  private PromotableItemFactoryImpl promotableItemFactoryImpl;
+
+  /**
+   * Test {@link PromotableItemFactoryImpl#init()}.
+   * <p>
+   * Method under test: {@link PromotableItemFactoryImpl#init()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testInit() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass349 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl())).init();
+  }
+
+  /**
+   * Test {@link PromotableItemFactoryImpl#createPromotableOrder(Order, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableOrder(Order, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableOrder() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass180 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableOrder(new NullOrderImpl(), true);
+  }
+
   /**
    * Test {@link PromotableItemFactoryImpl#createPromotableOrder(Order, boolean)}.
    * <ul>
@@ -210,6 +276,86 @@ public class PromotableItemFactoryImplDiffblueTest {
     assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.abs());
     assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.zero());
     assertEquals(orderAdjustmentsValue, order.getSubTotal());
+  }
+
+  /**
+   * Test
+   * {@link PromotableItemFactoryImpl#createPromotableCandidateOrderOffer(PromotableOrder, Offer)}
+   * with {@code promotableOrder}, {@code offer}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableCandidateOrderOffer(PromotableOrder, Offer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableCandidateOrderOfferWithPromotableOrderOffer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass60 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableCandidateOrderOffer(promotableOrder, new OfferImpl());
+  }
+
+  /**
+   * Test
+   * {@link PromotableItemFactoryImpl#createPromotableCandidateOrderOffer(PromotableOrder, Offer, Money)}
+   * with {@code promotableOrder}, {@code offer}, {@code potentialSavings}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableCandidateOrderOffer(PromotableOrder, Offer, Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableCandidateOrderOfferWithPromotableOrderOfferPotentialSavings() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass90 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    OfferImpl offer = new OfferImpl();
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableCandidateOrderOffer(promotableOrder, offer, new Money());
   }
 
   /**
@@ -1478,6 +1624,51 @@ public class PromotableItemFactoryImplDiffblueTest {
 
   /**
    * Test
+   * {@link PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder)}
+   * with {@code promotableCandidateOrderOffer}, {@code order}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableOrderAdjustmentWithPromotableCandidateOrderOfferOrder11() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass199 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer = new PromotableCandidateOrderOfferImpl(
+        promotableOrder, new OfferImpl());
+
+    NullOrderImpl order2 = new NullOrderImpl();
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableOrderAdjustment(promotableCandidateOrderOffer,
+        new PromotableOrderImpl(order2, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
+  }
+
+  /**
+   * Test
    * {@link PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder, Money)}
    * with {@code promotableCandidateOrderOffer}, {@code order},
    * {@code adjustmentValue}.
@@ -2411,5 +2602,343 @@ public class PromotableItemFactoryImplDiffblueTest {
     Money adjustmentValue = actualCreatePromotableOrderAdjustmentResult.getAdjustmentValue();
     assertEquals(adjustmentValue, adjustmentValue.abs());
     assertEquals(adjustmentValue, adjustmentValue.zero());
+  }
+
+  /**
+   * Test
+   * {@link PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder, Money)}
+   * with {@code promotableCandidateOrderOffer}, {@code order},
+   * {@code adjustmentValue}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableOrderAdjustment(PromotableCandidateOrderOffer, PromotableOrder, Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableOrderAdjustmentWithPromotableCandidateOrderOfferOrderAdjustmentValue12() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass229 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableCandidateOrderOfferImpl promotableCandidateOrderOffer = new PromotableCandidateOrderOfferImpl(
+        promotableOrder, new OfferImpl());
+
+    NullOrderImpl order2 = new NullOrderImpl();
+    PromotableOrderImpl order3 = new PromotableOrderImpl(order2,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableOrderAdjustment(promotableCandidateOrderOffer, order3, new Money());
+  }
+
+  /**
+   * Test
+   * {@link PromotableItemFactoryImpl#createPromotableOrderItem(OrderItem, PromotableOrder, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableOrderItem(OrderItem, PromotableOrder, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableOrderItem() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass259 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableOrderItem(orderItem,
+        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true), true);
+  }
+
+  /**
+   * Test
+   * {@link PromotableItemFactoryImpl#createPromotableOrderItemPriceDetail(PromotableOrderItem, int)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableOrderItemPriceDetail(PromotableOrderItem, int)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableOrderItemPriceDetail() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass289 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableOrderItemPriceDetail(new PromotableOrderItemImpl(orderItem,
+        promotableOrder, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true), 1);
+  }
+
+  /**
+   * Test
+   * {@link PromotableItemFactoryImpl#createPromotableCandidateItemOffer(PromotableOrder, Offer)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableCandidateItemOffer(PromotableOrder, Offer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableCandidateItemOffer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass30 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableCandidateItemOffer(promotableOrder, new OfferImpl());
+  }
+
+  /**
+   * Test
+   * {@link PromotableItemFactoryImpl#createPromotableOrderItemPriceDetailAdjustment(PromotableCandidateItemOffer, PromotableOrderItemPriceDetail)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableOrderItemPriceDetailAdjustment(PromotableCandidateItemOffer, PromotableOrderItemPriceDetail)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableOrderItemPriceDetailAdjustment() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass319 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableCandidateItemOfferImpl promotableCandidateItemOffer = new PromotableCandidateItemOfferImpl(
+        promotableOrder, new OfferImpl());
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableOrderItemPriceDetailAdjustment(promotableCandidateItemOffer,
+        new PromotableOrderItemPriceDetailWrapper(new PromotableOrderItemPriceDetailImpl(
+            new PromotableOrderItemImpl(new BundleOrderItemImpl(), null, null, true), 1)));
+  }
+
+  /**
+   * Test
+   * {@link PromotableItemFactoryImpl#createPromotableFulfillmentGroup(FulfillmentGroup, PromotableOrder)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableFulfillmentGroup(FulfillmentGroup, PromotableOrder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableFulfillmentGroup() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass120 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableFulfillmentGroup(fulfillmentGroup,
+        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
+  }
+
+  /**
+   * Test
+   * {@link PromotableItemFactoryImpl#createPromotableCandidateFulfillmentGroupOffer(PromotableFulfillmentGroup, Offer)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableCandidateFulfillmentGroupOffer(PromotableFulfillmentGroup, Offer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableCandidateFulfillmentGroupOffer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass0 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableFulfillmentGroupImpl fulfillmentGroup2 = new PromotableFulfillmentGroupImpl(fulfillmentGroup,
+        promotableOrder, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableCandidateFulfillmentGroupOffer(fulfillmentGroup2, new OfferImpl());
+  }
+
+  /**
+   * Test
+   * {@link PromotableItemFactoryImpl#createPromotableFulfillmentGroupAdjustment(PromotableCandidateFulfillmentGroupOffer, PromotableFulfillmentGroup)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableItemFactoryImpl#createPromotableFulfillmentGroupAdjustment(PromotableCandidateFulfillmentGroupOffer, PromotableFulfillmentGroup)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePromotableFulfillmentGroupAdjustment() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.offer.service.discount.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass150 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl promotableItemFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PromotableItemFactoryImpl promotableItemFactoryImpl2 = new PromotableItemFactoryImpl(
+        new PromotableOfferUtilityImpl());
+    FulfillmentGroupImpl fulfillmentGroup = new FulfillmentGroupImpl();
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableFulfillmentGroupImpl promotableFulfillmentGroup = new PromotableFulfillmentGroupImpl(fulfillmentGroup,
+        promotableOrder, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()));
+
+    PromotableCandidateFulfillmentGroupOfferImpl promotableCandidateFulfillmentGroupOffer = new PromotableCandidateFulfillmentGroupOfferImpl(
+        promotableFulfillmentGroup, new OfferImpl());
+
+    FulfillmentGroupImpl fulfillmentGroup2 = new FulfillmentGroupImpl();
+    NullOrderImpl order2 = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder2 = new PromotableOrderImpl(order2,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    promotableItemFactoryImpl2.createPromotableFulfillmentGroupAdjustment(promotableCandidateFulfillmentGroupOffer,
+        new PromotableFulfillmentGroupImpl(fulfillmentGroup2, promotableOrder2,
+            new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl())));
   }
 }

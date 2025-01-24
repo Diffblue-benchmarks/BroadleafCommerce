@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.service;
 
 import static org.junit.Assert.assertEquals;
@@ -52,6 +35,8 @@ import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+import org.broadleafcommerce.openadmin.dto.MapMetadata;
+import org.broadleafcommerce.openadmin.dto.MapStructure;
 import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.dto.SectionCrumb;
 import org.broadleafcommerce.openadmin.dto.TabMetadata;
@@ -65,10 +50,159 @@ import org.broadleafcommerce.openadmin.web.form.entity.Field;
 import org.broadleafcommerce.openadmin.web.form.entity.Tab;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.DataWrapper;
 import org.broadleafcommerce.openadmin.web.rulebuilder.dto.FieldDTO;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FormBuilderServiceImplDiffblueTest {
+  @Autowired
+  private FormBuilderServiceImpl formBuilderServiceImpl;
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#buildMainListGrid(DynamicResultSet, ClassMetadata, String, List)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildMainListGrid(DynamicResultSet, ClassMetadata, String, List)}
+   */
+  @Test
+  public void testBuildMainListGrid() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl = new FormBuilderServiceImpl();
+    DynamicResultSet drs = mock(DynamicResultSet.class);
+    ClassMetadata cmd = mock(ClassMetadata.class);
+    when(cmd.getCeilingType()).thenThrow(new RuntimeException("foo"));
+    when(cmd.getProperties()).thenReturn(new Property[]{new Property()});
+    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
+    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl.buildMainListGrid(drs, cmd, "Section Key", new ArrayList<>());
+
+    // Assert
+    verify(cmd).getCeilingType();
+    verify(cmd).getProperties();
+    verify(cmd).setCeilingType(eq("Type"));
+    verify(cmd).setCurrencyCode(eq("GBP"));
+    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
+    verify(cmd).setProperties(isA(Property[].class));
+    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#buildMainListGrid(DynamicResultSet, ClassMetadata, String, List)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildMainListGrid(DynamicResultSet, ClassMetadata, String, List)}
+   */
+  @Test
+  public void testBuildMainListGrid2() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl = new FormBuilderServiceImpl();
+    DynamicResultSet drs = mock(DynamicResultSet.class);
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(new AdornedTargetCollectionMetadata());
+    ClassMetadata cmd = mock(ClassMetadata.class);
+    when(cmd.getCeilingType()).thenThrow(new RuntimeException("foo"));
+    when(cmd.getProperties()).thenReturn(new Property[]{property});
+    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
+    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl.buildMainListGrid(drs, cmd, "Section Key", new ArrayList<>());
+
+    // Assert
+    verify(cmd).getCeilingType();
+    verify(cmd).getProperties();
+    verify(cmd).setCeilingType(eq("Type"));
+    verify(cmd).setCurrencyCode(eq("GBP"));
+    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
+    verify(cmd).setProperties(isA(Property[].class));
+    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+    verify(property).getMetadata();
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#buildMainListGrid(DynamicResultSet, ClassMetadata, String, List)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildMainListGrid(DynamicResultSet, ClassMetadata, String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildMainListGrid3() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6906 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    DynamicResultSet drs = new DynamicResultSet();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.buildMainListGrid(drs, cmd, "Section Key", new ArrayList<>());
+  }
+
   /**
    * Test
    * {@link FormBuilderServiceImpl#buildMainListGrid(DynamicResultSet, ClassMetadata, String, List)}.
@@ -118,6 +252,57 @@ public class FormBuilderServiceImplDiffblueTest {
     verify(basicFieldMetadata).getName();
     verify(basicFieldMetadata).getVisibility();
     verify(basicFieldMetadata, atLeast(1)).isProminent();
+    verify(cmd).getProperties();
+    verify(cmd).setCeilingType(eq("Type"));
+    verify(cmd).setCurrencyCode(eq("GBP"));
+    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
+    verify(cmd).setProperties(isA(Property[].class));
+    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+    verify(property, atLeast(1)).getMetadata();
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#buildMainListGrid(DynamicResultSet, ClassMetadata, String, List)}.
+   * <ul>
+   *   <li>Given {@link Property} {@link Property#getMetadata()} return
+   * {@link BasicFieldMetadata} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildMainListGrid(DynamicResultSet, ClassMetadata, String, List)}
+   */
+  @Test
+  public void testBuildMainListGrid_givenPropertyGetMetadataReturnBasicFieldMetadata() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl = new FormBuilderServiceImpl();
+    DynamicResultSet drs = mock(DynamicResultSet.class);
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(new BasicFieldMetadata());
+    ClassMetadata cmd = mock(ClassMetadata.class);
+    when(cmd.getCeilingType()).thenThrow(new RuntimeException("foo"));
+    when(cmd.getProperties()).thenReturn(new Property[]{property});
+    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
+    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl.buildMainListGrid(drs, cmd, "Section Key", new ArrayList<>());
+
+    // Assert
+    verify(cmd).getCeilingType();
     verify(cmd).getProperties();
     verify(cmd).setCeilingType(eq("Type"));
     verify(cmd).setCurrencyCode(eq("GBP"));
@@ -295,6 +480,40 @@ public class FormBuilderServiceImplDiffblueTest {
   /**
    * Test
    * {@link FormBuilderServiceImpl#getTranslationSearchField(String, ArrayList)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#getTranslationSearchField(String, ArrayList)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTranslationSearchField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11258 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.getTranslationSearchField("Ceiling Entity", new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#getTranslationSearchField(String, ArrayList)}.
    * <ul>
    *   <li>Given {@link FieldDTO} {@link FieldDTO#setId(String)} does nothing.</li>
    *   <li>Then calls {@link FieldDTO#setId(String)}.</li>
@@ -370,6 +589,41 @@ public class FormBuilderServiceImplDiffblueTest {
     assertNull(actualConstructFieldDTOFromFieldDataResult.getSelectizeSectionKey());
     assertNull(actualConstructFieldDTOFromFieldDataResult.getType());
     assertNull(actualConstructFieldDTOFromFieldDataResult.getValues());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#constructFieldDTOFromFieldData(Field, BasicFieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#constructFieldDTOFromFieldData(Field, BasicFieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConstructFieldDTOFromFieldData2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8108 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    Field field = new Field();
+
+    // Act
+    formBuilderServiceImpl2.constructFieldDTOFromFieldData(field, new BasicFieldMetadata());
   }
 
   /**
@@ -591,6 +845,41 @@ public class FormBuilderServiceImplDiffblueTest {
   /**
    * Test
    * {@link FormBuilderServiceImpl#createHeaderField(Property, BasicFieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#createHeaderField(Property, BasicFieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateHeaderField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9526 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    Property p = new Property();
+
+    // Act
+    formBuilderServiceImpl2.createHeaderField(p, new BasicFieldMetadata());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#createHeaderField(Property, BasicFieldMetadata)}.
    * <ul>
    *   <li>Given empty string.</li>
    * </ul>
@@ -609,8 +898,8 @@ public class FormBuilderServiceImplDiffblueTest {
     BasicFieldMetadata fmd = new BasicFieldMetadata();
     fmd.setOwningClass(null);
     fmd.setFieldType(null);
-    fmd.setEnumerationValues(null);
     fmd.setFriendlyName("");
+    fmd.setEnumerationValues(null);
     fmd.setColumnWidth("*");
     fmd.setForeignKeyClass(null);
 
@@ -646,8 +935,8 @@ public class FormBuilderServiceImplDiffblueTest {
     BasicFieldMetadata fmd = new BasicFieldMetadata();
     fmd.setOwningClass(null);
     fmd.setFieldType(SupportedFieldType.UNKNOWN);
-    fmd.setEnumerationValues(null);
     fmd.setFriendlyName(null);
+    fmd.setEnumerationValues(null);
     fmd.setColumnWidth("*");
     fmd.setForeignKeyClass(null);
 
@@ -683,8 +972,8 @@ public class FormBuilderServiceImplDiffblueTest {
     BasicFieldMetadata fmd = new BasicFieldMetadata();
     fmd.setOwningClass(null);
     fmd.setFieldType(null);
-    fmd.setEnumerationValues(null);
     fmd.setFriendlyName("Fmd");
+    fmd.setEnumerationValues(null);
     fmd.setColumnWidth("*");
     fmd.setForeignKeyClass(null);
 
@@ -720,8 +1009,8 @@ public class FormBuilderServiceImplDiffblueTest {
     BasicFieldMetadata fmd = new BasicFieldMetadata();
     fmd.setOwningClass("Fmd");
     fmd.setFieldType(null);
-    fmd.setEnumerationValues(null);
     fmd.setFriendlyName(null);
+    fmd.setEnumerationValues(null);
     fmd.setColumnWidth("*");
     fmd.setForeignKeyClass(null);
 
@@ -758,8 +1047,8 @@ public class FormBuilderServiceImplDiffblueTest {
     BasicFieldMetadata fmd = new BasicFieldMetadata();
     fmd.setOwningClass(null);
     fmd.setFieldType(null);
-    fmd.setEnumerationValues(null);
     fmd.setFriendlyName(null);
+    fmd.setEnumerationValues(null);
     fmd.setColumnWidth("*");
     fmd.setForeignKeyClass(null);
 
@@ -838,6 +1127,39 @@ public class FormBuilderServiceImplDiffblueTest {
 
   /**
    * Test {@link FormBuilderServiceImpl#initHeaderField(BasicFieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#initHeaderField(BasicFieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testInitHeaderField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11617 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.initHeaderField(new BasicFieldMetadata());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#initHeaderField(BasicFieldMetadata)}.
    * <ul>
    *   <li>Given empty 2D array of {@link String}.</li>
    *   <li>Then return {@link ComboField}.</li>
@@ -907,6 +1229,34 @@ public class FormBuilderServiceImplDiffblueTest {
     assertTrue(actualInitHeaderFieldResult.getAttributes().isEmpty());
     assertTrue(actualInitHeaderFieldResult.getIsVisible());
     assertTrue(actualInitHeaderFieldResult.getShouldRender());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#initHeaderField(BasicFieldMetadata)}.
+   * <ul>
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
+   * {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#initHeaderField(BasicFieldMetadata)}
+   */
+  @Test
+  public void testInitHeaderField_givenRuntimeExceptionWithFoo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl = new FormBuilderServiceImpl();
+    BasicFieldMetadata fmd = mock(BasicFieldMetadata.class);
+    when(fmd.getEnumerationValues()).thenThrow(new RuntimeException("foo"));
+    when(fmd.getFieldType()).thenReturn(SupportedFieldType.BROADLEAF_ENUMERATION);
+
+    // Act
+    formBuilderServiceImpl.initHeaderField(fmd);
+
+    // Assert
+    verify(fmd).getEnumerationValues();
+    verify(fmd).getFieldType();
   }
 
   /**
@@ -1047,6 +1397,39 @@ public class FormBuilderServiceImplDiffblueTest {
 
   /**
    * Test {@link FormBuilderServiceImpl#isComboField(BasicFieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#isComboField(BasicFieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsComboField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11708 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.isComboField(new BasicFieldMetadata());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#isComboField(BasicFieldMetadata)}.
    * <ul>
    *   <li>Given {@code BROADLEAF_ENUMERATION}.</li>
    *   <li>Then return {@code true}.</li>
@@ -1119,6 +1502,40 @@ public class FormBuilderServiceImplDiffblueTest {
 
     // Act and Assert
     assertFalse(formBuilderServiceImpl.isComboField(new BasicFieldMetadata()));
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#isSupportedFieldTypes(BasicFieldMetadata, SupportedFieldType[])}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#isSupportedFieldTypes(BasicFieldMetadata, SupportedFieldType[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsSupportedFieldTypes() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12556 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.isSupportedFieldTypes(new BasicFieldMetadata(), SupportedFieldType.UNKNOWN);
   }
 
   /**
@@ -1198,6 +1615,42 @@ public class FormBuilderServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link FormBuilderServiceImpl#buildCollectionListGrid(String, DynamicResultSet, Property, String, List)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildCollectionListGrid(String, DynamicResultSet, Property, String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildCollectionListGrid() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6828 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    DynamicResultSet drs = new DynamicResultSet();
+    Property field = new Property();
+
+    // Act
+    formBuilderServiceImpl2.buildCollectionListGrid("42", drs, field, "Section Key", new ArrayList<>());
+  }
+
+  /**
+   * Test
    * {@link FormBuilderServiceImpl#propertyExistsInResultSet(Property, DynamicResultSet)}.
    * <p>
    * Method under test:
@@ -1224,6 +1677,41 @@ public class FormBuilderServiceImplDiffblueTest {
     verify(entity).getProperties();
     verify(property).getName();
     assertTrue(actualPropertyExistsInResultSetResult);
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#propertyExistsInResultSet(Property, DynamicResultSet)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#propertyExistsInResultSet(Property, DynamicResultSet)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPropertyExistsInResultSet2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14505 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    Property property = new Property();
+
+    // Act
+    formBuilderServiceImpl2.propertyExistsInResultSet(property, new DynamicResultSet());
   }
 
   /**
@@ -1371,6 +1859,39 @@ public class FormBuilderServiceImplDiffblueTest {
 
   /**
    * Test {@link FormBuilderServiceImpl#getMapKeyFriendlyName(Property)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#getMapKeyFriendlyName(Property)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetMapKeyFriendlyName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10925 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.getMapKeyFriendlyName(new Property());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#getMapKeyFriendlyName(Property)}.
    * <ul>
    *   <li>Given {@link AdornedTargetCollectionMetadata} (default constructor).</li>
    * </ul>
@@ -1469,6 +1990,42 @@ public class FormBuilderServiceImplDiffblueTest {
 
     // Act and Assert
     assertEquals("Key", formBuilderServiceImpl.getMapKeyFriendlyName(new Property()));
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#buildSelectizeCollectionInfo(String, DynamicResultSet, Property, String, List)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildSelectizeCollectionInfo(String, DynamicResultSet, Property, String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildSelectizeCollectionInfo() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7970 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    DynamicResultSet drs = new DynamicResultSet();
+    Property field = new Property();
+
+    // Act
+    formBuilderServiceImpl2.buildSelectizeCollectionInfo("42", drs, field, "Section Key", new ArrayList<>());
   }
 
   /**
@@ -1633,6 +2190,49 @@ public class FormBuilderServiceImplDiffblueTest {
     assertEquals(2, getResult2.size());
     assertEquals("42", getResult2.get("alternateId"));
     assertEquals("42", getResult2.get("id"));
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#constructSelectizeOptionMap(DynamicResultSet, ClassMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#constructSelectizeOptionMap(DynamicResultSet, ClassMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConstructSelectizeOptionMap4() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8254 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    DynamicResultSet drs = new DynamicResultSet();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.constructSelectizeOptionMap(drs, cmd);
   }
 
   /**
@@ -2041,6 +2641,152 @@ public class FormBuilderServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link FormBuilderServiceImpl#buildSelectizeUrl(ListGrid)}.
+   * <p>
+   * Method under test: {@link FormBuilderServiceImpl#buildSelectizeUrl(ListGrid)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildSelectizeUrl() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8048 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.buildSelectizeUrl(new ListGrid());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#createListGrid(String, List, Type, DynamicResultSet, String, int, String, List)}
+   * with {@code className}, {@code headerFields}, {@code type}, {@code drs},
+   * {@code sectionKey}, {@code order}, {@code idProperty}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#createListGrid(String, List, ListGrid.Type, DynamicResultSet, String, int, String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateListGridWithClassNameHeaderFieldsTypeDrsSectionKeyOrderIdPropertySectionCrumbs() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9632 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    ArrayList<Field> headerFields = new ArrayList<>();
+    DynamicResultSet drs = new DynamicResultSet();
+
+    // Act
+    formBuilderServiceImpl2.createListGrid("Class Name", headerFields, ListGrid.Type.MAIN, drs, "Section Key", 1,
+        "Id Property", new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#createListGrid(String, List, Type, DynamicResultSet, String, Integer, String, List, String)}
+   * with {@code className}, {@code headerFields}, {@code type}, {@code drs},
+   * {@code sectionKey}, {@code order}, {@code idProperty}, {@code sectionCrumbs},
+   * {@code sortPropery}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#createListGrid(String, List, ListGrid.Type, DynamicResultSet, String, Integer, String, List, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateListGridWithClassNameHeaderFieldsTypeDrsSectionKeyOrderIdPropertySectionCrumbsSortPropery() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9734 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    ArrayList<Field> headerFields = new ArrayList<>();
+    DynamicResultSet drs = new DynamicResultSet();
+
+    // Act
+    formBuilderServiceImpl2.createListGrid("Class Name", headerFields, ListGrid.Type.MAIN, drs, "Section Key", 1,
+        "Id Property", new ArrayList<>(), "Sort Propery");
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#isDerivedField(Field, Field, Property)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#isDerivedField(Field, Field, Property)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsDerivedField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12113 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    Field headerField = new Field();
+    Field recordField = new Field();
+
+    // Act
+    formBuilderServiceImpl2.isDerivedField(headerField, recordField, new Property());
+  }
+
+  /**
    * Test {@link FormBuilderServiceImpl#isDerivedField(Field, Field, Property)}.
    * <ul>
    *   <li>Given {@link BasicFieldMetadata} (default constructor).</li>
@@ -2224,6 +2970,49 @@ public class FormBuilderServiceImplDiffblueTest {
   /**
    * Test
    * {@link FormBuilderServiceImpl#setEntityFormFields(ClassMetadata, EntityForm, List)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#setEntityFormFields(ClassMetadata, EntityForm, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetEntityFormFields2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14954 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    EntityForm ef = new EntityForm();
+
+    // Act
+    formBuilderServiceImpl2.setEntityFormFields(cmd, ef, new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#setEntityFormFields(ClassMetadata, EntityForm, List)}.
    * <ul>
    *   <li>Given {@link BasicFieldMetadata}
    * {@link BasicFieldMetadata#getVisibility()} return {@code HIDDEN_ALL}.</li>
@@ -2375,6 +3164,42 @@ public class FormBuilderServiceImplDiffblueTest {
   /**
    * Test
    * {@link FormBuilderServiceImpl#setDateToRecordField(Field, Property, SimpleDateFormat)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#setDateToRecordField(Field, Property, SimpleDateFormat)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetDateToRecordField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14854 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    Field recordField = new Field();
+    Property property = new Property();
+
+    // Act
+    formBuilderServiceImpl2.setDateToRecordField(recordField, property, new SimpleDateFormat("yyyy/mm/dd"));
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#setDateToRecordField(Field, Property, SimpleDateFormat)}.
    * <ul>
    *   <li>Given {@code 42}.</li>
    *   <li>When {@link Property} {@link Property#getValue()} return {@code 42}.</li>
@@ -2496,6 +3321,40 @@ public class FormBuilderServiceImplDiffblueTest {
   /**
    * Test
    * {@link FormBuilderServiceImpl#getFieldComponentRenderer(BasicFieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#getFieldComponentRenderer(BasicFieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFieldComponentRenderer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10743 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.getFieldComponentRenderer(new BasicFieldMetadata());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#getFieldComponentRenderer(BasicFieldMetadata)}.
    * <ul>
    *   <li>Given {@code Fmd}.</li>
    *   <li>Then return {@code Fmd}.</li>
@@ -2592,6 +3451,40 @@ public class FormBuilderServiceImplDiffblueTest {
 
     // Act and Assert
     assertNull(formBuilderServiceImpl.getFieldComponentRenderer(new BasicFieldMetadata()));
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#getGridFieldComponentRenderer(BasicFieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#getGridFieldComponentRenderer(BasicFieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetGridFieldComponentRenderer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10834 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.getGridFieldComponentRenderer(new BasicFieldMetadata());
   }
 
   /**
@@ -2697,6 +3590,35 @@ public class FormBuilderServiceImplDiffblueTest {
 
   /**
    * Test {@link FormBuilderServiceImpl#getAdminSectionPath(String)}.
+   * <p>
+   * Method under test: {@link FormBuilderServiceImpl#getAdminSectionPath(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAdminSectionPath() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10421 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FormBuilderServiceImpl()).getAdminSectionPath("Foreign Key Class");
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#getAdminSectionPath(String)}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
@@ -2710,6 +3632,105 @@ public class FormBuilderServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new FormBuilderServiceImpl()).getAdminSectionPath(null));
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#setEntityFormTabsAndGroups(EntityForm, Map)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#setEntityFormTabsAndGroups(EntityForm, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetEntityFormTabsAndGroups() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15268 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm ef = new EntityForm();
+
+    // Act
+    formBuilderServiceImpl2.setEntityFormTabsAndGroups(ef, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#getUnprocessedNameOfMatchingTab(TabMetadata, Set)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#getUnprocessedNameOfMatchingTab(TabMetadata, Set)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetUnprocessedNameOfMatchingTab() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11284 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    TabMetadata tabMetadata = new TabMetadata();
+
+    // Act
+    formBuilderServiceImpl2.getUnprocessedNameOfMatchingTab(tabMetadata, new HashSet<>());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#getUnprocessedNameOfMatchingTab(TabMetadata, Set)}.
+   * <ul>
+   *   <li>Then calls {@link TabMetadata#getTabName()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#getUnprocessedNameOfMatchingTab(TabMetadata, Set)}
+   */
+  @Test
+  public void testGetUnprocessedNameOfMatchingTab_thenCallsGetTabName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl = new FormBuilderServiceImpl();
+    TabMetadata tabMetadata = mock(TabMetadata.class);
+    when(tabMetadata.getTabName()).thenThrow(new RuntimeException("foo"));
+
+    HashSet<String> tabMetadataKeySet = new HashSet<>();
+    tabMetadataKeySet.add("foo");
+
+    // Act
+    formBuilderServiceImpl.getUnprocessedNameOfMatchingTab(tabMetadata, tabMetadataKeySet);
+
+    // Assert
+    verify(tabMetadata).getTabName();
   }
 
   /**
@@ -2759,6 +3780,66 @@ public class FormBuilderServiceImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link FormBuilderServiceImpl#processedTabKeyMatchesTabName(String, String)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#processedTabKeyMatchesTabName(String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testProcessedTabKeyMatchesTabName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14464 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FormBuilderServiceImpl()).processedTabKeyMatchesTabName("Tab Name", "2020-03-01");
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#foundMatchingTab(String)}.
+   * <p>
+   * Method under test: {@link FormBuilderServiceImpl#foundMatchingTab(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFoundMatchingTab() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10099 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FormBuilderServiceImpl()).foundMatchingTab("Unprocessed Tab Name");
+  }
+
+  /**
    * Test {@link FormBuilderServiceImpl#foundMatchingTab(String)}.
    * <ul>
    *   <li>When {@code null}.</li>
@@ -2790,6 +3871,39 @@ public class FormBuilderServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertTrue((new FormBuilderServiceImpl()).foundMatchingTab("Unprocessed Tab Name"));
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#tabExists(EntityForm, String)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#tabExists(EntityForm, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTabExists() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass16004 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.tabExists(new EntityForm(), "Tab Key");
   }
 
   /**
@@ -2840,6 +3954,40 @@ public class FormBuilderServiceImplDiffblueTest {
 
     // Act and Assert
     assertFalse(formBuilderServiceImpl.tabExists(new EntityForm(), "Tab Key"));
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#extractDefaultValueFromFieldData(String, BasicFieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#extractDefaultValueFromFieldData(String, BasicFieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testExtractDefaultValueFromFieldData() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9971 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.extractDefaultValueFromFieldData("Field Type", new BasicFieldMetadata());
   }
 
   /**
@@ -3021,6 +4169,35 @@ public class FormBuilderServiceImplDiffblueTest {
     verify(fmd).getName();
     verify(fmd).getTargetClass();
     assertNull(actualExtractDefaultValueFromFieldDataResult);
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#extractDefaultValueFromFieldData(String, BasicFieldMetadata)}.
+   * <ul>
+   *   <li>Given {@link NumberFormatException#NumberFormatException(String)} with
+   * {@code BOOLEAN}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#extractDefaultValueFromFieldData(String, BasicFieldMetadata)}
+   */
+  @Test
+  public void testExtractDefaultValueFromFieldData_givenNumberFormatExceptionWithBoolean() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl = new FormBuilderServiceImpl();
+    BasicFieldMetadata fmd = mock(BasicFieldMetadata.class);
+    when(fmd.getTargetClass()).thenThrow(new NumberFormatException("BOOLEAN"));
+    when(fmd.getDefaultValue()).thenReturn("42");
+
+    // Act
+    formBuilderServiceImpl.extractDefaultValueFromFieldData("BOOLEAN", fmd);
+
+    // Assert
+    verify(fmd).getDefaultValue();
+    verify(fmd).getTargetClass();
   }
 
   /**
@@ -3318,6 +4495,40 @@ public class FormBuilderServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link FormBuilderServiceImpl#buildMsgForDefValException(String, BasicFieldMetadata, String)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildMsgForDefValException(String, BasicFieldMetadata, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildMsgForDefValException3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7841 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.buildMsgForDefValException("Type", new BasicFieldMetadata(), "42");
+  }
+
+  /**
+   * Test
    * {@link FormBuilderServiceImpl#removeNonApplicableFields(ClassMetadata, EntityForm, String)}.
    * <p>
    * Method under test:
@@ -3401,6 +4612,48 @@ public class FormBuilderServiceImplDiffblueTest {
     verify(cmd).setTabAndGroupMetadata(isA(Map.class));
     verify(property).getMetadata();
     verify(property).getName();
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#removeNonApplicableFields(ClassMetadata, EntityForm, String)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#removeNonApplicableFields(ClassMetadata, EntityForm, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveNonApplicableFields3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14541 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.removeNonApplicableFields(cmd, new EntityForm(), "Entity Type");
   }
 
   /**
@@ -3615,6 +4868,171 @@ public class FormBuilderServiceImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link FormBuilderServiceImpl#createEntityForm(ClassMetadata, Entity, Map, List)}
+   * with {@code cmd}, {@code entity}, {@code collectionRecords},
+   * {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#createEntityForm(ClassMetadata, Entity, Map, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateEntityFormWithCmdEntityCollectionRecordsSectionCrumbs() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9213 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+    HashMap<String, DynamicResultSet> collectionRecords = new HashMap<>();
+
+    // Act
+    formBuilderServiceImpl2.createEntityForm(cmd, entity, collectionRecords, new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#createEntityForm(ClassMetadata, Entity, List)}
+   * with {@code cmd}, {@code entity}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#createEntityForm(ClassMetadata, Entity, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateEntityFormWithCmdEntitySectionCrumbs() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8899 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+
+    // Act
+    formBuilderServiceImpl2.createEntityForm(cmd, entity, new ArrayList<>());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#createEntityForm(ClassMetadata, List)}
+   * with {@code cmd}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#createEntityForm(ClassMetadata, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateEntityFormWithCmdSectionCrumbs() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8584 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.createEntityForm(cmd, new ArrayList<>());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#extractSectionIdentifierFromCrumb(List)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#extractSectionIdentifierFromCrumb(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testExtractSectionIdentifierFromCrumb() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10081 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.extractSectionIdentifierFromCrumb(new ArrayList<>());
+  }
+
+  /**
    * Test {@link FormBuilderServiceImpl#extractSectionIdentifierFromCrumb(List)}.
    * <ul>
    *   <li>Then calls {@link SectionCrumb#getSectionIdentifier()}.</li>
@@ -3755,27 +5173,139 @@ public class FormBuilderServiceImplDiffblueTest {
   }
 
   /**
-   * Test getters and setters.
+   * Test
+   * {@link FormBuilderServiceImpl#populateEntityForm(ClassMetadata, EntityForm, List)}
+   * with {@code cmd}, {@code ef}, {@code sectionCrumbs}.
    * <p>
-   * Methods under test:
-   * <ul>
-   *   <li>{@link FormBuilderServiceImpl#addAdditionalFormActions(EntityForm)}
-   *   <li>{@link FormBuilderServiceImpl#getFormHiddenVisibilities()}
-   *   <li>{@link FormBuilderServiceImpl#getGridHiddenVisibilities()}
-   * </ul>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#populateEntityForm(ClassMetadata, EntityForm, List)}
    */
   @Test
-  public void testGettersAndSetters() {
+  @Ignore("TODO: Complete this test")
+  public void testPopulateEntityFormWithCmdEfSectionCrumbs() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13678 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
     // Arrange
-    FormBuilderServiceImpl formBuilderServiceImpl = new FormBuilderServiceImpl();
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    EntityForm ef = new EntityForm();
 
     // Act
-    formBuilderServiceImpl.addAdditionalFormActions(new EntityForm());
-    VisibilityEnum[] actualFormHiddenVisibilities = formBuilderServiceImpl.getFormHiddenVisibilities();
+    formBuilderServiceImpl2.populateEntityForm(cmd, ef, new ArrayList<>());
+  }
 
-    // Assert that nothing has changed
-    assertSame(formBuilderServiceImpl.FORM_HIDDEN_VISIBILITIES, actualFormHiddenVisibilities);
-    assertSame(formBuilderServiceImpl.GRID_HIDDEN_VISIBILITIES, formBuilderServiceImpl.getGridHiddenVisibilities());
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#populateEntityForm(ClassMetadata, Entity, Map, EntityForm, List)}
+   * with {@code cmd}, {@code entity}, {@code collectionRecords}, {@code ef},
+   * {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#populateEntityForm(ClassMetadata, Entity, Map, EntityForm, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateEntityFormWithCmdEntityCollectionRecordsEfSectionCrumbs() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13053 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+    HashMap<String, DynamicResultSet> collectionRecords = new HashMap<>();
+    EntityForm ef = new EntityForm();
+
+    // Act
+    formBuilderServiceImpl2.populateEntityForm(cmd, entity, collectionRecords, ef, new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#populateEntityForm(ClassMetadata, Entity, EntityForm, List)}
+   * with {@code cmd}, {@code entity}, {@code ef}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#populateEntityForm(ClassMetadata, Entity, EntityForm, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateEntityFormWithCmdEntityEfSectionCrumbs() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13365 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+    EntityForm ef = new EntityForm();
+
+    // Act
+    formBuilderServiceImpl2.populateEntityForm(cmd, entity, ef, new ArrayList<>());
   }
 
   /**
@@ -3863,6 +5393,49 @@ public class FormBuilderServiceImplDiffblueTest {
     verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
     verify(cmd).setTabAndGroupMetadata(isA(Map.class));
     verify(property).getMetadata();
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#setVisibilityBasedOnShowIfFieldEquals(ClassMetadata, Entity, EntityForm)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#setVisibilityBasedOnShowIfFieldEquals(ClassMetadata, Entity, EntityForm)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetVisibilityBasedOnShowIfFieldEquals3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15622 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+
+    // Act
+    formBuilderServiceImpl2.setVisibilityBasedOnShowIfFieldEquals(cmd, entity, new EntityForm());
   }
 
   /**
@@ -4187,6 +5760,40 @@ public class FormBuilderServiceImplDiffblueTest {
 
   /**
    * Test {@link FormBuilderServiceImpl#shouldHideField(FieldMetadata, Entity)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#shouldHideField(FieldMetadata, Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testShouldHideField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15936 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    AdornedTargetCollectionMetadata fmd = new AdornedTargetCollectionMetadata();
+
+    // Act
+    formBuilderServiceImpl2.shouldHideField(fmd, new Entity());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#shouldHideField(FieldMetadata, Entity)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()} add {@code 42}.</li>
    *   <li>Then calls {@link Property#getValue()}.</li>
@@ -4359,6 +5966,32 @@ public class FormBuilderServiceImplDiffblueTest {
   /**
    * Test {@link FormBuilderServiceImpl#shouldHideField(FieldMetadata, Entity)}.
    * <ul>
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
+   * {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#shouldHideField(FieldMetadata, Entity)}
+   */
+  @Test
+  public void testShouldHideField_givenRuntimeExceptionWithFoo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl = new FormBuilderServiceImpl();
+    AdornedTargetCollectionMetadata fmd = mock(AdornedTargetCollectionMetadata.class);
+    when(fmd.getShowIfFieldEquals()).thenThrow(new RuntimeException("foo"));
+
+    // Act
+    formBuilderServiceImpl.shouldHideField(fmd, new Entity());
+
+    // Assert
+    verify(fmd).getShowIfFieldEquals();
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#shouldHideField(FieldMetadata, Entity)}.
+   * <ul>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
@@ -4521,6 +6154,49 @@ public class FormBuilderServiceImplDiffblueTest {
     verify(cmd).setTabAndGroupMetadata(isA(Map.class));
     verify(property, atLeast(1)).getMetadata();
     verify(property, atLeast(1)).getName();
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#populateEntityFormFieldValues(ClassMetadata, Entity, EntityForm)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#populateEntityFormFieldValues(ClassMetadata, Entity, EntityForm)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateEntityFormFieldValues3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13992 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity entity = new Entity();
+
+    // Act
+    formBuilderServiceImpl2.populateEntityFormFieldValues(cmd, entity, new EntityForm());
   }
 
   /**
@@ -4784,6 +6460,40 @@ public class FormBuilderServiceImplDiffblueTest {
   /**
    * Test
    * {@link FormBuilderServiceImpl#decodeValueIfNeeded(BasicFieldMetadata, String)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#decodeValueIfNeeded(BasicFieldMetadata, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDecodeValueIfNeeded() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9861 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl2.decodeValueIfNeeded(new BasicFieldMetadata(), "42");
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#decodeValueIfNeeded(BasicFieldMetadata, String)}.
    * <ul>
    *   <li>Then calls {@link BasicFieldMetadata#isLargeEntry()}.</li>
    * </ul>
@@ -4832,6 +6542,65 @@ public class FormBuilderServiceImplDiffblueTest {
 
     // Act and Assert
     assertEquals("42", formBuilderServiceImpl.decodeValueIfNeeded(basicFM, "42"));
+  }
+
+  /**
+   * Test getters and setters.
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>{@link FormBuilderServiceImpl#addAdditionalFormActions(EntityForm)}
+   *   <li>{@link FormBuilderServiceImpl#getFormHiddenVisibilities()}
+   *   <li>{@link FormBuilderServiceImpl#getGridHiddenVisibilities()}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl = new FormBuilderServiceImpl();
+
+    // Act
+    formBuilderServiceImpl.addAdditionalFormActions(new EntityForm());
+    VisibilityEnum[] actualFormHiddenVisibilities = formBuilderServiceImpl.getFormHiddenVisibilities();
+
+    // Assert that nothing has changed
+    assertSame(formBuilderServiceImpl.FORM_HIDDEN_VISIBILITIES, actualFormHiddenVisibilities);
+    assertSame(formBuilderServiceImpl.GRID_HIDDEN_VISIBILITIES, formBuilderServiceImpl.getGridHiddenVisibilities());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#convertJsonToDataWrapper(String)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#convertJsonToDataWrapper(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConvertJsonToDataWrapper() throws JsonProcessingException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8569 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+
+    ObjectMapper objectMapper = new ObjectMapper();
+
+    // Act
+    formBuilderServiceImpl2.convertJsonToDataWrapper(objectMapper.writeValueAsString(new DataWrapper()));
   }
 
   /**
@@ -4988,6 +6757,49 @@ public class FormBuilderServiceImplDiffblueTest {
   /**
    * Test
    * {@link FormBuilderServiceImpl#populateDropdownToOneFields(EntityForm, ClassMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#populateDropdownToOneFields(EntityForm, ClassMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateDropdownToOneFields2() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12738 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm ef = new EntityForm();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.populateDropdownToOneFields(ef, cmd);
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#populateDropdownToOneFields(EntityForm, ClassMetadata)}.
    * <ul>
    *   <li>Given {@link Property} {@link Property#getMetadata()} return
    * {@link BasicFieldMetadata} (default constructor).</li>
@@ -5086,6 +6898,221 @@ public class FormBuilderServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link FormBuilderServiceImpl#addDeleteActionIfAllowed(EntityForm, ClassMetadata, Entity)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#addDeleteActionIfAllowed(EntityForm, ClassMetadata, Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddDeleteActionIfAllowed() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6009 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.addDeleteActionIfAllowed(entityForm, cmd, new Entity());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#isDeletionAllowed(EntityForm, ClassMetadata, Entity)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#isDeletionAllowed(EntityForm, ClassMetadata, Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsDeletionAllowed() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11799 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.isDeletionAllowed(entityForm, cmd, new Entity());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#addDuplicateActionIfAllowed(EntityForm, ClassMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#addDuplicateActionIfAllowed(EntityForm, ClassMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddDuplicateActionIfAllowed() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6323 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.addDuplicateActionIfAllowed(entityForm, cmd);
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#isDuplicationAllowed(EntityForm, ClassMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#isDuplicationAllowed(EntityForm, ClassMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsDuplicationAllowed() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12241 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.isDuplicationAllowed(entityForm, cmd);
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#setReadOnlyState(EntityForm, ClassMetadata, Entity)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#setReadOnlyState(EntityForm, ClassMetadata, Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetReadOnlyState() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15308 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.setReadOnlyState(entityForm, cmd, new Entity());
+  }
+
+  /**
+   * Test
    * {@link FormBuilderServiceImpl#setReadOnlyState(EntityForm, ClassMetadata, Entity)}.
    * <ul>
    *   <li>Then calls {@link Property#getMetadata()}.</li>
@@ -5138,6 +7165,55 @@ public class FormBuilderServiceImplDiffblueTest {
    * Test
    * {@link FormBuilderServiceImpl#setReadOnlyState(EntityForm, ClassMetadata, Entity)}.
    * <ul>
+   *   <li>Then calls {@link ClassMetadata#getSecurityCeilingType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#setReadOnlyState(EntityForm, ClassMetadata, Entity)}
+   */
+  @Test
+  public void testSetReadOnlyState_thenCallsGetSecurityCeilingType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl = new FormBuilderServiceImpl();
+    EntityForm entityForm = mock(EntityForm.class);
+    when(entityForm.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
+    ClassMetadata cmd = mock(ClassMetadata.class);
+    when(cmd.getSecurityCeilingType()).thenThrow(new RuntimeException("foo"));
+    when(cmd.getProperties()).thenReturn(new Property[]{new Property()});
+    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
+    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl.setReadOnlyState(entityForm, cmd, new Entity());
+
+    // Assert
+    verify(cmd).getProperties();
+    verify(cmd).getSecurityCeilingType();
+    verify(cmd).setCeilingType(eq("Type"));
+    verify(cmd).setCurrencyCode(eq("GBP"));
+    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
+    verify(cmd).setProperties(isA(Property[].class));
+    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+    verify(entityForm).getCeilingEntityClassname();
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#setReadOnlyState(EntityForm, ClassMetadata, Entity)}.
+   * <ul>
    *   <li>Then throw {@link RuntimeException}.</li>
    * </ul>
    * <p>
@@ -5180,6 +7256,49 @@ public class FormBuilderServiceImplDiffblueTest {
     verify(cmd).setTabAndGroupMetadata(isA(Map.class));
     verify(property).getMetadata();
     verify(entityForm).setReadOnly();
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#getSecurityClassname(EntityForm, ClassMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#getSecurityClassname(EntityForm, ClassMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSecurityClassname() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10943 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.getSecurityClassname(entityForm, cmd);
   }
 
   /**
@@ -5479,6 +7598,42 @@ public class FormBuilderServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link FormBuilderServiceImpl#populateEntityFormFields(EntityForm, Entity)}
+   * with {@code ef}, {@code entity}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#populateEntityFormFields(EntityForm, Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateEntityFormFieldsWithEfEntity() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14306 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm ef = new EntityForm();
+
+    // Act
+    formBuilderServiceImpl2.populateEntityFormFields(ef, new Entity());
+  }
+
+  /**
+   * Test
    * {@link FormBuilderServiceImpl#populateEntityFormFields(EntityForm, Entity, boolean, boolean)}
    * with {@code ef}, {@code entity}, {@code populateType}, {@code populateId}.
    * <p>
@@ -5636,6 +7791,42 @@ public class FormBuilderServiceImplDiffblueTest {
     verify(ef).setId(eq("42"));
     verify(codeField).setDisplayValue(eq("42"));
     verify(codeField).setValue(eq("42"));
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#populateEntityFormFields(EntityForm, Entity, boolean, boolean)}
+   * with {@code ef}, {@code entity}, {@code populateType}, {@code populateId}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#populateEntityFormFields(EntityForm, Entity, boolean, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateEntityFormFieldsWithEfEntityPopulateTypePopulateId5() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14358 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm ef = new EntityForm();
+
+    // Act
+    formBuilderServiceImpl2.populateEntityFormFields(ef, new Entity(), true, true);
   }
 
   /**
@@ -6068,6 +8259,42 @@ public class FormBuilderServiceImplDiffblueTest {
   /**
    * Test
    * {@link FormBuilderServiceImpl#populateAdornedEntityFormFields(EntityForm, Entity, AdornedTargetList)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#populateAdornedEntityFormFields(EntityForm, Entity, AdornedTargetList)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateAdornedEntityFormFields() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12669 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm ef = new EntityForm();
+    Entity entity = new Entity();
+
+    // Act
+    formBuilderServiceImpl2.populateAdornedEntityFormFields(ef, entity, new AdornedTargetList());
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#populateAdornedEntityFormFields(EntityForm, Entity, AdornedTargetList)}.
    * <ul>
    *   <li>Given {@link Field} (default constructor).</li>
    * </ul>
@@ -6211,6 +8438,41 @@ public class FormBuilderServiceImplDiffblueTest {
     verify(ef).findField(eq("null.null"));
     verify(ef).getIdProperty();
     verify(codeField).setValue(eq("42"));
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#populateMapEntityFormFields(EntityForm, Entity)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#populateMapEntityFormFields(EntityForm, Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateMapEntityFormFields() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14412 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    EntityForm ef = new EntityForm();
+
+    // Act
+    formBuilderServiceImpl2.populateMapEntityFormFields(ef, new Entity());
   }
 
   /**
@@ -6371,6 +8633,206 @@ public class FormBuilderServiceImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link FormBuilderServiceImpl#buildAdornedListForm(AdornedTargetCollectionMetadata, AdornedTargetList, String, boolean, EntityForm, List, boolean)}
+   * with {@code adornedMd}, {@code adornedList}, {@code parentId},
+   * {@code isViewCollectionItem}, {@code ef}, {@code sectionCrumbs},
+   * {@code isAdd}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildAdornedListForm(AdornedTargetCollectionMetadata, AdornedTargetList, String, boolean, EntityForm, List, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildAdornedListFormWithAdornedMdAdornedListParentIdIsViewCollectionItemEfSectionCrumbsIsAdd()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6718 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    AdornedTargetCollectionMetadata adornedMd = new AdornedTargetCollectionMetadata();
+    AdornedTargetList adornedList = new AdornedTargetList();
+    EntityForm ef = new EntityForm();
+
+    // Act
+    formBuilderServiceImpl2.buildAdornedListForm(adornedMd, adornedList, "42", true, ef, new ArrayList<>(), true);
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#buildAdornedListForm(AdornedTargetCollectionMetadata, AdornedTargetList, String, boolean, List, boolean)}
+   * with {@code adornedMd}, {@code adornedList}, {@code parentId},
+   * {@code isViewCollectionItem}, {@code sectionCrumbs}, {@code isAdd}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildAdornedListForm(AdornedTargetCollectionMetadata, AdornedTargetList, String, boolean, List, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildAdornedListFormWithAdornedMdAdornedListParentIdIsViewCollectionItemSectionCrumbsIsAdd()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6638 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    AdornedTargetCollectionMetadata adornedMd = new AdornedTargetCollectionMetadata();
+    AdornedTargetList adornedList = new AdornedTargetList();
+
+    // Act
+    formBuilderServiceImpl2.buildAdornedListForm(adornedMd, adornedList, "42", true, new ArrayList<>(), true);
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#buildMapForm(MapMetadata, MapStructure, ClassMetadata, String)}
+   * with {@code mapMd}, {@code mapStructure}, {@code cmd}, {@code parentId}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildMapForm(MapMetadata, MapStructure, ClassMetadata, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildMapFormWithMapMdMapStructureCmdParentId() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7218 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    MapMetadata mapMd = new MapMetadata();
+    MapStructure mapStructure = new MapStructure();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.buildMapForm(mapMd, mapStructure, cmd, "42");
+  }
+
+  /**
+   * Test
+   * {@link FormBuilderServiceImpl#buildMapForm(MapMetadata, MapStructure, ClassMetadata, String, EntityForm)}
+   * with {@code mapMd}, {@code mapStructure}, {@code cmd}, {@code parentId},
+   * {@code ef}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#buildMapForm(MapMetadata, MapStructure, ClassMetadata, String, EntityForm)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildMapFormWithMapMdMapStructureCmdParentIdEf() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7530 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    MapMetadata mapMd = new MapMetadata();
+    MapStructure mapStructure = new MapStructure();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    formBuilderServiceImpl2.buildMapForm(mapMd, mapStructure, cmd, "42", new EntityForm());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#getValueClassNames(String)}.
+   * <p>
+   * Method under test: {@link FormBuilderServiceImpl#getValueClassNames(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetValueClassNames() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11295 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FormBuilderServiceImpl()).getValueClassNames("42");
+  }
+
+  /**
    * Test {@link FormBuilderServiceImpl#filterMapFormProperties(List, List)}.
    * <p>
    * Method under test:
@@ -6432,6 +8894,40 @@ public class FormBuilderServiceImplDiffblueTest {
     verify(property).getMetadata();
     assertEquals(1, mapFormProperties.size());
     assertEquals(1, classNames.size());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#filterMapFormProperties(List, List)}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#filterMapFormProperties(List, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFilterMapFormProperties3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10088 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FormBuilderServiceImpl formBuilderServiceImpl2 = new FormBuilderServiceImpl();
+    ArrayList<Property> mapFormProperties = new ArrayList<>();
+
+    // Act
+    formBuilderServiceImpl2.filterMapFormProperties(mapFormProperties, new ArrayList<>());
   }
 
   /**
@@ -6593,5 +9089,114 @@ public class FormBuilderServiceImplDiffblueTest {
     assertTrue(actualCreateStandardEntityFormResult.getDynamicForms().isEmpty());
     assertTrue(actualCreateStandardEntityFormResult.getFields().isEmpty());
     assertTrue(actualCreateStandardEntityFormResult.getTabs().isEmpty());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#createStandardEntityForm()}.
+   * <p>
+   * Method under test: {@link FormBuilderServiceImpl#createStandardEntityForm()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateStandardEntityForm2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9858 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FormBuilderServiceImpl()).createStandardEntityForm();
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#createStandardAdornedEntityForm()}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#createStandardAdornedEntityForm()}
+   */
+  @Test
+  public void testCreateStandardAdornedEntityForm() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange and Act
+    EntityForm actualCreateStandardAdornedEntityFormResult = (new FormBuilderServiceImpl())
+        .createStandardAdornedEntityForm();
+
+    // Assert
+    assertEquals("", actualCreateStandardAdornedEntityFormResult.getMainEntityName());
+    assertEquals("", actualCreateStandardAdornedEntityFormResult.getSectionCrumbs());
+    List<EntityFormAction> actions = actualCreateStandardAdornedEntityFormResult.getActions();
+    assertEquals(1, actions.size());
+    EntityFormAction getResult = actions.get(0);
+    assertEquals("", getResult.getConfirmEnabledText());
+    assertEquals("", getResult.getIconClass());
+    assertEquals("", getResult.getUrlPostfix());
+    assertEquals("ADD", getResult.getId());
+    assertEquals("Add", getResult.getDisplayText());
+    assertEquals("id", actualCreateStandardAdornedEntityFormResult.getIdProperty());
+    assertEquals("submit", getResult.getButtonType());
+    assertEquals("submit-button primary", getResult.getButtonClass());
+    assertNull(actualCreateStandardAdornedEntityFormResult.getCeilingEntityClassname());
+    assertNull(actualCreateStandardAdornedEntityFormResult.getEncType());
+    assertNull(actualCreateStandardAdornedEntityFormResult.getEntityType());
+    assertNull(actualCreateStandardAdornedEntityFormResult.getId());
+    assertNull(actualCreateStandardAdornedEntityFormResult.getJsErrorMap());
+    assertNull(actualCreateStandardAdornedEntityFormResult.getParentId());
+    assertNull(actualCreateStandardAdornedEntityFormResult.getSectionKey());
+    assertNull(actualCreateStandardAdornedEntityFormResult.getTranslationCeilingEntity());
+    assertNull(actualCreateStandardAdornedEntityFormResult.getTranslationId());
+    assertNull(getResult.getUrlOverride());
+    assertFalse(actualCreateStandardAdornedEntityFormResult.getPreventSubmit());
+    assertFalse(actualCreateStandardAdornedEntityFormResult.getReadOnly());
+    assertFalse(getResult.getIsConfirmEnabled());
+    assertTrue(actualCreateStandardAdornedEntityFormResult.getAllListGrids().isEmpty());
+    assertTrue(actualCreateStandardAdornedEntityFormResult.getSectionCrumbsImpl().isEmpty());
+    assertTrue(actualCreateStandardAdornedEntityFormResult.getAttributes().isEmpty());
+    assertTrue(actualCreateStandardAdornedEntityFormResult.getDynamicFormInfos().isEmpty());
+    assertTrue(actualCreateStandardAdornedEntityFormResult.getDynamicForms().isEmpty());
+    assertTrue(actualCreateStandardAdornedEntityFormResult.getFields().isEmpty());
+    assertTrue(actualCreateStandardAdornedEntityFormResult.getTabs().isEmpty());
+  }
+
+  /**
+   * Test {@link FormBuilderServiceImpl#createStandardAdornedEntityForm()}.
+   * <p>
+   * Method under test:
+   * {@link FormBuilderServiceImpl#createStandardAdornedEntityForm()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateStandardAdornedEntityForm2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9855 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.service.FormBuilderServiceImpl formBuilderServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FormBuilderServiceImpl()).createStandardAdornedEntityForm();
   }
 }

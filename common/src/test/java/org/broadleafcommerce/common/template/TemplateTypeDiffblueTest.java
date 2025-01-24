@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -19,9 +19,35 @@ package org.broadleafcommerce.common.template;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThrows;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {TemplateType.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TemplateTypeDiffblueTest {
+  @Autowired
+  private TemplateType templateType;
+
+  /**
+   * Test {@link TemplateType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link TemplateType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    TemplateType actualInstance = TemplateType.getInstance("Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+    assertEquals(1, actualInstance.getOrder());
+  }
+
   /**
    * Test getters and setters.
    * <p>
@@ -45,6 +71,36 @@ public class TemplateTypeDiffblueTest {
 
     // Assert that nothing has changed
     assertEquals(1, actualOrder);
+  }
+
+  /**
+   * Test {@link TemplateType#TemplateType(String, String, int)}.
+   * <ul>
+   *   <li>When {@code Cannot add the type: (}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TemplateType#TemplateType(String, String, int)}
+   */
+  @Test
+  public void testNewTemplateType_whenCannotAddTheType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new TemplateType("Cannot add the type: (", "Friendly Type", 1));
+
+  }
+
+  /**
+   * Test {@link TemplateType#TemplateType(String, String, int)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TemplateType#TemplateType(String, String, int)}
+   */
+  @Test
+  public void testNewTemplateType_whenType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new TemplateType("Type", "Friendly Type", 1));
+
   }
 
   /**

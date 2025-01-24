@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -19,6 +19,7 @@ package org.broadleafcommerce.common.money.util;
 
 import static org.junit.Assert.assertEquals;
 import java.util.Currency;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,26 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class CurrencyAdapterDiffblueTest {
   @Autowired
   private CurrencyAdapter currencyAdapter;
+
+  /**
+   * Test {@link CurrencyAdapter#marshal(Currency)} with {@code Currency}.
+   * <p>
+   * Method under test: {@link CurrencyAdapter#marshal(Currency)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testMarshalWithCurrency() throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.money.util.CurrencyAdapter.marshal(CurrencyAdapter.java:36)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    (new CurrencyAdapter()).marshal(null);
+  }
 
   /**
    * Test {@link CurrencyAdapter#unmarshal(String)} with {@code String}.
@@ -52,5 +73,22 @@ public class CurrencyAdapterDiffblueTest {
     assertEquals("£", actualUnmarshalResult.getSymbol());
     assertEquals(2, actualUnmarshalResult.getDefaultFractionDigits());
     assertEquals(826, actualUnmarshalResult.getNumericCode());
+  }
+
+  /**
+   * Test new {@link CurrencyAdapter} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link CurrencyAdapter}
+   */
+  @Test
+  public void testNewCurrencyAdapter() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new CurrencyAdapter();
   }
 }

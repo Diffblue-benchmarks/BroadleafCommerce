@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -30,6 +30,7 @@ import org.broadleafcommerce.common.time.DayOfWeekType;
 import org.broadleafcommerce.common.time.HourOfDayType;
 import org.broadleafcommerce.common.time.MinuteType;
 import org.broadleafcommerce.common.time.MonthType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class TimeDTODiffblueTest {
@@ -68,6 +69,26 @@ public class TimeDTODiffblueTest {
     assertEquals("February", month.getFriendlyType());
     assertEquals("Tuesday", dayOfWeek.getFriendlyType());
     assertSame(date, actualTimeDTO.getDate());
+  }
+
+  /**
+   * Test {@link TimeDTO#TimeDTO()}.
+   * <p>
+   * Method under test: {@link TimeDTO#TimeDTO()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewTimeDTO() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Method may be time-sensitive.
+    //   Diffblue Cover was only able to write tests that are time-sensitive.
+    //   The assertions don't pass when run at an alternate date, time, and
+    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
+    //   that the time can be parameterized during testing.
+    //   See Working with code R031 (https://diff.blue/R031) for details.
+
+    // Arrange and Act
+    new TimeDTO();
   }
 
   /**
@@ -180,6 +201,73 @@ public class TimeDTODiffblueTest {
 
     // Assert
     assertSame(actualMinute.EIGHT, actualMinute);
+  }
+
+  /**
+   * Test {@link TimeDTO#getDate()}.
+   * <ul>
+   *   <li>Given {@link TimeDTO#TimeDTO()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TimeDTO#getDate()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDate_givenTimeDTO() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Method may be time-sensitive.
+    //   Diffblue Cover was only able to write tests that are time-sensitive.
+    //   The assertions don't pass when run at an alternate date, time, and
+    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
+    //   that the time can be parameterized during testing.
+    //   See Working with code R031 (https://diff.blue/R031) for details.
+
+    // Arrange and Act
+    (new TimeDTO()).getDate();
+  }
+
+  /**
+   * Test {@link TimeDTO#getDate()}.
+   * <ul>
+   *   <li>Given {@link TimeDTO#TimeDTO()} Date is {@link java.sql.Date}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TimeDTO#getDate()}
+   */
+  @Test
+  public void testGetDate_givenTimeDTODateIsDate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    TimeDTO timeDTO = new TimeDTO();
+    timeDTO.setDate(mock(java.sql.Date.class));
+
+    // Act
+    timeDTO.getDate();
+  }
+
+  /**
+   * Test {@link TimeDTO#getDate()}.
+   * <ul>
+   *   <li>Given {@link TimeDTO#TimeDTO(Calendar)} with cal is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link TimeDTO#getDate()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDate_givenTimeDTOWithCalIsNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.TimeDTO.getDate(TimeDTO.java:117)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    (new TimeDTO(null)).getDate();
   }
 
   /**

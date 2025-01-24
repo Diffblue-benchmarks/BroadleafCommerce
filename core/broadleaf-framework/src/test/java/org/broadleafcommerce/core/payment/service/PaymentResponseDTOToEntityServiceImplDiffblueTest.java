@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.payment.service;
 
 import static org.junit.Assert.assertEquals;
@@ -30,15 +13,30 @@ import org.broadleafcommerce.common.payment.PaymentType;
 import org.broadleafcommerce.common.payment.dto.AddressDTO;
 import org.broadleafcommerce.common.payment.dto.CreditCardDTO;
 import org.broadleafcommerce.common.payment.dto.PaymentResponseDTO;
+import org.broadleafcommerce.core.order.domain.NullOrderImpl;
+import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.payment.domain.OrderPayment;
 import org.broadleafcommerce.core.payment.domain.OrderPaymentImpl;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class PaymentResponseDTOToEntityServiceImplDiffblueTest {
+  @Autowired
+  private PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl;
+
   /**
    * Test
    * {@link PaymentResponseDTOToEntityServiceImpl#populateBillingInfo(PaymentResponseDTO, OrderPayment, Address, boolean)}.
@@ -64,6 +62,46 @@ public class PaymentResponseDTOToEntityServiceImplDiffblueTest {
 
     // Assert
     assertSame(tempBillingAddress, payment.getBillingAddress());
+  }
+
+  /**
+   * Test
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateBillingInfo(PaymentResponseDTO, OrderPayment, Address, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateBillingInfo(PaymentResponseDTO, OrderPayment, Address, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateBillingInfo2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2724 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl2 = new PaymentResponseDTOToEntityServiceImpl();
+    PaymentType paymentType = new PaymentType("Type", "Friendly Type");
+
+    PaymentResponseDTO responseDTO = new PaymentResponseDTO(paymentType,
+        new PaymentGatewayType("Type", "Friendly Type"));
+
+    OrderPaymentImpl payment = new OrderPaymentImpl();
+
+    // Act
+    paymentResponseDTOToEntityServiceImpl2.populateBillingInfo(responseDTO, payment, new AddressImpl(), true);
   }
 
   /**
@@ -162,6 +200,79 @@ public class PaymentResponseDTOToEntityServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateShippingInfo(PaymentResponseDTO, Order)}.
+   * <p>
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateShippingInfo(PaymentResponseDTO, Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateShippingInfo() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2784 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl2 = new PaymentResponseDTOToEntityServiceImpl();
+    PaymentType paymentType = new PaymentType("Type", "Friendly Type");
+
+    PaymentResponseDTO responseDTO = new PaymentResponseDTO(paymentType,
+        new PaymentGatewayType("Type", "Friendly Type"));
+
+    // Act
+    paymentResponseDTOToEntityServiceImpl2.populateShippingInfo(responseDTO, new NullOrderImpl());
+  }
+
+  /**
+   * Test
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}.
+   * <p>
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateAddressInfo(AddressDTO, Address)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateAddressInfo() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2694 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl2 = new PaymentResponseDTOToEntityServiceImpl();
+    AddressDTO<PaymentResponseDTO> dto = new AddressDTO<>();
+
+    // Act
+    paymentResponseDTOToEntityServiceImpl2.populateAddressInfo(dto, new AddressImpl());
+  }
+
+  /**
+   * Test
    * {@link PaymentResponseDTOToEntityServiceImpl#populateCustomerPaymentToken(PaymentResponseDTO, CustomerPayment)}.
    * <p>
    * Method under test:
@@ -184,6 +295,44 @@ public class PaymentResponseDTOToEntityServiceImplDiffblueTest {
 
     // Assert that nothing has changed
     assertNull(customerPayment.getPaymentToken());
+  }
+
+  /**
+   * Test
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateCustomerPaymentToken(PaymentResponseDTO, CustomerPayment)}.
+   * <p>
+   * Method under test:
+   * {@link PaymentResponseDTOToEntityServiceImpl#populateCustomerPaymentToken(PaymentResponseDTO, CustomerPayment)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateCustomerPaymentToken2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.payment.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2754 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.payment.service.PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    PaymentResponseDTOToEntityServiceImpl paymentResponseDTOToEntityServiceImpl2 = new PaymentResponseDTOToEntityServiceImpl();
+    PaymentType paymentType = new PaymentType("Type", "Friendly Type");
+
+    PaymentResponseDTO responseDTO = new PaymentResponseDTO(paymentType,
+        new PaymentGatewayType("Type", "Friendly Type"));
+
+    // Act
+    paymentResponseDTOToEntityServiceImpl2.populateCustomerPaymentToken(responseDTO, new CustomerPaymentImpl());
   }
 
   /**

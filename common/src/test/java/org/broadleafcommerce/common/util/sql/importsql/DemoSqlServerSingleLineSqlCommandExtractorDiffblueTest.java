@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -20,6 +20,9 @@ package org.broadleafcommerce.common.util.sql.importsql;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import java.io.Reader;
+import java.io.StringReader;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,270 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class DemoSqlServerSingleLineSqlCommandExtractorDiffblueTest {
   @Autowired
   private DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor;
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>Then return array of {@link String} with {@code CURRENT_TIMESTAMP,}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_thenReturnArrayOfStringWithCurrentTimestamp() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"CURRENT_TIMESTAMP,"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader("current_date ,")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>Then return array of {@link String} with
+   * {@code , CURRENT_TIMESTAMP,}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_thenReturnArrayOfStringWithCurrentTimestamp2() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{", CURRENT_TIMESTAMP,"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader(", current_date ,")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>Then return array of {@link String} with {@code ,CURRENT_TIMESTAMP}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_thenReturnArrayOfStringWithCurrentTimestamp3() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{",CURRENT_TIMESTAMP"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader(", current_date")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code false ,}.</li>
+   *   <li>Then return array of {@link String} with {@code 'FALSE',}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithFalse_thenReturnArrayOfStringWithFalse() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"'FALSE',"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader("false ,")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with
+   * {@code , false ,}.</li>
+   *   <li>Then return array of {@link String} with {@code , 'FALSE',}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithFalse_thenReturnArrayOfStringWithFalse2() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{", 'FALSE',"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader(", false ,")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code , false}.</li>
+   *   <li>Then return array of {@link String} with {@code ,'FALSE'}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithFalse_thenReturnArrayOfStringWithFalse3() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{",'FALSE'"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader(", false")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code = false}.</li>
+   *   <li>Then return array of {@link String} with {@code ='FALSE'}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithFalse_thenReturnArrayOfStringWithFalse4() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"='FALSE'"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader("= false")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code foo}.</li>
+   *   <li>Then return array of {@link String} with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithFoo_thenReturnArrayOfStringWithFoo() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"foo"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader("foo")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code true ,}.</li>
+   *   <li>Then return array of {@link String} with {@code 'TRUE',}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithTrue_thenReturnArrayOfStringWithTrue() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"'TRUE',"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader("true ,")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with
+   * {@code , true ,}.</li>
+   *   <li>Then return array of {@link String} with {@code , 'TRUE',}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithTrue_thenReturnArrayOfStringWithTrue2() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{", 'TRUE',"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader(", true ,")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code , true}.</li>
+   *   <li>Then return array of {@link String} with {@code ,'TRUE'}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithTrue_thenReturnArrayOfStringWithTrue3() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{",'TRUE'"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader(", true")));
+  }
+
+  /**
+   * Test
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}.
+   * <ul>
+   *   <li>When {@link StringReader#StringReader(String)} with {@code = true}.</li>
+   *   <li>Then return array of {@link String} with {@code ='TRUE'}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DemoSqlServerSingleLineSqlCommandExtractor#extractCommands(Reader)}
+   */
+  @Test
+  public void testExtractCommands_whenStringReaderWithTrue_thenReturnArrayOfStringWithTrue4() {
+    // Arrange
+    DemoSqlServerSingleLineSqlCommandExtractor demoSqlServerSingleLineSqlCommandExtractor = new DemoSqlServerSingleLineSqlCommandExtractor();
+
+    // Act and Assert
+    assertTrue(demoSqlServerSingleLineSqlCommandExtractor.alreadyRun);
+    assertArrayEquals(new String[]{"='TRUE'"},
+        demoSqlServerSingleLineSqlCommandExtractor.extractCommands(new StringReader("= true")));
+  }
 
   /**
    * Test

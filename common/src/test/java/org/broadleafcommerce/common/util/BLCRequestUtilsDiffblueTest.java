@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -33,6 +33,7 @@ import static org.mockito.Mockito.when;
 import javax.servlet.ServletRequestWrapper;
 import javax.servlet.http.HttpServletRequest;
 import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -299,6 +300,26 @@ public class BLCRequestUtilsDiffblueTest {
     assertNull(BLCRequestUtils.getURLorHeaderParameter(
         new ServletWebRequest(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest())),
         "https://example.org/example"));
+  }
+
+  /**
+   * Test {@link BLCRequestUtils#getRequestedServerPrefix()}.
+   * <p>
+   * Method under test: {@link BLCRequestUtils#getRequestedServerPrefix()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRequestedServerPrefix() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.util.BLCRequestUtils.getRequestedServerPrefix(BLCRequestUtils.java:120)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    BLCRequestUtils.getRequestedServerPrefix();
   }
 
   /**

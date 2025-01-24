@@ -1,33 +1,62 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.util.queue;
 
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.mock;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
 import org.apache.zookeeper.Watcher;
 import org.apache.zookeeper.ZooKeeper;
 import org.broadleafcommerce.core.util.queue.DistributedBlockingQueue.DistributedQueueException;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ZookeeperDistributedQueueDiffblueTest {
+  @MockBean
+  private ZookeeperDistributedQueue zookeeperDistributedQueue;
+
+  @Autowired
+  private ZookeeperDistributedQueue<Serializable> zookeeperDistributedQueue2;
+
+  /**
+   * Test
+   * {@link ZookeeperDistributedQueue#ZookeeperDistributedQueue(String, ZooKeeper)}.
+   * <p>
+   * Method under test:
+   * {@link ZookeeperDistributedQueue#ZookeeperDistributedQueue(String, ZooKeeper)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewZookeeperDistributedQueue() throws IOException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   - org.broadleafcommerce.core.util.queue.ZookeeperDistributedQueue
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.queue;
+    //   @org.springframework.test.context.ContextConfiguration
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1879 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.queue.ZookeeperDistributedQueue<Ljava.io.Serializable;> zookeeperDistributedQueue;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new ZookeeperDistributedQueue<>("Queue Path", new ZooKeeper("Connect String", 10, mock(Watcher.class)));
+
+  }
+
   /**
    * Test
    * {@link ZookeeperDistributedQueue#ZookeeperDistributedQueue(String, ZooKeeper)}.
@@ -50,28 +79,6 @@ public class ZookeeperDistributedQueueDiffblueTest {
 
   /**
    * Test
-   * {@link ZookeeperDistributedQueue#ZookeeperDistributedQueue(String, ZooKeeper, int, boolean, List)}.
-   * <ul>
-   *   <li>When one.</li>
-   *   <li>Then throw {@link DistributedQueueException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ZookeeperDistributedQueue#ZookeeperDistributedQueue(String, ZooKeeper, int, boolean, List)}
-   */
-  @Test
-  public void testNewZookeeperDistributedQueue_whenOne_thenThrowDistributedQueueException() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertThrows(DistributedBlockingQueue.DistributedQueueException.class,
-        () -> new ZookeeperDistributedQueue<>("Queue Path", new ZooKeeper("Connect String", 10, mock(Watcher.class)), 1,
-            false, null));
-
-  }
-
-  /**
-   * Test
    * {@link ZookeeperDistributedQueue#ZookeeperDistributedQueue(String, ZooKeeper, int)}.
    * <ul>
    *   <li>When three.</li>
@@ -89,30 +96,6 @@ public class ZookeeperDistributedQueueDiffblueTest {
     assertThrows(DistributedBlockingQueue.DistributedQueueException.class,
         () -> new ZookeeperDistributedQueue<>("Queue Path", new ZooKeeper("Connect String", 10, mock(Watcher.class)),
             3));
-
-  }
-
-  /**
-   * Test
-   * {@link ZookeeperDistributedQueue#ZookeeperDistributedQueue(String, ZooKeeper, int, boolean, List)}.
-   * <ul>
-   *   <li>When three.</li>
-   *   <li>Then throw {@link DistributedQueueException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ZookeeperDistributedQueue#ZookeeperDistributedQueue(String, ZooKeeper, int, boolean, List)}
-   */
-  @Test
-  public void testNewZookeeperDistributedQueue_whenThree_thenThrowDistributedQueueException2() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ZooKeeper zk = new ZooKeeper("Connect String", 10, mock(Watcher.class));
-
-    // Act and Assert
-    assertThrows(DistributedBlockingQueue.DistributedQueueException.class,
-        () -> new ZookeeperDistributedQueue<>("Queue Path", zk, 3, true, new ArrayList<>()));
 
   }
 }

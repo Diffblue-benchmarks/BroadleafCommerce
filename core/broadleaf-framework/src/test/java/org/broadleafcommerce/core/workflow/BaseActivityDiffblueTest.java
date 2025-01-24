@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.workflow;
 
 import static org.junit.Assert.assertEquals;
@@ -22,15 +5,21 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import java.util.HashMap;
 import java.util.Map;
+import org.broadleafcommerce.core.checkout.service.workflow.CheckoutSeed;
 import org.broadleafcommerce.core.checkout.service.workflow.CommitTaxActivity;
 import org.broadleafcommerce.core.checkout.service.workflow.CommitTaxRollbackHandler;
 import org.broadleafcommerce.core.checkout.service.workflow.CompositeActivity;
+import org.broadleafcommerce.core.workflow.state.RollbackFailureException;
 import org.broadleafcommerce.core.workflow.state.RollbackHandler;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -221,6 +210,54 @@ public class BaseActivityDiffblueTest {
 
     // Act and Assert
     assertNull(compositeActivity.getBeanName());
+  }
+
+  /**
+   * Test {@link BaseActivity#getRollbackHandler()}.
+   * <ul>
+   *   <li>Then calls
+   * {@link RollbackHandler#rollbackState(Activity, ProcessContext, Map)}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link BaseActivity#getRollbackHandler()}
+   */
+  @Test
+  public void testGetRollbackHandler_thenCallsRollbackState() throws RollbackFailureException {
+    // Arrange
+    RollbackHandler<ProcessContext<?>> rollbackHandler = mock(RollbackHandler.class);
+    doNothing().when(rollbackHandler)
+        .rollbackState(Mockito.<Activity<ProcessContext<Object>>>any(), Mockito.<ProcessContext<Object>>any(),
+            Mockito.<Map<String, Object>>any());
+
+    CompositeActivity compositeActivity = new CompositeActivity();
+    compositeActivity.setRollbackHandler(rollbackHandler);
+
+    // Act
+    RollbackHandler<ProcessContext<CheckoutSeed>> actualRollbackHandler = compositeActivity.getRollbackHandler();
+    CommitTaxActivity commitTaxActivity = new CommitTaxActivity(new CommitTaxRollbackHandler());
+    DefaultProcessContextImpl<CheckoutSeed> defaultProcessContextImpl = new DefaultProcessContextImpl<>();
+    actualRollbackHandler.rollbackState(commitTaxActivity, defaultProcessContextImpl, new HashMap<>());
+
+    // Assert
+    verify(rollbackHandler).rollbackState(isA(Activity.class), isA(ProcessContext.class), isA(Map.class));
+  }
+
+  /**
+   * Test {@link BaseActivity#setRollbackHandler(RollbackHandler)}.
+   * <p>
+   * Method under test: {@link BaseActivity#setRollbackHandler(RollbackHandler)}
+   */
+  @Test
+  public void testSetRollbackHandler() {
+    // Arrange
+    CompositeActivity compositeActivity = new CompositeActivity();
+    RollbackHandler<ProcessContext<?>> rollbackHandler = mock(RollbackHandler.class);
+
+    // Act
+    compositeActivity.setRollbackHandler(rollbackHandler);
+
+    // Assert
+    assertSame(rollbackHandler, compositeActivity.getRollbackHandler());
   }
 
   /**

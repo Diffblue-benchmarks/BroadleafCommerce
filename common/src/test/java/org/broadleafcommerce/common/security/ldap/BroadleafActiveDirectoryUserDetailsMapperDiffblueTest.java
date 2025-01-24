@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -30,6 +30,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import javax.naming.NamingException;
 import org.broadleafcommerce.common.security.BroadleafExternalAuthenticationUserDetails;
@@ -134,6 +136,43 @@ public class BroadleafActiveDirectoryUserDetailsMapperDiffblueTest {
     assertTrue(actualMapUserFromContextResult.isAccountNonLocked());
     assertTrue(actualMapUserFromContextResult.isCredentialsNonExpired());
     assertTrue(actualMapUserFromContextResult.isEnabled());
+  }
+
+  /**
+   * Test getters and setters.
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>
+   * {@link BroadleafActiveDirectoryUserDetailsMapper#setAdditiveRoleNameSubstitutions(boolean)}
+   *   <li>
+   * {@link BroadleafActiveDirectoryUserDetailsMapper#setRoleNameSubstitutions(Map)}
+   *   <li>
+   * {@link BroadleafActiveDirectoryUserDetailsMapper#setUseEmailAddressAsUsername(boolean)}
+   * </ul>
+   */
+  @Test
+  public void testGettersAndSetters() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     BroadleafActiveDirectoryUserDetailsMapper.additiveRoleNameSubstitutions
+    //     BroadleafActiveDirectoryUserDetailsMapper.roleNameSubstitutions
+    //     BroadleafActiveDirectoryUserDetailsMapper.useEmailAddressAsUsername
+    //     LdapUserDetailsMapper.convertToUpperCase
+    //     LdapUserDetailsMapper.logger
+    //     LdapUserDetailsMapper.passwordAttributeName
+    //     LdapUserDetailsMapper.roleAttributes
+    //     LdapUserDetailsMapper.rolePrefix
+
+    // Arrange
+    BroadleafActiveDirectoryUserDetailsMapper broadleafActiveDirectoryUserDetailsMapper = new BroadleafActiveDirectoryUserDetailsMapper();
+
+    // Act
+    broadleafActiveDirectoryUserDetailsMapper.setAdditiveRoleNameSubstitutions(true);
+    broadleafActiveDirectoryUserDetailsMapper.setRoleNameSubstitutions(new HashMap<>());
+    broadleafActiveDirectoryUserDetailsMapper.setUseEmailAddressAsUsername(true);
   }
 
   /**

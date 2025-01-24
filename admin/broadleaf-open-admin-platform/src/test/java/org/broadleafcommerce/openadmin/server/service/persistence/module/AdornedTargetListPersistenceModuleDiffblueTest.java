@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
 import static org.junit.Assert.assertEquals;
@@ -31,6 +14,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -57,10 +41,29 @@ import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceMan
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule.AdornedTargetRetrieval;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FilterMapping;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.RestrictionFactory;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"}, classes = {
+        AdornedTargetListPersistenceModule.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdornedTargetListPersistenceModuleDiffblueTest {
+  @Autowired
+  private AdornedTargetListPersistenceModule.AdornedTargetRetrieval adornedTargetRetrieval;
+
+  @Autowired
+  private AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+
   /**
    * Test AdornedTargetRetrieval getters and setters.
    * <p>
@@ -98,6 +101,63 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   }
 
   /**
+   * Test AdornedTargetRetrieval {@link AdornedTargetRetrieval#invokeForFetch()}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#invokeForFetch()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdornedTargetRetrievalInvokeForFetch() throws ClassNotFoundException, IllegalAccessException,
+      NoSuchFieldException, NoSuchMethodException, InvocationTargetException, FieldNotAvailableException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule$AdornedTargetRetrieval.invokeInternal(AdornedTargetListPersistenceModule.java:553)
+    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule$AdornedTargetRetrieval.invokeForFetch(AdornedTargetListPersistenceModule.java:523)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
+    PersistencePackage persistencePackage = new PersistencePackage();
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    // Act
+    (adornedTargetListPersistenceModule.new AdornedTargetRetrieval(persistencePackage, adornedTargetList,
+        new CriteriaTransferObject())).invokeForFetch();
+  }
+
+  /**
+   * Test AdornedTargetRetrieval {@link AdornedTargetRetrieval#invokeForUpdate()}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#invokeForUpdate()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdornedTargetRetrievalInvokeForUpdate() throws ClassNotFoundException, IllegalAccessException,
+      NoSuchFieldException, NoSuchMethodException, InvocationTargetException, FieldNotAvailableException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule$AdornedTargetRetrieval.invokeForUpdate(AdornedTargetListPersistenceModule.java:529)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule = new AdornedTargetListPersistenceModule();
+    PersistencePackage persistencePackage = new PersistencePackage();
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    // Act
+    (adornedTargetListPersistenceModule.new AdornedTargetRetrieval(persistencePackage, adornedTargetList,
+        new CriteriaTransferObject())).invokeForUpdate();
+  }
+
+  /**
    * Test AdornedTargetRetrieval
    * {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}.
    * <p>
@@ -127,13 +187,83 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
 
   /**
    * Test AdornedTargetRetrieval
+   * {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdornedTargetRetrievalNewAdornedTargetRetrieval2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Failed to create Spring context.
+    //   Attempt to initialize test context failed with
+    //   com.diffblue.fuzztest.shared.proxy.LibraryLinkageException: java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
+    //   	Remaining input: .AdornedTargetRetrieval;
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
+    //   java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
+    //   	Remaining input: .AdornedTargetRetrieval;
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.getOrDeduceTypes(DefinitionsParser.java:121)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseMockBeanAnnotation(DefinitionsParser.java:79)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parseElement$1(DefinitionsParser.java:72)
+    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:602)
+    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:569)
+    //       at java.base/java.util.Spliterator.forEachRemaining(Spliterator.java:326)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:497)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseElement(DefinitionsParser.java:72)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parse$0(DefinitionsParser.java:65)
+    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:706)
+    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:685)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parse(DefinitionsParser.java:65)
+    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.parseDefinitions(MockitoContextCustomizerFactory.java:44)
+    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.createContextCustomizer(MockitoContextCustomizerFactory.java:39)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.getContextCustomizers(AbstractTestContextBootstrapper.java:402)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:374)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:291)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:107)
+    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:137)
+    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:122)
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
+    //   See https://diff.blue/R026 to resolve this issue.
+
+    // Arrange
+    PersistencePackage persistencePackage = new PersistencePackage();
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    // Act
+    adornedTargetListPersistenceModule.new AdornedTargetRetrieval(persistencePackage, adornedTargetList,
+        new CriteriaTransferObject());
+
+  }
+
+  /**
+   * Test AdornedTargetRetrieval
    * {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}.
    * <p>
    * Method under test:
    * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}
    */
   @Test
-  public void testAdornedTargetRetrievalNewAdornedTargetRetrieval2() {
+  public void testAdornedTargetRetrievalNewAdornedTargetRetrieval3() {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
     // Arrange
@@ -151,6 +281,75 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
     assertNull(actualAdornedTargetRetrieval.getFilterMappings());
     assertNull(actualAdornedTargetRetrieval.getMergedProperties());
     assertEquals(0, actualAdornedTargetRetrieval.getIndex());
+  }
+
+  /**
+   * Test AdornedTargetRetrieval
+   * {@link AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule.AdornedTargetRetrieval#AdornedTargetRetrieval(AdornedTargetListPersistenceModule, PersistencePackage, Entity, AdornedTargetList)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdornedTargetRetrievalNewAdornedTargetRetrieval4() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Failed to create Spring context.
+    //   Attempt to initialize test context failed with
+    //   com.diffblue.fuzztest.shared.proxy.LibraryLinkageException: java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
+    //   	Remaining input: .AdornedTargetRetrieval;
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
+    //   java.lang.reflect.GenericSignatureFormatError: Signature Parse error: expected '<' or ';' but got .
+    //   	Remaining input: .AdornedTargetRetrieval;
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.getOrDeduceTypes(DefinitionsParser.java:121)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseMockBeanAnnotation(DefinitionsParser.java:79)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parseElement$1(DefinitionsParser.java:72)
+    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:183)
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:602)
+    //       at org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator.tryAdvance(TypeMappedAnnotations.java:569)
+    //       at java.base/java.util.Spliterator.forEachRemaining(Spliterator.java:326)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:150)
+    //       at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:173)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:497)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parseElement(DefinitionsParser.java:72)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.lambda$parse$0(DefinitionsParser.java:65)
+    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:706)
+    //       at org.springframework.util.ReflectionUtils.doWithFields(ReflectionUtils.java:685)
+    //       at org.springframework.boot.test.mock.mockito.DefinitionsParser.parse(DefinitionsParser.java:65)
+    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.parseDefinitions(MockitoContextCustomizerFactory.java:44)
+    //       at org.springframework.boot.test.mock.mockito.MockitoContextCustomizerFactory.createContextCustomizer(MockitoContextCustomizerFactory.java:39)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.getContextCustomizers(AbstractTestContextBootstrapper.java:402)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:374)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildMergedContextConfiguration(AbstractTestContextBootstrapper.java:291)
+    //       at org.springframework.test.context.support.AbstractTestContextBootstrapper.buildTestContext(AbstractTestContextBootstrapper.java:107)
+    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:137)
+    //       at org.springframework.test.context.TestContextManager.<init>(TestContextManager.java:122)
+    //       at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:195)
+    //       at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1655)
+    //       at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:484)
+    //       at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+    //       at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:913)
+    //       at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+    //       at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:578)
+    //   See https://diff.blue/R026 to resolve this issue.
+
+    // Arrange
+    PersistencePackage persistencePackage = new PersistencePackage();
+    Entity entity = new Entity();
+
+    // Act
+    adornedTargetListPersistenceModule.new AdornedTargetRetrieval(persistencePackage, entity, new AdornedTargetList());
+
   }
 
   /**
@@ -233,6 +432,36 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
 
   /**
    * Test {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsCompatible2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1497 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AdornedTargetListPersistenceModule()).isCompatible(OperationType.NONDESTRUCTIVEREMOVE);
+  }
+
+  /**
+   * Test {@link AdornedTargetListPersistenceModule#isCompatible(OperationType)}.
    * <ul>
    *   <li>Given {@link AdornedTargetListPersistenceModule} (default
    * constructor).</li>
@@ -291,6 +520,43 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
 
     // Assert that nothing has changed
     assertTrue(properties.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#extractProperties(Class[], Map, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testExtractProperties2() throws NumberFormatException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass931 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
+    Class<Object> forNameResult = Object.class;
+    HashMap<MergedPropertyType, Map<String, FieldMetadata>> mergedProperties = new HashMap<>();
+
+    // Act
+    adornedTargetListPersistenceModule2.extractProperties(new Class[]{forNameResult}, mergedProperties,
+        new ArrayList<>());
   }
 
   /**
@@ -506,6 +772,43 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
   /**
    * Test
    * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetBasicFilterMappings() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1436 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+
+    // Act
+    adornedTargetListPersistenceModule2.getBasicFilterMappings(persistencePerspective, cto, new HashMap<>(),
+        "java.lang.Class");
+  }
+
+  /**
+   * Test
+   * {@link AdornedTargetListPersistenceModule#getBasicFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, String)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()}.</li>
    *   <li>Then calls {@link CriteriaTransferObject#getCriteriaMap()}.</li>
@@ -628,6 +931,44 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
     assertTrue(getResult2.getSpecialFilterValues().isEmpty());
     assertTrue(getResult.isNullsLast());
     assertTrue(getResult2.isNullsLast());
+  }
+
+  /**
+   * Test
+   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#getAdornedTargetFilterMappings(PersistencePerspective, CriteriaTransferObject, Map, AdornedTargetList)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAdornedTargetFilterMappings2() throws ClassNotFoundException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1372 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
+    PersistencePerspective persistencePerspective = new PersistencePerspective();
+    CriteriaTransferObject cto = new CriteriaTransferObject();
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+
+    // Act
+    adornedTargetListPersistenceModule2.getAdornedTargetFilterMappings(persistencePerspective, cto, mergedProperties,
+        new AdornedTargetList());
   }
 
   /**
@@ -788,6 +1129,78 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
 
   /**
    * Test
+   * {@link AdornedTargetListPersistenceModule#createPopulatedAdornedTargetInstance(AdornedTargetList, Entity)}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#createPopulatedAdornedTargetInstance(AdornedTargetList, Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreatePopulatedAdornedTargetInstance()
+      throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException,
+      NumberFormatException, InvocationTargetException, FieldNotAvailableException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass885 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    // Act
+    adornedTargetListPersistenceModule2.createPopulatedAdornedTargetInstance(adornedTargetList, new Entity());
+  }
+
+  /**
+   * Test
+   * {@link AdornedTargetListPersistenceModule#updateMergedProperties(PersistencePackage, Map)}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#updateMergedProperties(PersistencePackage, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUpdateMergedProperties() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1574 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act
+    adornedTargetListPersistenceModule2.updateMergedProperties(persistencePackage, new HashMap<>());
+  }
+
+  /**
+   * Test
    * {@link AdornedTargetListPersistenceModule#updateMergedProperties(PersistencePackage, Map)}.
    * <ul>
    *   <li>Then calls
@@ -813,6 +1226,40 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
     // Assert
     verify(persistencePackage).getCeilingEntityFullyQualifiedClassname();
     verify(persistencePackage).getPersistencePerspective();
+  }
+
+  /**
+   * Test {@link AdornedTargetListPersistenceModule#add(PersistencePackage)} with
+   * {@code persistencePackage}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#add(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddWithPersistencePackage() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass853 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
+
+    // Act
+    adornedTargetListPersistenceModule2.add(new PersistencePackage());
   }
 
   /**
@@ -850,6 +1297,40 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
     assertThrows(SecurityServiceException.class, () -> adornedTargetListPersistenceModule.add(persistencePackage));
     verify(adornedTargetList).getMutable();
     verify(adornedTargetList).setSortField(isNull());
+  }
+
+  /**
+   * Test {@link AdornedTargetListPersistenceModule#update(PersistencePackage)}
+   * with {@code persistencePackage}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#update(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUpdateWithPersistencePackage() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1542 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
+
+    // Act
+    adornedTargetListPersistenceModule2.update(new PersistencePackage());
   }
 
   /**
@@ -940,6 +1421,39 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
     verify(entity).findProperty(eq("Linked Object Path.Linked Id Property"));
     verify(persistencePerspective).getPersistencePerspectiveItems();
     verify(property).getValue();
+  }
+
+  /**
+   * Test {@link AdornedTargetListPersistenceModule#remove(PersistencePackage)}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#remove(PersistencePackage)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemove() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1510 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
+
+    // Act
+    adornedTargetListPersistenceModule2.remove(new PersistencePackage());
   }
 
   /**
@@ -1080,5 +1594,78 @@ public class AdornedTargetListPersistenceModuleDiffblueTest {
         isA(String[].class), isA(String[].class), isNull(), eq(""));
     verify(persistenceManager).getDynamicEntityDao();
     verify(persistenceManager).getPolymorphicEntities(eq("Adorned Target Entity Classname"));
+  }
+
+  /**
+   * Test
+   * {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
+   * with {@code persistencePackage}, {@code adornedTargetList}, {@code cto}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, AdornedTargetList, CriteriaTransferObject)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFetchWithPersistencePackageAdornedTargetListCto2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1259 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
+    PersistencePackage persistencePackage = new PersistencePackage();
+    AdornedTargetList adornedTargetList = new AdornedTargetList();
+
+    // Act
+    adornedTargetListPersistenceModule2.fetch(persistencePackage, adornedTargetList, new CriteriaTransferObject());
+  }
+
+  /**
+   * Test
+   * {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, CriteriaTransferObject)}
+   * with {@code persistencePackage}, {@code cto}.
+   * <p>
+   * Method under test:
+   * {@link AdornedTargetListPersistenceModule#fetch(PersistencePackage, CriteriaTransferObject)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFetchWithPersistencePackageCto() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1324 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule adornedTargetListPersistenceModule;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdornedTargetListPersistenceModule adornedTargetListPersistenceModule2 = new AdornedTargetListPersistenceModule();
+    PersistencePackage persistencePackage = new PersistencePackage();
+
+    // Act
+    adornedTargetListPersistenceModule2.fetch(persistencePackage, new CriteriaTransferObject());
   }
 }

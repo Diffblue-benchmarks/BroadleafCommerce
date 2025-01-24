@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
@@ -22,10 +5,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.RestrictionType;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class FilterAndSortCriteriaDiffblueTest {
@@ -534,6 +521,54 @@ public class FilterAndSortCriteriaDiffblueTest {
     assertTrue(actualFilterAndSortCriteria.filterValues.isEmpty());
     assertTrue(actualFilterAndSortCriteria.getSortAscending());
     assertTrue(actualFilterAndSortCriteria.isNullsLast());
+  }
+
+  /**
+   * Test {@link FilterAndSortCriteria#clearFilterValues()}.
+   * <p>
+   * Method under test: {@link FilterAndSortCriteria#clearFilterValues()}
+   */
+  @Test
+  public void testClearFilterValues() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new FilterAndSortCriteria("42")).clearFilterValues();
+  }
+
+  /**
+   * Test {@link FilterAndSortCriteria#setFilterValue(String)}.
+   * <p>
+   * Method under test: {@link FilterAndSortCriteria#setFilterValue(String)}
+   */
+  @Test
+  public void testSetFilterValue() {
+    // Arrange
+    doNothing().when(filterAndSortCriteria).setFilterValue(Mockito.<String>any());
+
+    // Act
+    filterAndSortCriteria.setFilterValue("42");
+
+    // Assert
+    verify(filterAndSortCriteria).setFilterValue(eq("42"));
+  }
+
+  /**
+   * Test {@link FilterAndSortCriteria#addFilterValue(String)}.
+   * <p>
+   * Method under test: {@link FilterAndSortCriteria#addFilterValue(String)}
+   */
+  @Test
+  public void testAddFilterValue() {
+    // Arrange
+    doNothing().when(filterAndSortCriteria).addFilterValue(Mockito.<String>any());
+
+    // Act
+    filterAndSortCriteria.addFilterValue("42");
+
+    // Assert
+    verify(filterAndSortCriteria).addFilterValue(eq("42"));
   }
 
   /**

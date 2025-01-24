@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -31,6 +31,25 @@ public class ConfigurationOnlyStateDiffblueTest {
   public void testGetState() {
     // Arrange, Act and Assert
     assertFalse(ConfigurationOnlyState.getState().isConfigurationOnly());
+  }
+
+  /**
+   * Test {@link ConfigurationOnlyState#setState(ConfigurationOnlyState)}.
+   * <p>
+   * Method under test:
+   * {@link ConfigurationOnlyState#setState(ConfigurationOnlyState)}
+   */
+  @Test
+  public void testSetState() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    ConfigurationOnlyState state = new ConfigurationOnlyState();
+    state.setConfigurationOnly(true);
+
+    // Act
+    ConfigurationOnlyState.setState(state);
   }
 
   /**

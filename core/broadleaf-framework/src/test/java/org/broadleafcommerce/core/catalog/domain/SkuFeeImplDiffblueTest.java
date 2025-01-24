@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -33,9 +16,53 @@ import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.service.type.SkuFeeType;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SkuFeeImplDiffblueTest {
+  @Autowired
+  private SkuFeeImpl skuFeeImpl;
+
+  /**
+   * Test {@link SkuFeeImpl#getAmount()}.
+   * <p>
+   * Method under test: {@link SkuFeeImpl#getAmount()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAmount() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass524 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuFeeImpl skuFeeImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SkuFeeImpl()).getAmount();
+  }
+
   /**
    * Test {@link SkuFeeImpl#getAmount()}.
    * <ul>
@@ -159,6 +186,38 @@ public class SkuFeeImplDiffblueTest {
     verify(currency).getCurrencyCode();
     verify(feeType).getType();
     assertEquals(amount, actualAmount);
+  }
+
+  /**
+   * Test {@link SkuFeeImpl#setAmount(Money)}.
+   * <p>
+   * Method under test: {@link SkuFeeImpl#setAmount(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetAmount() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass546 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuFeeImpl skuFeeImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SkuFeeImpl skuFeeImpl2 = new SkuFeeImpl();
+
+    // Act
+    skuFeeImpl2.setAmount(new Money());
   }
 
   /**
@@ -608,6 +667,35 @@ public class SkuFeeImplDiffblueTest {
 
   /**
    * Test {@link SkuFeeImpl#getFeeType()}.
+   * <p>
+   * Method under test: {@link SkuFeeImpl#getFeeType()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFeeType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass535 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuFeeImpl skuFeeImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SkuFeeImpl()).getFeeType();
+  }
+
+  /**
+   * Test {@link SkuFeeImpl#getFeeType()}.
    * <ul>
    *   <li>Given {@link SkuFeeImpl} (default constructor).</li>
    * </ul>
@@ -651,6 +739,35 @@ public class SkuFeeImplDiffblueTest {
 
   /**
    * Test {@link SkuFeeImpl#setFeeType(SkuFeeType)}.
+   * <p>
+   * Method under test: {@link SkuFeeImpl#setFeeType(SkuFeeType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetFeeType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass562 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuFeeImpl skuFeeImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SkuFeeImpl()).setFeeType(SkuFeeType.FULFILLMENT);
+  }
+
+  /**
+   * Test {@link SkuFeeImpl#setFeeType(SkuFeeType)}.
    * <ul>
    *   <li>Given {@link SkuFeeImpl} (default constructor) Amount is
    * {@link Money#Money()}.</li>
@@ -683,6 +800,36 @@ public class SkuFeeImplDiffblueTest {
     // Assert
     assertNull(skuFeeImpl.feeType);
     assertNull(skuFeeImpl.getFeeType());
+  }
+
+  /**
+   * Test {@link SkuFeeImpl#setFeeType(SkuFeeType)}.
+   * <ul>
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then {@link SkuFeeImpl} (default constructor) FeeType FriendlyType is
+   * {@code Friendly Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SkuFeeImpl#setFeeType(SkuFeeType)}
+   */
+  @Test
+  public void testSetFeeType_givenType_thenSkuFeeImplFeeTypeFriendlyTypeIsFriendlyType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    SkuFeeImpl skuFeeImpl = new SkuFeeImpl();
+    SkuFeeType feeType = mock(SkuFeeType.class);
+    when(feeType.getType()).thenReturn("Type");
+
+    // Act
+    skuFeeImpl.setFeeType(feeType);
+
+    // Assert
+    verify(feeType).getType();
+    SkuFeeType feeType2 = skuFeeImpl.getFeeType();
+    assertEquals("Friendly Type", feeType2.getFriendlyType());
+    assertEquals("Type", feeType2.getType());
+    assertEquals("Type", skuFeeImpl.feeType);
   }
 
   /**
@@ -1000,5 +1147,34 @@ public class SkuFeeImplDiffblueTest {
     assertNull(actualSkuFeeImpl.getCurrency());
     assertNull(actualSkuFeeImpl.getAmount());
     assertFalse(actualSkuFeeImpl.getTaxable());
+  }
+
+  /**
+   * Test new {@link SkuFeeImpl} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of {@link SkuFeeImpl}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewSkuFeeImpl2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass523 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.domain.SkuFeeImpl skuFeeImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new SkuFeeImpl();
   }
 }

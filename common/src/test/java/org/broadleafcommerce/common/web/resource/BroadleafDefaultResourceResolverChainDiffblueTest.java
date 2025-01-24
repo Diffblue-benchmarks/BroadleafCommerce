@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -41,9 +41,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.servlet.resource.ResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolverChain;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {BroadleafDefaultResourceResolverChain.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class BroadleafDefaultResourceResolverChainDiffblueTest {
   @Autowired
   private BroadleafDefaultResourceResolverChain broadleafDefaultResourceResolverChain;
@@ -53,6 +53,25 @@ public class BroadleafDefaultResourceResolverChainDiffblueTest {
 
   @MockBean
   private ResourceResolver resourceResolver;
+
+  /**
+   * Test
+   * {@link BroadleafDefaultResourceResolverChain#BroadleafDefaultResourceResolverChain(List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BroadleafDefaultResourceResolverChain#BroadleafDefaultResourceResolverChain(List)}
+   */
+  @Test
+  public void testNewBroadleafDefaultResourceResolverChain_whenArrayList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    new BroadleafDefaultResourceResolverChain(new ArrayList<>());
+  }
 
   /**
    * Test

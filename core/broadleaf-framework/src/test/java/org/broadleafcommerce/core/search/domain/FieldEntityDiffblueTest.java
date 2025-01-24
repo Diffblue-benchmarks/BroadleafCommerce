@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.search.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -97,6 +80,20 @@ public class FieldEntityDiffblueTest {
   }
 
   /**
+   * Test {@link FieldEntity#addAditionalLookupType(String)}.
+   * <p>
+   * Method under test: {@link FieldEntity#addAditionalLookupType(String)}
+   */
+  @Test
+  public void testAddAditionalLookupType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    FieldEntity.CATEGORY.addAditionalLookupType("Additional Lookup Type");
+  }
+
+  /**
    * Test {@link FieldEntity#getAdditionalLookupTypes()}.
    * <p>
    * Method under test: {@link FieldEntity#getAdditionalLookupTypes()}
@@ -108,6 +105,28 @@ public class FieldEntityDiffblueTest {
 
     // Act and Assert
     assertEquals(fieldEntity.additionalLookupTypes, fieldEntity.getAdditionalLookupTypes());
+  }
+
+  /**
+   * Test {@link FieldEntity#getAllLookupTypes()}.
+   * <ul>
+   *   <li>Given {@link FieldEntity#CATEGORY}.</li>
+   *   <li>Then return size is four.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FieldEntity#getAllLookupTypes()}
+   */
+  @Test
+  public void testGetAllLookupTypes_givenCategory_thenReturnSizeIsFour() {
+    // Arrange and Act
+    List<String> actualAllLookupTypes = FieldEntity.CATEGORY.getAllLookupTypes();
+
+    // Assert
+    assertEquals(4, actualAllLookupTypes.size());
+    assertEquals("Additional Lookup Type", actualAllLookupTypes.get(0));
+    assertEquals("Additional Lookup Type", actualAllLookupTypes.get(2));
+    assertEquals("CATEGORY", actualAllLookupTypes.get(1));
+    assertEquals("CATEGORY", actualAllLookupTypes.get(3));
   }
 
   /**

@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -20,9 +20,34 @@ package org.broadleafcommerce.common.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {DayOfWeekType.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class DayOfWeekTypeDiffblueTest {
+  @Autowired
+  private DayOfWeekType dayOfWeekType;
+
+  /**
+   * Test {@link DayOfWeekType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link DayOfWeekType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    DayOfWeekType actualInstance = DayOfWeekType.getInstance("Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+  }
+
   /**
    * Test getters and setters.
    * <p>
@@ -42,6 +67,36 @@ public class DayOfWeekTypeDiffblueTest {
     // Assert
     assertNull(actualFriendlyType);
     assertNull(actualDayOfWeekType.getType());
+  }
+
+  /**
+   * Test {@link DayOfWeekType#DayOfWeekType(String, String)}.
+   * <ul>
+   *   <li>When {@code Cannot add the type: (}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DayOfWeekType#DayOfWeekType(String, String)}
+   */
+  @Test
+  public void testNewDayOfWeekType_whenCannotAddTheType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new DayOfWeekType("Cannot add the type: (", "Friendly Type"));
+
+  }
+
+  /**
+   * Test {@link DayOfWeekType#DayOfWeekType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DayOfWeekType#DayOfWeekType(String, String)}
+   */
+  @Test
+  public void testNewDayOfWeekType_whenType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new DayOfWeekType("Type", "Friendly Type"));
+
   }
 
   /**

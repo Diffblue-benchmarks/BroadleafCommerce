@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.search.service;
 
 import static org.junit.Assert.assertEquals;
@@ -49,11 +32,24 @@ import org.broadleafcommerce.core.search.domain.SearchFacetImpl;
 import org.broadleafcommerce.core.search.domain.SearchFacetRange;
 import org.broadleafcommerce.core.search.domain.SearchFacetRangeImpl;
 import org.broadleafcommerce.core.search.domain.SearchFacetResultDTO;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.mvel2.util.InternalNumber;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class DatabaseSearchServiceImplDiffblueTest {
+  @Autowired
+  private DatabaseSearchServiceImpl databaseSearchServiceImpl;
+
   /**
    * Test
    * {@link DatabaseSearchServiceImpl#findExplicitSearchResultsByCategory(Category, SearchCriteria)}.
@@ -76,6 +72,41 @@ public class DatabaseSearchServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link DatabaseSearchServiceImpl#findExplicitSearchResultsByCategory(Category, SearchCriteria)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#findExplicitSearchResultsByCategory(Category, SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindExplicitSearchResultsByCategory2() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1905 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    CategoryImpl category = new CategoryImpl();
+
+    // Act
+    databaseSearchServiceImpl2.findExplicitSearchResultsByCategory(category, new SearchCriteria());
+  }
+
+  /**
+   * Test
    * {@link DatabaseSearchServiceImpl#findSearchResultsByCategoryAndQuery(Category, String, SearchCriteria)}.
    * <p>
    * Method under test:
@@ -92,6 +123,76 @@ public class DatabaseSearchServiceImplDiffblueTest {
     // Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> databaseSearchServiceImpl.findSearchResultsByCategoryAndQuery(category, "Query", new SearchCriteria()));
+  }
+
+  /**
+   * Test
+   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategoryAndQuery(Category, String, SearchCriteria)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategoryAndQuery(Category, String, SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindSearchResultsByCategoryAndQuery2() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1979 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    CategoryImpl category = new CategoryImpl();
+
+    // Act
+    databaseSearchServiceImpl2.findSearchResultsByCategoryAndQuery(category, "Query", new SearchCriteria());
+  }
+
+  /**
+   * Test
+   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#findSearchResultsByCategory(Category, SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindSearchResultsByCategory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1949 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    CategoryImpl category = new CategoryImpl();
+
+    // Act
+    databaseSearchServiceImpl2.findSearchResultsByCategory(category, new SearchCriteria());
   }
 
   /**
@@ -163,6 +264,40 @@ public class DatabaseSearchServiceImplDiffblueTest {
   /**
    * Test
    * {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindSearchResultsByQuery() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2009 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+
+    // Act
+    databaseSearchServiceImpl2.findSearchResultsByQuery("Query", new SearchCriteria());
+  }
+
+  /**
+   * Test
+   * {@link DatabaseSearchServiceImpl#findSearchResultsByQuery(String, SearchCriteria)}.
    * <ul>
    *   <li>Given {@code ,}.</li>
    *   <li>Then throw {@link UnsupportedOperationException}.</li>
@@ -223,6 +358,39 @@ public class DatabaseSearchServiceImplDiffblueTest {
     verify(searchCriteria, atLeast(1)).getSortQuery();
     verify(searchCriteria).setFilterCriteria(isA(Map.class));
     verify(searchCriteria).setSortQuery(eq(""));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#findSearchResults(SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindSearchResults() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1935 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+
+    // Act
+    databaseSearchServiceImpl2.findSearchResults(new SearchCriteria());
   }
 
   /**
@@ -290,6 +458,135 @@ public class DatabaseSearchServiceImplDiffblueTest {
     verify(searchCriteria, atLeast(1)).getSortQuery();
     verify(searchCriteria).setFilterCriteria(isA(Map.class));
     verify(searchCriteria).setSortQuery(eq(""));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getSearchFacets()}.
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#getSearchFacets()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSearchFacets() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2147 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DatabaseSearchServiceImpl()).getSearchFacets();
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getSearchFacets(Category)} with
+   * {@code Category}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#getSearchFacets(Category)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSearchFacetsWithCategory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2148 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+
+    // Act
+    databaseSearchServiceImpl2.getSearchFacets(new CategoryImpl());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getCategoryFacets(Category)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#getCategoryFacets(Category)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCategoryFacets() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2036 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+
+    // Act
+    databaseSearchServiceImpl2.getCategoryFacets(new CategoryImpl());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#setQualifiedKeys(SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetQualifiedKeys() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2196 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+
+    // Act
+    databaseSearchServiceImpl2.setQualifiedKeys(new SearchCriteria());
   }
 
   /**
@@ -418,6 +715,36 @@ public class DatabaseSearchServiceImplDiffblueTest {
 
   /**
    * Test {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDatabaseQualifiedFieldName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2066 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DatabaseSearchServiceImpl()).getDatabaseQualifiedFieldName("Qualified Field Name");
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getDatabaseQualifiedFieldName(String)}.
    * <ul>
    *   <li>Then return {@code productAttributes}.</li>
    * </ul>
@@ -468,6 +795,40 @@ public class DatabaseSearchServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertEquals("defaultSku", (new DatabaseSearchServiceImpl()).getDatabaseQualifiedFieldName("defaultSku"));
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#setActiveFacets(List, SearchCriteria)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetActiveFacets() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2178 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+    ArrayList<SearchFacetDTO> facets = new ArrayList<>();
+
+    // Act
+    databaseSearchServiceImpl2.setActiveFacets(facets, new SearchCriteria());
   }
 
   /**
@@ -589,6 +950,39 @@ public class DatabaseSearchServiceImplDiffblueTest {
 
   /**
    * Test {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildSearchFacetDtos() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1900 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+
+    // Act
+    databaseSearchServiceImpl2.buildSearchFacetDtos(new ArrayList<>());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#buildSearchFacetDtos(List)}.
    * <ul>
    *   <li>Then return size is one.</li>
    * </ul>
@@ -668,6 +1062,39 @@ public class DatabaseSearchServiceImplDiffblueTest {
 
   /**
    * Test {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFacetValues() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2096 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+
+    // Act
+    databaseSearchServiceImpl2.getFacetValues(new SearchFacetImpl());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getFacetValues(SearchFacet)}.
    * <ul>
    *   <li>Given {@code true}.</li>
    *   <li>Then return size is one.</li>
@@ -713,6 +1140,39 @@ public class DatabaseSearchServiceImplDiffblueTest {
     assertNull(getResult.getMinValue());
     assertFalse(getResult.isActive());
     assertSame(facet, getResult.getFacet());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#getRangeFacetValues(SearchFacet)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRangeFacetValues() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2130 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+
+    // Act
+    databaseSearchServiceImpl2.getRangeFacetValues(new SearchFacetImpl());
   }
 
   /**
@@ -848,6 +1308,39 @@ public class DatabaseSearchServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}.
+   * <p>
+   * Method under test:
+   * {@link DatabaseSearchServiceImpl#getMatchFacetValues(SearchFacet)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetMatchFacetValues() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2113 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DatabaseSearchServiceImpl databaseSearchServiceImpl2 = new DatabaseSearchServiceImpl();
+
+    // Act
+    databaseSearchServiceImpl2.getMatchFacetValues(new SearchFacetImpl());
+  }
+
+  /**
    * Test {@link DatabaseSearchServiceImpl#isActive()}.
    * <p>
    * Method under test: {@link DatabaseSearchServiceImpl#isActive()}
@@ -856,5 +1349,34 @@ public class DatabaseSearchServiceImplDiffblueTest {
   public void testIsActive() {
     // Arrange, Act and Assert
     assertTrue((new DatabaseSearchServiceImpl()).isActive());
+  }
+
+  /**
+   * Test {@link DatabaseSearchServiceImpl#getCache()}.
+   * <p>
+   * Method under test: {@link DatabaseSearchServiceImpl#getCache()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2035 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.DatabaseSearchServiceImpl databaseSearchServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DatabaseSearchServiceImpl()).getCache();
   }
 }

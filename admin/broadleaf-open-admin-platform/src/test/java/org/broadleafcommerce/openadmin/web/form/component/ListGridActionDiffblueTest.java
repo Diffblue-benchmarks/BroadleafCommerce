@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.form.component;
 
 import static org.junit.Assert.assertEquals;
@@ -233,6 +216,21 @@ public class ListGridActionDiffblueTest {
   /**
    * Test {@link ListGridAction#getButtonClass()}.
    * <ul>
+   *   <li>Given {@link DefaultListGridActions#ADD}.</li>
+   *   <li>Then return {@code sub-list-grid-add}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGridAction#getButtonClass()}
+   */
+  @Test
+  public void testGetButtonClass_givenAdd_thenReturnSubListGridAdd() {
+    // Arrange, Act and Assert
+    assertEquals("sub-list-grid-add", DefaultListGridActions.ADD.getButtonClass());
+  }
+
+  /**
+   * Test {@link ListGridAction#getButtonClass()}.
+   * <ul>
    *   <li>Then return {@code all-capable}.</li>
    * </ul>
    * <p>
@@ -374,5 +372,33 @@ public class ListGridActionDiffblueTest {
 
     // Act and Assert
     assertTrue(listGridAction.getIsConfirmEnabled());
+  }
+
+  /**
+   * Test {@link ListGridAction#clone()}.
+   * <p>
+   * Method under test: {@link ListGridAction#clone()}
+   */
+  @Test
+  public void testClone() {
+    // Arrange and Act
+    ListGridAction actualCloneResult = DefaultListGridActions.ADD.clone();
+
+    // Assert
+    assertEquals("", actualCloneResult.getActionTargetEntity());
+    assertEquals("", actualCloneResult.getConfirmEnabledText());
+    assertEquals("/add", actualCloneResult.getUrlPostfix());
+    assertEquals("Add", actualCloneResult.getDisplayText());
+    assertEquals("fa fa-plus", actualCloneResult.getIconClass());
+    assertEquals("sub-list-grid-add", actualCloneResult.getButtonClass());
+    assertEquals("sub-list-grid-add", actualCloneResult.buttonClass);
+    assertNull(actualCloneResult.getActionUrlOverride());
+    assertFalse(actualCloneResult.getAllCapable());
+    assertFalse(actualCloneResult.getForListGridReadOnly());
+    assertFalse(actualCloneResult.getIsConfirmEnabled());
+    assertFalse(actualCloneResult.getRequiresNonEmptyGrid());
+    assertFalse(actualCloneResult.getSingleActionOnly());
+    assertFalse(actualCloneResult.isConfirmEnabled);
+    assertEquals(ListGridAction.ADD, actualCloneResult.getActionId());
   }
 }

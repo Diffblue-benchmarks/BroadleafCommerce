@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -21,7 +21,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class TQRestrictionDiffblueTest {
@@ -87,5 +94,23 @@ public class TQRestrictionDiffblueTest {
 
     // Act and Assert
     assertSame(tqRestriction, tqRestriction.addChildRestriction(new TQRestriction(TQRestriction.Mode.OR)));
+  }
+
+  /**
+   * Test {@link TQRestriction#toQl(String, Map)}.
+   * <p>
+   * Method under test: {@link TQRestriction#toQl(String, Map)}
+   */
+  @Test
+  public void testToQl() {
+    // Arrange
+    when(tQRestriction.toQl(Mockito.<String>any(), Mockito.<Map<String, Object>>any())).thenReturn("Ql");
+
+    // Act
+    String actualToQlResult = tQRestriction.toQl("Parameter Name", new HashMap<>());
+
+    // Assert
+    verify(tQRestriction).toQl(eq("Parameter Name"), isA(Map.class));
+    assertEquals("Ql", actualToQlResult);
   }
 }

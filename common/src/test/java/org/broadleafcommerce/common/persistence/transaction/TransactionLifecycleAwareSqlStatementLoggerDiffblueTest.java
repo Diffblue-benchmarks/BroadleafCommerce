@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -26,9 +26,18 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.hibernate.engine.jdbc.internal.Formatter;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {TransactionLifecycleAwareSqlStatementLogger.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class TransactionLifecycleAwareSqlStatementLoggerDiffblueTest {
+  @Autowired
+  private TransactionLifecycleAwareSqlStatementLogger transactionLifecycleAwareSqlStatementLogger;
+
   /**
    * Test
    * {@link TransactionLifecycleAwareSqlStatementLogger#TransactionLifecycleAwareSqlStatementLogger()}.
@@ -99,5 +108,25 @@ public class TransactionLifecycleAwareSqlStatementLoggerDiffblueTest {
 
     // Assert
     verify(formatter).format(eq("MD"));
+  }
+
+  /**
+   * Test
+   * {@link TransactionLifecycleAwareSqlStatementLogger#logStatement(String, Formatter)}
+   * with {@code statement}, {@code formatter}.
+   * <ul>
+   *   <li>When {@code MD}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link TransactionLifecycleAwareSqlStatementLogger#logStatement(String, Formatter)}
+   */
+  @Test
+  public void testLogStatementWithStatementFormatter_whenMd() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    transactionLifecycleAwareSqlStatementLogger.logStatement("MD", mock(Formatter.class));
   }
 }

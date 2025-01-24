@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -20,6 +20,7 @@ package org.broadleafcommerce.common.security.util;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class ServerCookieDiffblueTest {
@@ -261,6 +262,57 @@ public class ServerCookieDiffblueTest {
 
     // Assert
     assertEquals("fooName=\"\"; Version=1; Max-Age=0; Expires=Thu, 01-Jan-1970 00:00:10 GMT", headerBuf.toString());
+  }
+
+  /**
+   * Test
+   * {@link ServerCookie#appendCookieValue(StringBuffer, int, String, String, String, String, String, int, boolean, boolean)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ServerCookie#appendCookieValue(StringBuffer, int, String, String, String, String, String, int, boolean, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAppendCookieValue_whenNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.security.util.ServerCookie.appendCookieValue(ServerCookie.java:148)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    ServerCookie.appendCookieValue(null, 1, "Name", "42", "Path", "Domain", "Comment", 3, true, true);
+  }
+
+  /**
+   * Test
+   * {@link ServerCookie#appendCookieValue(StringBuffer, int, String, String, String, String, String, int, boolean, boolean)}.
+   * <ul>
+   *   <li>When one.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ServerCookie#appendCookieValue(StringBuffer, int, String, String, String, String, String, int, boolean, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAppendCookieValue_whenOne() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Method may be time-sensitive.
+    //   Diffblue Cover was only able to write tests that are time-sensitive.
+    //   The assertions don't pass when run at an alternate date, time, and
+    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
+    //   that the time can be parameterized during testing.
+    //   See Working with code R031 (https://diff.blue/R031) for details.
+
+    // Arrange and Act
+    ServerCookie.appendCookieValue(new StringBuffer("foo"), 1, "Name", "42", "Path", "Domain", "Comment", 3, true,
+        true);
   }
 
   /**

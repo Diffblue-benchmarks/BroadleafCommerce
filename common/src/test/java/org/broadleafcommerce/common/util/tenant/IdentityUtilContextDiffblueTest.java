@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -20,9 +20,31 @@ package org.broadleafcommerce.common.util.tenant;
 import static org.junit.Assert.assertSame;
 import org.broadleafcommerce.common.site.domain.Site;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class IdentityUtilContextDiffblueTest {
+  /**
+   * Test {@link IdentityUtilContext#getUtilContext()}.
+   * <p>
+   * Method under test: {@link IdentityUtilContext#getUtilContext()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetUtilContext() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.util.EmptyStackException
+    //       at java.base/java.util.Stack.peek(Stack.java:102)
+    //       at org.broadleafcommerce.common.util.tenant.IdentityUtilContext.getUtilContext(IdentityUtilContext.java:41)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    IdentityUtilContext.getUtilContext();
+  }
+
   /**
    * Test getters and setters.
    * <p>

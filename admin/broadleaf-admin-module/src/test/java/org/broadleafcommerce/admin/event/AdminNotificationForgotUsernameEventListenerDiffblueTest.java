@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Admin Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.admin.event;
 
 import static org.junit.Assert.assertEquals;
@@ -27,9 +10,57 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.openadmin.server.security.event.AdminForgotUsernameEvent;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
+    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminNotificationForgotUsernameEventListenerDiffblueTest {
+  @Autowired
+  private AdminNotificationForgotUsernameEventListener adminNotificationForgotUsernameEventListener;
+
+  /**
+   * Test
+   * {@link AdminNotificationForgotUsernameEventListener#handleApplicationEvent(AdminForgotUsernameEvent)}
+   * with {@code AdminForgotUsernameEvent}.
+   * <p>
+   * Method under test:
+   * {@link AdminNotificationForgotUsernameEventListener#handleApplicationEvent(AdminForgotUsernameEvent)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandleApplicationEventWithAdminForgotUsernameEvent() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.event;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass111 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.event.AdminNotificationForgotUsernameEventListener adminNotificationForgotUsernameEventListener;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminNotificationForgotUsernameEventListener adminNotificationForgotUsernameEventListener2 = new AdminNotificationForgotUsernameEventListener();
+
+    // Act
+    adminNotificationForgotUsernameEventListener2
+        .handleApplicationEvent(new AdminForgotUsernameEvent("Source", "42 Main St", "6625550144", new ArrayList<>()));
+  }
+
   /**
    * Test
    * {@link AdminNotificationForgotUsernameEventListener#createContext(AdminForgotUsernameEvent)}.
@@ -56,6 +87,41 @@ public class AdminNotificationForgotUsernameEventListenerDiffblueTest {
     assertTrue(getResult instanceof List);
     assertTrue(((List<Object>) getResult).isEmpty());
     assertSame(activeUsernames, getResult);
+  }
+
+  /**
+   * Test
+   * {@link AdminNotificationForgotUsernameEventListener#createContext(AdminForgotUsernameEvent)}.
+   * <p>
+   * Method under test:
+   * {@link AdminNotificationForgotUsernameEventListener#createContext(AdminForgotUsernameEvent)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateContext2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.event;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass81 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.event.AdminNotificationForgotUsernameEventListener adminNotificationForgotUsernameEventListener;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminNotificationForgotUsernameEventListener adminNotificationForgotUsernameEventListener2 = new AdminNotificationForgotUsernameEventListener();
+
+    // Act
+    adminNotificationForgotUsernameEventListener2
+        .createContext(new AdminForgotUsernameEvent("Source", "42 Main St", "6625550144", new ArrayList<>()));
   }
 
   /**

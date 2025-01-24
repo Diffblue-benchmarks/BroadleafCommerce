@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.rulebuilder;
 
 import static org.junit.Assert.assertEquals;
@@ -40,6 +23,7 @@ import org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO;
 import org.broadleafcommerce.openadmin.web.rulebuilder.grouping.Group;
 import org.broadleafcommerce.openadmin.web.rulebuilder.service.RuleBuilderFieldService;
 import org.broadleafcommerce.openadmin.web.rulebuilder.statement.Expression;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -454,6 +438,46 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link MVELToDataWrapperTranslator#appendExpression(String, RuleBuilderFieldService, DataDTO, List)}.
+   * <ul>
+   *   <li>When {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link MVELToDataWrapperTranslator#appendExpression(String, RuleBuilderFieldService, DataDTO, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAppendExpression_whenArrayList() throws MVELTranslationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   org.broadleafcommerce.openadmin.web.rulebuilder.MVELTranslationException: Could not parse the MVEL expression to a compatible form for the rules builder (Phrase)
+    //       at org.broadleafcommerce.openadmin.web.rulebuilder.statement.PhraseTranslator.extractComponents(PhraseTranslator.java:254)
+    //       at org.broadleafcommerce.openadmin.web.rulebuilder.statement.PhraseTranslator.createExpression(PhraseTranslator.java:61)
+    //       at org.broadleafcommerce.openadmin.web.rulebuilder.MVELToDataWrapperTranslator.appendExpression(MVELToDataWrapperTranslator.java:203)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    RuleBuilderFieldService fieldService = mock(RuleBuilderFieldService.class);
+
+    DataDTO parentDTO = new DataDTO();
+    parentDTO.setCondition("Condition");
+    parentDTO.setContainedPk(1L);
+    parentDTO.setCreatedFromSubGroup(true);
+    parentDTO.setPk(1L);
+    parentDTO.setPreviousContainedPk(1L);
+    parentDTO.setPreviousPk(1L);
+    parentDTO.setQuantity(1);
+    parentDTO.setRules(new ArrayList<>());
+
+    // Act
+    mVELToDataWrapperTranslator.appendExpression("Phrase", fieldService, parentDTO, new ArrayList<>());
+  }
+
+  /**
    * Test {@link MVELToDataWrapperTranslator#createExpressionDTO(Expression)}.
    * <p>
    * Method under test:
@@ -681,6 +705,131 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
    * Test
    * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
    * <ul>
+   *   <li>Then calls {@link ExpressionDTO#getOperator()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}
+   */
+  @Test
+  public void testPostProcessCriteria_thenCallsGetOperator() {
+    // Arrange
+    DataDTO parentDTO = mock(DataDTO.class);
+    doNothing().when(parentDTO).setCondition(Mockito.<String>any());
+    doNothing().when(parentDTO).setContainedPk(Mockito.<Long>any());
+    doNothing().when(parentDTO).setCreatedFromSubGroup(anyBoolean());
+    doNothing().when(parentDTO).setPk(Mockito.<Long>any());
+    doNothing().when(parentDTO).setPreviousContainedPk(Mockito.<Long>any());
+    doNothing().when(parentDTO).setPreviousPk(Mockito.<Long>any());
+    doNothing().when(parentDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(parentDTO).setRules(Mockito.<ArrayList<DataDTO>>any());
+    parentDTO.setCondition("Condition");
+    parentDTO.setContainedPk(1L);
+    parentDTO.setCreatedFromSubGroup(true);
+    parentDTO.setPk(1L);
+    parentDTO.setPreviousContainedPk(1L);
+    parentDTO.setPreviousPk(1L);
+    parentDTO.setQuantity(1);
+    parentDTO.setRules(new ArrayList<>());
+    ExpressionDTO expressionDTO = mock(ExpressionDTO.class);
+    when(expressionDTO.getOperator()).thenReturn("Operator");
+    when(expressionDTO.getId()).thenReturn("42");
+    doNothing().when(expressionDTO).setCondition(Mockito.<String>any());
+    doNothing().when(expressionDTO).setContainedPk(Mockito.<Long>any());
+    doNothing().when(expressionDTO).setCreatedFromSubGroup(anyBoolean());
+    doNothing().when(expressionDTO).setPk(Mockito.<Long>any());
+    doNothing().when(expressionDTO).setPreviousContainedPk(Mockito.<Long>any());
+    doNothing().when(expressionDTO).setPreviousPk(Mockito.<Long>any());
+    doNothing().when(expressionDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(expressionDTO).setRules(Mockito.<ArrayList<DataDTO>>any());
+    doNothing().when(expressionDTO).setId(Mockito.<String>any());
+    doNothing().when(expressionDTO).setOperator(Mockito.<String>any());
+    doNothing().when(expressionDTO).setValue(Mockito.<String>any());
+    expressionDTO.setCondition("42");
+    expressionDTO.setContainedPk(Long.MAX_VALUE);
+    expressionDTO.setCreatedFromSubGroup(true);
+    expressionDTO.setId("org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO");
+    expressionDTO.setOperator("42");
+    expressionDTO.setPk(Long.MAX_VALUE);
+    expressionDTO.setPreviousContainedPk(Long.MAX_VALUE);
+    expressionDTO.setPreviousPk(Long.MAX_VALUE);
+    expressionDTO.setQuantity(Integer.MIN_VALUE);
+    expressionDTO.setRules(new ArrayList<>());
+    expressionDTO.setValue("org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO");
+
+    ArrayList<ExpressionDTO> myCriteriaList = new ArrayList<>();
+    myCriteriaList.add(expressionDTO);
+    ExpressionDTO temp = mock(ExpressionDTO.class);
+    when(temp.getOperator()).thenThrow(new NumberFormatException("42"));
+    when(temp.getId()).thenReturn("42");
+    doNothing().when(temp).setCondition(Mockito.<String>any());
+    doNothing().when(temp).setContainedPk(Mockito.<Long>any());
+    doNothing().when(temp).setCreatedFromSubGroup(anyBoolean());
+    doNothing().when(temp).setPk(Mockito.<Long>any());
+    doNothing().when(temp).setPreviousContainedPk(Mockito.<Long>any());
+    doNothing().when(temp).setPreviousPk(Mockito.<Long>any());
+    doNothing().when(temp).setQuantity(Mockito.<Integer>any());
+    doNothing().when(temp).setRules(Mockito.<ArrayList<DataDTO>>any());
+    doNothing().when(temp).setId(Mockito.<String>any());
+    doNothing().when(temp).setOperator(Mockito.<String>any());
+    doNothing().when(temp).setValue(Mockito.<String>any());
+    temp.setCondition("Condition");
+    temp.setContainedPk(1L);
+    temp.setCreatedFromSubGroup(true);
+    temp.setId("42");
+    temp.setOperator("Operator");
+    temp.setPk(1L);
+    temp.setPreviousContainedPk(1L);
+    temp.setPreviousPk(1L);
+    temp.setQuantity(1);
+    temp.setRules(new ArrayList<>());
+    temp.setValue("42");
+
+    // Act
+    mVELToDataWrapperTranslator.postProcessCriteria(parentDTO, myCriteriaList, temp, SupportedFieldType.UNKNOWN);
+
+    // Assert
+    verify(expressionDTO).setCondition(eq("42"));
+    verify(parentDTO).setCondition(eq("Condition"));
+    verify(temp).setCondition(eq("Condition"));
+    verify(parentDTO).setContainedPk(eq(1L));
+    verify(temp).setContainedPk(eq(1L));
+    verify(expressionDTO).setContainedPk(eq(9223372036854775807L));
+    verify(parentDTO).setCreatedFromSubGroup(eq(true));
+    verify(expressionDTO).setCreatedFromSubGroup(eq(true));
+    verify(temp).setCreatedFromSubGroup(eq(true));
+    verify(parentDTO).setPk(eq(1L));
+    verify(temp).setPk(eq(1L));
+    verify(expressionDTO).setPk(eq(9223372036854775807L));
+    verify(parentDTO).setPreviousContainedPk(eq(1L));
+    verify(temp).setPreviousContainedPk(eq(1L));
+    verify(expressionDTO).setPreviousContainedPk(eq(9223372036854775807L));
+    verify(parentDTO).setPreviousPk(eq(1L));
+    verify(temp).setPreviousPk(eq(1L));
+    verify(expressionDTO).setPreviousPk(eq(9223372036854775807L));
+    verify(expressionDTO).setQuantity(eq(-2147483648));
+    verify(parentDTO).setQuantity(eq(1));
+    verify(temp).setQuantity(eq(1));
+    verify(parentDTO).setRules(isA(ArrayList.class));
+    verify(expressionDTO).setRules(isA(ArrayList.class));
+    verify(temp).setRules(isA(ArrayList.class));
+    verify(expressionDTO).getId();
+    verify(temp).getId();
+    verify(expressionDTO).getOperator();
+    verify(temp).getOperator();
+    verify(temp).setId(eq("42"));
+    verify(expressionDTO).setId(eq("org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO"));
+    verify(expressionDTO).setOperator(eq("42"));
+    verify(temp).setOperator(eq("Operator"));
+    verify(temp).setValue(eq("42"));
+    verify(expressionDTO).setValue(eq("org.broadleafcommerce.openadmin.web.rulebuilder.dto.ExpressionDTO"));
+    assertEquals(1, myCriteriaList.size());
+  }
+
+  /**
+   * Test
+   * {@link MVELToDataWrapperTranslator#postProcessCriteria(DataDTO, List, ExpressionDTO, SupportedFieldType)}.
+   * <ul>
    *   <li>When {@link ArrayList#ArrayList()}.</li>
    *   <li>Then {@link ArrayList#ArrayList()} size is one.</li>
    * </ul>
@@ -868,5 +1017,20 @@ public class MVELToDataWrapperTranslatorDiffblueTest {
 
     // Act and Assert
     assertFalse(mvelToDataWrapperTranslator.isBetweenInclusiveOperator(prev, temp));
+  }
+
+  /**
+   * Test new {@link MVELToDataWrapperTranslator} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link MVELToDataWrapperTranslator}
+   */
+  @Test
+  public void testNewMVELToDataWrapperTranslator() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    new MVELToDataWrapperTranslator();
   }
 }

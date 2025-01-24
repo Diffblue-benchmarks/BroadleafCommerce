@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -21,10 +21,26 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import com.yahoo.platform.yui.compressor.JarClassLoader;
+import java.io.UnsupportedEncodingException;
+import java.lang.instrument.IllegalClassFormatException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.security.CodeSigner;
+import java.security.CodeSource;
+import java.security.Permissions;
+import java.security.ProtectionDomain;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import javassist.CannotCompileException;
+import javassist.ClassMap;
+import javassist.CtClass;
+import javassist.CtMethod;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +97,37 @@ public class AnnotationsCopyClassTransformerDiffblueTest {
     // Assert that nothing has changed
     assertTrue(actualXformTemplates.isEmpty());
     assertSame(xformTemplates, actualXformTemplates);
+  }
+
+  /**
+   * Test
+   * {@link AnnotationsCopyClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * <p>
+   * Method under test:
+   * {@link AnnotationsCopyClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTransform() throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at java.base/java.security.CodeSigner.<init>(CodeSigner.java:75)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    JarClassLoader loader = new JarClassLoader();
+    Class<Object> classBeingRedefined = Object.class;
+    URL toURLResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    CodeSource codeSource = new CodeSource(toURLResult, new CodeSigner[]{new CodeSigner(null, null)});
+
+    ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
+
+    // Act
+    annotationsCopyClassTransformer.transform(loader, "Class Name", classBeingRedefined, protectionDomain,
+        "AXAXAXAX".getBytes("UTF-8"));
   }
 
   /**
@@ -161,5 +208,33 @@ public class AnnotationsCopyClassTransformerDiffblueTest {
   public void testGetImplementationType_whenLeftSquareBracket_thenReturnNull() {
     // Arrange, Act and Assert
     assertNull(annotationsCopyClassTransformer.getImplementationType("["));
+  }
+
+  /**
+   * Test {@link AnnotationsCopyClassTransformer#methodDescription(CtMethod)}.
+   * <p>
+   * Method under test:
+   * {@link AnnotationsCopyClassTransformer#methodDescription(CtMethod)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testMethodDescription() throws CannotCompileException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at javassist.CtMethod.<init>(CtMethod.java:56)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    AnnotationsCopyClassTransformer annotationsCopyClassTransformer = new AnnotationsCopyClassTransformer(
+        "Module Name");
+    CtMethod src = new CtMethod(mock(CtClass.class), "Mname", new CtClass[]{mock(CtClass.class)}, mock(CtClass.class));
+
+    CtClass declaring = mock(CtClass.class);
+
+    // Act
+    annotationsCopyClassTransformer.methodDescription(new CtMethod(src, declaring, new ClassMap()));
   }
 }

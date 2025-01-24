@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.dao;
 
 import static org.junit.Assert.assertEquals;
@@ -33,8 +16,11 @@ import java.util.List;
 import java.util.Map;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
+import org.broadleafcommerce.openadmin.dto.ClassMetadata;
+import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.MergedPropertyType;
+import org.broadleafcommerce.openadmin.dto.Property;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdvancedCollectionFieldMetadataProvider;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicFieldMetadataProvider;
@@ -44,13 +30,63 @@ import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddM
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
-import org.hibernate.mapping.Property;
 import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.Type;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class MetadataDiffblueTest {
+  @Autowired
+  private Metadata metadata;
+
+  /**
+   * Test
+   * {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}.
+   * <p>
+   * Method under test:
+   * {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFieldMetadataForTargetClass() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15429 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    Metadata metadata2 = new Metadata();
+    Class<Object> parentClass = Object.class;
+    Class<Object> targetClass = Object.class;
+
+    // Act
+    metadata2.getFieldMetadataForTargetClass(parentClass, targetClass, new DynamicEntityDaoImpl(), "Prefix");
+  }
+
   /**
    * Test
    * {@link Metadata#getFieldMetadataForTargetClass(Class, Class, DynamicEntityDao, String)}.
@@ -109,6 +145,39 @@ public class MetadataDiffblueTest {
 
   /**
    * Test {@link Metadata#getBaseTabAndGroupMetadata(Class[])}.
+   * <p>
+   * Method under test: {@link Metadata#getBaseTabAndGroupMetadata(Class[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetBaseTabAndGroupMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14541 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    Metadata metadata2 = new Metadata();
+    Class<Object> forNameResult = Object.class;
+
+    // Act
+    metadata2.getBaseTabAndGroupMetadata(new Class[]{forNameResult});
+  }
+
+  /**
+   * Test {@link Metadata#getBaseTabAndGroupMetadata(Class[])}.
    * <ul>
    *   <li>When empty array of {@link Class}.</li>
    *   <li>Then return Empty.</li>
@@ -122,6 +191,82 @@ public class MetadataDiffblueTest {
 
     // Arrange, Act and Assert
     assertTrue((new Metadata()).getBaseTabAndGroupMetadata(new Class[]{}).isEmpty());
+  }
+
+  /**
+   * Test {@link Metadata#applyTabAndGroupMetadataOverrides(Class[], Map)}.
+   * <p>
+   * Method under test:
+   * {@link Metadata#applyTabAndGroupMetadataOverrides(Class[], Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testApplyTabAndGroupMetadataOverrides() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13953 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    Metadata metadata2 = new Metadata();
+    Class<Object> forNameResult = Object.class;
+
+    // Act
+    metadata2.applyTabAndGroupMetadataOverrides(new Class[]{forNameResult}, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link Metadata#buildAdditionalTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}.
+   * <p>
+   * Method under test:
+   * {@link Metadata#buildAdditionalTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildAdditionalTabAndGroupMetadataFromCmdProperties() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14226 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    Metadata metadata2 = new Metadata();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    metadata2.buildAdditionalTabAndGroupMetadataFromCmdProperties(cmd, new HashMap<>());
   }
 
   /**
@@ -149,6 +294,43 @@ public class MetadataDiffblueTest {
     // Assert
     verify(propertyBuilder).execute(isNull());
     assertTrue(actualOverrideMetadataResult.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}.
+   * <p>
+   * Method under test:
+   * {@link Metadata#overrideMetadata(Class[], PropertyBuilder, String, Boolean, String, String, DynamicEntityDao)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testOverrideMetadata2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15755 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    Metadata metadata2 = new Metadata();
+    Class<Object> forNameResult = Object.class;
+    PropertyBuilder propertyBuilder = mock(PropertyBuilder.class);
+
+    // Act
+    metadata2.overrideMetadata(new Class[]{forNameResult}, propertyBuilder, "Prefix", true, "Dr Jane Doe",
+        "Configuration Key", new DynamicEntityDaoImpl());
   }
 
   /**
@@ -218,7 +400,7 @@ public class MetadataDiffblueTest {
 
     Metadata metadata = new Metadata();
     metadata.setFieldMetadataProviders(fieldMetadataProviders);
-    ArrayList<Property> componentProperties = new ArrayList<>();
+    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
     BigDecimalType entityType = new BigDecimalType();
     Class<Object> targetClass = Object.class;
 
@@ -264,7 +446,7 @@ public class MetadataDiffblueTest {
 
     Metadata metadata = new Metadata();
     metadata.setFieldMetadataProviders(fieldMetadataProviders);
-    ArrayList<Property> componentProperties = new ArrayList<>();
+    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
     BigDecimalType entityType = new BigDecimalType();
     Class<Object> targetClass = Object.class;
 
@@ -283,6 +465,49 @@ public class MetadataDiffblueTest {
     assertEquals("java.lang.Object", presentationAttribute.getInheritedFromType());
     assertEquals("java.lang.Object", presentationAttribute.getTargetClass());
     assertSame(presentationAttribute, actualFieldMetadata);
+  }
+
+  /**
+   * Test
+   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
+   * with {@code prefix}, {@code propertyName}, {@code componentProperties},
+   * {@code type}, {@code entityType}, {@code targetClass},
+   * {@code presentationAttribute}, {@code mergedPropertyType},
+   * {@code dynamicEntityDao}.
+   * <p>
+   * Method under test:
+   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass15117 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    Metadata metadata2 = new Metadata();
+    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
+    BigDecimalType entityType = new BigDecimalType();
+    Class<Object> targetClass = Object.class;
+    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
+
+    // Act
+    metadata2.getFieldMetadata("Prefix", "Property Name", componentProperties, SupportedFieldType.UNKNOWN, entityType,
+        targetClass, presentationAttribute, MergedPropertyType.PRIMARY, new DynamicEntityDaoImpl());
   }
 
   /**
@@ -310,7 +535,7 @@ public class MetadataDiffblueTest {
 
     Metadata metadata = new Metadata();
     metadata.setFieldMetadataProviders(fieldMetadataProviders);
-    ArrayList<Property> componentProperties = new ArrayList<>();
+    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
     BigDecimalType entityType = new BigDecimalType();
     Class<Object> targetClass = Object.class;
 
@@ -356,7 +581,7 @@ public class MetadataDiffblueTest {
 
     Metadata metadata = new Metadata();
     metadata.setFieldMetadataProviders(fieldMetadataProviders);
-    ArrayList<Property> componentProperties = new ArrayList<>();
+    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
     BigDecimalType entityType = new BigDecimalType();
     Class<Object> targetClass = Object.class;
 
@@ -375,6 +600,50 @@ public class MetadataDiffblueTest {
     assertEquals("java.lang.Object", presentationAttribute.getInheritedFromType());
     assertEquals("java.lang.Object", presentationAttribute.getTargetClass());
     assertSame(presentationAttribute, actualFieldMetadata);
+  }
+
+  /**
+   * Test
+   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
+   * with {@code prefix}, {@code propertyName}, {@code componentProperties},
+   * {@code type}, {@code secondaryType}, {@code entityType}, {@code targetClass},
+   * {@code presentationAttribute}, {@code mergedPropertyType},
+   * {@code dynamicEntityDao}.
+   * <p>
+   * Method under test:
+   * {@link Metadata#getFieldMetadata(String, String, List, SupportedFieldType, SupportedFieldType, Type, Class, FieldMetadata, MergedPropertyType, DynamicEntityDao)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFieldMetadataWithPrefixPropertyNameComponentPropertiesTypeSecondaryTypeEntityTypeTargetClassPresentationAttributeMergedPropertyTypeDynamicEntityDao3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14807 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.Metadata metadata;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    Metadata metadata2 = new Metadata();
+    ArrayList<org.hibernate.mapping.Property> componentProperties = new ArrayList<>();
+    BigDecimalType entityType = new BigDecimalType();
+    Class<Object> targetClass = Object.class;
+    AdornedTargetCollectionMetadata presentationAttribute = new AdornedTargetCollectionMetadata();
+
+    // Act
+    metadata2.getFieldMetadata("Prefix", "Property Name", componentProperties, SupportedFieldType.UNKNOWN,
+        SupportedFieldType.UNKNOWN, entityType, targetClass, presentationAttribute, MergedPropertyType.PRIMARY,
+        new DynamicEntityDaoImpl());
   }
 
   /**

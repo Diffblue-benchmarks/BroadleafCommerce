@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -22,6 +22,21 @@ import static org.junit.Assert.assertNotEquals;
 import org.junit.Test;
 
 public class NotificationEventTypeDiffblueTest {
+  /**
+   * Test {@link NotificationEventType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link NotificationEventType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    NotificationEventType actualInstance = NotificationEventType.getInstance("Type");
+
+    // Assert
+    assertEquals("Type", actualInstance.getType());
+    assertEquals("Unable to find an EmailInfo that matched a notification of type ", actualInstance.getFriendlyType());
+  }
+
   /**
    * Test getters and setters.
    * <p>

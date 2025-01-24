@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +41,37 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {DynamicResourceIterator.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class DynamicResourceIteratorDiffblueTest {
   @Autowired
   private DynamicResourceIterator dynamicResourceIterator;
+
+  /**
+   * Test {@link DynamicResourceIterator#nextResource()}.
+   * <p>
+   * Method under test: {@link DynamicResourceIterator#nextResource()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNextResource() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+    //       at java.base/jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64)
+    //       at java.base/jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70)
+    //       at java.base/jdk.internal.util.Preconditions.checkIndex(Preconditions.java:248)
+    //       at java.base/java.util.Objects.checkIndex(Objects.java:372)
+    //       at java.base/java.util.ArrayList.get(ArrayList.java:459)
+    //       at org.broadleafcommerce.common.extensibility.context.merge.DynamicResourceIterator.nextResource(DynamicResourceIterator.java:45)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    dynamicResourceIterator.nextResource();
+  }
 
   /**
    * Test {@link DynamicResourceIterator#nextResource()}.
@@ -109,6 +135,29 @@ public class DynamicResourceIteratorDiffblueTest {
   /**
    * Test
    * {@link DynamicResourceIterator#addEmbeddedResource(ResourceInputStream)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicResourceIterator#addEmbeddedResource(ResourceInputStream)}
+   */
+  @Test
+  public void testAddEmbeddedResource() throws IOException {
+    // Arrange
+    ResourceInputStream ris = new ResourceInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8")), "Name");
+
+    // Act
+    dynamicResourceIterator.addEmbeddedResource(ris);
+
+    // Assert
+    assertEquals(-1, ris.read(new byte[]{}));
+    assertEquals(1, dynamicResourceIterator.size());
+    byte[] bytes = new byte[8];
+    assertEquals(8, dynamicResourceIterator.get(0).read(bytes));
+    assertArrayEquals("AXAXAXAX".getBytes("UTF-8"), bytes);
+  }
+
+  /**
+   * Test
+   * {@link DynamicResourceIterator#addEmbeddedResource(ResourceInputStream)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
    * </ul>
@@ -121,6 +170,36 @@ public class DynamicResourceIteratorDiffblueTest {
     // Arrange
     ResourceInputStream ris = mock(ResourceInputStream.class);
     when(ris.getNames()).thenReturn(new ArrayList<>());
+    when(ris.read()).thenReturn(-1);
+    doNothing().when(ris).close();
+
+    // Act
+    dynamicResourceIterator.addEmbeddedResource(ris);
+
+    // Assert
+    verify(ris).close();
+    verify(ris).getNames();
+    verify(ris).read();
+    assertEquals(1, dynamicResourceIterator.size());
+    assertEquals(-1, dynamicResourceIterator.get(0).read(new byte[]{}));
+  }
+
+  /**
+   * Test
+   * {@link DynamicResourceIterator#addEmbeddedResource(ResourceInputStream)}.
+   * <ul>
+   *   <li>Given {@link RuntimeException#RuntimeException(String)} with
+   * {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DynamicResourceIterator#addEmbeddedResource(ResourceInputStream)}
+   */
+  @Test
+  public void testAddEmbeddedResource_givenRuntimeExceptionWithFoo() throws IOException {
+    // Arrange
+    ResourceInputStream ris = mock(ResourceInputStream.class);
+    when(ris.getNames()).thenThrow(new RuntimeException("foo"));
     when(ris.read()).thenReturn(-1);
     doNothing().when(ris).close();
 
@@ -167,6 +246,33 @@ public class DynamicResourceIteratorDiffblueTest {
   }
 
   /**
+   * Test {@link DynamicResourceIterator#add(int, ResourceInputStream)} with
+   * {@code index}, {@code resourceInputStream}.
+   * <ul>
+   *   <li>Given {@link ArrayList#ArrayList()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DynamicResourceIterator#add(int, ResourceInputStream)}
+   */
+  @Test
+  public void testAddWithIndexResourceInputStream_givenArrayList() throws IOException {
+    // Arrange
+    ResourceInputStream resourceInputStream = mock(ResourceInputStream.class);
+    when(resourceInputStream.getNames()).thenReturn(new ArrayList<>());
+    when(resourceInputStream.read()).thenReturn(-1);
+    doNothing().when(resourceInputStream).close();
+
+    // Act
+    dynamicResourceIterator.add(1, resourceInputStream);
+
+    // Assert
+    verify(resourceInputStream).close();
+    verify(resourceInputStream).getNames();
+    verify(resourceInputStream).read();
+  }
+
+  /**
    * Test {@link DynamicResourceIterator#add(ResourceInputStream)} with
    * {@code resourceInputStream}.
    * <p>
@@ -209,6 +315,39 @@ public class DynamicResourceIteratorDiffblueTest {
     verify(resourceInputStream).close();
     verify(resourceInputStream).getNames();
     verify(resourceInputStream).read();
+  }
+
+  /**
+   * Test {@link DynamicResourceIterator#add(ResourceInputStream)} with
+   * {@code resourceInputStream}.
+   * <ul>
+   *   <li>Then {@link DynamicResourceIterator} first read is minus one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicResourceIterator#add(ResourceInputStream)}
+   */
+  @Test
+  public void testAddWithResourceInputStream_thenDynamicResourceIteratorFirstReadIsMinusOne() throws IOException {
+    // Arrange
+    ResourceInputStream resourceInputStream = mock(ResourceInputStream.class);
+    when(resourceInputStream.getNames()).thenThrow(new RuntimeException("foo"));
+    when(resourceInputStream.read()).thenReturn(-1);
+    doNothing().when(resourceInputStream).close();
+
+    // Act
+    dynamicResourceIterator.add(resourceInputStream);
+
+    // Assert
+    verify(resourceInputStream).close();
+    verify(resourceInputStream).getNames();
+    verify(resourceInputStream).read();
+    assertEquals(-1, dynamicResourceIterator.get(0).read(new byte[]{}));
+    assertEquals(-1, dynamicResourceIterator.get(1).read(new byte[]{}));
+    assertEquals(-1, dynamicResourceIterator.get(2).read(new byte[]{}));
+    assertEquals(-1, dynamicResourceIterator.get(3).read(new byte[]{}));
+    assertEquals(-1, dynamicResourceIterator.get(5).read(new byte[]{}));
+    assertEquals(-1, dynamicResourceIterator.get(6).read(new byte[]{}));
+    assertEquals(-1, dynamicResourceIterator.get(7).read(new byte[]{}));
   }
 
   /**

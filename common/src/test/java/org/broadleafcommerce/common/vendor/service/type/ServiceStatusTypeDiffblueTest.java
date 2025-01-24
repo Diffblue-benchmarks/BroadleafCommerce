@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -20,9 +20,34 @@ package org.broadleafcommerce.common.vendor.service.type;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {ServiceStatusType.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ServiceStatusTypeDiffblueTest {
+  @Autowired
+  private ServiceStatusType serviceStatusType;
+
+  /**
+   * Test {@link ServiceStatusType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link ServiceStatusType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    ServiceStatusType actualInstance = ServiceStatusType.getInstance("Type");
+
+    // Assert
+    assertEquals(" is reporting a status of DOWN", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+  }
+
   /**
    * Test getters and setters.
    * <p>
@@ -42,6 +67,38 @@ public class ServiceStatusTypeDiffblueTest {
     // Assert
     assertNull(actualFriendlyType);
     assertNull(actualServiceStatusType.getType());
+  }
+
+  /**
+   * Test {@link ServiceStatusType#ServiceStatusType(String, String)}.
+   * <ul>
+   *   <li>When {@code Cannot add the type: (}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ServiceStatusType#ServiceStatusType(String, String)}
+   */
+  @Test
+  public void testNewServiceStatusType_whenCannotAddTheType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new ServiceStatusType("Cannot add the type: (", "Friendly Type"));
+
+  }
+
+  /**
+   * Test {@link ServiceStatusType#ServiceStatusType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ServiceStatusType#ServiceStatusType(String, String)}
+   */
+  @Test
+  public void testNewServiceStatusType_whenType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new ServiceStatusType("Type", "Friendly Type"));
+
   }
 
   /**

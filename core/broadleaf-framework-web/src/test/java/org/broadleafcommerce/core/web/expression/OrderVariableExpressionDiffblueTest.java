@@ -1,27 +1,65 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.expression;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.broadleafcommerce.profile.core.domain.Customer;
+import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class OrderVariableExpressionDiffblueTest {
+  /**
+   * Test {@link OrderVariableExpression#getNamedOrderForCurrentCustomer(String)}.
+   * <p>
+   * Method under test:
+   * {@link OrderVariableExpression#getNamedOrderForCurrentCustomer(String)}
+   */
+  @Test
+  @DisplayName("Test getNamedOrderForCurrentCustomer(String)")
+  @Disabled("TODO: Complete this test")
+  void testGetNamedOrderForCurrentCustomer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.web.expression.OrderVariableExpression.getNamedOrderForCustomer(OrderVariableExpression.java:52)
+    //       at org.broadleafcommerce.core.web.expression.OrderVariableExpression.getNamedOrderForCurrentCustomer(OrderVariableExpression.java:48)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    (new OrderVariableExpression()).getNamedOrderForCurrentCustomer("Order Name");
+  }
+
+  /**
+   * Test
+   * {@link OrderVariableExpression#getNamedOrderForCustomer(String, Customer)}.
+   * <ul>
+   *   <li>When {@link CustomerImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link OrderVariableExpression#getNamedOrderForCustomer(String, Customer)}
+   */
+  @Test
+  @DisplayName("Test getNamedOrderForCustomer(String, Customer); when CustomerImpl (default constructor)")
+  @Disabled("TODO: Complete this test")
+  void testGetNamedOrderForCustomer_whenCustomerImpl() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.web.expression.OrderVariableExpression.getNamedOrderForCustomer(OrderVariableExpression.java:52)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    OrderVariableExpression orderVariableExpression = new OrderVariableExpression();
+
+    // Act
+    orderVariableExpression.getNamedOrderForCustomer("Order Name", new CustomerImpl());
+  }
+
   /**
    * Test getters and setters.
    * <p>

@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -20,9 +20,34 @@ package org.broadleafcommerce.common.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {MinuteType.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class MinuteTypeDiffblueTest {
+  @Autowired
+  private MinuteType minuteType;
+
+  /**
+   * Test {@link MinuteType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link MinuteType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    MinuteType actualInstance = MinuteType.getInstance("Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+  }
+
   /**
    * Test getters and setters.
    * <p>
@@ -42,6 +67,36 @@ public class MinuteTypeDiffblueTest {
     // Assert
     assertNull(actualFriendlyType);
     assertNull(actualMinuteType.getType());
+  }
+
+  /**
+   * Test {@link MinuteType#MinuteType(String, String)}.
+   * <ul>
+   *   <li>When {@code Cannot add the type: (}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MinuteType#MinuteType(String, String)}
+   */
+  @Test
+  public void testNewMinuteType_whenCannotAddTheType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new MinuteType("Cannot add the type: (", "Friendly Type"));
+
+  }
+
+  /**
+   * Test {@link MinuteType#MinuteType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MinuteType#MinuteType(String, String)}
+   */
+  @Test
+  public void testNewMinuteType_whenType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new MinuteType("Type", "Friendly Type"));
+
   }
 
   /**

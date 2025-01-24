@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -65,6 +65,22 @@ public class TranslationConsiderationContextDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link TranslationConsiderationContext#setTranslationConsiderationContext(Boolean)}.
+   * <p>
+   * Method under test:
+   * {@link TranslationConsiderationContext#setTranslationConsiderationContext(Boolean)}
+   */
+  @Test
+  public void testSetTranslationConsiderationContext() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    TranslationConsiderationContext.setTranslationConsiderationContext(true);
+  }
+
+  /**
    * Test {@link TranslationConsiderationContext#getTranslationService()}.
    * <p>
    * Method under test:
@@ -74,6 +90,38 @@ public class TranslationConsiderationContextDiffblueTest {
   public void testGetTranslationService() {
     // Arrange, Act and Assert
     assertNull(TranslationConsiderationContext.getTranslationService());
+  }
+
+  /**
+   * Test
+   * {@link TranslationConsiderationContext#setTranslationService(TranslationService)}.
+   * <p>
+   * Method under test:
+   * {@link TranslationConsiderationContext#setTranslationService(TranslationService)}
+   */
+  @Test
+  public void testSetTranslationService() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    TranslationConsiderationContext.setTranslationService(new TranslationServiceImpl());
+  }
+
+  /**
+   * Test
+   * {@link TranslationConsiderationContext#removeTranslationConsiderationContext()}.
+   * <p>
+   * Method under test:
+   * {@link TranslationConsiderationContext#removeTranslationConsiderationContext()}
+   */
+  @Test
+  public void testRemoveTranslationConsiderationContext() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    TranslationConsiderationContext.removeTranslationConsiderationContext();
   }
 
   /**

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.page.message.jms;
 
 import static org.junit.Assert.assertSame;
@@ -26,13 +9,23 @@ import static org.mockito.Mockito.verify;
 import javax.jms.Destination;
 import org.broadleafcommerce.cms.page.domain.Page;
 import org.broadleafcommerce.cms.page.domain.PageImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.JmsException;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.MessageCreator;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {JMSArchivedPagePublisher.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class JMSArchivedPagePublisherDiffblueTest {
+  @Autowired
+  private JMSArchivedPagePublisher jMSArchivedPagePublisher;
+
   /**
    * Test {@link JMSArchivedPagePublisher#processPageArchive(Page, String)}.
    * <ul>
@@ -60,6 +53,30 @@ public class JMSArchivedPagePublisherDiffblueTest {
 
     // Assert
     verify(archivePageTemplate).send((Destination) isNull(), isA(MessageCreator.class));
+  }
+
+  /**
+   * Test {@link JMSArchivedPagePublisher#processPageArchive(Page, String)}.
+   * <ul>
+   *   <li>When {@link PageImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link JMSArchivedPagePublisher#processPageArchive(Page, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testProcessPageArchive_whenPageImpl() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.cms.page.message.jms.JMSArchivedPagePublisher.processPageArchive(JMSArchivedPagePublisher.java:50)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    jMSArchivedPagePublisher.processPageArchive(new PageImpl(), "Base Page Key");
   }
 
   /**

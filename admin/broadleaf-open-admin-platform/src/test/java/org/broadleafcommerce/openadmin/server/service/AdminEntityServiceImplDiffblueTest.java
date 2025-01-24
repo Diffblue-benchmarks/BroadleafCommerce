@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.service;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -48,7 +31,6 @@ import org.broadleafcommerce.openadmin.dto.BasicCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassTree;
-import org.broadleafcommerce.openadmin.dto.CollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.DynamicResultSet;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
@@ -70,10 +52,92 @@ import org.broadleafcommerce.openadmin.web.form.entity.DynamicEntityFormInfo;
 import org.broadleafcommerce.openadmin.web.form.entity.EntityForm;
 import org.broadleafcommerce.openadmin.web.form.entity.Field;
 import org.hibernate.exception.ConstraintViolationException;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AdminEntityServiceImplDiffblueTest {
+  @Autowired
+  private AdminEntityServiceImpl adminEntityServiceImpl;
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getClassMetadata(PersistencePackageRequest)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getClassMetadata(PersistencePackageRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetClassMetadata() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3109 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    // Act
+    adminEntityServiceImpl2.getClassMetadata(PersistencePackageRequest.adorned());
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#getRecords(PersistencePackageRequest)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getRecords(PersistencePackageRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRecords() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4816 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    // Act
+    adminEntityServiceImpl2.getRecords(PersistencePackageRequest.adorned());
+  }
+
   /**
    * Test
    * {@link AdminEntityServiceImpl#getRecord(PersistencePackageRequest, String, ClassMetadata, boolean)}.
@@ -99,6 +163,83 @@ public class AdminEntityServiceImplDiffblueTest {
 
     // Act and Assert
     assertThrows(ServiceException.class, () -> adminEntityServiceImpl.getRecord(request, "42", cmd, true));
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getRecord(PersistencePackageRequest, String, ClassMetadata, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getRecord(PersistencePackageRequest, String, ClassMetadata, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRecord2() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4505 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+    PersistencePackageRequest request = PersistencePackageRequest.adorned();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    adminEntityServiceImpl2.getRecord(request, "42", cmd, true);
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#addEntity(EntityForm, String[], List)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#addEntity(EntityForm, String[], List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddEntity() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1678 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+    EntityForm entityForm = new EntityForm();
+
+    // Act
+    adminEntityServiceImpl2.addEntity(entityForm, new String[]{"Custom Criteria"}, new ArrayList<>());
   }
 
   /**
@@ -167,71 +308,6 @@ public class AdminEntityServiceImplDiffblueTest {
   }
 
   /**
-   * Test {@link AdminEntityServiceImpl#updateEntity(EntityForm, String[], List)}.
-   * <ul>
-   *   <li>Then throw {@link ConstraintViolationException}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateEntity(EntityForm, String[], List)}
-   */
-  @Test
-  public void testUpdateEntity_thenThrowConstraintViolationException() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getCeilingEntityClassname())
-        .thenThrow(new ConstraintViolationException("An error occurred", new SQLException(), "Constraint Name"));
-    when(entityForm.getEntityType())
-        .thenThrow(new ConstraintViolationException("An error occurred", new SQLException(), "Constraint Name"));
-    when(entityForm.getId())
-        .thenThrow(new ConstraintViolationException("An error occurred", new SQLException(), "Constraint Name"));
-    when(entityForm.getIdProperty())
-        .thenThrow(new ConstraintViolationException("An error occurred", new SQLException(), "Constraint Name"));
-    when(entityForm.getMainEntityName())
-        .thenThrow(new ConstraintViolationException("An error occurred", new SQLException(), "Constraint Name"));
-    when(entityForm.getFields())
-        .thenThrow(new ConstraintViolationException("An error occurred", new SQLException(), "Constraint Name"));
-    when(entityForm.findField(Mockito.<String>any()))
-        .thenThrow(new ConstraintViolationException("An error occurred", new SQLException(), "Constraint Name"));
-
-    HashMap<String, EntityForm> stringEntityFormMap = new HashMap<>();
-    stringEntityFormMap.put("foo", entityForm);
-    DynamicEntityFormInfo dynamicEntityFormInfo = mock(DynamicEntityFormInfo.class);
-    when(dynamicEntityFormInfo.getCustomCriteriaOverride()).thenReturn(new String[]{"Custom Criteria Override"});
-    EntityForm entityForm2 = mock(EntityForm.class);
-    when(entityForm2.getDynamicFormInfo(Mockito.<String>any())).thenReturn(dynamicEntityFormInfo);
-    when(entityForm2.getCeilingEntityClassname()).thenReturn("Ceiling Entity Classname");
-    when(entityForm2.getEntityType()).thenReturn("");
-    when(entityForm2.getId()).thenReturn("42");
-    when(entityForm2.getIdProperty()).thenReturn("Id Property");
-    when(entityForm2.getMainEntityName()).thenReturn("Main Entity Name");
-    when(entityForm2.getDynamicForms()).thenReturn(stringEntityFormMap);
-    when(entityForm2.getFields()).thenReturn(new HashMap<>());
-    when(entityForm2.findField(Mockito.<String>any())).thenReturn(new Field());
-    doNothing().when(entityForm2).setId(Mockito.<String>any());
-    entityForm2.setId("[");
-
-    // Act and Assert
-    assertThrows(ConstraintViolationException.class,
-        () -> adminEntityServiceImpl.updateEntity(entityForm2, new String[]{"Custom Criteria"}, new ArrayList<>()));
-    verify(dynamicEntityFormInfo, atLeast(1)).getCustomCriteriaOverride();
-    verify(entityForm2).findField(eq("Id Property"));
-    verify(entityForm2, atLeast(1)).getCeilingEntityClassname();
-    verify(entityForm2).getDynamicFormInfo(eq("foo"));
-    verify(entityForm2).getDynamicForms();
-    verify(entityForm2).getEntityType();
-    verify(entityForm2, atLeast(1)).getFields();
-    verify(entityForm2).getId();
-    verify(entityForm2).getIdProperty();
-    verify(entityForm).getIdProperty();
-    verify(entityForm2, atLeast(1)).getMainEntityName();
-    verify(entityForm2).setId(eq("["));
-  }
-
-  /**
    * Test {@link AdminEntityServiceImpl#removeEntity(EntityForm, String[], List)}.
    * <p>
    * Method under test:
@@ -274,6 +350,40 @@ public class AdminEntityServiceImplDiffblueTest {
     verify(entityForm).getIdProperty();
     verify(entityForm).setId(eq("["));
     verify(codeField).setValue(eq("42"));
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#removeEntity(EntityForm, String[], List)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#removeEntity(EntityForm, String[], List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveEntity2() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6461 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+    EntityForm entityForm = new EntityForm();
+
+    // Act
+    adminEntityServiceImpl2.removeEntity(entityForm, new String[]{"Custom Criteria"}, new ArrayList<>());
   }
 
   /**
@@ -351,6 +461,39 @@ public class AdminEntityServiceImplDiffblueTest {
     verify(entityForm).getIdProperty();
     verify(entityForm).setId(eq("["));
     verify(codeField).setValue(eq("42"));
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#getPropertiesFromEntityForm(EntityForm)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getPropertiesFromEntityForm(EntityForm)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertiesFromEntityForm() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4470 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    // Act
+    adminEntityServiceImpl2.getPropertiesFromEntityForm(new EntityForm());
   }
 
   /**
@@ -655,6 +798,41 @@ public class AdminEntityServiceImplDiffblueTest {
     verify(entityForm).getId();
     verify(entityForm).getIdProperty();
     verify(codeField).setValue(eq("42"));
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getRequestForEntityForm(EntityForm, String[], List)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getRequestForEntityForm(EntityForm, String[], List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRequestForEntityForm3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5938 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+    EntityForm entityForm = new EntityForm();
+
+    // Act
+    adminEntityServiceImpl2.getRequestForEntityForm(entityForm, new String[]{"Custom Criteria"}, new ArrayList<>());
   }
 
   /**
@@ -1096,6 +1274,58 @@ public class AdminEntityServiceImplDiffblueTest {
     // Arrange
     AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
     ClassMetadata containingClassMetadata = mock(ClassMetadata.class);
+    when(containingClassMetadata.getCeilingType()).thenThrow(new EntityNotFoundException("."));
+    doNothing().when(containingClassMetadata).setCeilingType(Mockito.<String>any());
+    doNothing().when(containingClassMetadata).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(containingClassMetadata).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(containingClassMetadata).setProperties(Mockito.<Property[]>any());
+    doNothing().when(containingClassMetadata).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(containingClassMetadata).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    containingClassMetadata.setCeilingType("Type");
+    containingClassMetadata.setCurrencyCode("GBP");
+    containingClassMetadata.setPolymorphicEntities(new ClassTree());
+    containingClassMetadata.setProperties(new Property[]{new Property()});
+    containingClassMetadata.setSecurityCeilingType("Security Ceiling Type");
+    containingClassMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = mock(Entity.class);
+    when(containingEntity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+
+    Property collectionProperty = new Property();
+    collectionProperty.setName("id");
+
+    // Act
+    adminEntityServiceImpl.getAdvancedCollectionRecord(containingClassMetadata, containingEntity, collectionProperty,
+        "42", new ArrayList<>(), "42");
+
+    // Assert
+    verify(containingClassMetadata).getCeilingType();
+    verify(containingClassMetadata).setCeilingType(eq("Type"));
+    verify(containingClassMetadata).setCurrencyCode(eq("GBP"));
+    verify(containingClassMetadata).setPolymorphicEntities(isA(ClassTree.class));
+    verify(containingClassMetadata).setProperties(isA(Property[].class));
+    verify(containingClassMetadata).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(containingClassMetadata).setTabAndGroupMetadata(isA(Map.class));
+    verify(containingEntity).findProperty(eq("id"));
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getAdvancedCollectionRecord(ClassMetadata, Entity, Property, String, List, String)}
+   * with {@code containingClassMetadata}, {@code containingEntity},
+   * {@code collectionProperty}, {@code collectionItemId}, {@code sectionCrumbs},
+   * {@code alternateId}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getAdvancedCollectionRecord(ClassMetadata, Entity, Property, String, List, String)}
+   */
+  @Test
+  public void testGetAdvancedCollectionRecordWithContainingClassMetadataContainingEntityCollectionPropertyCollectionItemIdSectionCrumbsAlternateId3()
+      throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
+    ClassMetadata containingClassMetadata = mock(ClassMetadata.class);
     when(containingClassMetadata.getCeilingType()).thenReturn("Ceiling Type");
     doNothing().when(containingClassMetadata).setCeilingType(Mockito.<String>any());
     doNothing().when(containingClassMetadata).setCurrencyCode(Mockito.<String>any());
@@ -1143,7 +1373,7 @@ public class AdminEntityServiceImplDiffblueTest {
    * {@link AdminEntityServiceImpl#getAdvancedCollectionRecord(ClassMetadata, Entity, Property, String, List, String)}
    */
   @Test
-  public void testGetAdvancedCollectionRecordWithContainingClassMetadataContainingEntityCollectionPropertyCollectionItemIdSectionCrumbsAlternateId3()
+  public void testGetAdvancedCollectionRecordWithContainingClassMetadataContainingEntityCollectionPropertyCollectionItemIdSectionCrumbsAlternateId4()
       throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
@@ -1194,6 +1424,55 @@ public class AdminEntityServiceImplDiffblueTest {
     verify(collectionProperty, atLeast(1)).getName();
     verify(property).getValue();
     verify(collectionProperty).setName(eq("id"));
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getAdvancedCollectionRecord(ClassMetadata, Entity, Property, String, List, String)}
+   * with {@code containingClassMetadata}, {@code containingEntity},
+   * {@code collectionProperty}, {@code collectionItemId}, {@code sectionCrumbs},
+   * {@code alternateId}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getAdvancedCollectionRecord(ClassMetadata, Entity, Property, String, List, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAdvancedCollectionRecordWithContainingClassMetadataContainingEntityCollectionPropertyCollectionItemIdSectionCrumbsAlternateId5()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2180 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata containingClassMetadata = new ClassMetadata();
+    containingClassMetadata.setCeilingType("Type");
+    containingClassMetadata.setCurrencyCode("GBP");
+    containingClassMetadata.setPolymorphicEntities(new ClassTree());
+    containingClassMetadata.setProperties(new Property[]{new Property()});
+    containingClassMetadata.setSecurityCeilingType("Security Ceiling Type");
+    containingClassMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = new Entity();
+    Property collectionProperty = new Property();
+
+    // Act
+    adminEntityServiceImpl2.getAdvancedCollectionRecord(containingClassMetadata, containingEntity, collectionProperty,
+        "42", new ArrayList<>(), "42");
   }
 
   /**
@@ -1265,6 +1544,58 @@ public class AdminEntityServiceImplDiffblueTest {
     // Arrange
     AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
     ClassMetadata containingClassMetadata = mock(ClassMetadata.class);
+    when(containingClassMetadata.getCeilingType()).thenThrow(new EntityNotFoundException("."));
+    doNothing().when(containingClassMetadata).setCeilingType(Mockito.<String>any());
+    doNothing().when(containingClassMetadata).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(containingClassMetadata).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(containingClassMetadata).setProperties(Mockito.<Property[]>any());
+    doNothing().when(containingClassMetadata).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(containingClassMetadata).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    containingClassMetadata.setCeilingType("Type");
+    containingClassMetadata.setCurrencyCode("GBP");
+    containingClassMetadata.setPolymorphicEntities(new ClassTree());
+    containingClassMetadata.setProperties(new Property[]{new Property()});
+    containingClassMetadata.setSecurityCeilingType("Security Ceiling Type");
+    containingClassMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = mock(Entity.class);
+    when(containingEntity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+
+    Property collectionProperty = new Property();
+    collectionProperty.setName("id");
+
+    // Act
+    adminEntityServiceImpl.getAdvancedCollectionRecord(containingClassMetadata, containingEntity, collectionProperty,
+        "42", new ArrayList<>(), "42", new String[]{"Custom Criteria"});
+
+    // Assert
+    verify(containingClassMetadata).getCeilingType();
+    verify(containingClassMetadata).setCeilingType(eq("Type"));
+    verify(containingClassMetadata).setCurrencyCode(eq("GBP"));
+    verify(containingClassMetadata).setPolymorphicEntities(isA(ClassTree.class));
+    verify(containingClassMetadata).setProperties(isA(Property[].class));
+    verify(containingClassMetadata).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(containingClassMetadata).setTabAndGroupMetadata(isA(Map.class));
+    verify(containingEntity).findProperty(eq("id"));
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getAdvancedCollectionRecord(ClassMetadata, Entity, Property, String, List, String, String[])}
+   * with {@code containingClassMetadata}, {@code containingEntity},
+   * {@code collectionProperty}, {@code collectionItemId}, {@code sectionCrumbs},
+   * {@code alternateId}, {@code customCriteria}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getAdvancedCollectionRecord(ClassMetadata, Entity, Property, String, List, String, String[])}
+   */
+  @Test
+  public void testGetAdvancedCollectionRecordWithContainingClassMetadataContainingEntityCollectionPropertyCollectionItemIdSectionCrumbsAlternateIdCustomCriteria3()
+      throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
+    ClassMetadata containingClassMetadata = mock(ClassMetadata.class);
     when(containingClassMetadata.getCeilingType()).thenReturn("Ceiling Type");
     doNothing().when(containingClassMetadata).setCeilingType(Mockito.<String>any());
     doNothing().when(containingClassMetadata).setCurrencyCode(Mockito.<String>any());
@@ -1312,7 +1643,7 @@ public class AdminEntityServiceImplDiffblueTest {
    * {@link AdminEntityServiceImpl#getAdvancedCollectionRecord(ClassMetadata, Entity, Property, String, List, String, String[])}
    */
   @Test
-  public void testGetAdvancedCollectionRecordWithContainingClassMetadataContainingEntityCollectionPropertyCollectionItemIdSectionCrumbsAlternateIdCustomCriteria3()
+  public void testGetAdvancedCollectionRecordWithContainingClassMetadataContainingEntityCollectionPropertyCollectionItemIdSectionCrumbsAlternateIdCustomCriteria4()
       throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
@@ -1363,6 +1694,55 @@ public class AdminEntityServiceImplDiffblueTest {
     verify(collectionProperty, atLeast(1)).getName();
     verify(property).getValue();
     verify(collectionProperty).setName(eq("id"));
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getAdvancedCollectionRecord(ClassMetadata, Entity, Property, String, List, String, String[])}
+   * with {@code containingClassMetadata}, {@code containingEntity},
+   * {@code collectionProperty}, {@code collectionItemId}, {@code sectionCrumbs},
+   * {@code alternateId}, {@code customCriteria}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getAdvancedCollectionRecord(ClassMetadata, Entity, Property, String, List, String, String[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAdvancedCollectionRecordWithContainingClassMetadataContainingEntityCollectionPropertyCollectionItemIdSectionCrumbsAlternateIdCustomCriteria5()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2489 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata containingClassMetadata = new ClassMetadata();
+    containingClassMetadata.setCeilingType("Type");
+    containingClassMetadata.setCurrencyCode("GBP");
+    containingClassMetadata.setPolymorphicEntities(new ClassTree());
+    containingClassMetadata.setProperties(new Property[]{new Property()});
+    containingClassMetadata.setSecurityCeilingType("Security Ceiling Type");
+    containingClassMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = new Entity();
+    Property collectionProperty = new Property();
+
+    // Act
+    adminEntityServiceImpl2.getAdvancedCollectionRecord(containingClassMetadata, containingEntity, collectionProperty,
+        "42", new ArrayList<>(), "42", new String[]{"Custom Criteria"});
   }
 
   /**
@@ -1446,6 +1826,55 @@ public class AdminEntityServiceImplDiffblueTest {
     verify(containingClassMetadata).setProperties(isA(Property[].class));
     verify(containingClassMetadata).setSecurityCeilingType(eq("Security Ceiling Type"));
     verify(containingClassMetadata).setTabAndGroupMetadata(isA(Map.class));
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getRecordsForCollection(ClassMetadata, Entity, Property, FilterAndSortCriteria[], Integer, Integer, String, List)}
+   * with {@code containingClassMetadata}, {@code containingEntity},
+   * {@code collectionProperty}, {@code fascs}, {@code startIndex},
+   * {@code maxIndex}, {@code idValueOverride}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getRecordsForCollection(ClassMetadata, Entity, Property, FilterAndSortCriteria[], Integer, Integer, String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRecordsForCollectionWithContainingClassMetadataContainingEntityCollectionPropertyFascsStartIndexMaxIndexIdValueOverrideSectionCrumbs3()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5018 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata containingClassMetadata = new ClassMetadata();
+    containingClassMetadata.setCeilingType("Type");
+    containingClassMetadata.setCurrencyCode("GBP");
+    containingClassMetadata.setPolymorphicEntities(new ClassTree());
+    containingClassMetadata.setProperties(new Property[]{new Property()});
+    containingClassMetadata.setSecurityCeilingType("Security Ceiling Type");
+    containingClassMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = new Entity();
+    Property collectionProperty = new Property();
+
+    // Act
+    adminEntityServiceImpl2.getRecordsForCollection(containingClassMetadata, containingEntity, collectionProperty,
+        new FilterAndSortCriteria[]{new FilterAndSortCriteria("42")}, 1, 1, "42", new ArrayList<>());
   }
 
   /**
@@ -1722,6 +2151,101 @@ public class AdminEntityServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link AdminEntityServiceImpl#getRecordsForCollection(ClassMetadata, Entity, Property, FilterAndSortCriteria[], Integer, Integer, List)}
+   * with {@code containingClassMetadata}, {@code containingEntity},
+   * {@code collectionProperty}, {@code fascs}, {@code startIndex},
+   * {@code maxIndex}, {@code sectionCrumb}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getRecordsForCollection(ClassMetadata, Entity, Property, FilterAndSortCriteria[], Integer, Integer, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRecordsForCollectionWithContainingClassMetadataContainingEntityCollectionPropertyFascsStartIndexMaxIndexSectionCrumb6()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5321 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata containingClassMetadata = new ClassMetadata();
+    containingClassMetadata.setCeilingType("Type");
+    containingClassMetadata.setCurrencyCode("GBP");
+    containingClassMetadata.setPolymorphicEntities(new ClassTree());
+    containingClassMetadata.setProperties(new Property[]{new Property()});
+    containingClassMetadata.setSecurityCeilingType("Security Ceiling Type");
+    containingClassMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = new Entity();
+    Property collectionProperty = new Property();
+
+    // Act
+    adminEntityServiceImpl2.getRecordsForCollection(containingClassMetadata, containingEntity, collectionProperty,
+        new FilterAndSortCriteria[]{new FilterAndSortCriteria("42")}, 1, 1, new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getPagedRecordsForCollection(ClassMetadata, Entity, Property, FilterAndSortCriteria[], FetchPageRequest, String, List)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getPagedRecordsForCollection(ClassMetadata, Entity, Property, FilterAndSortCriteria[], FetchPageRequest, String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPagedRecordsForCollection() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4164 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata containingClassMetadata = new ClassMetadata();
+    containingClassMetadata.setCeilingType("Type");
+    containingClassMetadata.setCurrencyCode("GBP");
+    containingClassMetadata.setPolymorphicEntities(new ClassTree());
+    containingClassMetadata.setProperties(new Property[]{new Property()});
+    containingClassMetadata.setSecurityCeilingType("Security Ceiling Type");
+    containingClassMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = new Entity();
+    Property collectionProperty = new Property();
+    FetchPageRequest fetchPageRequest = new FetchPageRequest();
+
+    // Act
+    adminEntityServiceImpl2.getPagedRecordsForCollection(containingClassMetadata, containingEntity, collectionProperty,
+        new FilterAndSortCriteria[]{new FilterAndSortCriteria("42")}, fetchPageRequest, "42", new ArrayList<>());
+  }
+
+  /**
+   * Test
    * {@link AdminEntityServiceImpl#getPagedRecordsForCollection(ClassMetadata, Entity, Property, FilterAndSortCriteria[], FetchPageRequest, String, List)}.
    * <ul>
    *   <li>When {@link ClassMetadata} (default constructor) CeilingType is
@@ -1807,277 +2331,78 @@ public class AdminEntityServiceImplDiffblueTest {
 
   /**
    * Test
-   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
+   * {@link AdminEntityServiceImpl#getRecordsForAllSubCollections(PersistencePackageRequest, Entity, List)}
+   * with {@code ppr}, {@code containingEntity}, {@code sectionCrumb}.
    * <p>
    * Method under test:
-   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
+   * {@link AdminEntityServiceImpl#getRecordsForAllSubCollections(PersistencePackageRequest, Entity, List)}
    */
   @Test
-  public void testGetAllRecordsForAllSubCollections() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testGetRecordsForAllSubCollectionsWithPprContainingEntitySectionCrumb() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4946 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    Property property = new Property();
-    when(cmd.getProperties()).thenReturn(new Property[]{property, new Property()});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-    Entity containingEntity = mock(Entity.class);
-    when(containingEntity.getType()).thenReturn(new String[]{"Type"});
-
-    // Act
-    Map<String, DynamicResultSet> actualAllRecordsForAllSubCollections = adminEntityServiceImpl
-        .getAllRecordsForAllSubCollections(cmd, containingEntity, new ArrayList<>());
-
-    // Assert
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(containingEntity, atLeast(1)).getType();
-    assertTrue(actualAllRecordsForAllSubCollections.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
-   */
-  @Test
-  public void testGetAllRecordsForAllSubCollections2() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
-    when(adornedTargetCollectionMetadata.getAvailableToTypes()).thenReturn(new String[]{"Available To Types"});
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(adornedTargetCollectionMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-    Entity containingEntity = mock(Entity.class);
-    when(containingEntity.getType()).thenReturn(new String[]{"Type"});
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    ArrayList<SectionCrumb> sectionCrumb2 = new ArrayList<>();
-    sectionCrumb2.add(sectionCrumb);
-
-    // Act
-    Map<String, DynamicResultSet> actualAllRecordsForAllSubCollections = adminEntityServiceImpl
-        .getAllRecordsForAllSubCollections(cmd, containingEntity, sectionCrumb2);
-
-    // Assert
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(containingEntity).getType();
-    verify(adornedTargetCollectionMetadata).getAvailableToTypes();
-    verify(property).getMetadata();
-    assertTrue(actualAllRecordsForAllSubCollections.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
-   */
-  @Test
-  public void testGetAllRecordsForAllSubCollections3() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
-    when(adornedTargetCollectionMetadata.getAvailableToTypes()).thenReturn(new String[]{"Available To Types"});
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(adornedTargetCollectionMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-    Entity containingEntity = mock(Entity.class);
-    when(containingEntity.getType()).thenReturn(new String[]{"Type"});
-
-    SectionCrumb sectionCrumb = new SectionCrumb();
-    sectionCrumb.setOriginalSectionIdentifier("42");
-    sectionCrumb.setSectionId("42");
-    sectionCrumb.setSectionIdentifier("42");
-
-    SectionCrumb sectionCrumb2 = new SectionCrumb();
-    sectionCrumb2.setOriginalSectionIdentifier("Original Section Identifier");
-    sectionCrumb2.setSectionId("Section Id");
-    sectionCrumb2.setSectionIdentifier("Section Identifier");
-
-    ArrayList<SectionCrumb> sectionCrumb3 = new ArrayList<>();
-    sectionCrumb3.add(sectionCrumb2);
-    sectionCrumb3.add(sectionCrumb);
-
-    // Act
-    Map<String, DynamicResultSet> actualAllRecordsForAllSubCollections = adminEntityServiceImpl
-        .getAllRecordsForAllSubCollections(cmd, containingEntity, sectionCrumb3);
-
-    // Assert
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(containingEntity).getType();
-    verify(adornedTargetCollectionMetadata).getAvailableToTypes();
-    verify(property).getMetadata();
-    assertTrue(actualAllRecordsForAllSubCollections.isEmpty());
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
-   * <ul>
-   *   <li>Given empty array of {@link Property}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
-   */
-  @Test
-  public void testGetAllRecordsForAllSubCollections_givenEmptyArrayOfProperty() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
     Entity containingEntity = new Entity();
 
     // Act
-    Map<String, DynamicResultSet> actualAllRecordsForAllSubCollections = adminEntityServiceImpl
-        .getAllRecordsForAllSubCollections(cmd, containingEntity, new ArrayList<>());
-
-    // Assert
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    assertTrue(actualAllRecordsForAllSubCollections.isEmpty());
+    adminEntityServiceImpl2.getRecordsForAllSubCollections(ppr, containingEntity, new ArrayList<>());
   }
 
   /**
    * Test
-   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
-   * <ul>
-   *   <li>Then calls {@link FieldMetadata#getAvailableToTypes()}.</li>
-   * </ul>
+   * {@link AdminEntityServiceImpl#getRecordsForAllSubCollections(PersistencePackageRequest, Entity, Integer, Integer, List)}
+   * with {@code ppr}, {@code containingEntity}, {@code startIndex},
+   * {@code maxIndex}, {@code sectionCrumb}.
    * <p>
    * Method under test:
-   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
+   * {@link AdminEntityServiceImpl#getRecordsForAllSubCollections(PersistencePackageRequest, Entity, Integer, Integer, List)}
    */
   @Test
-  public void testGetAllRecordsForAllSubCollections_thenCallsGetAvailableToTypes() throws ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testGetRecordsForAllSubCollectionsWithPprContainingEntityStartIndexMaxIndexSectionCrumb()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4865 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
-    when(adornedTargetCollectionMetadata.getAvailableToTypes()).thenReturn(new String[]{"Available To Types"});
-    Property property = mock(Property.class);
-    when(property.getMetadata()).thenReturn(adornedTargetCollectionMetadata);
-    ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getProperties()).thenReturn(new Property[]{property});
-    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
-    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    cmd.setCeilingType("Type");
-    cmd.setCurrencyCode("GBP");
-    cmd.setPolymorphicEntities(new ClassTree());
-    cmd.setProperties(new Property[]{new Property()});
-    cmd.setSecurityCeilingType("Security Ceiling Type");
-    cmd.setTabAndGroupMetadata(new HashMap<>());
-    Entity containingEntity = mock(Entity.class);
-    when(containingEntity.getType()).thenReturn(new String[]{"Type"});
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+    PersistencePackageRequest ppr = PersistencePackageRequest.adorned();
+    Entity containingEntity = new Entity();
 
     // Act
-    Map<String, DynamicResultSet> actualAllRecordsForAllSubCollections = adminEntityServiceImpl
-        .getAllRecordsForAllSubCollections(cmd, containingEntity, new ArrayList<>());
-
-    // Assert
-    verify(cmd).getProperties();
-    verify(cmd).setCeilingType(eq("Type"));
-    verify(cmd).setCurrencyCode(eq("GBP"));
-    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
-    verify(cmd).setProperties(isA(Property[].class));
-    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
-    verify(containingEntity).getType();
-    verify(adornedTargetCollectionMetadata).getAvailableToTypes();
-    verify(property).getMetadata();
-    assertTrue(actualAllRecordsForAllSubCollections.isEmpty());
+    adminEntityServiceImpl2.getRecordsForAllSubCollections(ppr, containingEntity, 1, 1, new ArrayList<>());
   }
 
   /**
@@ -2144,6 +2469,49 @@ public class AdminEntityServiceImplDiffblueTest {
     verify(adornedTargetCollectionMetadata).getAvailableToTypes();
     verify(property).getMetadata();
     assertTrue(actualRecordsForSelectedTab.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getRecordsForSelectedTab(ClassMetadata, Entity, List, String)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getRecordsForSelectedTab(ClassMetadata, Entity, List, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRecordsForSelectedTab2() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5626 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = new Entity();
+
+    // Act
+    adminEntityServiceImpl2.getRecordsForSelectedTab(cmd, containingEntity, new ArrayList<>(), "Current Tab Name");
   }
 
   /**
@@ -2365,23 +2733,20 @@ public class AdminEntityServiceImplDiffblueTest {
 
   /**
    * Test
-   * {@link AdminEntityServiceImpl#updateTabInfo(CollectionMetadata, ClassMetadata, String, int)}.
-   * <ul>
-   *   <li>Then calls {@link ClassMetadata#getTabAndGroupMetadata()}.</li>
-   * </ul>
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
    * <p>
    * Method under test:
-   * {@link AdminEntityServiceImpl#updateTabInfo(CollectionMetadata, ClassMetadata, String, int)}
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
    */
   @Test
-  public void testUpdateTabInfo_thenCallsGetTabAndGroupMetadata() {
+  public void testGetAllRecordsForAllSubCollections() throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
     // Arrange
     AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    AdornedTargetCollectionMetadata fmd = new AdornedTargetCollectionMetadata();
     ClassMetadata cmd = mock(ClassMetadata.class);
-    when(cmd.getTabAndGroupMetadata()).thenReturn(new HashMap<>());
+    Property property = new Property();
+    when(cmd.getProperties()).thenReturn(new Property[]{property, new Property()});
     doNothing().when(cmd).setCeilingType(Mockito.<String>any());
     doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
     doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
@@ -2394,18 +2759,294 @@ public class AdminEntityServiceImplDiffblueTest {
     cmd.setProperties(new Property[]{new Property()});
     cmd.setSecurityCeilingType("Security Ceiling Type");
     cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = mock(Entity.class);
+    when(containingEntity.getType()).thenReturn(new String[]{"Type"});
 
     // Act
-    adminEntityServiceImpl.updateTabInfo(fmd, cmd, "Tab Name", 1);
+    Map<String, DynamicResultSet> actualAllRecordsForAllSubCollections = adminEntityServiceImpl
+        .getAllRecordsForAllSubCollections(cmd, containingEntity, new ArrayList<>());
 
     // Assert
-    verify(cmd).getTabAndGroupMetadata();
+    verify(cmd).getProperties();
     verify(cmd).setCeilingType(eq("Type"));
     verify(cmd).setCurrencyCode(eq("GBP"));
     verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
     verify(cmd).setProperties(isA(Property[].class));
     verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
     verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+    verify(containingEntity, atLeast(1)).getType();
+    assertTrue(actualAllRecordsForAllSubCollections.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
+   */
+  @Test
+  public void testGetAllRecordsForAllSubCollections2() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
+    when(adornedTargetCollectionMetadata.getAvailableToTypes()).thenReturn(new String[]{"Available To Types"});
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(adornedTargetCollectionMetadata);
+    ClassMetadata cmd = mock(ClassMetadata.class);
+    when(cmd.getProperties()).thenReturn(new Property[]{property});
+    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
+    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = mock(Entity.class);
+    when(containingEntity.getType()).thenReturn(new String[]{"Type"});
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    ArrayList<SectionCrumb> sectionCrumb2 = new ArrayList<>();
+    sectionCrumb2.add(sectionCrumb);
+
+    // Act
+    Map<String, DynamicResultSet> actualAllRecordsForAllSubCollections = adminEntityServiceImpl
+        .getAllRecordsForAllSubCollections(cmd, containingEntity, sectionCrumb2);
+
+    // Assert
+    verify(cmd).getProperties();
+    verify(cmd).setCeilingType(eq("Type"));
+    verify(cmd).setCurrencyCode(eq("GBP"));
+    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
+    verify(cmd).setProperties(isA(Property[].class));
+    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+    verify(containingEntity).getType();
+    verify(adornedTargetCollectionMetadata).getAvailableToTypes();
+    verify(property).getMetadata();
+    assertTrue(actualAllRecordsForAllSubCollections.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
+   */
+  @Test
+  public void testGetAllRecordsForAllSubCollections3() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
+    when(adornedTargetCollectionMetadata.getAvailableToTypes()).thenReturn(new String[]{"Available To Types"});
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(adornedTargetCollectionMetadata);
+    ClassMetadata cmd = mock(ClassMetadata.class);
+    when(cmd.getProperties()).thenReturn(new Property[]{property});
+    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
+    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = mock(Entity.class);
+    when(containingEntity.getType()).thenReturn(new String[]{"Type"});
+
+    SectionCrumb sectionCrumb = new SectionCrumb();
+    sectionCrumb.setOriginalSectionIdentifier("42");
+    sectionCrumb.setSectionId("42");
+    sectionCrumb.setSectionIdentifier("42");
+
+    SectionCrumb sectionCrumb2 = new SectionCrumb();
+    sectionCrumb2.setOriginalSectionIdentifier("Original Section Identifier");
+    sectionCrumb2.setSectionId("Section Id");
+    sectionCrumb2.setSectionIdentifier("Section Identifier");
+
+    ArrayList<SectionCrumb> sectionCrumb3 = new ArrayList<>();
+    sectionCrumb3.add(sectionCrumb2);
+    sectionCrumb3.add(sectionCrumb);
+
+    // Act
+    Map<String, DynamicResultSet> actualAllRecordsForAllSubCollections = adminEntityServiceImpl
+        .getAllRecordsForAllSubCollections(cmd, containingEntity, sectionCrumb3);
+
+    // Assert
+    verify(cmd).getProperties();
+    verify(cmd).setCeilingType(eq("Type"));
+    verify(cmd).setCurrencyCode(eq("GBP"));
+    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
+    verify(cmd).setProperties(isA(Property[].class));
+    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+    verify(containingEntity).getType();
+    verify(adornedTargetCollectionMetadata).getAvailableToTypes();
+    verify(property).getMetadata();
+    assertTrue(actualAllRecordsForAllSubCollections.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAllRecordsForAllSubCollections4() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2795 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = new Entity();
+
+    // Act
+    adminEntityServiceImpl2.getAllRecordsForAllSubCollections(cmd, containingEntity, new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
+   * <ul>
+   *   <li>Given empty array of {@link Property}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
+   */
+  @Test
+  public void testGetAllRecordsForAllSubCollections_givenEmptyArrayOfProperty() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
+    ClassMetadata cmd = mock(ClassMetadata.class);
+    when(cmd.getProperties()).thenReturn(new Property[]{});
+    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
+    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = new Entity();
+
+    // Act
+    Map<String, DynamicResultSet> actualAllRecordsForAllSubCollections = adminEntityServiceImpl
+        .getAllRecordsForAllSubCollections(cmd, containingEntity, new ArrayList<>());
+
+    // Assert
+    verify(cmd).getProperties();
+    verify(cmd).setCeilingType(eq("Type"));
+    verify(cmd).setCurrencyCode(eq("GBP"));
+    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
+    verify(cmd).setProperties(isA(Property[].class));
+    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+    assertTrue(actualAllRecordsForAllSubCollections.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}.
+   * <ul>
+   *   <li>Then calls {@link FieldMetadata#getAvailableToTypes()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getAllRecordsForAllSubCollections(ClassMetadata, Entity, List)}
+   */
+  @Test
+  public void testGetAllRecordsForAllSubCollections_thenCallsGetAvailableToTypes() throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
+    AdornedTargetCollectionMetadata adornedTargetCollectionMetadata = mock(AdornedTargetCollectionMetadata.class);
+    when(adornedTargetCollectionMetadata.getAvailableToTypes()).thenReturn(new String[]{"Available To Types"});
+    Property property = mock(Property.class);
+    when(property.getMetadata()).thenReturn(adornedTargetCollectionMetadata);
+    ClassMetadata cmd = mock(ClassMetadata.class);
+    when(cmd.getProperties()).thenReturn(new Property[]{property});
+    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
+    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Entity containingEntity = mock(Entity.class);
+    when(containingEntity.getType()).thenReturn(new String[]{"Type"});
+
+    // Act
+    Map<String, DynamicResultSet> actualAllRecordsForAllSubCollections = adminEntityServiceImpl
+        .getAllRecordsForAllSubCollections(cmd, containingEntity, new ArrayList<>());
+
+    // Assert
+    verify(cmd).getProperties();
+    verify(cmd).setCeilingType(eq("Type"));
+    verify(cmd).setCurrencyCode(eq("GBP"));
+    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
+    verify(cmd).setProperties(isA(Property[].class));
+    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+    verify(containingEntity).getType();
+    verify(adornedTargetCollectionMetadata).getAvailableToTypes();
+    verify(property).getMetadata();
+    assertTrue(actualAllRecordsForAllSubCollections.isEmpty());
   }
 
   /**
@@ -2473,6 +3114,51 @@ public class AdminEntityServiceImplDiffblueTest {
     assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.addSubCollectionEntity(entityForm,
         mainMetadata, field, parentEntity, new ArrayList<>()));
     verify(entityForm, atLeast(1)).getFields();
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#addSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, List)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#addSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddSubCollectionEntity3() throws ClassNotFoundException, ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1739 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+    EntityForm entityForm = new EntityForm();
+
+    ClassMetadata mainMetadata = new ClassMetadata();
+    mainMetadata.setCeilingType("Type");
+    mainMetadata.setCurrencyCode("GBP");
+    mainMetadata.setPolymorphicEntities(new ClassTree());
+    mainMetadata.setProperties(new Property[]{new Property()});
+    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
+    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Property field = new Property();
+    Entity parentEntity = new Entity();
+
+    // Act
+    adminEntityServiceImpl2.addSubCollectionEntity(entityForm, mainMetadata, field, parentEntity, new ArrayList<>());
   }
 
   /**
@@ -2636,206 +3322,21 @@ public class AdminEntityServiceImplDiffblueTest {
 
   /**
    * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code alternateId},
-   * {@code sectionCrumbs}.
+   * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, String, List)}
+   * with {@code mainMetadata}, {@code field}, {@code parentEntity},
+   * {@code itemId}, {@code alternateId}, {@code priorKey}, {@code sectionCrumbs}.
    * <p>
    * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
+   * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, String, List)}
    */
   @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdAlternateIdSectionCrumbs()
-      throws ClassNotFoundException, ServiceException {
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdAlternateIdPriorKeySectionCrumbs()
+      throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
     // Arrange
     AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    EntityForm entityForm = new EntityForm();
-
-    ClassMetadata mainMetadata = new ClassMetadata();
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", "42", new ArrayList<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code alternateId},
-   * {@code sectionCrumbs}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdAlternateIdSectionCrumbs2()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-
-    EntityForm entityForm = new EntityForm();
-    entityForm.putDynamicForm("The specified field [%s] for class [%s] was not a collection field.", new EntityForm());
-
-    ClassMetadata mainMetadata = new ClassMetadata();
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", "42", new ArrayList<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code alternateId},
-   * {@code sectionCrumbs}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdAlternateIdSectionCrumbs3()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-
-    EntityForm entityForm = new EntityForm();
-    entityForm.addTabFromTabMetadata(new TabMetadata());
-
-    ClassMetadata mainMetadata = new ClassMetadata();
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", "42", new ArrayList<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code alternateId},
-   * {@code sectionCrumbs}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdAlternateIdSectionCrumbs4()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenReturn(new HashMap<>());
-
-    ClassMetadata mainMetadata = new ClassMetadata();
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", "42", new ArrayList<>()));
-    verify(entityForm, atLeast(1)).getFields();
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code alternateId},
-   * {@code sectionCrumbs}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdAlternateIdSectionCrumbs5()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-
-    HashMap<String, Field> stringFieldMap = new HashMap<>();
-    stringFieldMap.put("The specified field [%s] for class [%s] was not a collection field.", new Field());
-    EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenReturn(stringFieldMap);
-
-    ClassMetadata mainMetadata = new ClassMetadata();
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", "42", new ArrayList<>()));
-    verify(entityForm, atLeast(1)).getFields();
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code alternateId},
-   * {@code sectionCrumbs}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdAlternateIdSectionCrumbs6()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenReturn(new HashMap<>());
     ClassMetadata mainMetadata = mock(ClassMetadata.class);
-    when(mainMetadata.getCeilingType()).thenReturn("Ceiling Type");
     doNothing().when(mainMetadata).setCeilingType(Mockito.<String>any());
     doNothing().when(mainMetadata).setCurrencyCode(Mockito.<String>any());
     doNothing().when(mainMetadata).setPolymorphicEntities(Mockito.<ClassTree>any());
@@ -2848,244 +3349,29 @@ public class AdminEntityServiceImplDiffblueTest {
     mainMetadata.setProperties(new Property[]{new Property()});
     mainMetadata.setSecurityCeilingType("Security Ceiling Type");
     mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
+    Property field = mock(Property.class);
+    when(field.getMetadata()).thenThrow(new EntityNotFoundException("."));
+    when(field.getName()).thenReturn("Name");
+    doNothing().when(field).setName(Mockito.<String>any());
+    field.setName("id");
+    Entity parentEntity = mock(Entity.class);
+    when(parentEntity.findProperty(Mockito.<String>any())).thenReturn(new Property());
 
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", "42", new ArrayList<>()));
-    verify(mainMetadata).getCeilingType();
+    // Act
+    adminEntityServiceImpl.removeSubCollectionEntity(mainMetadata, field, parentEntity, "42", "42", "Prior Key",
+        new ArrayList<>());
+
+    // Assert
     verify(mainMetadata).setCeilingType(eq("Type"));
     verify(mainMetadata).setCurrencyCode(eq("GBP"));
     verify(mainMetadata).setPolymorphicEntities(isA(ClassTree.class));
     verify(mainMetadata).setProperties(isA(Property[].class));
     verify(mainMetadata).setSecurityCeilingType(eq("Security Ceiling Type"));
     verify(mainMetadata).setTabAndGroupMetadata(isA(Map.class));
-    verify(entityForm, atLeast(1)).getFields();
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code sectionCrumb}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdSectionCrumb()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    EntityForm entityForm = new EntityForm();
-
-    ClassMetadata mainMetadata = new ClassMetadata();
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", new ArrayList<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code sectionCrumb}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdSectionCrumb2()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-
-    EntityForm entityForm = new EntityForm();
-    entityForm.putDynamicForm("The specified field [%s] for class [%s] was not a collection field.", new EntityForm());
-
-    ClassMetadata mainMetadata = new ClassMetadata();
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", new ArrayList<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code sectionCrumb}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdSectionCrumb3()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-
-    EntityForm entityForm = new EntityForm();
-    entityForm.addTabFromTabMetadata(new TabMetadata());
-
-    ClassMetadata mainMetadata = new ClassMetadata();
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", new ArrayList<>()));
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code sectionCrumb}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdSectionCrumb4()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenReturn(new HashMap<>());
-
-    ClassMetadata mainMetadata = new ClassMetadata();
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", new ArrayList<>()));
-    verify(entityForm, atLeast(1)).getFields();
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code sectionCrumb}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdSectionCrumb5()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-
-    HashMap<String, Field> stringFieldMap = new HashMap<>();
-    stringFieldMap.put("The specified field [%s] for class [%s] was not a collection field.", new Field());
-    EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenReturn(stringFieldMap);
-
-    ClassMetadata mainMetadata = new ClassMetadata();
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", new ArrayList<>()));
-    verify(entityForm, atLeast(1)).getFields();
-  }
-
-  /**
-   * Test
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   * with {@code entityForm}, {@code mainMetadata}, {@code field},
-   * {@code parentEntity}, {@code collectionItemId}, {@code sectionCrumb}.
-   * <p>
-   * Method under test:
-   * {@link AdminEntityServiceImpl#updateSubCollectionEntity(EntityForm, ClassMetadata, Property, Entity, String, List)}
-   */
-  @Test
-  public void testUpdateSubCollectionEntityWithEntityFormMainMetadataFieldParentEntityCollectionItemIdSectionCrumb6()
-      throws ClassNotFoundException, ServiceException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
-    EntityForm entityForm = mock(EntityForm.class);
-    when(entityForm.getFields()).thenReturn(new HashMap<>());
-    ClassMetadata mainMetadata = mock(ClassMetadata.class);
-    when(mainMetadata.getCeilingType()).thenReturn("Ceiling Type");
-    doNothing().when(mainMetadata).setCeilingType(Mockito.<String>any());
-    doNothing().when(mainMetadata).setCurrencyCode(Mockito.<String>any());
-    doNothing().when(mainMetadata).setPolymorphicEntities(Mockito.<ClassTree>any());
-    doNothing().when(mainMetadata).setProperties(Mockito.<Property[]>any());
-    doNothing().when(mainMetadata).setSecurityCeilingType(Mockito.<String>any());
-    doNothing().when(mainMetadata).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
-    mainMetadata.setCeilingType("Type");
-    mainMetadata.setCurrencyCode("GBP");
-    mainMetadata.setPolymorphicEntities(new ClassTree());
-    mainMetadata.setProperties(new Property[]{new Property()});
-    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
-    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
-    Property field = new Property();
-    Entity parentEntity = new Entity();
-
-    // Act and Assert
-    assertThrows(IllegalArgumentException.class, () -> adminEntityServiceImpl.updateSubCollectionEntity(entityForm,
-        mainMetadata, field, parentEntity, "42", new ArrayList<>()));
-    verify(mainMetadata).getCeilingType();
-    verify(mainMetadata).setCeilingType(eq("Type"));
-    verify(mainMetadata).setCurrencyCode(eq("GBP"));
-    verify(mainMetadata).setPolymorphicEntities(isA(ClassTree.class));
-    verify(mainMetadata).setProperties(isA(Property[].class));
-    verify(mainMetadata).setSecurityCeilingType(eq("Security Ceiling Type"));
-    verify(mainMetadata).setTabAndGroupMetadata(isA(Map.class));
-    verify(entityForm, atLeast(1)).getFields();
+    verify(parentEntity).findProperty(eq("id"));
+    verify(field).getMetadata();
+    verify(field).getName();
+    verify(field).setName(eq("id"));
   }
 
   /**
@@ -3098,7 +3384,7 @@ public class AdminEntityServiceImplDiffblueTest {
    * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, String, List)}
    */
   @Test
-  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdAlternateIdPriorKeySectionCrumbs()
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdAlternateIdPriorKeySectionCrumbs2()
       throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
@@ -3158,7 +3444,7 @@ public class AdminEntityServiceImplDiffblueTest {
    * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, String, List)}
    */
   @Test
-  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdAlternateIdPriorKeySectionCrumbs2()
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdAlternateIdPriorKeySectionCrumbs3()
       throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
@@ -3221,7 +3507,7 @@ public class AdminEntityServiceImplDiffblueTest {
    * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, String, List)}
    */
   @Test
-  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdAlternateIdPriorKeySectionCrumbs3()
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdAlternateIdPriorKeySectionCrumbs4()
       throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
@@ -3289,7 +3575,7 @@ public class AdminEntityServiceImplDiffblueTest {
    * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, String, List)}
    */
   @Test
-  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdAlternateIdPriorKeySectionCrumbs4()
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdAlternateIdPriorKeySectionCrumbs5()
       throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
@@ -3346,6 +3632,54 @@ public class AdminEntityServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, String, List)}
+   * with {@code mainMetadata}, {@code field}, {@code parentEntity},
+   * {@code itemId}, {@code alternateId}, {@code priorKey}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdAlternateIdPriorKeySectionCrumbs6()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6522 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata mainMetadata = new ClassMetadata();
+    mainMetadata.setCeilingType("Type");
+    mainMetadata.setCurrencyCode("GBP");
+    mainMetadata.setPolymorphicEntities(new ClassTree());
+    mainMetadata.setProperties(new Property[]{new Property()});
+    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
+    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Property field = new Property();
+    Entity parentEntity = new Entity();
+
+    // Act
+    adminEntityServiceImpl2.removeSubCollectionEntity(mainMetadata, field, parentEntity, "42", "42", "Prior Key",
+        new ArrayList<>());
+  }
+
+  /**
+   * Test
    * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, List)}
    * with {@code mainMetadata}, {@code field}, {@code parentEntity},
    * {@code itemId}, {@code priorKey}, {@code sectionCrumbs}.
@@ -3355,6 +3689,60 @@ public class AdminEntityServiceImplDiffblueTest {
    */
   @Test
   public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdPriorKeySectionCrumbs()
+      throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
+    ClassMetadata mainMetadata = mock(ClassMetadata.class);
+    doNothing().when(mainMetadata).setCeilingType(Mockito.<String>any());
+    doNothing().when(mainMetadata).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(mainMetadata).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(mainMetadata).setProperties(Mockito.<Property[]>any());
+    doNothing().when(mainMetadata).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(mainMetadata).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    mainMetadata.setCeilingType("Type");
+    mainMetadata.setCurrencyCode("GBP");
+    mainMetadata.setPolymorphicEntities(new ClassTree());
+    mainMetadata.setProperties(new Property[]{new Property()});
+    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
+    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Property field = mock(Property.class);
+    when(field.getMetadata()).thenThrow(new EntityNotFoundException("."));
+    when(field.getName()).thenReturn("Name");
+    doNothing().when(field).setName(Mockito.<String>any());
+    field.setName("id");
+    Entity parentEntity = mock(Entity.class);
+    when(parentEntity.findProperty(Mockito.<String>any())).thenReturn(new Property());
+
+    // Act
+    adminEntityServiceImpl.removeSubCollectionEntity(mainMetadata, field, parentEntity, "42", "Prior Key",
+        new ArrayList<>());
+
+    // Assert
+    verify(mainMetadata).setCeilingType(eq("Type"));
+    verify(mainMetadata).setCurrencyCode(eq("GBP"));
+    verify(mainMetadata).setPolymorphicEntities(isA(ClassTree.class));
+    verify(mainMetadata).setProperties(isA(Property[].class));
+    verify(mainMetadata).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(mainMetadata).setTabAndGroupMetadata(isA(Map.class));
+    verify(parentEntity).findProperty(eq("id"));
+    verify(field).getMetadata();
+    verify(field).getName();
+    verify(field).setName(eq("id"));
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, List)}
+   * with {@code mainMetadata}, {@code field}, {@code parentEntity},
+   * {@code itemId}, {@code priorKey}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, List)}
+   */
+  @Test
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdPriorKeySectionCrumbs2()
       throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
@@ -3414,7 +3802,7 @@ public class AdminEntityServiceImplDiffblueTest {
    * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, List)}
    */
   @Test
-  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdPriorKeySectionCrumbs2()
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdPriorKeySectionCrumbs3()
       throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
@@ -3477,7 +3865,7 @@ public class AdminEntityServiceImplDiffblueTest {
    * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, List)}
    */
   @Test
-  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdPriorKeySectionCrumbs3()
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdPriorKeySectionCrumbs4()
       throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
@@ -3545,7 +3933,7 @@ public class AdminEntityServiceImplDiffblueTest {
    * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, List)}
    */
   @Test
-  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdPriorKeySectionCrumbs4()
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdPriorKeySectionCrumbs5()
       throws ServiceException {
     //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
 
@@ -3602,6 +3990,54 @@ public class AdminEntityServiceImplDiffblueTest {
 
   /**
    * Test
+   * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, List)}
+   * with {@code mainMetadata}, {@code field}, {@code parentEntity},
+   * {@code itemId}, {@code priorKey}, {@code sectionCrumbs}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#removeSubCollectionEntity(ClassMetadata, Property, Entity, String, String, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveSubCollectionEntityWithMainMetadataFieldParentEntityItemIdPriorKeySectionCrumbs6()
+      throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6829 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata mainMetadata = new ClassMetadata();
+    mainMetadata.setCeilingType("Type");
+    mainMetadata.setCurrencyCode("GBP");
+    mainMetadata.setPolymorphicEntities(new ClassTree());
+    mainMetadata.setProperties(new Property[]{new Property()});
+    mainMetadata.setSecurityCeilingType("Security Ceiling Type");
+    mainMetadata.setTabAndGroupMetadata(new HashMap<>());
+    Property field = new Property();
+    Entity parentEntity = new Entity();
+
+    // Act
+    adminEntityServiceImpl2.removeSubCollectionEntity(mainMetadata, field, parentEntity, "42", "Prior Key",
+        new ArrayList<>());
+  }
+
+  /**
+   * Test
    * {@link AdminEntityServiceImpl#getContextSpecificRelationshipId(ClassMetadata, Entity, String)}.
    * <p>
    * Method under test:
@@ -3639,6 +4075,99 @@ public class AdminEntityServiceImplDiffblueTest {
     verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
     verify(cmd).setTabAndGroupMetadata(isA(Map.class));
     verify(entity, atLeast(1)).getProperties();
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getContextSpecificRelationshipId(ClassMetadata, Entity, String)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getContextSpecificRelationshipId(ClassMetadata, Entity, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetContextSpecificRelationshipId2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3158 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    adminEntityServiceImpl2.getContextSpecificRelationshipId(cmd, new Entity(), "Property Name");
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#getContextSpecificRelationshipId(ClassMetadata, Entity, String)}.
+   * <ul>
+   *   <li>Given {@link EntityNotFoundException#EntityNotFoundException(String)}
+   * with s is {@code .}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getContextSpecificRelationshipId(ClassMetadata, Entity, String)}
+   */
+  @Test
+  public void testGetContextSpecificRelationshipId_givenEntityNotFoundExceptionWithSIsDot() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
+    ClassMetadata cmd = mock(ClassMetadata.class);
+    when(cmd.getPMap()).thenThrow(new EntityNotFoundException("."));
+    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
+    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+    Property property = mock(Property.class);
+    when(property.getName()).thenReturn("java.lang");
+    Entity entity = mock(Entity.class);
+    when(entity.getProperties()).thenReturn(new Property[]{property});
+
+    // Act
+    adminEntityServiceImpl.getContextSpecificRelationshipId(cmd, entity, "java.lang.Integer");
+
+    // Assert
+    verify(cmd).getPMap();
+    verify(cmd).setCeilingType(eq("Type"));
+    verify(cmd).setCurrencyCode(eq("GBP"));
+    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
+    verify(cmd).setProperties(isA(Property[].class));
+    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
+    verify(entity, atLeast(1)).getProperties();
+    verify(property, atLeast(1)).getName();
   }
 
   /**
@@ -3990,6 +4519,47 @@ public class AdminEntityServiceImplDiffblueTest {
 
   /**
    * Test {@link AdminEntityServiceImpl#getIdProperty(ClassMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getIdProperty(ClassMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetIdProperty2() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3848 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    adminEntityServiceImpl2.getIdProperty(cmd);
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#getIdProperty(ClassMetadata)}.
    * <ul>
    *   <li>Given {@link BasicFieldMetadata}
    * {@link BasicFieldMetadata#getFieldType()} return {@code UNKNOWN}.</li>
@@ -4036,6 +4606,53 @@ public class AdminEntityServiceImplDiffblueTest {
     verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
     verify(cmd).setTabAndGroupMetadata(isA(Map.class));
     verify(property, atLeast(1)).getMetadata();
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#getIdProperty(ClassMetadata)}.
+   * <ul>
+   *   <li>Given {@link EntityNotFoundException#EntityNotFoundException(String)}
+   * with s is {@code Could not determine ID field for}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getIdProperty(ClassMetadata)}
+   */
+  @Test
+  public void testGetIdProperty_givenEntityNotFoundExceptionWithSIsCouldNotDetermineIdFieldFor()
+      throws ServiceException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
+    ClassMetadata cmd = mock(ClassMetadata.class);
+    when(cmd.getCeilingType()).thenThrow(new EntityNotFoundException("Could not determine ID field for "));
+    when(cmd.getProperties()).thenReturn(new Property[]{new Property()});
+    doNothing().when(cmd).setCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setCurrencyCode(Mockito.<String>any());
+    doNothing().when(cmd).setPolymorphicEntities(Mockito.<ClassTree>any());
+    doNothing().when(cmd).setProperties(Mockito.<Property[]>any());
+    doNothing().when(cmd).setSecurityCeilingType(Mockito.<String>any());
+    doNothing().when(cmd).setTabAndGroupMetadata(Mockito.<Map<String, TabMetadata>>any());
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    adminEntityServiceImpl.getIdProperty(cmd);
+
+    // Assert
+    verify(cmd).getCeilingType();
+    verify(cmd).getProperties();
+    verify(cmd).setCeilingType(eq("Type"));
+    verify(cmd).setCurrencyCode(eq("GBP"));
+    verify(cmd).setPolymorphicEntities(isA(ClassTree.class));
+    verify(cmd).setProperties(isA(Property[].class));
+    verify(cmd).setSecurityCeilingType(eq("Security Ceiling Type"));
+    verify(cmd).setTabAndGroupMetadata(isA(Map.class));
   }
 
   /**
@@ -4319,6 +4936,176 @@ public class AdminEntityServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link AdminEntityServiceImpl#add(PersistencePackageRequest)} with
+   * {@code request}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#add(PersistencePackageRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddWithRequest() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1579 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    // Act
+    adminEntityServiceImpl2.add(PersistencePackageRequest.adorned());
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#add(PersistencePackageRequest, boolean)}
+   * with {@code request}, {@code transactional}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#add(PersistencePackageRequest, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddWithRequestTransactional() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1628 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    // Act
+    adminEntityServiceImpl2.add(PersistencePackageRequest.adorned(), true);
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#inspect(PersistencePackageRequest)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#inspect(PersistencePackageRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testInspect() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5999 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    // Act
+    adminEntityServiceImpl2.inspect(PersistencePackageRequest.adorned());
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#remove(PersistencePackageRequest)} with
+   * {@code request}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#remove(PersistencePackageRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveWithRequest() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6362 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    // Act
+    adminEntityServiceImpl2.remove(PersistencePackageRequest.adorned());
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#remove(PersistencePackageRequest, boolean)}
+   * with {@code request}, {@code transactional}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#remove(PersistencePackageRequest, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemoveWithRequestTransactional() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6411 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    // Act
+    adminEntityServiceImpl2.remove(PersistencePackageRequest.adorned(), true);
+  }
+
+  /**
    * Test
    * {@link AdminEntityServiceImpl#ensureEntityMarkedAsValidationFailure(ValidationException, PersistencePackageRequest)}.
    * <p>
@@ -4450,6 +5237,41 @@ public class AdminEntityServiceImplDiffblueTest {
   /**
    * Test
    * {@link AdminEntityServiceImpl#ensureEntityMarkedAsValidationFailure(ValidationException, PersistencePackageRequest)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#ensureEntityMarkedAsValidationFailure(ValidationException, PersistencePackageRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEnsureEntityMarkedAsValidationFailure6() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2056 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+    ValidationException e = new ValidationException(new Entity());
+
+    // Act
+    adminEntityServiceImpl2.ensureEntityMarkedAsValidationFailure(e, PersistencePackageRequest.adorned());
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#ensureEntityMarkedAsValidationFailure(ValidationException, PersistencePackageRequest)}.
    * <ul>
    *   <li>Then calls {@link Entity#addGlobalValidationError(String)}.</li>
    * </ul>
@@ -4476,6 +5298,128 @@ public class AdminEntityServiceImplDiffblueTest {
     verify(entity).addGlobalValidationError(isNull());
     verify(entity).isValidationFailure();
     verify(entity).setValidationFailure(eq(true));
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#ensureEntityMarkedAsValidationFailure(ValidationException, PersistencePackageRequest)}.
+   * <ul>
+   *   <li>Then calls {@link Throwable#getMessage()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#ensureEntityMarkedAsValidationFailure(ValidationException, PersistencePackageRequest)}
+   */
+  @Test
+  public void testEnsureEntityMarkedAsValidationFailure_thenCallsGetMessage() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl = new AdminEntityServiceImpl();
+    ValidationException e = mock(ValidationException.class);
+    when(e.getMessage()).thenThrow(new EntityNotFoundException("foo"));
+    when(e.containsCause(Mockito.<Class<Throwable>>any())).thenReturn(false);
+    when(e.getEntity()).thenReturn(new Entity());
+
+    // Act
+    adminEntityServiceImpl.ensureEntityMarkedAsValidationFailure(e, PersistencePackageRequest.adorned());
+
+    // Assert
+    verify(e).getMessage();
+    verify(e).containsCause(isA(Class.class));
+    verify(e, atLeast(1)).getEntity();
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#fetch(PersistencePackageRequest)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#fetch(PersistencePackageRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFetch() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2131 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+
+    // Act
+    adminEntityServiceImpl2.fetch(PersistencePackageRequest.adorned());
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#getDefaultCto()}.
+   * <p>
+   * Method under test: {@link AdminEntityServiceImpl#getDefaultCto()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDefaultCto() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3471 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AdminEntityServiceImpl()).getDefaultCto();
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#getForeignEntityName(String, String)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#getForeignEntityName(String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetForeignEntityName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3805 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AdminEntityServiceImpl()).getForeignEntityName("Owning Class", "42");
   }
 
   /**
@@ -4512,6 +5456,93 @@ public class AdminEntityServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new AdminEntityServiceImpl()).getForeignEntityName("Owning Class", null));
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#getDynamicEntityDao(String)}.
+   * <p>
+   * Method under test: {@link AdminEntityServiceImpl#getDynamicEntityDao(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDynamicEntityDao() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3481 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AdminEntityServiceImpl()).getDynamicEntityDao("Owning Class");
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#getDefaultMaxResults()}.
+   * <p>
+   * Method under test: {@link AdminEntityServiceImpl#getDefaultMaxResults()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDefaultMaxResults() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3476 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AdminEntityServiceImpl()).getDefaultMaxResults();
+  }
+
+  /**
+   * Test {@link AdminEntityServiceImpl#clearEntityManager()}.
+   * <p>
+   * Method under test: {@link AdminEntityServiceImpl#clearEntityManager()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testClearEntityManager() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2051 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AdminEntityServiceImpl()).clearEntityManager();
   }
 
   /**
@@ -4557,6 +5588,50 @@ public class AdminEntityServiceImplDiffblueTest {
     assertSame(parentMetadata, ((ParentRecordStructure) getResult).getParentMetadata());
     assertSame(polymorphicEntities, parentMetadata.getPolymorphicEntities());
     assertSame(entity2, ((ParentRecordStructure) getResult).getParentRecord());
+  }
+
+  /**
+   * Test
+   * {@link AdminEntityServiceImpl#populateParentRecordStructure(PersistencePackage, Entity, ClassMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link AdminEntityServiceImpl#populateParentRecordStructure(PersistencePackage, Entity, ClassMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateParentRecordStructure2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6048 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.AdminEntityServiceImpl adminEntityServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AdminEntityServiceImpl adminEntityServiceImpl2 = new AdminEntityServiceImpl();
+    PersistencePackage persistencePackage = new PersistencePackage();
+    Entity entity = new Entity();
+
+    ClassMetadata parentMetadata = new ClassMetadata();
+    parentMetadata.setCeilingType("Type");
+    parentMetadata.setCurrencyCode("GBP");
+    parentMetadata.setPolymorphicEntities(new ClassTree());
+    parentMetadata.setProperties(new Property[]{new Property()});
+    parentMetadata.setSecurityCeilingType("Security Ceiling Type");
+    parentMetadata.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    adminEntityServiceImpl2.populateParentRecordStructure(persistencePackage, entity, parentMetadata);
   }
 
   /**

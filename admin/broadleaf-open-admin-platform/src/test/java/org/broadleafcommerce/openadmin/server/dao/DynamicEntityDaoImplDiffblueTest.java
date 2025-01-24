@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.dao;
 
 import static org.junit.Assert.assertEquals;
@@ -32,13 +15,16 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import javax.persistence.EntityManager;
 import org.broadleafcommerce.common.persistence.EntityConfiguration;
 import org.broadleafcommerce.common.presentation.client.PersistencePerspectiveItemType;
 import org.broadleafcommerce.common.util.dao.DynamicDaoHelper;
@@ -47,6 +33,7 @@ import org.broadleafcommerce.openadmin.dto.AdornedTargetCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.AdornedTargetList;
 import org.broadleafcommerce.openadmin.dto.BasicCollectionMetadata;
 import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
+import org.broadleafcommerce.openadmin.dto.ClassMetadata;
 import org.broadleafcommerce.openadmin.dto.ClassTree;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
 import org.broadleafcommerce.openadmin.dto.ForeignKey;
@@ -56,18 +43,347 @@ import org.broadleafcommerce.openadmin.dto.PersistencePerspectiveItem;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.AdornedTargetCollectionFieldMetadataProvider;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.FieldMetadataProvider;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.hibernate.mapping.Property;
+import org.hibernate.type.BigDecimalType;
 import org.hibernate.type.Type;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class DynamicEntityDaoImplDiffblueTest {
+  @Autowired
+  private DynamicEntityDaoImpl dynamicEntityDaoImpl;
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#createCriteria(Class)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#createCriteria(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateCriteria() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3294 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> entityClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.createCriteria(entityClass);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#persist(Object)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#persist(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPersist() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11783 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).persist("Entity");
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#find(Class, Object)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#find(Class, Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFind() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4040 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> entityClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.find(entityClass, "Key");
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#merge(Object)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#merge(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testMerge() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11694 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).merge("Entity");
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#flush()}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#flush()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFlush() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4430 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).flush();
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#detach(Serializable)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#detach(Serializable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetach() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3622 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.detach(new SimpleDateFormat("yyyy/mm/dd"));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#refresh(Serializable)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#refresh(Serializable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRefresh() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11951 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.refresh(new SimpleDateFormat("yyyy/mm/dd"));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#retrieve(Class, Object)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#retrieve(Class, Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRetrieve() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12229 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> entityClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.retrieve(entityClass, "Primary Key");
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#remove(Serializable)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#remove(Serializable)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRemove() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12138 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.remove(new SimpleDateFormat("yyyy/mm/dd"));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#clear()}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#clear()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testClear() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2957 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).clear();
+  }
+
   /**
    * Test {@link DynamicEntityDaoImpl#getPersistentClass(String)}.
    * <p>
@@ -82,6 +398,35 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
+   * Test {@link DynamicEntityDaoImpl#getPersistentClass(String)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getPersistentClass(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPersistentClass2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8695 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).getPersistentClass("Target Class Name");
+  }
+
+  /**
    * Test {@link DynamicEntityDaoImpl#useCache()}.
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#useCache()}
@@ -92,6 +437,70 @@ public class DynamicEntityDaoImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertFalse((new DynamicEntityDaoImpl()).useCache());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#useCache()}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#useCache()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUseCache2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13945 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).useCache();
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
+   * with {@code ceilingClass}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClass() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4766 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> ceilingClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getAllPolymorphicEntitiesFromCeiling(ceilingClass);
   }
 
   /**
@@ -204,6 +613,42 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
+   * with {@code ceilingClass}, {@code includeUnqualifiedPolymorphicEntities}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAllPolymorphicEntitiesFromCeilingWithCeilingClassIncludeUnqualifiedPolymorphicEntities6() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5094 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> ceilingClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getAllPolymorphicEntitiesFromCeiling(ceilingClass, true);
+  }
+
+  /**
    * Test {@link DynamicEntityDaoImpl#getAllPolymorphicEntitiesFromCeiling(Class)}
    * with {@code ceilingClass}.
    * <ul>
@@ -288,6 +733,39 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetUpDownInheritance3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10983 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> testClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getUpDownInheritance(testClass);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getUpDownInheritance(Class)}.
    * <ul>
    *   <li>Given {@link DynamicEntityDaoImpl} (default constructor).</li>
    *   <li>Then return array length is zero.</li>
@@ -305,6 +783,35 @@ public class DynamicEntityDaoImplDiffblueTest {
 
     // Act and Assert
     assertEquals(0, dynamicEntityDaoImpl.getUpDownInheritance(testClass).length);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getImplClass(String)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getImplClass(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetImplClass() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7432 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).getImplClass("Class Name");
   }
 
   /**
@@ -421,6 +928,35 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#getCeilingImplClass(String)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getCeilingImplClass(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCeilingImplClass() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5736 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).getCeilingImplClass("Class Name");
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getCeilingImplClass(String)}.
    * <ul>
    *   <li>When {@code Class Name}.</li>
    *   <li>Then throw {@link RuntimeException}.</li>
@@ -455,6 +991,40 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link DynamicEntityDaoImpl#readOtherEntitiesWithPropertyValue(Serializable, String, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#readOtherEntitiesWithPropertyValue(Serializable, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testReadOtherEntitiesWithPropertyValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11822 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.readOtherEntitiesWithPropertyValue(new SimpleDateFormat("yyyy/mm/dd"), "Property Name", "42");
+  }
+
+  /**
    * Test {@link DynamicEntityDaoImpl#getIdentifier(Object)}.
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getIdentifier(Object)}
@@ -465,6 +1035,101 @@ public class DynamicEntityDaoImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new DynamicEntityDaoImpl()).getIdentifier("Entity"));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getIdentifier(Object)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getIdentifier(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetIdentifier2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7393 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).getIdentifier("Entity");
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getIdField(Class)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getIdField(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetIdField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6737 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> clazz = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getIdField(clazz);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#sortEntities(Class, List)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#sortEntities(Class, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSortEntities() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12796 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> ceilingClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.sortEntities(ceilingClass, new ArrayList<>());
   }
 
   /**
@@ -591,6 +1256,40 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddClassToTree() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1034 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> clazz = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.addClassToTree(clazz, new ClassTree());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#addClassToTree(Class, ClassTree)}.
    * <ul>
    *   <li>Given {@code Dr Jane Doe}.</li>
    *   <li>Then calls {@link ClassTree#getFullyQualifiedClassname()}.</li>
@@ -635,6 +1334,74 @@ public class DynamicEntityDaoImplDiffblueTest {
     // Act and Assert
     assertThrows(RuntimeException.class,
         () -> dynamicEntityDaoImpl.addClassToTree(clazz, new ClassTree("Dr Jane Doe")));
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#createClassTreeFromAnnotation(Class, ClassTree)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#createClassTreeFromAnnotation(Class, ClassTree)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateClassTreeFromAnnotation() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2965 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> clazz = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.createClassTreeFromAnnotation(clazz, new ClassTree());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getClassTree(Class[])}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getClassTree(Class[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetClassTree() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6063 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> forNameResult = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getClassTree(new Class[]{forNameResult});
   }
 
   /**
@@ -731,6 +1498,40 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetClassTreeFromCeiling3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6392 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> ceilingClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getClassTreeFromCeiling(ceilingClass);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getClassTreeFromCeiling(Class)}.
    * <ul>
    *   <li>Given {@link DynamicEntityDaoImpl} (default constructor).</li>
    *   <li>Then return {@code null}.</li>
@@ -768,6 +1569,40 @@ public class DynamicEntityDaoImplDiffblueTest {
     // Act and Assert
     assertThrows(RuntimeException.class,
         () -> dynamicEntityDaoImpl.getSimpleMergedProperties("Entity Name", new PersistencePerspective()));
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#getSimpleMergedProperties(String, PersistencePerspective)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSimpleMergedProperties2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10302 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.getSimpleMergedProperties("Entity Name", new PersistencePerspective());
   }
 
   /**
@@ -851,6 +1686,50 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
+   * with {@code ceilingEntityFullyQualifiedClassname}, {@code entities},
+   * {@code foreignField}, {@code additionalNonPersistentProperties},
+   * {@code additionalForeignFields}, {@code mergedPropertyType},
+   * {@code populateManyToOneFields}, {@code includeFields},
+   * {@code excludeFields}, {@code configurationKey}, {@code prefix}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#getMergedProperties(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetMergedPropertiesWithCeilingEntityFullyQualifiedClassnameEntitiesForeignFieldAdditionalNonPersistentPropertiesAdditionalForeignFieldsMergedPropertyTypePopulateManyToOneFieldsIncludeFieldsExcludeFieldsConfigurationKeyPrefix3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8086 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> forNameResult = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+
+    // Act
+    dynamicEntityDaoImpl2.getMergedProperties("Dr Jane Doe", new Class[]{forNameResult}, foreignField,
+        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
+        MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
+        "Configuration Key", "Prefix");
+  }
+
+  /**
    * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with
    * {@code cls}.
    * <p>
@@ -884,6 +1763,40 @@ public class DynamicEntityDaoImplDiffblueTest {
     verify(metadata).overrideMetadata(isA(Class[].class), isA(PropertyBuilder.class), eq(""), eq(false),
         eq("java.lang.Object"), isNull(), isA(DynamicEntityDao.class));
     assertTrue(actualMergedProperties.isEmpty());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getMergedProperties(Class)} with
+   * {@code cls}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getMergedProperties(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetMergedPropertiesWithCls2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7759 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> cls = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getMergedProperties(cls);
   }
 
   /**
@@ -1074,6 +1987,45 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test
    * {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetMergedPropertiesRecursively() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass8393 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> forNameResult = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+
+    // Act
+    dynamicEntityDaoImpl2.getMergedPropertiesRecursively("Dr Jane Doe", new Class[]{forNameResult}, foreignField,
+        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
+        MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
+        "Configuration Key", new ArrayList<>(), "Prefix", true, "Parent Prefix");
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#getMergedPropertiesRecursively(String, Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, List, String, Boolean, String)}.
    * <ul>
    *   <li>Then return Empty.</li>
    * </ul>
@@ -1177,6 +2129,41 @@ public class DynamicEntityDaoImplDiffblueTest {
     FieldMetadata getResult = mergedProperties.get("");
     assertTrue(getResult instanceof AdornedTargetCollectionMetadata);
     assertNull(getResult.getExcluded());
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#applyForeignKeyPrecedence(ForeignKey, ForeignKey[], Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testApplyForeignKeyPrecedence2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1363 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    ForeignKey foreignField = new ForeignKey();
+
+    // Act
+    dynamicEntityDaoImpl2.applyForeignKeyPrecedence(foreignField, new ForeignKey[]{new ForeignKey()}, new HashMap<>());
   }
 
   /**
@@ -1325,6 +2312,41 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test
    * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testApplyIncludesAndExcludes() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1409 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.applyIncludesAndExcludes(new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
+        "Prefix", true, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#applyIncludesAndExcludes(String[], String[], String, Boolean, Map)}.
    * <ul>
    *   <li>Given {@code .}.</li>
    * </ul>
@@ -1448,6 +2470,35 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#pad(String, int, char)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#pad(String, int, char)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPad() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11733 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).pad("foo", 3, 'A');
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#pad(String, int, char)}.
    * <ul>
    *   <li>When empty string.</li>
    *   <li>Then return {@code AAA}.</li>
@@ -1478,6 +2529,43 @@ public class DynamicEntityDaoImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertEquals("foo", (new DynamicEntityDaoImpl()).pad("foo", 3, 'A'));
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#getCacheKey(String, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, Class, String, Boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCacheKey() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass5422 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    ForeignKey foreignField = new ForeignKey();
+    Class<Object> clazz = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getCacheKey("Dr Jane Doe", foreignField, new String[]{"Additional Non Persistent Properties"},
+        new ForeignKey[]{new ForeignKey()}, MergedPropertyType.PRIMARY, true, clazz, "Configuration Key", true);
   }
 
   /**
@@ -1555,6 +2643,80 @@ public class DynamicEntityDaoImplDiffblueTest {
         dynamicEntityDaoImpl.getCacheKey(", originatingField='", foreignField,
             new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
             MergedPropertyType.PRIMARY, true, clazz, "Configuration Key", true));
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#buildPropertiesFromPolymorphicEntities(Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, Map, List, String, Boolean, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#buildPropertiesFromPolymorphicEntities(Class[], ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, Map, List, String, Boolean, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildPropertiesFromPolymorphicEntities() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2656 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> forNameResult = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    HashMap<String, FieldMetadata> mergedProperties = new HashMap<>();
+
+    // Act
+    dynamicEntityDaoImpl2.buildPropertiesFromPolymorphicEntities(new Class[]{forNameResult}, foreignField,
+        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
+        MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
+        "Configuration Key", "Dr Jane Doe", mergedProperties, new ArrayList<>(), "Prefix", true, "Parent Prefix");
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#refreshDecimalDefaultValue(BasicFieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testRefreshDecimalDefaultValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12042 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.refreshDecimalDefaultValue(new BasicFieldMetadata());
   }
 
   /**
@@ -1750,6 +2912,39 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#getAllFields(Class)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getAllFields(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetAllFields() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4438 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> targetClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getAllFields(targetClass);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getAllFields(Class)}.
    * <ul>
    *   <li>When {@code java.lang.Boolean}.</li>
    *   <li>Then return second element Name is {@code FALSE}.</li>
@@ -1856,6 +3051,109 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link DynamicEntityDaoImpl#getPropertiesForPrimitiveClass(String, String, Class, Class, MergedPropertyType)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#getPropertiesForPrimitiveClass(String, String, Class, Class, MergedPropertyType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertiesForPrimitiveClass() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9325 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> targetClass = Object.class;
+    Class<Object> parentClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getPropertiesForPrimitiveClass("Property Name", "Friendly Property Name", targetClass,
+        parentClass, MergedPropertyType.PRIMARY);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getIdMetadata(Class)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getIdMetadata(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetIdMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7065 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> entityClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getIdMetadata(entityClass);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getPropertyNames(Class)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getPropertyNames(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertyNames() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9646 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> entityClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getPropertyNames(entityClass);
+  }
+
+  /**
    * Test {@link DynamicEntityDaoImpl#getPropertyNames(Class)}.
    * <ul>
    *   <li>When {@code java.lang.Object}.</li>
@@ -1874,6 +3172,39 @@ public class DynamicEntityDaoImplDiffblueTest {
 
     // Act and Assert
     assertTrue(dynamicEntityDaoImpl.getPropertyNames(entityClass).isEmpty());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getPropertyTypes(Class)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getPropertyTypes(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertyTypes() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9974 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> entityClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getPropertyTypes(entityClass);
   }
 
   /**
@@ -1898,6 +3229,83 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link DynamicEntityDaoImpl#getTabAndGroupMetadata(Class[], ClassMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#getTabAndGroupMetadata(Class[], ClassMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTabAndGroupMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10671 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> forNameResult = Object.class;
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(
+        new org.broadleafcommerce.openadmin.dto.Property[]{new org.broadleafcommerce.openadmin.dto.Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    dynamicEntityDaoImpl2.getTabAndGroupMetadata(new Class[]{forNameResult}, cmd);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getSuperClassHierarchy(Class)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getSuperClassHierarchy(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSuperClassHierarchy() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass10343 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> ceilingEntity = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.getSuperClassHierarchy(ceilingEntity);
+  }
+
+  /**
    * Test {@link DynamicEntityDaoImpl#getSuperClassHierarchy(Class)}.
    * <ul>
    *   <li>When {@code null}.</li>
@@ -1912,6 +3320,90 @@ public class DynamicEntityDaoImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertEquals(0, (new DynamicEntityDaoImpl()).getSuperClassHierarchy(null).length);
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#getPropertiesForEntityClass(Class, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, List, String, Boolean, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#getPropertiesForEntityClass(Class, ForeignKey, String[], ForeignKey[], MergedPropertyType, Boolean, String[], String[], String, String, List, String, Boolean, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPropertiesForEntityClass() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9022 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+
+    // Act
+    dynamicEntityDaoImpl2.getPropertiesForEntityClass(targetClass, foreignField,
+        new String[]{"Additional Non Persistent Properties"}, new ForeignKey[]{new ForeignKey()},
+        MergedPropertyType.PRIMARY, true, new String[]{"Include Fields"}, new String[]{"Exclude Fields"},
+        "Configuration Key", "Dr Jane Doe", new ArrayList<>(), "Prefix", true, "Parent Prefix");
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#buildProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, List, List, String, Boolean, String[], String[], String, String, List, String, Boolean, Boolean, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildProperties() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2362 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+    ArrayList<String> propertyNames = new ArrayList<>();
+    ArrayList<Type> propertyTypes = new ArrayList<>();
+
+    // Act
+    dynamicEntityDaoImpl2.buildProperties(targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
+        new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, presentationAttributes,
+        componentProperties, fields, propertyNames, propertyTypes, "Id Property", true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", new ArrayList<>(), "Prefix", true, true,
+        "Parent Prefix");
   }
 
   /**
@@ -2082,6 +3574,39 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTestPropertyInclusion4() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13251 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.testPropertyInclusion(new AdornedTargetCollectionMetadata());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
    * <ul>
    *   <li>Given empty string.</li>
    * </ul>
@@ -2106,6 +3631,33 @@ public class DynamicEntityDaoImplDiffblueTest {
     verify(presentationAttribute, atLeast(1)).getExcluded();
     verify(presentationAttribute).getShowIfProperty();
     assertFalse(actualTestPropertyInclusionResult);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}.
+   * <ul>
+   *   <li>Given
+   * {@link FactoryBeanNotInitializedException#FactoryBeanNotInitializedException(String)}
+   * with {@code Msg}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#testPropertyInclusion(FieldMetadata)}
+   */
+  @Test
+  public void testTestPropertyInclusion_givenFactoryBeanNotInitializedExceptionWithMsg() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    AdornedTargetCollectionMetadata presentationAttribute = mock(AdornedTargetCollectionMetadata.class);
+    when(presentationAttribute.getShowIfProperty()).thenThrow(new FactoryBeanNotInitializedException("Msg"));
+
+    // Act
+    dynamicEntityDaoImpl.testPropertyInclusion(presentationAttribute);
+
+    // Assert
+    verify(presentationAttribute).getShowIfProperty();
   }
 
   /**
@@ -2150,6 +3702,40 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test
    * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetExcludedBasedOnShowIfProperty() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12556 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.setExcludedBasedOnShowIfProperty(new AdornedTargetCollectionMetadata());
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
    * <ul>
    *   <li>Given empty string.</li>
    * </ul>
@@ -2165,6 +3751,34 @@ public class DynamicEntityDaoImplDiffblueTest {
     DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
     AdornedTargetCollectionMetadata fieldMetadata = mock(AdornedTargetCollectionMetadata.class);
     when(fieldMetadata.getShowIfProperty()).thenReturn("");
+
+    // Act
+    dynamicEntityDaoImpl.setExcludedBasedOnShowIfProperty(fieldMetadata);
+
+    // Assert
+    verify(fieldMetadata).getShowIfProperty();
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}.
+   * <ul>
+   *   <li>Given
+   * {@link NoSuchBeanDefinitionException#NoSuchBeanDefinitionException(String)}
+   * with {@code Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#setExcludedBasedOnShowIfProperty(FieldMetadata)}
+   */
+  @Test
+  public void testSetExcludedBasedOnShowIfProperty_givenNoSuchBeanDefinitionExceptionWithName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    AdornedTargetCollectionMetadata fieldMetadata = mock(AdornedTargetCollectionMetadata.class);
+    when(fieldMetadata.getShowIfProperty()).thenThrow(new NoSuchBeanDefinitionException("Name"));
 
     // Act
     dynamicEntityDaoImpl.setExcludedBasedOnShowIfProperty(fieldMetadata);
@@ -2197,6 +3811,43 @@ public class DynamicEntityDaoImplDiffblueTest {
 
     // Assert
     verify(fieldMetadata, atLeast(1)).getShowIfProperty();
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#testPropertyRecursion(String, List, String, Class, String, Boolean, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTestPropertyRecursion() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13305 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+    Class<Object> targetClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.testPropertyRecursion("Prefix", parentClasses, "Property Name", targetClass, "Dr Jane Doe",
+        true, "Parent Prefix");
   }
 
   /**
@@ -2335,6 +3986,37 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test
    * {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTestMultiLevelEmbeddableRecursion() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13185 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).testMultiLevelEmbeddableRecursion("Prefix", true, "Parent Prefix", "Property Name");
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#testMultiLevelEmbeddableRecursion(String, Boolean, String, String)}.
    * <ul>
    *   <li>When {@code false}.</li>
    * </ul>
@@ -2368,6 +4050,43 @@ public class DynamicEntityDaoImplDiffblueTest {
     // Arrange, Act and Assert
     assertFalse((new DynamicEntityDaoImpl()).testMultiLevelEmbeddableRecursion("Prefix", true, "Parent Prefix",
         "Property Name"));
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#testStandardPropertyRecursion(String, List, String, Class, String, Boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTestStandardPropertyRecursion() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13624 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+    Class<Object> targetClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.testStandardPropertyRecursion("Prefix", parentClasses, "Property Name", targetClass,
+        "Dr Jane Doe", true);
   }
 
   /**
@@ -2481,6 +4200,42 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test
    * {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetermineExclusionForField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3713 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+    Class<Object> targetClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.determineExclusionForField(parentClasses, targetClass, null);
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#determineExclusionForField(List, Class, Field)}.
    * <ul>
    *   <li>Given {@code java.lang.Object}.</li>
    *   <li>When {@link ArrayList#ArrayList()} add {@link Object}.</li>
@@ -2526,6 +4281,107 @@ public class DynamicEntityDaoImplDiffblueTest {
 
     // Act and Assert
     assertFalse(dynamicEntityDaoImpl.determineExclusionForField(parentClasses, targetClass, null));
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#buildBasicProperty(Field, Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, List, Map, String, Boolean, String[], String[], String, String, List, String, Boolean, String, Type, boolean, int, Boolean, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildBasicProperty() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1488 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    HashMap<String, FieldMetadata> presentationAttributes = new HashMap<>();
+    ArrayList<Property> componentProperties = new ArrayList<>();
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+    ArrayList<Class<?>> parentClasses = new ArrayList<>();
+
+    // Act
+    dynamicEntityDaoImpl2.buildBasicProperty(null, targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
+        new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, presentationAttributes,
+        componentProperties, fields, "Id Property", true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", parentClasses, "Prefix", true,
+        "Property Name", new BigDecimalType(), true, 1, true, "Parent Prefix");
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}
+   */
+  @Test
+  public void testTestForeignProperty() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    ForeignKey foreignField = mock(ForeignKey.class);
+    when(foreignField.getManyToField()).thenThrow(new NoSuchBeanDefinitionException("PrefixProperty Name"));
+
+    // Act
+    dynamicEntityDaoImpl.testForeignProperty(foreignField, "Prefix", "Property Name");
+
+    // Assert
+    verify(foreignField).getManyToField();
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#testForeignProperty(ForeignKey, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTestForeignProperty2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13125 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.testForeignProperty(new ForeignKey(), "Prefix", "Property Name");
   }
 
   /**
@@ -2619,6 +4475,40 @@ public class DynamicEntityDaoImplDiffblueTest {
   /**
    * Test
    * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindAdditionalForeignKeyIndex2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4367 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.findAdditionalForeignKeyIndex(new ForeignKey[]{new ForeignKey()}, "Prefix", "Property Name");
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#findAdditionalForeignKeyIndex(ForeignKey[], String, String)}.
    * <ul>
    *   <li>Given {@code Many To Field}.</li>
    *   <li>Then return minus two.</li>
@@ -2682,6 +4572,47 @@ public class DynamicEntityDaoImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertEquals(-1, (new DynamicEntityDaoImpl()).findAdditionalForeignKeyIndex(null, "Prefix", "Property Name"));
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#buildEntityProperties(Map, ForeignKey, ForeignKey[], String[], Boolean, String[], String[], String, String, String, Class, Class, List, String, Boolean, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildEntityProperties() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2063 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+    ForeignKey foreignField = new ForeignKey();
+    Class<Object> returnedClass = Object.class;
+    Class<Object> targetClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.buildEntityProperties(fields, foreignField, new ForeignKey[]{new ForeignKey()},
+        new String[]{"Additional Non Persistent Properties"}, true, new String[]{"Include Fields"},
+        new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe", "Property Name", returnedClass, targetClass,
+        new ArrayList<>(), "Prefix", true, "Parent Prefix");
   }
 
   /**
@@ -2794,6 +4725,38 @@ public class DynamicEntityDaoImplDiffblueTest {
 
   /**
    * Test {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsForeignKey2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11639 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.isForeignKey(new AdornedTargetCollectionMetadata());
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()}
    * {@link PersistencePerspectiveItemType#FOREIGNKEY} is
@@ -2821,6 +4784,32 @@ public class DynamicEntityDaoImplDiffblueTest {
 
     // Act and Assert
     assertTrue(dynamicEntityDaoImpl.isForeignKey(fieldMetadata));
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}.
+   * <ul>
+   *   <li>Given
+   * {@link NoSuchBeanDefinitionException#NoSuchBeanDefinitionException(String)}
+   * with {@code Name}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#isForeignKey(FieldMetadata)}
+   */
+  @Test
+  public void testIsForeignKey_givenNoSuchBeanDefinitionExceptionWithName() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl = new DynamicEntityDaoImpl();
+    BasicCollectionMetadata fieldMetadata = mock(BasicCollectionMetadata.class);
+    when(fieldMetadata.getPersistencePerspective()).thenThrow(new NoSuchBeanDefinitionException("Name"));
+
+    // Act
+    dynamicEntityDaoImpl.isForeignKey(fieldMetadata);
+
+    // Assert
+    verify(fieldMetadata).getPersistencePerspective();
   }
 
   /**
@@ -2905,6 +4894,118 @@ public class DynamicEntityDaoImplDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link DynamicEntityDaoImpl#setOriginatingFieldForForeignKey(String, String, FieldMetadata)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#setOriginatingFieldForForeignKey(String, String, FieldMetadata)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetOriginatingFieldForForeignKey2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12610 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+
+    // Act
+    dynamicEntityDaoImpl2.setOriginatingFieldForForeignKey("Property Name", "Key",
+        new AdornedTargetCollectionMetadata());
+  }
+
+  /**
+   * Test
+   * {@link DynamicEntityDaoImpl#buildComponentProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, String, Boolean, String[], String[], String, String, String, Type, Class, List, Boolean, String, String)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#buildComponentProperties(Class, ForeignKey, ForeignKey[], String[], MergedPropertyType, Map, String, Boolean, String[], String[], String, String, String, Type, Class, List, Boolean, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildComponentProperties() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1772 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> targetClass = Object.class;
+    ForeignKey foreignField = new ForeignKey();
+    HashMap<String, FieldMetadata> fields = new HashMap<>();
+    BigDecimalType type = new BigDecimalType();
+    Class<Object> returnedClass = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.buildComponentProperties(targetClass, foreignField, new ForeignKey[]{new ForeignKey()},
+        new String[]{"Additional Non Persistent Properties"}, MergedPropertyType.PRIMARY, fields, "Id Property", true,
+        new String[]{"Include Fields"}, new String[]{"Exclude Fields"}, "Configuration Key", "Dr Jane Doe",
+        "Property Name", type, returnedClass, new ArrayList<>(), true, "Prefix", "Parent Prefix");
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#setStandardEntityManager(EntityManager)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#setStandardEntityManager(EntityManager)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetStandardEntityManager() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass12703 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+
+    // Act
+    dynamicEntityDaoImpl2
+        .setStandardEntityManager(new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
+  }
+
+  /**
    * Test {@link DynamicEntityDaoImpl#getFieldManager()}.
    * <p>
    * Method under test: {@link DynamicEntityDaoImpl#getFieldManager()}
@@ -2922,6 +5023,35 @@ public class DynamicEntityDaoImplDiffblueTest {
     // Assert
     assertNull(actualFieldManager.getEntityConfiguration());
     assertSame(dynamicEntityDaoImpl.fieldManager, actualFieldManager);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getFieldManager()}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getFieldManager()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFieldManager2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6720 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).getFieldManager();
   }
 
   /**
@@ -2946,6 +5076,36 @@ public class DynamicEntityDaoImplDiffblueTest {
     FieldManager fieldManager = dynamicEntityDaoImpl.fieldManager;
     assertSame(fieldManager, dynamicEntityDaoImpl.getFieldManager());
     assertSame(fieldManager, actualFieldManager);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#getFieldManager(boolean)} with
+   * {@code boolean}.
+   * <p>
+   * Method under test: {@link DynamicEntityDaoImpl#getFieldManager(boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFieldManagerWithBoolean2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6728 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new DynamicEntityDaoImpl()).getFieldManager(true);
   }
 
   /**
@@ -3001,6 +5161,40 @@ public class DynamicEntityDaoImplDiffblueTest {
     assertSame(dynamicDaoHelper, actualDynamicDaoHelper);
     assertSame(metadata, actualMetadata);
     assertSame(defaultFieldMetadataProvider, actualDefaultFieldMetadataProvider);
+  }
+
+  /**
+   * Test {@link DynamicEntityDaoImpl#isExcludeClassFromPolymorphism(Class)}.
+   * <p>
+   * Method under test:
+   * {@link DynamicEntityDaoImpl#isExcludeClassFromPolymorphism(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsExcludeClassFromPolymorphism() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11311 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl dynamicEntityDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    DynamicEntityDaoImpl dynamicEntityDaoImpl2 = new DynamicEntityDaoImpl();
+    Class<Object> clazz = Object.class;
+
+    // Act
+    dynamicEntityDaoImpl2.isExcludeClassFromPolymorphism(clazz);
   }
 
   /**

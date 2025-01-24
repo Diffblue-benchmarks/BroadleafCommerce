@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -20,9 +20,34 @@ package org.broadleafcommerce.common.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {DayOfMonthType.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class DayOfMonthTypeDiffblueTest {
+  @Autowired
+  private DayOfMonthType dayOfMonthType;
+
+  /**
+   * Test {@link DayOfMonthType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link DayOfMonthType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    DayOfMonthType actualInstance = DayOfMonthType.getInstance("Type");
+
+    // Assert
+    assertEquals("Friendly Type", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+  }
+
   /**
    * Test getters and setters.
    * <p>
@@ -42,6 +67,36 @@ public class DayOfMonthTypeDiffblueTest {
     // Assert
     assertNull(actualFriendlyType);
     assertNull(actualDayOfMonthType.getType());
+  }
+
+  /**
+   * Test {@link DayOfMonthType#DayOfMonthType(String, String)}.
+   * <ul>
+   *   <li>When {@code Cannot add the type: (}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DayOfMonthType#DayOfMonthType(String, String)}
+   */
+  @Test
+  public void testNewDayOfMonthType_whenCannotAddTheType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new DayOfMonthType("Cannot add the type: (", "Friendly Type"));
+
+  }
+
+  /**
+   * Test {@link DayOfMonthType#DayOfMonthType(String, String)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link DayOfMonthType#DayOfMonthType(String, String)}
+   */
+  @Test
+  public void testNewDayOfMonthType_whenType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new DayOfMonthType("Type", "Friendly Type"));
+
   }
 
   /**

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.service;
 
 import static org.junit.Assert.assertEquals;
@@ -25,8 +8,10 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
+import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
 import org.broadleafcommerce.common.money.Money;
@@ -34,12 +19,24 @@ import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferCode;
 import org.broadleafcommerce.core.offer.domain.OfferCodeImpl;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateItemOffer;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateItemOfferImpl;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableItemFactoryImpl;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOfferUtilityImpl;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrder;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItem;
+import org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemImpl;
+import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
+import org.broadleafcommerce.core.order.domain.OrderItemPriceDetail;
+import org.broadleafcommerce.core.order.domain.OrderItemPriceDetailImpl;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -221,6 +218,195 @@ public class AbstractOfferServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         abstractOfferServiceExtensionHandler.buildOfferCodeListForCustomer(customer, new ArrayList<>()));
+  }
+
+  /**
+   * Test
+   * {@link AbstractOfferServiceExtensionHandler#calculatePotentialSavings(PromotableCandidateItemOffer, PromotableOrderItem, int, Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AbstractOfferServiceExtensionHandler#calculatePotentialSavings(PromotableCandidateItemOffer, PromotableOrderItem, int, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCalculatePotentialSavings_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AbstractOfferServiceExtensionHandler abstractOfferServiceExtensionHandler = new AbstractOfferServiceExtensionHandler();
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableCandidateItemOfferImpl itemOffer = new PromotableCandidateItemOfferImpl(promotableOrder, new OfferImpl());
+
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    NullOrderImpl order2 = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder2 = new PromotableOrderImpl(order2,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableOrderItemImpl item = new PromotableOrderItemImpl(orderItem, promotableOrder2,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    abstractOfferServiceExtensionHandler.calculatePotentialSavings(itemOffer, item, 1, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link AbstractOfferServiceExtensionHandler#resetPriceDetails(PromotableOrderItem)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractOfferServiceExtensionHandler#resetPriceDetails(PromotableOrderItem)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testResetPriceDetails() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AbstractOfferServiceExtensionHandler abstractOfferServiceExtensionHandler = new AbstractOfferServiceExtensionHandler();
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    abstractOfferServiceExtensionHandler.resetPriceDetails(new PromotableOrderItemImpl(orderItem, promotableOrder,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
+  }
+
+  /**
+   * Test
+   * {@link AbstractOfferServiceExtensionHandler#applyItemOffer(PromotableOrder, PromotableCandidateItemOffer, Map)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AbstractOfferServiceExtensionHandler#applyItemOffer(PromotableOrder, PromotableCandidateItemOffer, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testApplyItemOffer_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AbstractOfferServiceExtensionHandler abstractOfferServiceExtensionHandler = new AbstractOfferServiceExtensionHandler();
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl order2 = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    NullOrderImpl order3 = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order3,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableCandidateItemOfferImpl itemOffer = new PromotableCandidateItemOfferImpl(promotableOrder, new OfferImpl());
+
+    // Act
+    abstractOfferServiceExtensionHandler.applyItemOffer(order2, itemOffer, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link AbstractOfferServiceExtensionHandler#synchronizeAdjustmentsAndPrices(PromotableOrder)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractOfferServiceExtensionHandler#synchronizeAdjustmentsAndPrices(PromotableOrder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSynchronizeAdjustmentsAndPrices() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AbstractOfferServiceExtensionHandler abstractOfferServiceExtensionHandler = new AbstractOfferServiceExtensionHandler();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    abstractOfferServiceExtensionHandler.synchronizeAdjustmentsAndPrices(
+        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
+  }
+
+  /**
+   * Test
+   * {@link AbstractOfferServiceExtensionHandler#chooseSaleOrRetailAdjustments(PromotableOrder)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractOfferServiceExtensionHandler#chooseSaleOrRetailAdjustments(PromotableOrder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testChooseSaleOrRetailAdjustments() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AbstractOfferServiceExtensionHandler abstractOfferServiceExtensionHandler = new AbstractOfferServiceExtensionHandler();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    abstractOfferServiceExtensionHandler.chooseSaleOrRetailAdjustments(
+        new PromotableOrderImpl(order, new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true));
+  }
+
+  /**
+   * Test
+   * {@link AbstractOfferServiceExtensionHandler#createOrderItemPriceDetailAdjustment(ExtensionResultHolder, OrderItemPriceDetail)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractOfferServiceExtensionHandler#createOrderItemPriceDetailAdjustment(ExtensionResultHolder, OrderItemPriceDetail)}
+   */
+  @Test
+  public void testCreateOrderItemPriceDetailAdjustment() {
+    // Arrange
+    AbstractOfferServiceExtensionHandler abstractOfferServiceExtensionHandler = new AbstractOfferServiceExtensionHandler();
+
+    ExtensionResultHolder<?> resultHolder = new ExtensionResultHolder<>();
+    resultHolder.setResult("Result");
+    resultHolder.setThrowable(new Throwable());
+
+    // Act and Assert
+    assertEquals(ExtensionResultStatusType.NOT_HANDLED, abstractOfferServiceExtensionHandler
+        .createOrderItemPriceDetailAdjustment(resultHolder, new OrderItemPriceDetailImpl()));
+  }
+
+  /**
+   * Test
+   * {@link AbstractOfferServiceExtensionHandler#applyAdditionalRuleVariablesForItemOfferEvaluation(PromotableOrderItem, HashMap)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AbstractOfferServiceExtensionHandler#applyAdditionalRuleVariablesForItemOfferEvaluation(PromotableOrderItem, HashMap)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testApplyAdditionalRuleVariablesForItemOfferEvaluation_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AbstractOfferServiceExtensionHandler abstractOfferServiceExtensionHandler = new AbstractOfferServiceExtensionHandler();
+    BundleOrderItemImpl orderItem = new BundleOrderItemImpl();
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableOrderItemImpl orderItem2 = new PromotableOrderItemImpl(orderItem, promotableOrder,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    abstractOfferServiceExtensionHandler.applyAdditionalRuleVariablesForItemOfferEvaluation(orderItem2,
+        new HashMap<>());
   }
 
   /**

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.order.fulfillment.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -22,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -36,13 +20,58 @@ import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.common.service.GenericEntityService;
+import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
 import org.broadleafcommerce.common.site.domain.CatalogImpl;
 import org.broadleafcommerce.common.site.domain.SiteImpl;
 import org.broadleafcommerce.core.order.service.type.FulfillmentType;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FixedPriceFulfillmentOptionImplDiffblueTest {
+  @Autowired
+  private FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl;
+
+  /**
+   * Test {@link FixedPriceFulfillmentOptionImpl#getPrice()}.
+   * <p>
+   * Method under test: {@link FixedPriceFulfillmentOptionImpl#getPrice()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetPrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.fulfillment.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1365 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new FixedPriceFulfillmentOptionImpl()).getPrice();
+  }
+
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#getPrice()}.
    * <ul>
@@ -165,6 +194,38 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
     verify(currency).getCurrencyCode();
     verify(fulfillmentType).getType();
     assertEquals(price, actualPrice);
+  }
+
+  /**
+   * Test {@link FixedPriceFulfillmentOptionImpl#setPrice(Money)}.
+   * <p>
+   * Method under test: {@link FixedPriceFulfillmentOptionImpl#setPrice(Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetPrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.fulfillment.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1376 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
+
+    // Act
+    fixedPriceFulfillmentOptionImpl2.setPrice(new Money());
   }
 
   /**
@@ -668,6 +729,200 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
   /**
    * Test {@link FixedPriceFulfillmentOptionImpl#equals(Object)}.
    * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then throw exception.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEquals_whenOtherIsDifferent_thenThrowException() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = new FixedPriceFulfillmentOptionImpl();
+    fixedPriceFulfillmentOptionImpl.setCurrency(new BroadleafCurrencyImpl());
+    fixedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
+    fixedPriceFulfillmentOptionImpl.setId(1L);
+    fixedPriceFulfillmentOptionImpl.setLongDescription("Long Description");
+    fixedPriceFulfillmentOptionImpl.setName("Name");
+    fixedPriceFulfillmentOptionImpl.setPrice(new Money());
+    fixedPriceFulfillmentOptionImpl.setTaxCode("Tax Code");
+    fixedPriceFulfillmentOptionImpl.setTaxable(true);
+    fixedPriceFulfillmentOptionImpl.setUseFlatRates(true);
+
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
+    fixedPriceFulfillmentOptionImpl2.setCurrency(new BroadleafCurrencyImpl());
+    fixedPriceFulfillmentOptionImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    fixedPriceFulfillmentOptionImpl2.setId(1L);
+    fixedPriceFulfillmentOptionImpl2.setLongDescription("Long Description");
+    fixedPriceFulfillmentOptionImpl2.setName("Name");
+    fixedPriceFulfillmentOptionImpl2.setPrice(new Money());
+    fixedPriceFulfillmentOptionImpl2.setTaxCode("Tax Code");
+    fixedPriceFulfillmentOptionImpl2.setTaxable(true);
+    fixedPriceFulfillmentOptionImpl2.setUseFlatRates(true);
+
+    // Act and Assert
+    assertThrows(NullPointerException.class,
+        () -> fixedPriceFulfillmentOptionImpl.equals(fixedPriceFulfillmentOptionImpl2));
+  }
+
+  /**
+   * Test {@link FixedPriceFulfillmentOptionImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then throw exception.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEquals_whenOtherIsDifferent_thenThrowException2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = new FixedPriceFulfillmentOptionImpl();
+    fixedPriceFulfillmentOptionImpl.setCurrency(null);
+    fixedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
+    fixedPriceFulfillmentOptionImpl.setId(1L);
+    fixedPriceFulfillmentOptionImpl.setLongDescription("Long Description");
+    fixedPriceFulfillmentOptionImpl.setName("Name");
+    fixedPriceFulfillmentOptionImpl.setPrice(new Money());
+    fixedPriceFulfillmentOptionImpl.setTaxCode("Tax Code");
+    fixedPriceFulfillmentOptionImpl.setTaxable(true);
+    fixedPriceFulfillmentOptionImpl.setUseFlatRates(true);
+
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
+    fixedPriceFulfillmentOptionImpl2.setCurrency(new BroadleafCurrencyImpl());
+    fixedPriceFulfillmentOptionImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    fixedPriceFulfillmentOptionImpl2.setId(1L);
+    fixedPriceFulfillmentOptionImpl2.setLongDescription("Long Description");
+    fixedPriceFulfillmentOptionImpl2.setName("Name");
+    fixedPriceFulfillmentOptionImpl2.setPrice(new Money());
+    fixedPriceFulfillmentOptionImpl2.setTaxCode("Tax Code");
+    fixedPriceFulfillmentOptionImpl2.setTaxable(true);
+    fixedPriceFulfillmentOptionImpl2.setUseFlatRates(true);
+
+    // Act and Assert
+    assertThrows(NullPointerException.class,
+        () -> fixedPriceFulfillmentOptionImpl.equals(fixedPriceFulfillmentOptionImpl2));
+  }
+
+  /**
+   * Test {@link FixedPriceFulfillmentOptionImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then throw exception.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEquals_whenOtherIsDifferent_thenThrowException3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    BroadleafCurrencyImpl currency = mock(BroadleafCurrencyImpl.class);
+    when(currency.getCurrencyCode()).thenReturn("GBP");
+
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = new FixedPriceFulfillmentOptionImpl();
+    fixedPriceFulfillmentOptionImpl.setCurrency(currency);
+    fixedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
+    fixedPriceFulfillmentOptionImpl.setId(1L);
+    fixedPriceFulfillmentOptionImpl.setLongDescription("Long Description");
+    fixedPriceFulfillmentOptionImpl.setName("Name");
+    fixedPriceFulfillmentOptionImpl.setPrice(new Money());
+    fixedPriceFulfillmentOptionImpl.setTaxCode("Tax Code");
+    fixedPriceFulfillmentOptionImpl.setTaxable(true);
+    fixedPriceFulfillmentOptionImpl.setUseFlatRates(true);
+
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
+    fixedPriceFulfillmentOptionImpl2.setCurrency(new BroadleafCurrencyImpl());
+    fixedPriceFulfillmentOptionImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    fixedPriceFulfillmentOptionImpl2.setId(1L);
+    fixedPriceFulfillmentOptionImpl2.setLongDescription("Long Description");
+    fixedPriceFulfillmentOptionImpl2.setName("Name");
+    fixedPriceFulfillmentOptionImpl2.setPrice(new Money());
+    fixedPriceFulfillmentOptionImpl2.setTaxCode("Tax Code");
+    fixedPriceFulfillmentOptionImpl2.setTaxable(true);
+    fixedPriceFulfillmentOptionImpl2.setUseFlatRates(true);
+
+    // Act and Assert
+    assertThrows(NullPointerException.class,
+        () -> fixedPriceFulfillmentOptionImpl.equals(fixedPriceFulfillmentOptionImpl2));
+  }
+
+  /**
+   * Test {@link FixedPriceFulfillmentOptionImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then throw exception.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link FixedPriceFulfillmentOptionImpl#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testEquals_whenOtherIsDifferent_thenThrowException4() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    BroadleafCurrencyImpl currency = mock(BroadleafCurrencyImpl.class);
+    when(currency.getCurrencyCode()).thenReturn("GBP");
+
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl = new FixedPriceFulfillmentOptionImpl();
+    fixedPriceFulfillmentOptionImpl.setCurrency(currency);
+    fixedPriceFulfillmentOptionImpl.setFulfillmentType(FulfillmentType.DIGITAL);
+    fixedPriceFulfillmentOptionImpl.setId(1L);
+    fixedPriceFulfillmentOptionImpl.setLongDescription("Long Description");
+    fixedPriceFulfillmentOptionImpl.setName("Name");
+    fixedPriceFulfillmentOptionImpl.setPrice(null);
+    fixedPriceFulfillmentOptionImpl.setTaxCode("Tax Code");
+    fixedPriceFulfillmentOptionImpl.setTaxable(true);
+    fixedPriceFulfillmentOptionImpl.setUseFlatRates(true);
+
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
+    fixedPriceFulfillmentOptionImpl2.setCurrency(new BroadleafCurrencyImpl());
+    fixedPriceFulfillmentOptionImpl2.setFulfillmentType(FulfillmentType.DIGITAL);
+    fixedPriceFulfillmentOptionImpl2.setId(1L);
+    fixedPriceFulfillmentOptionImpl2.setLongDescription("Long Description");
+    fixedPriceFulfillmentOptionImpl2.setName("Name");
+    fixedPriceFulfillmentOptionImpl2.setPrice(new Money());
+    fixedPriceFulfillmentOptionImpl2.setTaxCode("Tax Code");
+    fixedPriceFulfillmentOptionImpl2.setTaxable(true);
+    fixedPriceFulfillmentOptionImpl2.setUseFlatRates(true);
+
+    // Act and Assert
+    assertThrows(NullPointerException.class,
+        () -> fixedPriceFulfillmentOptionImpl.equals(fixedPriceFulfillmentOptionImpl2));
+  }
+
+  /**
+   * Test {@link FixedPriceFulfillmentOptionImpl#equals(Object)}.
+   * <ul>
    *   <li>When other is {@code null}.</li>
    *   <li>Then return not equal.</li>
    * </ul>
@@ -771,6 +1026,46 @@ public class FixedPriceFulfillmentOptionImplDiffblueTest {
     // Assert
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
     assertSame(createResponse, actualCreateOrRetrieveCopyInstanceResult);
+  }
+
+  /**
+   * Test
+   * {@link FixedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test:
+   * {@link FixedPriceFulfillmentOptionImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.fulfillment.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1335 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.fulfillment.domain.FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    FixedPriceFulfillmentOptionImpl fixedPriceFulfillmentOptionImpl2 = new FixedPriceFulfillmentOptionImpl();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+
+    // Act
+    fixedPriceFulfillmentOptionImpl2.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog,
+        fromSite, toSite, genericEntityService, new MultiTenantCopierExtensionManager()));
   }
 
   /**

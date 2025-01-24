@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.catalog.service;
 
 import static org.junit.Assert.assertEquals;
@@ -44,10 +27,64 @@ import org.broadleafcommerce.core.catalog.domain.PromotableProduct;
 import org.broadleafcommerce.core.catalog.domain.RelatedProduct;
 import org.broadleafcommerce.core.catalog.domain.RelatedProductDTO;
 import org.broadleafcommerce.core.catalog.domain.RelatedProductTypeEnum;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RelatedProductsServiceImplDiffblueTest {
+  @Autowired
+  private RelatedProductsServiceImpl relatedProductsServiceImpl;
+
+  /**
+   * Test
+   * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindRelatedProducts() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6238 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.RelatedProductsServiceImpl relatedProductsServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl2 = new RelatedProductsServiceImpl();
+
+    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    relatedProductsServiceImpl2.findRelatedProducts(relatedProductDTO);
+  }
+
   /**
    * Test
    * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
@@ -97,6 +134,147 @@ public class RelatedProductsServiceImplDiffblueTest {
     verify(relatedProductDTO).setQuantity(eq(1));
     verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertNull(actualFindRelatedProductsResult);
+  }
+
+  /**
+   * Test
+   * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
+   * <ul>
+   *   <li>Given {@link RelatedProductTypeEnum#FEATURED}.</li>
+   *   <li>When {@link RelatedProductDTO} {@link RelatedProductDTO#getType()} return
+   * {@link RelatedProductTypeEnum#FEATURED}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   */
+  @Test
+  public void testFindRelatedProducts_givenFeatured_whenRelatedProductDTOGetTypeReturnFeatured2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl = new RelatedProductsServiceImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.getQuantity()).thenThrow(new IllegalArgumentException("FEATURED"));
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.FEATURED);
+    when(relatedProductDTO.getCategoryId()).thenReturn(null);
+    when(relatedProductDTO.getProductId()).thenReturn(null);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+
+    // Assert
+    verify(relatedProductDTO).getCategoryId();
+    verify(relatedProductDTO).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO).getType();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+  }
+
+  /**
+   * Test
+   * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
+   * <ul>
+   *   <li>Given {@link IllegalArgumentException#IllegalArgumentException(String)}
+   * with {@code FEATURED}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   */
+  @Test
+  public void testFindRelatedProducts_givenIllegalArgumentExceptionWithFeatured() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl = new RelatedProductsServiceImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.getQuantity()).thenThrow(new IllegalArgumentException("FEATURED"));
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.CROSS_SALE);
+    when(relatedProductDTO.getCategoryId()).thenReturn(null);
+    when(relatedProductDTO.getProductId()).thenReturn(null);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+
+    // Assert
+    verify(relatedProductDTO).getCategoryId();
+    verify(relatedProductDTO).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO, atLeast(1)).getType();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+  }
+
+  /**
+   * Test
+   * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
+   * <ul>
+   *   <li>Given {@link IllegalArgumentException#IllegalArgumentException(String)}
+   * with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   */
+  @Test
+  public void testFindRelatedProducts_givenIllegalArgumentExceptionWithFoo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl = new RelatedProductsServiceImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.getCategoryId()).thenThrow(new IllegalArgumentException("foo"));
+    when(relatedProductDTO.getProductId()).thenReturn(null);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+
+    // Assert
+    verify(relatedProductDTO).getCategoryId();
+    verify(relatedProductDTO).getProductId();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
   }
 
   /**
@@ -192,6 +370,55 @@ public class RelatedProductsServiceImplDiffblueTest {
     verify(relatedProductDTO).setQuantity(eq(1));
     verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertNull(actualFindRelatedProductsResult);
+  }
+
+  /**
+   * Test
+   * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}.
+   * <ul>
+   *   <li>Given {@link RelatedProductTypeEnum#UP_SALE}.</li>
+   *   <li>When {@link RelatedProductDTO} {@link RelatedProductDTO#getType()} return
+   * {@link RelatedProductTypeEnum#UP_SALE}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#findRelatedProducts(RelatedProductDTO)}
+   */
+  @Test
+  public void testFindRelatedProducts_givenUp_sale_whenRelatedProductDTOGetTypeReturnUp_sale2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl = new RelatedProductsServiceImpl();
+    RelatedProductDTO relatedProductDTO = mock(RelatedProductDTO.class);
+    when(relatedProductDTO.getQuantity()).thenThrow(new IllegalArgumentException("FEATURED"));
+    when(relatedProductDTO.getType()).thenReturn(RelatedProductTypeEnum.UP_SALE);
+    when(relatedProductDTO.getCategoryId()).thenReturn(null);
+    when(relatedProductDTO.getProductId()).thenReturn(null);
+    doNothing().when(relatedProductDTO).setCategoryId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setCumulativeResults(anyBoolean());
+    doNothing().when(relatedProductDTO).setProductId(Mockito.<Long>any());
+    doNothing().when(relatedProductDTO).setQuantity(Mockito.<Integer>any());
+    doNothing().when(relatedProductDTO).setType(Mockito.<RelatedProductTypeEnum>any());
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    relatedProductsServiceImpl.findRelatedProducts(relatedProductDTO);
+
+    // Assert
+    verify(relatedProductDTO).getCategoryId();
+    verify(relatedProductDTO).getProductId();
+    verify(relatedProductDTO).getQuantity();
+    verify(relatedProductDTO, atLeast(1)).getType();
+    verify(relatedProductDTO).setCategoryId(eq(1L));
+    verify(relatedProductDTO).setCumulativeResults(eq(true));
+    verify(relatedProductDTO).setProductId(eq(1L));
+    verify(relatedProductDTO).setQuantity(eq(1));
+    verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
   }
 
   /**
@@ -338,6 +565,49 @@ public class RelatedProductsServiceImplDiffblueTest {
     verify(relatedProductDTO).setProductId(eq(1L));
     verify(relatedProductDTO).setQuantity(eq(1));
     verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
+  }
+
+  /**
+   * Test
+   * {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category, RelatedProductDTO)}.
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#buildFeaturedProductsList(Product, Category, RelatedProductDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildFeaturedProductsList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6178 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.RelatedProductsServiceImpl relatedProductsServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl2 = new RelatedProductsServiceImpl();
+    ProductBundleImpl product = new ProductBundleImpl();
+    CategoryImpl category = new CategoryImpl();
+
+    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    relatedProductsServiceImpl2.buildFeaturedProductsList(product, category, relatedProductDTO);
   }
 
   /**
@@ -831,6 +1101,49 @@ public class RelatedProductsServiceImplDiffblueTest {
   /**
    * Test
    * {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category, RelatedProductDTO)}.
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category, RelatedProductDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildUpSaleProductsList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6208 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.RelatedProductsServiceImpl relatedProductsServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl2 = new RelatedProductsServiceImpl();
+    ProductBundleImpl product = new ProductBundleImpl();
+    CategoryImpl category = new CategoryImpl();
+
+    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    relatedProductsServiceImpl2.buildUpSaleProductsList(product, category, relatedProductDTO);
+  }
+
+  /**
+   * Test
+   * {@link RelatedProductsServiceImpl#buildUpSaleProductsList(Product, Category, RelatedProductDTO)}.
    * <ul>
    *   <li>Given {@link ArrayList#ArrayList()}.</li>
    *   <li>Then calls {@link ProductImpl#getCumulativeUpSaleProducts()}.</li>
@@ -1214,6 +1527,49 @@ public class RelatedProductsServiceImplDiffblueTest {
     verify(relatedProductDTO).setQuantity(eq(1));
     verify(relatedProductDTO).setType(isA(RelatedProductTypeEnum.class));
     assertTrue(actualBuildUpSaleProductsListResult.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category, RelatedProductDTO)}.
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#buildCrossSaleProductsList(Product, Category, RelatedProductDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildCrossSaleProductsList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6148 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.RelatedProductsServiceImpl relatedProductsServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl2 = new RelatedProductsServiceImpl();
+    ProductBundleImpl product = new ProductBundleImpl();
+    CategoryImpl category = new CategoryImpl();
+
+    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    relatedProductsServiceImpl2.buildCrossSaleProductsList(product, category, relatedProductDTO);
   }
 
   /**
@@ -1605,6 +1961,39 @@ public class RelatedProductsServiceImplDiffblueTest {
 
   /**
    * Test {@link RelatedProductsServiceImpl#resizeList(List, Integer)}.
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#resizeList(List, Integer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testResizeList() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6328 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.RelatedProductsServiceImpl relatedProductsServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl2 = new RelatedProductsServiceImpl();
+
+    // Act
+    relatedProductsServiceImpl2.resizeList(new ArrayList<>(), 1);
+  }
+
+  /**
+   * Test {@link RelatedProductsServiceImpl#resizeList(List, Integer)}.
    * <ul>
    *   <li>Given {@link CrossSaleProductImpl} (default constructor).</li>
    *   <li>Then return {@link ArrayList#ArrayList()}.</li>
@@ -1723,6 +2112,46 @@ public class RelatedProductsServiceImplDiffblueTest {
 
   /**
    * Test {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}.
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupProduct() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6298 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.RelatedProductsServiceImpl relatedProductsServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl2 = new RelatedProductsServiceImpl();
+
+    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    relatedProductsServiceImpl2.lookupProduct(relatedProductDTO);
+  }
+
+  /**
+   * Test {@link RelatedProductsServiceImpl#lookupProduct(RelatedProductDTO)}.
    * <ul>
    *   <li>Given {@code null}.</li>
    *   <li>When {@link RelatedProductDTO} (default constructor) ProductId is
@@ -1749,6 +2178,46 @@ public class RelatedProductsServiceImplDiffblueTest {
 
     // Act and Assert
     assertNull(relatedProductsServiceImpl.lookupProduct(relatedProductDTO));
+  }
+
+  /**
+   * Test {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}.
+   * <p>
+   * Method under test:
+   * {@link RelatedProductsServiceImpl#lookupCategory(RelatedProductDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testLookupCategory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.catalog.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass6268 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.catalog.service.RelatedProductsServiceImpl relatedProductsServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    RelatedProductsServiceImpl relatedProductsServiceImpl2 = new RelatedProductsServiceImpl();
+
+    RelatedProductDTO relatedProductDTO = new RelatedProductDTO();
+    relatedProductDTO.setCategoryId(1L);
+    relatedProductDTO.setCumulativeResults(true);
+    relatedProductDTO.setProductId(1L);
+    relatedProductDTO.setQuantity(1);
+    relatedProductDTO.setType(RelatedProductTypeEnum.CROSS_SALE);
+
+    // Act
+    relatedProductsServiceImpl2.lookupCategory(relatedProductDTO);
   }
 
   /**

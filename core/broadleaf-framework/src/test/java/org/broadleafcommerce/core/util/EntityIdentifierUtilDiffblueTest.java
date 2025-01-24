@@ -1,26 +1,57 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.util;
 
 import static org.junit.Assert.assertNull;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext.xml",
+    "/bl-framework-applicationContext-entity.xml", "/bl-framework-applicationContext-persistence.xml",
+    "/bl-framework-applicationContext-workflow.xml",
+    "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class EntityIdentifierUtilDiffblueTest {
+  @Autowired
+  private EntityIdentifierUtil entityIdentifierUtil;
+
+  /**
+   * Test {@link EntityIdentifierUtil#getIdentifierFieldName(Class)} with
+   * {@code clazz}.
+   * <p>
+   * Method under test: {@link EntityIdentifierUtil#getIdentifierFieldName(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetIdentifierFieldNameWithClazz() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass399 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.EntityIdentifierUtil entityIdentifierUtil;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    EntityIdentifierUtil entityIdentifierUtil2 = new EntityIdentifierUtil();
+    Class<Object> clazz = Object.class;
+
+    // Act
+    entityIdentifierUtil2.getIdentifierFieldName(clazz);
+  }
+
   /**
    * Test {@link EntityIdentifierUtil#getIdentifierFieldName(Class)} with
    * {@code clazz}.
@@ -40,6 +71,37 @@ public class EntityIdentifierUtilDiffblueTest {
 
     // Act and Assert
     assertNull(entityIdentifierUtil.getIdentifierFieldName(clazz));
+  }
+
+  /**
+   * Test {@link EntityIdentifierUtil#getIdentifierFieldName(Object)} with
+   * {@code entity}.
+   * <p>
+   * Method under test:
+   * {@link EntityIdentifierUtil#getIdentifierFieldName(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetIdentifierFieldNameWithEntity() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass429 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.EntityIdentifierUtil entityIdentifierUtil;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new EntityIdentifierUtil()).getIdentifierFieldName("Entity");
   }
 
   /**
@@ -82,6 +144,36 @@ public class EntityIdentifierUtilDiffblueTest {
 
   /**
    * Test {@link EntityIdentifierUtil#getIdentifierFieldValue(Object)}.
+   * <p>
+   * Method under test:
+   * {@link EntityIdentifierUtil#getIdentifierFieldValue(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetIdentifierFieldValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass440 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.EntityIdentifierUtil entityIdentifierUtil;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new EntityIdentifierUtil()).getIdentifierFieldValue("Entity");
+  }
+
+  /**
+   * Test {@link EntityIdentifierUtil#getIdentifierFieldValue(Object)}.
    * <ul>
    *   <li>When {@code Entity}.</li>
    *   <li>Then return {@code null}.</li>
@@ -114,6 +206,36 @@ public class EntityIdentifierUtilDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new EntityIdentifierUtil()).getIdentifierFieldValue(9));
+  }
+
+  /**
+   * Test {@link EntityIdentifierUtil#getIdentifyFieldValue(Object, String)}.
+   * <p>
+   * Method under test:
+   * {@link EntityIdentifierUtil#getIdentifyFieldValue(Object, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetIdentifyFieldValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass451 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.EntityIdentifierUtil entityIdentifierUtil;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new EntityIdentifierUtil()).getIdentifyFieldValue("Entity", "Primary Key Field Name");
   }
 
   /**
@@ -154,6 +276,39 @@ public class EntityIdentifierUtilDiffblueTest {
 
   /**
    * Test {@link EntityIdentifierUtil#findIdentifierField(Class)}.
+   * <p>
+   * Method under test: {@link EntityIdentifierUtil#findIdentifierField(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindIdentifierField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass369 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.EntityIdentifierUtil entityIdentifierUtil;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    EntityIdentifierUtil entityIdentifierUtil2 = new EntityIdentifierUtil();
+    Class<Object> clazz = Object.class;
+
+    // Act
+    entityIdentifierUtil2.findIdentifierField(clazz);
+  }
+
+  /**
+   * Test {@link EntityIdentifierUtil#findIdentifierField(Class)}.
    * <ul>
    *   <li>Then return {@code null}.</li>
    * </ul>
@@ -170,5 +325,22 @@ public class EntityIdentifierUtilDiffblueTest {
 
     // Act and Assert
     assertNull(entityIdentifierUtil.findIdentifierField(clazz));
+  }
+
+  /**
+   * Test new {@link EntityIdentifierUtil} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link EntityIdentifierUtil}
+   */
+  @Test
+  public void testNewEntityIdentifierUtil() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new EntityIdentifierUtil();
   }
 }

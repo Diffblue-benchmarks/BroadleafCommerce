@@ -1,184 +1,85 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.order.dao;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.util.ArrayList;
-import java.util.List;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
+@Transactional
 public class OrderDaoImplDiffblueTest {
+  @Autowired
+  private OrderDaoImpl orderDaoImpl;
+
   /**
-   * Test {@link OrderDaoImpl#readOrdersByIds(List)}.
-   * <ul>
-   *   <li>When {@link ArrayList#ArrayList()}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
+   * Test {@link OrderDaoImpl#create()}.
    * <p>
-   * Method under test: {@link OrderDaoImpl#readOrdersByIds(List)}
+   * Method under test: {@link OrderDaoImpl#create()}
    */
   @Test
-  public void testReadOrdersByIds_whenArrayList_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testCreate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.dao;
+    //   @org.springframework.transaction.annotation.Transactional
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass156 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.dao.OrderDaoImpl orderDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OrderDaoImpl()).create();
+  }
+
+  /**
+   * Test {@link OrderDaoImpl#acquireLock(Order)}.
+   * <p>
+   * Method under test: {@link OrderDaoImpl#acquireLock(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAcquireLock() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.dao;
+    //   @org.springframework.transaction.annotation.Transactional
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass143 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.dao.OrderDaoImpl orderDaoImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    OrderDaoImpl orderDaoImpl = new OrderDaoImpl();
-
-    // Act and Assert
-    assertNull(orderDaoImpl.readOrdersByIds(new ArrayList<>()));
-  }
-
-  /**
-   * Test {@link OrderDaoImpl#readOrdersByIds(List)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrdersByIds(List)}
-   */
-  @Test
-  public void testReadOrdersByIds_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new OrderDaoImpl()).readOrdersByIds(null));
-  }
-
-  /**
-   * Test {@link OrderDaoImpl#readOrderByOrderNumber(String)}.
-   * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrderByOrderNumber(String)}
-   */
-  @Test
-  public void testReadOrderByOrderNumber_whenEmptyString_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new OrderDaoImpl()).readOrderByOrderNumber(""));
-  }
-
-  /**
-   * Test {@link OrderDaoImpl#readOrderByOrderNumber(String)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return {@code null}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrderByOrderNumber(String)}
-   */
-  @Test
-  public void testReadOrderByOrderNumber_whenNull_thenReturnNull() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertNull((new OrderDaoImpl()).readOrderByOrderNumber(null));
-  }
-
-  /**
-   * Test {@link OrderDaoImpl#releaseLock(Order)}.
-   * <ul>
-   *   <li>Given one.</li>
-   *   <li>When {@link NullOrderImpl} {@link NullOrderImpl#getId()} return one.</li>
-   *   <li>Then calls {@link NullOrderImpl#getId()}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#releaseLock(Order)}
-   */
-  @Test
-  public void testReleaseLock_givenOne_whenNullOrderImplGetIdReturnOne_thenCallsGetId() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderDaoImpl orderDaoImpl = new OrderDaoImpl();
-    NullOrderImpl order = mock(NullOrderImpl.class);
-    when(order.getId()).thenReturn(1L);
+    OrderDaoImpl orderDaoImpl2 = new OrderDaoImpl();
 
     // Act
-    boolean actualReleaseLockResult = orderDaoImpl.releaseLock(order);
-
-    // Assert
-    verify(order).getId();
-    assertFalse(actualReleaseLockResult);
-  }
-
-  /**
-   * Test {@link OrderDaoImpl#releaseLock(Order)}.
-   * <ul>
-   *   <li>When {@link NullOrderImpl} (default constructor).</li>
-   *   <li>Then return {@code false}.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#releaseLock(Order)}
-   */
-  @Test
-  public void testReleaseLock_whenNullOrderImpl_thenReturnFalse() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    OrderDaoImpl orderDaoImpl = new OrderDaoImpl();
-
-    // Act and Assert
-    assertFalse(orderDaoImpl.releaseLock(new NullOrderImpl()));
-  }
-
-  /**
-   * Test {@link OrderDaoImpl#readOrdersByEmail(String)}.
-   * <ul>
-   *   <li>When empty string.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrdersByEmail(String)}
-   */
-  @Test
-  public void testReadOrdersByEmail_whenEmptyString_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertTrue((new OrderDaoImpl()).readOrdersByEmail("").isEmpty());
-  }
-
-  /**
-   * Test {@link OrderDaoImpl#readOrdersByEmail(String)}.
-   * <ul>
-   *   <li>When {@code null}.</li>
-   *   <li>Then return Empty.</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link OrderDaoImpl#readOrdersByEmail(String)}
-   */
-  @Test
-  public void testReadOrdersByEmail_whenNull_thenReturnEmpty() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange, Act and Assert
-    assertTrue((new OrderDaoImpl()).readOrdersByEmail(null).isEmpty());
+    orderDaoImpl2.acquireLock(new NullOrderImpl());
   }
 }

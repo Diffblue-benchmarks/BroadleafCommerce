@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Admin Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.admin.server.service.handler;
 
 import static org.junit.Assert.assertEquals;
@@ -24,14 +7,74 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.FieldPathBuilder;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.Restriction;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.RestrictionFactory;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.criteria.converter.FilterValueConverter;
+import org.hibernate.boot.internal.BootstrapContextImpl;
+import org.hibernate.boot.internal.InFlightMetadataCollectorImpl;
+import org.hibernate.boot.internal.MetadataBuilderImpl;
+import org.hibernate.boot.spi.AbstractDelegatingSessionFactoryOptions;
+import org.hibernate.engine.query.spi.QueryPlanCache;
+import org.hibernate.internal.SessionFactoryImpl;
+import org.hibernate.query.criteria.internal.CriteriaBuilderImpl;
+import org.hibernate.query.criteria.internal.CriteriaSubqueryImpl;
+import org.hibernate.query.criteria.internal.path.CollectionAttributeJoin;
+import org.hibernate.query.criteria.internal.path.ListAttributeJoin;
+import org.hibernate.query.criteria.internal.predicate.BooleanExpressionPredicate;
+import org.hibernate.query.criteria.internal.predicate.NegatedPredicateWrapper;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml", "/bl-admin-applicationContext.xml",
+    "/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SkuRestrictionFactoryImplDiffblueTest {
+  @Autowired
+  private SkuRestrictionFactoryImpl skuRestrictionFactoryImpl;
+
+  /**
+   * Test {@link SkuRestrictionFactoryImpl#getRestriction(String, String)}.
+   * <p>
+   * Method under test:
+   * {@link SkuRestrictionFactoryImpl#getRestriction(String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRestriction() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7505 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuRestrictionFactoryImpl skuRestrictionFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SkuRestrictionFactoryImpl()).getRestriction("Type", "42");
+  }
+
   /**
    * Test {@link SkuRestrictionFactoryImpl#getRestriction(String, String)}.
    * <ul>
@@ -94,6 +137,77 @@ public class SkuRestrictionFactoryImplDiffblueTest {
     assertNull(fieldPathBuilder.getRestrictions());
     assertNull(fieldPathBuilder.getCriteria());
     assertNull(actualRestriction.getFilterValueConverter());
+  }
+
+  /**
+   * Test
+   * {@link SkuRestrictionFactoryImpl#buildCompositePredicate(CriteriaBuilder, Path, Path, Predicate, Predicate)}.
+   * <p>
+   * Method under test:
+   * {@link SkuRestrictionFactoryImpl#buildCompositePredicate(CriteriaBuilder, Path, Path, Predicate, Predicate)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildCompositePredicate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7262 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuRestrictionFactoryImpl skuRestrictionFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    SkuRestrictionFactoryImpl skuRestrictionFactoryImpl2 = new SkuRestrictionFactoryImpl();
+    BootstrapContextImpl bootstrapContext = new BootstrapContextImpl(null, null);
+
+    InFlightMetadataCollectorImpl metadata = new InFlightMetadataCollectorImpl(bootstrapContext,
+        new MetadataBuilderImpl.MetadataBuildingOptionsImpl(null));
+
+    CriteriaBuilderImpl builder = new CriteriaBuilderImpl(new SessionFactoryImpl(metadata,
+        new AbstractDelegatingSessionFactoryOptions(null), mock(QueryPlanCache.QueryPlanCreator.class)));
+    CriteriaBuilderImpl criteriaBuilder = new CriteriaBuilderImpl(
+        new SessionFactoryImpl(null, null, mock(QueryPlanCache.QueryPlanCreator.class)));
+    Class<Object> javaType = Object.class;
+    Class<Object> treatAsType = Object.class;
+    CollectionAttributeJoin original = new CollectionAttributeJoin(criteriaBuilder, javaType,
+        new ListAttributeJoin.TreatedListAttributeJoin(null, treatAsType), null, JoinType.INNER);
+
+    Class<Object> treatAsType2 = Object.class;
+    CollectionAttributeJoin.TreatedCollectionAttributeJoin targetPropertyPath = new CollectionAttributeJoin.TreatedCollectionAttributeJoin(
+        original, treatAsType2);
+
+    CriteriaBuilderImpl criteriaBuilder2 = new CriteriaBuilderImpl(
+        new SessionFactoryImpl(null, null, mock(QueryPlanCache.QueryPlanCreator.class)));
+    Class<Object> javaType2 = Object.class;
+    Class<Object> treatAsType3 = Object.class;
+    CollectionAttributeJoin original2 = new CollectionAttributeJoin(criteriaBuilder2, javaType2,
+        new ListAttributeJoin.TreatedListAttributeJoin(null, treatAsType3), null, JoinType.INNER);
+
+    Class<Object> treatAsType4 = Object.class;
+    CollectionAttributeJoin.TreatedCollectionAttributeJoin productPath = new CollectionAttributeJoin.TreatedCollectionAttributeJoin(
+        original2, treatAsType4);
+
+    CriteriaBuilderImpl criteriaBuilder3 = new CriteriaBuilderImpl(null);
+    Class<Boolean> javaType3 = Boolean.class;
+    NegatedPredicateWrapper propertyExpression = new NegatedPredicateWrapper(
+        new BooleanExpressionPredicate(criteriaBuilder3, new CriteriaSubqueryImpl<>(null, javaType3, null)));
+    CriteriaBuilderImpl criteriaBuilder4 = new CriteriaBuilderImpl(null);
+    Class<Boolean> javaType4 = Boolean.class;
+
+    // Act
+    skuRestrictionFactoryImpl2.buildCompositePredicate(builder, targetPropertyPath, productPath, propertyExpression,
+        new NegatedPredicateWrapper(
+            new BooleanExpressionPredicate(criteriaBuilder4, new CriteriaSubqueryImpl<>(null, javaType4, null))));
   }
 
   /**
@@ -180,6 +294,36 @@ public class SkuRestrictionFactoryImplDiffblueTest {
 
     // Assert
     assertEquals("Sku Property Prefix.", skuRestrictionFactoryImpl.getSkuPropertyPrefix());
+  }
+
+  /**
+   * Test {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}.
+   * <p>
+   * Method under test:
+   * {@link SkuRestrictionFactoryImpl#setSkuPropertyPrefix(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetSkuPropertyPrefix4() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.admin.server.service.handler;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-admin-applicationContext-servlet.xml","/bl-admin-applicationContext.xml","/blc-config/admin/framework/bl-admin-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-admin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7514 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.admin.server.service.handler.SkuRestrictionFactoryImpl skuRestrictionFactoryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new SkuRestrictionFactoryImpl()).setSkuPropertyPrefix("Sku Property Prefix");
   }
 
   /**

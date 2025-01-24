@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -25,10 +25,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapChangeFreqType;
 import org.broadleafcommerce.common.sitemap.service.type.SiteMapPriorityType;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SiteMapURLWrapperDiffblueTest {
@@ -86,6 +89,59 @@ public class SiteMapURLWrapperDiffblueTest {
     List<SiteMapImageWrapper> siteMapImageWrappers = siteMapURLWrapper.getSiteMapImageWrappers();
     assertEquals(1, siteMapImageWrappers.size());
     assertSame(siteMapImage, siteMapImageWrappers.get(0));
+  }
+
+  /**
+   * Test {@link SiteMapURLWrapper#setLastModDate(Date)}.
+   * <p>
+   * Method under test: {@link SiteMapURLWrapper#setLastModDate(Date)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetLastModDate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Method may be time-sensitive.
+    //   Diffblue Cover was only able to write tests that are time-sensitive.
+    //   The assertions don't pass when run at an alternate date, time, and
+    //   timezone. Try refactoring the method to take a 'java.time.Clock' instance so
+    //   that the time can be parameterized during testing.
+    //   See Working with code R031 (https://diff.blue/R031) for details.
+
+    // Arrange
+    SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
+
+    // Act
+    siteMapURLWrapper.setLastModDate(
+        java.util.Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+  }
+
+  /**
+   * Test {@link SiteMapURLWrapper#setLastModDate(Date)}.
+   * <ul>
+   *   <li>Given ten.</li>
+   *   <li>Then {@link SiteMapURLWrapper} (default constructor) Lastmod is
+   * {@code 1970-01-01T00:00:00+00:00}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SiteMapURLWrapper#setLastModDate(java.util.Date)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetLastModDate_givenTen_thenSiteMapURLWrapperLastmodIs19700101t0000000000() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    SiteMapURLWrapper siteMapURLWrapper = new SiteMapURLWrapper();
+    java.sql.Date lastModDate = mock(java.sql.Date.class);
+    when(lastModDate.getTime()).thenReturn(10L);
+
+    // Act
+    siteMapURLWrapper.setLastModDate(lastModDate);
+
+    // Assert
+    verify(lastModDate).getTime();
+    assertEquals("1970-01-01T00:00:00+00:00", siteMapURLWrapper.getLastmod());
   }
 
   /**

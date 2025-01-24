@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -20,12 +20,44 @@ package org.broadleafcommerce.common.extensibility.jpa.copy;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import com.yahoo.platform.yui.compressor.JarClassLoader;
+import java.io.UnsupportedEncodingException;
+import java.lang.instrument.IllegalClassFormatException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.file.Paths;
+import java.security.CodeSigner;
+import java.security.CodeSource;
+import java.security.Permissions;
+import java.security.ProtectionDomain;
+import java.util.List;
+import org.broadleafcommerce.common.weave.ConditionalDirectCopyTransformersManager;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {OptionalDirectCopyClassTransformer.class, String.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OptionalDirectCopyClassTransformerDiffblueTest {
+  @MockBean
+  private ConditionalDirectCopyTransformersManager conditionalDirectCopyTransformersManager;
+
+  @MockBean
+  private DirectCopyIgnorePattern directCopyIgnorePattern;
+
+  @Autowired
+  private List<DirectCopyIgnorePattern> list;
+
+  @Autowired
+  private OptionalDirectCopyClassTransformer optionalDirectCopyClassTransformer;
+
   /**
    * Test getters and setters.
    * <p>
@@ -55,5 +87,48 @@ public class OptionalDirectCopyClassTransformerDiffblueTest {
     assertTrue(actualOptionalDirectCopyClassTransformer.getTemplateTokens().isEmpty());
     assertTrue(actualOptionalDirectCopyClassTransformer.getXformTemplates().isEmpty());
     assertTrue(actualOptionalDirectCopyClassTransformer.getSkipOverlaps());
+  }
+
+  /**
+   * Test
+   * {@link OptionalDirectCopyClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}.
+   * <p>
+   * Method under test:
+   * {@link OptionalDirectCopyClassTransformer#transform(ClassLoader, String, Class, ProtectionDomain, byte[])}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTransform() throws UnsupportedEncodingException, IllegalClassFormatException, MalformedURLException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.common.extensibility.jpa.copy;
+    //   @org.springframework.test.context.ContextConfiguration(classes = {org.broadleafcommerce.common.extensibility.jpa.copy.OptionalDirectCopyClassTransformer.class,java.lang.String.class})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11279 {
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.weave.ConditionalDirectCopyTransformersManager conditionalDirectCopyTransformersManager;
+    //     @org.springframework.boot.test.mock.mockito.MockBean org.broadleafcommerce.common.extensibility.jpa.copy.DirectCopyIgnorePattern directCopyIgnorePattern;
+    //     @org.springframework.beans.factory.annotation.Autowired java.util.List<Lorg.broadleafcommerce.common.extensibility.jpa.copy.DirectCopyIgnorePattern;> list;
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.common.extensibility.jpa.copy.OptionalDirectCopyClassTransformer optionalDirectCopyClassTransformer;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    JarClassLoader loader = new JarClassLoader();
+    Class<Object> classBeingRedefined = Object.class;
+    URL toURLResult = Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toUri().toURL();
+    CodeSource codeSource = new CodeSource(toURLResult, new CodeSigner[]{new CodeSigner(null, null)});
+
+    ProtectionDomain protectionDomain = new ProtectionDomain(codeSource, new Permissions());
+
+    // Act
+    optionalDirectCopyClassTransformer.transform(loader, "Class Name", classBeingRedefined, protectionDomain,
+        "AXAXAXAX".getBytes("UTF-8"));
   }
 }

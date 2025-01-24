@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -22,6 +22,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -179,6 +181,33 @@ public class NotificationDiffblueTest {
 
     // Assert
     assertSame(actualType.ADMIN_FORGOT_PASSWORD, actualType);
+  }
+
+  /**
+   * Test {@link Notification#setType(NotificationEventType)}.
+   * <ul>
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then {@link Notification} Type Type is {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Notification#setType(NotificationEventType)}
+   */
+  @Test
+  public void testSetType_givenType_thenNotificationTypeTypeIsType() {
+    // Arrange
+    NotificationEventType notificationEventType2 = mock(NotificationEventType.class);
+    when(notificationEventType2.getType()).thenReturn("Type");
+
+    // Act
+    notification.setType(notificationEventType2);
+
+    // Assert
+    verify(notificationEventType2).getType();
+    assertTrue(notification instanceof EmailNotification);
+    NotificationEventType type = notification.getType();
+    assertEquals("Type", type.getType());
+    assertEquals("Type", ((EmailNotification) notification).notificationType);
+    assertEquals("Unable to find an EmailInfo that matched a notification of type ", type.getFriendlyType());
   }
 
   /**

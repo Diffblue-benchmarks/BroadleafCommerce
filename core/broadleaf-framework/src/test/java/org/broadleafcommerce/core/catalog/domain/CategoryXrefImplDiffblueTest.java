@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.catalog.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -429,6 +412,43 @@ public class CategoryXrefImplDiffblueTest {
    */
   @Test
   public void testCreateOrRetrieveCopyInstance_thenCloneReturnCategoryXrefImpl() throws CloneNotSupportedException {
+    // Arrange
+    CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
+    GenericEntityService genericEntityService = mock(GenericEntityService.class);
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+
+    // Act
+    CreateResponse<CategoryXref> actualCreateOrRetrieveCopyInstanceResult = categoryXrefImpl
+        .createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+            genericEntityService, new MultiTenantCopierExtensionManager()));
+
+    // Assert
+    verify(genericEntityService, atLeast(1)).getCeilingImplClass(Mockito.<String>any());
+    verify(genericEntityService, atLeast(1)).getIdentifier(Mockito.<Object>any());
+    CategoryXref clone = actualCreateOrRetrieveCopyInstanceResult.getClone();
+    assertTrue(clone instanceof CategoryXrefImpl);
+    assertFalse(actualCreateOrRetrieveCopyInstanceResult.isAlreadyPopulated());
+    assertEquals(categoryXrefImpl, clone);
+  }
+
+  /**
+   * Test
+   * {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <ul>
+   *   <li>Then Clone return {@link CategoryXrefImpl}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link CategoryXrefImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance_thenCloneReturnCategoryXrefImpl2() throws CloneNotSupportedException {
     // Arrange
     CategoryXrefImpl categoryXrefImpl = new CategoryXrefImpl();
     GenericEntityService genericEntityService = mock(GenericEntityService.class);

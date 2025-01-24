@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -24,6 +24,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -69,6 +71,35 @@ public class SandBoxImplDiffblueTest {
 
     // Assert
     assertSame(actualSandBoxType.APPROVAL, actualSandBoxType);
+  }
+
+  /**
+   * Test {@link SandBoxImpl#setSandBoxType(SandBoxType)}.
+   * <ul>
+   *   <li>Given {@code Type}.</li>
+   *   <li>Then {@link SandBoxImpl} (default constructor) SandBoxType Type is
+   * {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SandBoxImpl#setSandBoxType(SandBoxType)}
+   */
+  @Test
+  public void testSetSandBoxType_givenType_thenSandBoxImplSandBoxTypeTypeIsType() {
+    // Arrange
+    SandBoxImpl sandBoxImpl = new SandBoxImpl();
+    SandBoxType sandboxType = mock(SandBoxType.class);
+    when(sandboxType.getType()).thenReturn("Type");
+
+    // Act
+    sandBoxImpl.setSandBoxType(sandboxType);
+
+    // Assert
+    verify(sandboxType).getType();
+    SandBoxType sandBoxType = sandBoxImpl.getSandBoxType();
+    assertEquals("Type", sandBoxType.getType());
+    assertEquals("Type", sandBoxImpl.sandboxType);
+    assertEquals("createSandBox", sandBoxType.getFriendlyType());
+    assertEquals(3, sandBoxType.getPriority().intValue());
   }
 
   /**

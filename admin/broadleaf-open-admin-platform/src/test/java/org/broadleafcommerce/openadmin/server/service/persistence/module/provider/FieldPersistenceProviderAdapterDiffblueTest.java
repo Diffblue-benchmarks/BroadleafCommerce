@@ -1,24 +1,8 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.service.persistence.module.provider;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -39,9 +23,11 @@ import org.broadleafcommerce.openadmin.dto.BasicFieldMetadata;
 import org.broadleafcommerce.openadmin.dto.CriteriaTransferObject;
 import org.broadleafcommerce.openadmin.dto.Entity;
 import org.broadleafcommerce.openadmin.dto.FieldMetadata;
+import org.broadleafcommerce.openadmin.dto.FilterAndSortCriteria;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspective;
 import org.broadleafcommerce.openadmin.dto.PersistencePerspectiveItem;
 import org.broadleafcommerce.openadmin.dto.Property;
+import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceException;
 import org.broadleafcommerce.openadmin.server.service.persistence.PersistenceManagerImpl;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.AdornedTargetListPersistenceModule;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.FieldManager;
@@ -52,6 +38,10 @@ import org.broadleafcommerce.openadmin.server.service.persistence.module.provide
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.ExtractValueRequest;
 import org.broadleafcommerce.openadmin.server.service.persistence.module.provider.request.PopulateValueRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
+import org.hibernate.Session;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.hibernate.engine.spi.SessionImplementor;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -103,16 +93,12 @@ public class FieldPersistenceProviderAdapterDiffblueTest {
   /**
    * Test
    * {@link FieldPersistenceProviderAdapter#populateValue(PopulateValueRequest, Serializable)}.
-   * <ul>
-   *   <li>Given {@link FieldPersistenceProviderAdapter} (default constructor).</li>
-   *   <li>Then return {@code NOT_HANDLED}.</li>
-   * </ul>
    * <p>
    * Method under test:
    * {@link FieldPersistenceProviderAdapter#populateValue(PopulateValueRequest, Serializable)}
    */
   @Test
-  public void testPopulateValue_givenFieldPersistenceProviderAdapter_thenReturnNotHandled() {
+  public void testPopulateValue() {
     // Arrange
     FieldPersistenceProviderAdapter fieldPersistenceProviderAdapter = new FieldPersistenceProviderAdapter();
     FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
@@ -125,9 +111,109 @@ public class FieldPersistenceProviderAdapterDiffblueTest {
     PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
         returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
 
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        fieldPersistenceProviderAdapter.populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd")));
+    // Act
+    MetadataProviderResponse actualPopulateValueResult = fieldPersistenceProviderAdapter
+        .populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+
+    // Assert
+    Property property2 = populateValueRequest.getProperty();
+    assertNull(property2.getOriginalDisplayValue());
+    assertNull(property2.getOriginalValue());
+    assertEquals(MetadataProviderResponse.NOT_HANDLED, actualPopulateValueResult);
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#populateValue(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#populateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  public void testPopulateValue2() throws PersistenceException {
+    // Arrange
+    DefaultFieldPersistenceProvider defaultFieldPersistenceProvider = new DefaultFieldPersistenceProvider();
+
+    Property property = new Property();
+    property.setName(".");
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, false, new Entity());
+
+    // Act
+    defaultFieldPersistenceProvider.populateValue(populateValueRequest, new SimpleDateFormat("yyyy/mm/dd"));
+
+    // Assert
+    assertTrue(populateValueRequest.getProperty().getIsDirty());
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#populateValue(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#populateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  public void testPopulateValue3() throws PersistenceException {
+    // Arrange
+    DefaultFieldPersistenceProvider defaultFieldPersistenceProvider = new DefaultFieldPersistenceProvider();
+
+    Property property = new Property();
+    property.setName(".");
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act
+    defaultFieldPersistenceProvider.populateValue(populateValueRequest, FilterAndSortCriteria.FIRST_ID_PARAMETER);
+
+    // Assert
+    Property property2 = populateValueRequest.getProperty();
+    assertEquals("firstId", property2.getOriginalDisplayValue());
+    assertEquals("firstId", property2.getOriginalValue());
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#populateValue(PopulateValueRequest, Serializable)}.
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#populateValue(PopulateValueRequest, Serializable)}
+   */
+  @Test
+  public void testPopulateValue4() throws PersistenceException {
+    // Arrange
+    DefaultFieldPersistenceProvider defaultFieldPersistenceProvider = new DefaultFieldPersistenceProvider();
+
+    Property property = new Property();
+    property.setName(".");
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+    PopulateValueRequest populateValueRequest = new PopulateValueRequest(true, fieldManager, property, metadata,
+        returnType, "42", persistenceManager, dataFormatProvider, true, new Entity());
+
+    // Act
+    defaultFieldPersistenceProvider.populateValue(populateValueRequest, "42");
+
+    // Assert
+    Property property2 = populateValueRequest.getProperty();
+    assertEquals("42", property2.getOriginalDisplayValue());
+    assertEquals("42", property2.getOriginalValue());
   }
 
   /**
@@ -211,6 +297,68 @@ public class FieldPersistenceProviderAdapterDiffblueTest {
    * {@link FieldPersistenceProviderAdapter#checkDirtyState(PopulateValueRequest, Object, Object)}.
    * <ul>
    *   <li>Given {@code .}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#checkDirtyState(PopulateValueRequest, Object, Object)}
+   */
+  @Test
+  public void testCheckDirtyState_givenDot_whenNull_thenReturnFalse() throws Exception {
+    // Arrange
+    FieldPersistenceProviderAdapter fieldPersistenceProviderAdapter = new FieldPersistenceProviderAdapter();
+
+    Property property = new Property();
+    property.setName(".");
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+
+    // Act and Assert
+    assertFalse(fieldPersistenceProviderAdapter.checkDirtyState(new PopulateValueRequest(true, fieldManager, property,
+        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), null, "Check Value"));
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#checkDirtyState(PopulateValueRequest, Object, Object)}.
+   * <ul>
+   *   <li>Given {@code .}.</li>
+   *   <li>When one.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#checkDirtyState(PopulateValueRequest, Object, Object)}
+   */
+  @Test
+  public void testCheckDirtyState_givenDot_whenOne_thenReturnFalse() throws Exception {
+    // Arrange
+    FieldPersistenceProviderAdapter fieldPersistenceProviderAdapter = new FieldPersistenceProviderAdapter();
+
+    Property property = new Property();
+    property.setName(".");
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+
+    // Act and Assert
+    assertFalse(fieldPersistenceProviderAdapter.checkDirtyState(new PopulateValueRequest(true, fieldManager, property,
+        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), 1, "Check Value"));
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#checkDirtyState(PopulateValueRequest, Object, Object)}.
+   * <ul>
+   *   <li>Given {@code .}.</li>
    *   <li>When {@link Property#Property()} Name is {@code .}.</li>
    *   <li>Then return {@code false}.</li>
    * </ul>
@@ -233,8 +381,9 @@ public class FieldPersistenceProviderAdapterDiffblueTest {
     AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
     // Act and Assert
-    assertFalse(fieldPersistenceProviderAdapter.checkDirtyState(new PopulateValueRequest(true, fieldManager, property,
-        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), null, "Check Value"));
+    assertFalse(
+        fieldPersistenceProviderAdapter.checkDirtyState(new PopulateValueRequest(true, fieldManager, property, metadata,
+            returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), "Instance", "Check Value"));
   }
 
   /**
@@ -265,7 +414,166 @@ public class FieldPersistenceProviderAdapterDiffblueTest {
 
     // Act and Assert
     assertFalse(fieldPersistenceProviderAdapter.checkDirtyState(new PopulateValueRequest(true, fieldManager, property,
-        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), "Instance", null));
+        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), "Check Value",
+        "Check Value"));
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#checkDirtyState(PopulateValueRequest, Object, Object)}.
+   * <ul>
+   *   <li>Given {@code .}.</li>
+   *   <li>When {@code /}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#checkDirtyState(PopulateValueRequest, Object, Object)}
+   */
+  @Test
+  public void testCheckDirtyState_givenDot_whenSlash_thenReturnFalse() throws Exception {
+    // Arrange
+    FieldPersistenceProviderAdapter fieldPersistenceProviderAdapter = new FieldPersistenceProviderAdapter();
+
+    Property property = new Property();
+    property.setName(".");
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+
+    // Act and Assert
+    assertFalse(fieldPersistenceProviderAdapter.checkDirtyState(new PopulateValueRequest(true, fieldManager, property,
+        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), " /", "Check Value"));
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#checkDirtyState(PopulateValueRequest, Object, Object)}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#checkDirtyState(PopulateValueRequest, Object, Object)}
+   */
+  @Test
+  public void testCheckDirtyState_thenReturnTrue() throws Exception {
+    // Arrange
+    FieldPersistenceProviderAdapter fieldPersistenceProviderAdapter = new FieldPersistenceProviderAdapter();
+
+    Property property = new Property();
+    property.setName(".");
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+
+    // Act and Assert
+    assertTrue(
+        fieldPersistenceProviderAdapter.checkDirtyState(new PopulateValueRequest(true, fieldManager, property, metadata,
+            returnType, "42", persistenceManager, dataFormatProvider, false, new Entity()), "Instance", "Check Value"));
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#isFieldDirty(PopulateValueRequest, Object, Object)}.
+   * <ul>
+   *   <li>Given {@code .}.</li>
+   *   <li>When {@code null}.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#isFieldDirty(PopulateValueRequest, Object, Object)}
+   */
+  @Test
+  public void testIsFieldDirty_givenDot_whenNull_thenReturnTrue()
+      throws IllegalAccessException, FieldNotAvailableException {
+    // Arrange
+    FieldPersistenceProviderAdapter fieldPersistenceProviderAdapter = new FieldPersistenceProviderAdapter();
+
+    Property property = new Property();
+    property.setName(".");
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+
+    // Act and Assert
+    assertTrue(fieldPersistenceProviderAdapter.isFieldDirty(new PopulateValueRequest(true, fieldManager, property,
+        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), null, "Check Value"));
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#isFieldDirty(PopulateValueRequest, Object, Object)}.
+   * <ul>
+   *   <li>Given {@code .}.</li>
+   *   <li>When one.</li>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#isFieldDirty(PopulateValueRequest, Object, Object)}
+   */
+  @Test
+  public void testIsFieldDirty_givenDot_whenOne_thenReturnTrue()
+      throws IllegalAccessException, FieldNotAvailableException {
+    // Arrange
+    FieldPersistenceProviderAdapter fieldPersistenceProviderAdapter = new FieldPersistenceProviderAdapter();
+
+    Property property = new Property();
+    property.setName(".");
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+
+    // Act and Assert
+    assertTrue(fieldPersistenceProviderAdapter.isFieldDirty(new PopulateValueRequest(true, fieldManager, property,
+        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), 1, "Check Value"));
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#isFieldDirty(PopulateValueRequest, Object, Object)}.
+   * <ul>
+   *   <li>Given {@code .}.</li>
+   *   <li>When {@link Property#Property()} Name is {@code .}.</li>
+   *   <li>Then return {@code false}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#isFieldDirty(PopulateValueRequest, Object, Object)}
+   */
+  @Test
+  public void testIsFieldDirty_givenDot_whenPropertyNameIsDot_thenReturnFalse()
+      throws IllegalAccessException, FieldNotAvailableException {
+    // Arrange
+    FieldPersistenceProviderAdapter fieldPersistenceProviderAdapter = new FieldPersistenceProviderAdapter();
+
+    Property property = new Property();
+    property.setName(".");
+    FieldManager fieldManager = new FieldManager(new EntityConfiguration(), null);
+
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+
+    // Act and Assert
+    assertFalse(fieldPersistenceProviderAdapter.isFieldDirty(new PopulateValueRequest(true, fieldManager, property,
+        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), "Check Value",
+        "Check Value"));
   }
 
   /**
@@ -296,8 +604,9 @@ public class FieldPersistenceProviderAdapterDiffblueTest {
     AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
 
     // Act and Assert
-    assertTrue(fieldPersistenceProviderAdapter.isFieldDirty(new PopulateValueRequest(true, fieldManager, property,
-        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), null, "Check Value"));
+    assertTrue(
+        fieldPersistenceProviderAdapter.isFieldDirty(new PopulateValueRequest(true, fieldManager, property, metadata,
+            returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), "Instance", "Check Value"));
   }
 
   /**
@@ -305,7 +614,7 @@ public class FieldPersistenceProviderAdapterDiffblueTest {
    * {@link FieldPersistenceProviderAdapter#isFieldDirty(PopulateValueRequest, Object, Object)}.
    * <ul>
    *   <li>Given {@code .}.</li>
-   *   <li>When {@link Property#Property()} Name is {@code .}.</li>
+   *   <li>When {@code /}.</li>
    *   <li>Then return {@code true}.</li>
    * </ul>
    * <p>
@@ -313,7 +622,7 @@ public class FieldPersistenceProviderAdapterDiffblueTest {
    * {@link FieldPersistenceProviderAdapter#isFieldDirty(PopulateValueRequest, Object, Object)}
    */
   @Test
-  public void testIsFieldDirty_givenDot_whenPropertyNameIsDot_thenReturnTrue2()
+  public void testIsFieldDirty_givenDot_whenSlash_thenReturnTrue()
       throws IllegalAccessException, FieldNotAvailableException {
     // Arrange
     FieldPersistenceProviderAdapter fieldPersistenceProviderAdapter = new FieldPersistenceProviderAdapter();
@@ -329,7 +638,42 @@ public class FieldPersistenceProviderAdapterDiffblueTest {
 
     // Act and Assert
     assertTrue(fieldPersistenceProviderAdapter.isFieldDirty(new PopulateValueRequest(true, fieldManager, property,
-        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), "Instance", null));
+        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()), " /", "Check Value"));
+  }
+
+  /**
+   * Test
+   * {@link FieldPersistenceProviderAdapter#setNonDisplayableValues(PopulateValueRequest)}.
+   * <p>
+   * Method under test:
+   * {@link FieldPersistenceProviderAdapter#setNonDisplayableValues(PopulateValueRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetNonDisplayableValues() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalArgumentException: Unable to create a SessionDelegatorBaseImpl from different Session/SessionImplementor references
+    //       at org.hibernate.engine.spi.SessionDelegatorBaseImpl.<init>(SessionDelegatorBaseImpl.java:100)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    FieldPersistenceProviderAdapter fieldPersistenceProviderAdapter = new FieldPersistenceProviderAdapter();
+    EntityConfiguration entityConfiguration = new EntityConfiguration();
+    FieldManager fieldManager = new FieldManager(entityConfiguration,
+        new SessionDelegatorBaseImpl(mock(SessionImplementor.class), mock(Session.class)));
+
+    Property property = new Property();
+    BasicFieldMetadata metadata = new BasicFieldMetadata();
+    Class<Object> returnType = Object.class;
+    PersistenceManagerImpl persistenceManager = new PersistenceManagerImpl();
+    AdornedTargetListPersistenceModule dataFormatProvider = new AdornedTargetListPersistenceModule();
+
+    // Act
+    fieldPersistenceProviderAdapter.setNonDisplayableValues(new PopulateValueRequest(true, fieldManager, property,
+        metadata, returnType, "42", persistenceManager, dataFormatProvider, true, new Entity()));
   }
 
   /**

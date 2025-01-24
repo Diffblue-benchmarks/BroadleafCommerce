@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.order;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,12 +25,28 @@ import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.ChallengeQuestionImpl;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.springframework.aop.aspectj.MethodInvocationProceedingJoinPoint;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class OrderStateAOPDiffblueTest {
+  @Autowired
+  private OrderStateAOP orderStateAOP;
+
   /**
    * Test {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}.
    * <p>
@@ -111,6 +110,37 @@ class OrderStateAOPDiffblueTest {
     assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.abs());
     assertEquals(orderAdjustmentsValue, orderAdjustmentsValue.zero());
     assertEquals(orderAdjustmentsValue, ((NullOrderImpl) actualProcessOrderRetrievalResult).getSubTotal());
+  }
+
+  /**
+   * Test {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}.
+   * <p>
+   * Method under test:
+   * {@link OrderStateAOP#processOrderRetrieval(ProceedingJoinPoint)}
+   */
+  @Test
+  @DisplayName("Test processOrderRetrieval(ProceedingJoinPoint)")
+  @Disabled("TODO: Complete this test")
+  void testProcessOrderRetrieval2() throws Throwable {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.order;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass7560 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.order.OrderStateAOP orderStateAOP;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    orderStateAOP.processOrderRetrieval(new MethodInvocationProceedingJoinPoint(null));
   }
 
   /**
@@ -216,5 +246,28 @@ class OrderStateAOPDiffblueTest {
     Money expectedOrderAdjustmentsValue = totalTax.ZERO;
     assertSame(expectedOrderAdjustmentsValue,
         ((NullOrderImpl) actualProcessOrderRetrievalResult).getOrderAdjustmentsValue());
+  }
+
+  /**
+   * Test getters and setters.
+   * <p>
+   * Methods under test:
+   * <ul>
+   *   <li>default or parameterless constructor of {@link OrderStateAOP}
+   *   <li>{@link OrderStateAOP#setApplicationContext(ApplicationContext)}
+   * </ul>
+   */
+  @Test
+  @DisplayName("Test getters and setters")
+  void testGettersAndSetters() throws BeansException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     OrderStateAOP.applicationContext
+
+    // Arrange and Act
+    OrderStateAOP actualOrderStateAOP = new OrderStateAOP();
+    actualOrderStateAOP.setApplicationContext(new AnnotationConfigReactiveWebApplicationContext());
   }
 }

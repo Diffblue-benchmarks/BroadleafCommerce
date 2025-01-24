@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Profile
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.profile.core.service.validator;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -30,6 +13,26 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 
 public class ResetPasswordValidatorDiffblueTest {
+  /**
+   * Test {@link ResetPasswordValidator#validate(Object, Errors)} with
+   * {@code target}, {@code errors}.
+   * <p>
+   * Method under test: {@link ResetPasswordValidator#validate(Object, Errors)}
+   */
+  @Test
+  public void testValidateWithTargetErrors() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange
+    ResetPasswordValidator resetPasswordValidator = new ResetPasswordValidator();
+
+    // Act
+    resetPasswordValidator.validate("Target", new BindException("Target", "Object Name"));
+  }
+
   /**
    * Test {@link ResetPasswordValidator#validate(String, String, String, Errors)}
    * with {@code username}, {@code password}, {@code confirmPassword},

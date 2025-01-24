@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -33,6 +16,8 @@ import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustment;
 import org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl;
 import org.broadleafcommerce.core.order.domain.BundleOrderItemImpl;
+import org.broadleafcommerce.core.order.domain.NullOrderImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
@@ -66,6 +51,38 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
     assertFalse(actualPromotableOrderItemPriceDetailAdjustmentImpl.isAppliedToSalePrice());
     assertEquals(expectedSaleAdjustmentValue,
         actualPromotableOrderItemPriceDetailAdjustmentImpl.getSaleAdjustmentValue());
+  }
+
+  /**
+   * Test
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(PromotableCandidateItemOffer, PromotableOrderItemPriceDetail, Money, Money)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#PromotableOrderItemPriceDetailAdjustmentImpl(PromotableCandidateItemOffer, PromotableOrderItemPriceDetail, Money, Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewPromotableOrderItemPriceDetailAdjustmentImpl2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableCandidateItemOfferImpl promotableCandidateItemOffer = new PromotableCandidateItemOfferImpl(
+        promotableOrder, new OfferImpl());
+
+    PromotableOrderItemPriceDetailWrapper orderItemPriceDetail = new PromotableOrderItemPriceDetailWrapper(
+        new PromotableOrderItemPriceDetailImpl(new PromotableOrderItemImpl(new BundleOrderItemImpl(),
+            mock(PromotableOrder.class), mock(PromotableItemFactory.class), true), 1));
+    Money retailAdjustmentValue = new Money();
+
+    // Act
+    new PromotableOrderItemPriceDetailAdjustmentImpl(promotableCandidateItemOffer, orderItemPriceDetail,
+        retailAdjustmentValue, new Money());
+
   }
 
   /**
@@ -403,5 +420,61 @@ public class PromotableOrderItemPriceDetailAdjustmentImplDiffblueTest {
     assertEquals(money, adjustmentValue.zero());
     assertSame(money, promotableOrderItemPriceDetailAdjustmentImpl.getRetailAdjustmentValue());
     assertSame(money2, promotableOrderItemPriceDetailAdjustmentImpl.getSaleAdjustmentValue());
+  }
+
+  /**
+   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#copy()}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#copy()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCopy() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    PromotableCandidateItemOfferImpl promotableCandidateItemOffer = new PromotableCandidateItemOfferImpl(
+        promotableOrder, new OfferImpl());
+
+    PromotableOrderItemPriceDetailWrapper orderItemPriceDetail = new PromotableOrderItemPriceDetailWrapper(
+        new PromotableOrderItemPriceDetailImpl(mock(PromotableOrderItem.class), 1));
+    Money retailAdjustmentValue = new Money();
+
+    // Act
+    (new PromotableOrderItemPriceDetailAdjustmentImpl(promotableCandidateItemOffer, orderItemPriceDetail,
+        retailAdjustmentValue, new Money())).copy();
+  }
+
+  /**
+   * Test {@link PromotableOrderItemPriceDetailAdjustmentImpl#copy()}.
+   * <p>
+   * Method under test:
+   * {@link PromotableOrderItemPriceDetailAdjustmentImpl#copy()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCopy2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl.getCurrency(OrderItemPriceDetailAdjustmentImpl.java:213)
+    //       at org.broadleafcommerce.core.offer.domain.OrderItemPriceDetailAdjustmentImpl.getValue(OrderItemPriceDetailAdjustmentImpl.java:222)
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderItemPriceDetailAdjustmentImpl.<init>(PromotableOrderItemPriceDetailAdjustmentImpl.java:53)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    OrderItemPriceDetailAdjustmentImpl itemAdjustment = new OrderItemPriceDetailAdjustmentImpl();
+
+    // Act
+    (new PromotableOrderItemPriceDetailAdjustmentImpl(itemAdjustment, new PromotableOrderItemPriceDetailWrapper(
+        new PromotableOrderItemPriceDetailImpl(mock(PromotableOrderItem.class), 1)))).copy();
   }
 }

@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.search.service.solr;
 
 import static org.junit.Assert.assertEquals;
@@ -44,14 +27,159 @@ import org.broadleafcommerce.core.search.service.solr.index.IndexStatusInfo;
 import org.broadleafcommerce.core.search.service.solr.index.IndexStatusInfoImpl;
 import org.dom4j.dom.DOMAttributeNodeMap;
 import org.dom4j.dom.DOMElement;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-applicationContext.xml",
+    "/bl-framework-applicationContext-entity.xml", "/bl-framework-applicationContext-persistence.xml",
+    "/bl-framework-applicationContext-workflow.xml",
+    "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
+  @Autowired
+  private FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+
+  /**
+   * Test new {@link FileSystemSolrIndexStatusProviderImpl} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link FileSystemSolrIndexStatusProviderImpl}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewFileSystemSolrIndexStatusProviderImpl() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13831 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new FileSystemSolrIndexStatusProviderImpl();
+  }
+
+  /**
+   * Test
+   * {@link FileSystemSolrIndexStatusProviderImpl#handleUpdateIndexStatus(IndexStatusInfo)}
+   * with {@code status}.
+   * <p>
+   * Method under test:
+   * {@link FileSystemSolrIndexStatusProviderImpl#handleUpdateIndexStatus(IndexStatusInfo)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandleUpdateIndexStatusWithStatus() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13870 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    fileSystemSolrIndexStatusProviderImpl.handleUpdateIndexStatus(new IndexStatusInfoImpl());
+  }
+
+  /**
+   * Test
+   * {@link FileSystemSolrIndexStatusProviderImpl#handleUpdateIndexStatus(IndexStatusInfo, boolean)}
+   * with {@code status}, {@code clearDeadEvents}.
+   * <p>
+   * Method under test:
+   * {@link FileSystemSolrIndexStatusProviderImpl#handleUpdateIndexStatus(IndexStatusInfo, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandleUpdateIndexStatusWithStatusClearDeadEvents() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13878 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    fileSystemSolrIndexStatusProviderImpl.handleUpdateIndexStatus(new IndexStatusInfoImpl(), true);
+  }
+
+  /**
+   * Test
+   * {@link FileSystemSolrIndexStatusProviderImpl#updateIndexSegment(Document, Element, IndexStatusInfo)}.
+   * <p>
+   * Method under test:
+   * {@link FileSystemSolrIndexStatusProviderImpl#updateIndexSegment(Document, Element, IndexStatusInfo)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUpdateIndexSegment() throws ParseException, XPathExpressionException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13985 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    HTMLDocumentImpl document = new HTMLDocumentImpl();
+    IIOMetadataNode rootElement = new IIOMetadataNode("foo");
+
+    // Act
+    fileSystemSolrIndexStatusProviderImpl.updateIndexSegment(document, rootElement, new IndexStatusInfoImpl());
+  }
+
   /**
    * Test
    * {@link FileSystemSolrIndexStatusProviderImpl#updateIndexSegment(Document, Element, IndexStatusInfo)}.
@@ -289,6 +417,41 @@ public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
   /**
    * Test
    * {@link FileSystemSolrIndexStatusProviderImpl#updateErrorSegment(Document, Element, IndexStatusInfo)}.
+   * <p>
+   * Method under test:
+   * {@link FileSystemSolrIndexStatusProviderImpl#updateErrorSegment(Document, Element, IndexStatusInfo)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUpdateErrorSegment4() throws XPathExpressionException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13955 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    HTMLDocumentImpl document = new HTMLDocumentImpl();
+    IIOMetadataNode rootElement = new IIOMetadataNode("foo");
+
+    // Act
+    fileSystemSolrIndexStatusProviderImpl.updateErrorSegment(document, rootElement, new IndexStatusInfoImpl());
+  }
+
+  /**
+   * Test
+   * {@link FileSystemSolrIndexStatusProviderImpl#updateErrorSegment(Document, Element, IndexStatusInfo)}.
    * <ul>
    *   <li>Then calls {@link ParentNode#removeChild(Node)}.</li>
    * </ul>
@@ -463,6 +626,42 @@ public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
   /**
    * Test
    * {@link FileSystemSolrIndexStatusProviderImpl#updateDeadEventSegment(Document, Element, IndexStatusInfo, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link FileSystemSolrIndexStatusProviderImpl#updateDeadEventSegment(Document, Element, IndexStatusInfo, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUpdateDeadEventSegment4() throws XPathExpressionException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13925 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    HTMLDocumentImpl document = new HTMLDocumentImpl();
+    IIOMetadataNode rootElement = new IIOMetadataNode("foo");
+
+    // Act
+    fileSystemSolrIndexStatusProviderImpl.updateDeadEventSegment(document, rootElement, new IndexStatusInfoImpl(),
+        true);
+  }
+
+  /**
+   * Test
+   * {@link FileSystemSolrIndexStatusProviderImpl#updateDeadEventSegment(Document, Element, IndexStatusInfo, boolean)}.
    * <ul>
    *   <li>Then calls {@link ParentNode#removeChild(Node)}.</li>
    * </ul>
@@ -502,6 +701,37 @@ public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
     verify(rootElement).getFirstChild();
     verify(rootElement, atLeast(1)).hasChildNodes();
     verify(rootElement).removeChild(isA(Node.class));
+  }
+
+  /**
+   * Test
+   * {@link FileSystemSolrIndexStatusProviderImpl#clearNode(Element, String)}.
+   * <p>
+   * Method under test:
+   * {@link FileSystemSolrIndexStatusProviderImpl#clearNode(Element, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testClearNode() throws XPathExpressionException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13832 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    fileSystemSolrIndexStatusProviderImpl.clearNode(new IIOMetadataNode("foo"), "Node Name");
   }
 
   /**
@@ -643,6 +873,37 @@ public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
   /**
    * Test
    * {@link FileSystemSolrIndexStatusProviderImpl#readIndexStatus(IndexStatusInfo)}.
+   * <p>
+   * Method under test:
+   * {@link FileSystemSolrIndexStatusProviderImpl#readIndexStatus(IndexStatusInfo)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testReadIndexStatus() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13917 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    fileSystemSolrIndexStatusProviderImpl.readIndexStatus(new IndexStatusInfoImpl());
+  }
+
+  /**
+   * Test
+   * {@link FileSystemSolrIndexStatusProviderImpl#readIndexStatus(IndexStatusInfo)}.
    * <ul>
    *   <li>When {@link IndexStatusInfoImpl} (default constructor).</li>
    *   <li>Then return {@link IndexStatusInfoImpl} (default constructor).</li>
@@ -683,5 +944,101 @@ public class FileSystemSolrIndexStatusProviderImplDiffblueTest {
 
     // Act and Assert
     assertSame(status, (new FileSystemSolrIndexStatusProviderImpl()).readIndexStatus(status));
+  }
+
+  /**
+   * Test
+   * {@link FileSystemSolrIndexStatusProviderImpl#purgeDeadEvents(Document, IndexStatusInfo)}.
+   * <p>
+   * Method under test:
+   * {@link FileSystemSolrIndexStatusProviderImpl#purgeDeadEvents(Document, IndexStatusInfo)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPurgeDeadEvents() throws ParseException, XPathExpressionException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13887 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    HTMLDocumentImpl document = new HTMLDocumentImpl();
+
+    // Act
+    fileSystemSolrIndexStatusProviderImpl.purgeDeadEvents(document, new IndexStatusInfoImpl());
+  }
+
+  /**
+   * Test
+   * {@link FileSystemSolrIndexStatusProviderImpl#getStatusFile(SolrSearchServiceImpl)}.
+   * <p>
+   * Method under test:
+   * {@link FileSystemSolrIndexStatusProviderImpl#getStatusFile(SolrSearchServiceImpl)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetStatusFile() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13866 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    fileSystemSolrIndexStatusProviderImpl.getStatusFile(new SolrSearchServiceImpl());
+  }
+
+  /**
+   * Test
+   * {@link FileSystemSolrIndexStatusProviderImpl#getStatusDirectory(SolrSearchServiceImpl)}.
+   * <p>
+   * Method under test:
+   * {@link FileSystemSolrIndexStatusProviderImpl#getStatusDirectory(SolrSearchServiceImpl)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetStatusDirectory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext.xml","/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass13862 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.FileSystemSolrIndexStatusProviderImpl fileSystemSolrIndexStatusProviderImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    fileSystemSolrIndexStatusProviderImpl.getStatusDirectory(new SolrSearchServiceImpl());
   }
 }

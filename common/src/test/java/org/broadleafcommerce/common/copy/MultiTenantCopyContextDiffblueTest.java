@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -50,6 +50,7 @@ import org.broadleafcommerce.common.web.DeployBehavior;
 import org.broadleafcommerce.common.web.DeployState;
 import org.broadleafcommerce.common.web.EnforceEnterpriseCollectionBehaviorState;
 import org.broadleafcommerce.common.web.ValidateProductionChangesState;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -59,9 +60,9 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @ContextConfiguration(classes = {MultiTenantCopyContext.class, MultiTenantCopierExtensionManager.class})
 @RunWith(SpringJUnit4ClassRunner.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class MultiTenantCopyContextDiffblueTest {
   @MockBean
   private Catalog catalog;
@@ -247,6 +248,31 @@ public class MultiTenantCopyContextDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link MultiTenantCopyContext#storeEquivalentMapping(String, Object, Object)}.
+   * <p>
+   * Method under test:
+   * {@link MultiTenantCopyContext#storeEquivalentMapping(String, Object, Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testStoreEquivalentMapping() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.storeEquivalentMapping(MultiTenantCopyContext.java:99)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(null);
+
+    // Act
+    multiTenantCopyContext.storeEquivalentMapping("Class Name", BLCFieldUtils.NULL_FIELD, BLCFieldUtils.NULL_FIELD);
+  }
+
+  /**
    * Test {@link MultiTenantCopyContext#getIdentifier(Object)}.
    * <ul>
    *   <li>Then return {@code null}.</li>
@@ -283,6 +309,67 @@ public class MultiTenantCopyContextDiffblueTest {
     // Act and Assert
     assertThrows(IllegalArgumentException.class, () -> multiTenantCopyContext.getIdentifier(BLCFieldUtils.NULL_FIELD));
     verify(genericEntityService).getIdentifier(isA(Object.class));
+  }
+
+  /**
+   * Test {@link MultiTenantCopyContext#createOrRetrieveCopyInstance(Object)}.
+   * <p>
+   * Method under test:
+   * {@link MultiTenantCopyContext#createOrRetrieveCopyInstance(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateOrRetrieveCopyInstance() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.RuntimeException: java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
+    //       at org.broadleafcommerce.common.exception.ExceptionHelper.wrapException(ExceptionHelper.java:96)
+    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:47)
+    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:59)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:346)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.performCopy(MultiTenantCopyContext.java:312)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.handleStandardEntity(MultiTenantCopyContext.java:294)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.createOrRetrieveCopyInstance(MultiTenantCopyContext.java:148)
+    //   java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
+    //       at java.base/java.lang.Class.getMethod(Class.java:2108)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:344)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.performCopy(MultiTenantCopyContext.java:312)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.handleStandardEntity(MultiTenantCopyContext.java:294)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.createOrRetrieveCopyInstance(MultiTenantCopyContext.java:148)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    when(genericEntityService.getIdentifier(Mockito.<Object>any())).thenReturn(null);
+    Class<Object> forNameResult = Object.class;
+    Mockito.<Class<?>>when(genericEntityService.getCeilingImplClass(Mockito.<String>any())).thenReturn(forNameResult);
+    when(multiTenantCopierExtensionManager.getProxy()).thenReturn(new AbstractMultiTenantCopierExtensionHandler());
+
+    // Act
+    multiTenantCopyContext.createOrRetrieveCopyInstance(BLCFieldUtils.NULL_FIELD);
+  }
+
+  /**
+   * Test {@link MultiTenantCopyContext#clearOriginalIdentifiers()}.
+   * <p>
+   * Method under test: {@link MultiTenantCopyContext#clearOriginalIdentifiers()}
+   */
+  @Test
+  public void testClearOriginalIdentifiers() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+
+    // Act
+    (new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite, genericEntityService,
+        new MultiTenantCopierExtensionManager())).clearOriginalIdentifiers();
   }
 
   /**
@@ -604,6 +691,27 @@ public class MultiTenantCopyContextDiffblueTest {
   }
 
   /**
+   * Test {@link MultiTenantCopyContext#checkCloneStatus(Object)}.
+   * <ul>
+   *   <li>Then return {@code true}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MultiTenantCopyContext#checkCloneStatus(Object)}
+   */
+  @Test
+  public void testCheckCloneStatus_thenReturnTrue() {
+    // Arrange
+    when(multiTenantCopierExtensionManager.getProxy()).thenReturn(new AbstractMultiTenantCopierExtensionHandler());
+
+    // Act
+    boolean actualCheckCloneStatusResult = multiTenantCopyContext.checkCloneStatus(BLCFieldUtils.NULL_FIELD);
+
+    // Assert
+    verify(multiTenantCopierExtensionManager).getProxy();
+    assertTrue(actualCheckCloneStatusResult);
+  }
+
+  /**
    * Test {@link MultiTenantCopyContext#tearDownContext(BroadleafRequestContext)}.
    * <p>
    * Method under test:
@@ -825,6 +933,64 @@ public class MultiTenantCopyContextDiffblueTest {
   }
 
   /**
+   * Test {@link MultiTenantCopyContext#createNewInstance(Class)}.
+   * <ul>
+   *   <li>When {@code java.lang.Object}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MultiTenantCopyContext#createNewInstance(Class)}
+   */
+  @Test
+  public void testCreateNewInstance_whenJavaLangObject() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+    MultiTenantCopyContext multiTenantCopyContext = new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager());
+    Class<Object> instanceClass = Object.class;
+
+    // Act
+    multiTenantCopyContext.createNewInstance(instanceClass);
+  }
+
+  /**
+   * Test {@link MultiTenantCopyContext#createNewInstance(Class)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MultiTenantCopyContext#createNewInstance(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateNewInstance_whenNull() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.createNewInstance(MultiTenantCopyContext.java:269)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+
+    // Act
+    (new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite, genericEntityService,
+        new MultiTenantCopierExtensionManager())).createNewInstance(null);
+  }
+
+  /**
    * Test
    * {@link MultiTenantCopyContext#handleStandardEntity(Object, BroadleafRequestContext, Class)}.
    * <ul>
@@ -892,5 +1058,69 @@ public class MultiTenantCopyContextDiffblueTest {
 
     // Act and Assert
     assertNull(multiTenantCopyContext.handleEmbedded(instanceClass));
+  }
+
+  /**
+   * Test {@link MultiTenantCopyContext#performCopy(Object, Class, Long)}.
+   * <ul>
+   *   <li>When {@code java.lang.Object}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link MultiTenantCopyContext#performCopy(Object, Class, Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPerformCopy_whenJavaLangObject() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.RuntimeException: java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
+    //       at org.broadleafcommerce.common.exception.ExceptionHelper.wrapException(ExceptionHelper.java:96)
+    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:47)
+    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:59)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:346)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.performCopy(MultiTenantCopyContext.java:312)
+    //   java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
+    //       at java.base/java.lang.Class.getMethod(Class.java:2108)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:344)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.performCopy(MultiTenantCopyContext.java:312)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Class<Object> instanceClass = Object.class;
+
+    // Act
+    multiTenantCopyContext.performCopy(BLCFieldUtils.NULL_FIELD, instanceClass, 1L);
+  }
+
+  /**
+   * Test {@link MultiTenantCopyContext#validateClone(Object)}.
+   * <ul>
+   *   <li>When {@link BLCFieldUtils#NULL_FIELD}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link MultiTenantCopyContext#validateClone(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateClone_whenNull_field() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.RuntimeException: java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
+    //       at org.broadleafcommerce.common.exception.ExceptionHelper.wrapException(ExceptionHelper.java:96)
+    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:47)
+    //       at org.broadleafcommerce.common.exception.ExceptionHelper.refineException(ExceptionHelper.java:59)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:346)
+    //   java.lang.NoSuchMethodException: java.lang.Object.createOrRetrieveCopyInstance(org.broadleafcommerce.common.copy.MultiTenantCopyContext)
+    //       at java.base/java.lang.Class.getMethod(Class.java:2108)
+    //       at org.broadleafcommerce.common.copy.MultiTenantCopyContext.validateClone(MultiTenantCopyContext.java:344)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    multiTenantCopyContext.validateClone(BLCFieldUtils.NULL_FIELD);
   }
 }

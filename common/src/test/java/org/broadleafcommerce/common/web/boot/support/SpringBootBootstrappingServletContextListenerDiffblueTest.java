@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -19,10 +19,14 @@ package org.broadleafcommerce.common.web.boot.support;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
+import java.security.PrivilegedActionException;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.mock.web.MockServletContext;
+import org.springframework.web.WebApplicationInitializer;
 
 public class SpringBootBootstrappingServletContextListenerDiffblueTest {
   /**
@@ -72,6 +76,25 @@ public class SpringBootBootstrappingServletContextListenerDiffblueTest {
 
   /**
    * Test
+   * {@link SpringBootBootstrappingServletContextListener#contextDestroyed(ServletContextEvent)}.
+   * <p>
+   * Method under test:
+   * {@link SpringBootBootstrappingServletContextListener#contextDestroyed(ServletContextEvent)}
+   */
+  @Test
+  public void testContextDestroyed() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    SpringBootBootstrappingServletContextListener springBootBootstrappingServletContextListener = new SpringBootBootstrappingServletContextListener();
+
+    // Act
+    springBootBootstrappingServletContextListener.contextDestroyed(new ServletContextEvent(new MockServletContext()));
+  }
+
+  /**
+   * Test
    * {@link SpringBootBootstrappingServletContextListener#getInitializerClass(ServletContext)}.
    * <ul>
    *   <li>When {@link MockServletContext#MockServletContext()}.</li>
@@ -90,6 +113,37 @@ public class SpringBootBootstrappingServletContextListenerDiffblueTest {
     // Act and Assert
     assertThrows(IllegalStateException.class,
         () -> springBootBootstrappingServletContextListener.getInitializerClass(new MockServletContext()));
+  }
+
+  /**
+   * Test
+   * {@link SpringBootBootstrappingServletContextListener#createInitializer(Class)}.
+   * <ul>
+   *   <li>When {@code org.springframework.web.WebApplicationInitializer}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link SpringBootBootstrappingServletContextListener#createInitializer(Class)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateInitializer_whenOrgSpringframeworkWebWebApplicationInitializer()
+      throws PrivilegedActionException, ServletException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    SpringBootBootstrappingServletContextListener springBootBootstrappingServletContextListener = new SpringBootBootstrappingServletContextListener();
+    Class<WebApplicationInitializer> initializerClass = WebApplicationInitializer.class;
+
+    // Act
+    WebApplicationInitializer actualCreateInitializerResult = springBootBootstrappingServletContextListener
+        .createInitializer(initializerClass);
+    actualCreateInitializerResult.onStartup(new MockServletContext());
   }
 
   /**

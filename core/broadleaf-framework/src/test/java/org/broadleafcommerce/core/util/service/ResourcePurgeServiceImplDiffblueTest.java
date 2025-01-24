@@ -1,24 +1,10 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.util.service;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeast;
@@ -30,8 +16,10 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 import org.broadleafcommerce.common.audit.Auditable;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.locale.domain.LocaleImpl;
@@ -40,12 +28,28 @@ import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
+import org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl.CartPurgeParams;
+import org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl.CustomerPurgeParams;
 import org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl.PurgeErrorCache;
 import org.broadleafcommerce.profile.core.domain.ChallengeQuestionImpl;
+import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ResourcePurgeServiceImplDiffblueTest {
+  @Autowired
+  private ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+
   /**
    * Test CartPurgeParams getters and setters.
    * <p>
@@ -83,6 +87,232 @@ public class ResourcePurgeServiceImplDiffblueTest {
     assertNull(actualBatchSize);
     assertNull(actualFailedRetryTime);
     assertNull(actualDateCreatedMinThreshold);
+  }
+
+  /**
+   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
+   */
+  @Test
+  public void testCartPurgeParamsInvoke() {
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = resourcePurgeServiceImpl.new CartPurgeParams(
+        new HashMap<>());
+
+    // Act
+    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
+
+    // Assert
+    assertNull(cartPurgeParams.getIsPreview());
+    assertEquals(1736867873990L, cartPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(50L, cartPurgeParams.getBatchSize().longValue());
+    assertSame(cartPurgeParams, actualInvokeResult);
+  }
+
+  /**
+   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
+   */
+  @Test
+  public void testCartPurgeParamsInvoke2() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("IS_PREVIEW", "42");
+    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = (new ResourcePurgeServiceImpl()).new CartPurgeParams(
+        config);
+
+    // Act
+    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
+
+    // Assert
+    assertEquals(1736867873990L, cartPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(50L, cartPurgeParams.getBatchSize().longValue());
+    assertFalse(cartPurgeParams.getIsPreview());
+    assertSame(cartPurgeParams, actualInvokeResult);
+  }
+
+  /**
+   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
+   */
+  @Test
+  public void testCartPurgeParamsInvoke3() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("BATCH_SIZE", "42");
+    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = (new ResourcePurgeServiceImpl()).new CartPurgeParams(
+        config);
+
+    // Act
+    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
+
+    // Assert
+    assertNull(cartPurgeParams.getIsPreview());
+    assertEquals(1736867873990L, cartPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(42L, cartPurgeParams.getBatchSize().longValue());
+    assertSame(cartPurgeParams, actualInvokeResult);
+  }
+
+  /**
+   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
+   */
+  @Test
+  public void testCartPurgeParamsInvoke_givenHashMap42Is42() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("42", "42");
+    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = (new ResourcePurgeServiceImpl()).new CartPurgeParams(
+        config);
+
+    // Act
+    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
+
+    // Assert
+    assertNull(cartPurgeParams.getIsPreview());
+    assertEquals(1736867873990L, cartPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(50L, cartPurgeParams.getBatchSize().longValue());
+    assertSame(cartPurgeParams, actualInvokeResult);
+  }
+
+  /**
+   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code 42} and
+   * {@link BiFunction}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
+   */
+  @Test
+  public void testCartPurgeParamsInvoke_givenHashMapComputeIfPresent42AndBiFunction() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.computeIfPresent("42", mock(BiFunction.class));
+    config.put("42", "42");
+    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = (new ResourcePurgeServiceImpl()).new CartPurgeParams(
+        config);
+
+    // Act
+    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
+
+    // Assert
+    assertNull(cartPurgeParams.getIsPreview());
+    assertEquals(1736867873990L, cartPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(50L, cartPurgeParams.getBatchSize().longValue());
+    assertSame(cartPurgeParams, actualInvokeResult);
+  }
+
+  /**
+   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code RETRY_FAILED_SECONDS} is
+   * {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
+   */
+  @Test
+  public void testCartPurgeParamsInvoke_givenHashMapRetryFailedSecondsIs42() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("RETRY_FAILED_SECONDS", "42");
+    ResourcePurgeServiceImpl.CartPurgeParams cartPurgeParams = (new ResourcePurgeServiceImpl()).new CartPurgeParams(
+        config);
+
+    // Act
+    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = cartPurgeParams.invoke();
+
+    // Assert
+    assertNull(cartPurgeParams.getIsPreview());
+    assertEquals(50L, cartPurgeParams.getBatchSize().longValue());
+    assertSame(cartPurgeParams, actualInvokeResult);
+  }
+
+  /**
+   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code SECONDS_OLD} is {@code 42}.</li>
+   *   <li>Then return IsPreview is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
+   */
+  @Test
+  public void testCartPurgeParamsInvoke_givenHashMapSecondsOldIs42_thenReturnIsPreviewIsNull() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("SECONDS_OLD", "42");
+
+    // Act
+    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = ((new ResourcePurgeServiceImpl()).new CartPurgeParams(
+        config)).invoke();
+
+    // Assert
+    assertNull(actualInvokeResult.getNameArray());
+    assertNull(actualInvokeResult.getStatusArray());
+    assertNull(actualInvokeResult.getIsPreview());
+    assertEquals(1736867873990L, actualInvokeResult.getFailedRetryTime().longValue());
+    assertEquals(50L, actualInvokeResult.getBatchSize().longValue());
+  }
+
+  /**
+   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code STATUS} is {@code 42}.</li>
+   *   <li>Then return first element is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
+   */
+  @Test
+  public void testCartPurgeParamsInvoke_givenHashMapStatusIs42_thenReturnFirstElementIsNull() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("STATUS", "42");
+
+    // Act
+    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = ((new ResourcePurgeServiceImpl()).new CartPurgeParams(
+        config)).invoke();
+
+    // Assert
+    assertNull(actualInvokeResult.getNameArray());
+    assertNull(actualInvokeResult.getDateCreatedMinThreshold());
+    OrderStatus[] statusArray = actualInvokeResult.getStatusArray();
+    assertNull(statusArray[0]);
+    assertEquals(1, statusArray.length);
+  }
+
+  /**
+   * Test CartPurgeParams {@link CartPurgeParams#invoke()}.
+   * <ul>
+   *   <li>Then return NameArray is array of {@link String} with {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.CartPurgeParams#invoke()}
+   */
+  @Test
+  public void testCartPurgeParamsInvoke_thenReturnNameArrayIsArrayOfStringWith42() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("NAME", "42");
+
+    // Act
+    ResourcePurgeServiceImpl.CartPurgeParams actualInvokeResult = ((new ResourcePurgeServiceImpl()).new CartPurgeParams(
+        config)).invoke();
+
+    // Assert
+    assertNull(actualInvokeResult.getStatusArray());
+    assertNull(actualInvokeResult.getDateCreatedMinThreshold());
+    assertArrayEquals(new String[]{"42"}, actualInvokeResult.getNameArray());
   }
 
   /**
@@ -125,6 +355,275 @@ public class ResourcePurgeServiceImplDiffblueTest {
   }
 
   /**
+   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
+   */
+  @Test
+  public void testCustomerPurgeParamsInvoke() {
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = resourcePurgeServiceImpl.new CustomerPurgeParams(
+        new HashMap<>());
+
+    // Act
+    customerPurgeParams.invoke();
+
+    // Assert
+    assertNull(customerPurgeParams.getIsDeactivated());
+    assertNull(customerPurgeParams.getIsPreview());
+    assertNull(customerPurgeParams.getIsRegistered());
+    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
+  }
+
+  /**
+   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
+   */
+  @Test
+  public void testCustomerPurgeParamsInvoke2() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("IS_REGISTERED", "42");
+    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
+        config);
+
+    // Act
+    customerPurgeParams.invoke();
+
+    // Assert
+    assertNull(customerPurgeParams.getIsDeactivated());
+    assertNull(customerPurgeParams.getIsPreview());
+    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
+    assertFalse(customerPurgeParams.getIsRegistered());
+  }
+
+  /**
+   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
+   */
+  @Test
+  public void testCustomerPurgeParamsInvoke3() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("IS_DEACTIVATED", "42");
+    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
+        config);
+
+    // Act
+    customerPurgeParams.invoke();
+
+    // Assert
+    assertNull(customerPurgeParams.getIsPreview());
+    assertNull(customerPurgeParams.getIsRegistered());
+    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
+    assertFalse(customerPurgeParams.getIsDeactivated());
+  }
+
+  /**
+   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
+   */
+  @Test
+  public void testCustomerPurgeParamsInvoke4() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("IS_PREVIEW", "42");
+    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
+        config);
+
+    // Act
+    customerPurgeParams.invoke();
+
+    // Assert
+    assertNull(customerPurgeParams.getIsDeactivated());
+    assertNull(customerPurgeParams.getIsRegistered());
+    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
+    assertFalse(customerPurgeParams.getIsPreview());
+  }
+
+  /**
+   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
+   */
+  @Test
+  public void testCustomerPurgeParamsInvoke5() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("BATCH_SIZE", "42");
+    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
+        config);
+
+    // Act
+    customerPurgeParams.invoke();
+
+    // Assert
+    assertNull(customerPurgeParams.getIsDeactivated());
+    assertNull(customerPurgeParams.getIsPreview());
+    assertNull(customerPurgeParams.getIsRegistered());
+    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(42L, customerPurgeParams.getBatchSize().longValue());
+  }
+
+  /**
+   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code 42} is {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
+   */
+  @Test
+  public void testCustomerPurgeParamsInvoke_givenHashMap42Is42() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("42", "42");
+    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
+        config);
+
+    // Act
+    customerPurgeParams.invoke();
+
+    // Assert
+    assertNull(customerPurgeParams.getIsDeactivated());
+    assertNull(customerPurgeParams.getIsPreview());
+    assertNull(customerPurgeParams.getIsRegistered());
+    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
+  }
+
+  /**
+   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} computeIfPresent {@code 42} and
+   * {@link BiFunction}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
+   */
+  @Test
+  public void testCustomerPurgeParamsInvoke_givenHashMapComputeIfPresent42AndBiFunction() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.computeIfPresent("42", mock(BiFunction.class));
+    config.put("42", "42");
+    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
+        config);
+
+    // Act
+    customerPurgeParams.invoke();
+
+    // Assert
+    assertNull(customerPurgeParams.getIsDeactivated());
+    assertNull(customerPurgeParams.getIsPreview());
+    assertNull(customerPurgeParams.getIsRegistered());
+    assertEquals(1736867873990L, customerPurgeParams.getFailedRetryTime().longValue());
+    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
+  }
+
+  /**
+   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
+   * <ul>
+   *   <li>Given {@link HashMap#HashMap()} {@code RETRY_FAILED_SECONDS} is
+   * {@code 42}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
+   */
+  @Test
+  public void testCustomerPurgeParamsInvoke_givenHashMapRetryFailedSecondsIs42() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("RETRY_FAILED_SECONDS", "42");
+    ResourcePurgeServiceImpl.CustomerPurgeParams customerPurgeParams = (new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
+        config);
+
+    // Act
+    customerPurgeParams.invoke();
+
+    // Assert
+    assertNull(customerPurgeParams.getIsDeactivated());
+    assertNull(customerPurgeParams.getIsPreview());
+    assertNull(customerPurgeParams.getIsRegistered());
+    assertEquals(50L, customerPurgeParams.getBatchSize().longValue());
+  }
+
+  /**
+   * Test CustomerPurgeParams {@link CustomerPurgeParams#invoke()}.
+   * <ul>
+   *   <li>Then return IsDeactivated is {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.CustomerPurgeParams#invoke()}
+   */
+  @Test
+  public void testCustomerPurgeParamsInvoke_thenReturnIsDeactivatedIsNull() {
+    // Arrange
+    HashMap<Object, Object> config = new HashMap<>();
+    config.put("SECONDS_OLD", "42");
+
+    // Act
+    ResourcePurgeServiceImpl.CustomerPurgeParams actualInvokeResult = ((new ResourcePurgeServiceImpl()).new CustomerPurgeParams(
+        config)).invoke();
+
+    // Assert
+    assertNull(actualInvokeResult.getIsDeactivated());
+    assertNull(actualInvokeResult.getIsPreview());
+    assertNull(actualInvokeResult.getIsRegistered());
+    assertEquals(1736867873990L, actualInvokeResult.getFailedRetryTime().longValue());
+    assertEquals(50L, actualInvokeResult.getBatchSize().longValue());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCarts(Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPurgeCarts() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass173 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+
+    // Act
+    resourcePurgeServiceImpl2.purgeCarts(new HashMap<>());
+  }
+
+  /**
    * Test {@link ResourcePurgeServiceImpl#purgeCarts(Map)}.
    * <ul>
    *   <li>When {@link HashMap#HashMap()}.</li>
@@ -142,6 +641,38 @@ public class ResourcePurgeServiceImplDiffblueTest {
 
     // Act and Assert
     assertThrows(IllegalArgumentException.class, () -> resourcePurgeServiceImpl.purgeCarts(new HashMap<>()));
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCarts(Map)}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCarts(Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNotifyCarts() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass165 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+
+    // Act
+    resourcePurgeServiceImpl2.notifyCarts(new HashMap<>());
   }
 
   /**
@@ -165,6 +696,175 @@ public class ResourcePurgeServiceImplDiffblueTest {
   }
 
   /**
+   * Test PurgeErrorCache {@link PurgeErrorCache#add(Long)}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.PurgeErrorCache#add(Long)}
+   */
+  @Test
+  public void testPurgeErrorCacheAdd() {
+    // Arrange
+    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
+    purgeErrorCache.add(1L);
+
+    // Act and Assert
+    assertNull(purgeErrorCache.add(1L));
+    assertEquals(1, purgeErrorCache.size());
+  }
+
+  /**
+   * Test PurgeErrorCache {@link PurgeErrorCache#add(Long)}.
+   * <ul>
+   *   <li>Given {@link PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}
+   * with this$0 is {@link ResourcePurgeServiceImpl} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.PurgeErrorCache#add(Long)}
+   */
+  @Test
+  public void testPurgeErrorCacheAdd_givenPurgeErrorCacheWithThis$0IsResourcePurgeServiceImpl() {
+    // Arrange
+    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
+
+    // Act and Assert
+    assertNull(purgeErrorCache.add(1L));
+    assertEquals(1, purgeErrorCache.size());
+  }
+
+  /**
+   * Test PurgeErrorCache {@link PurgeErrorCache#getEntriesSince(long)}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.PurgeErrorCache#getEntriesSince(long)}
+   */
+  @Test
+  public void testPurgeErrorCacheGetEntriesSince() {
+    // Arrange
+    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
+
+    // Act
+    Set<Long> actualEntriesSince = purgeErrorCache.getEntriesSince(1L);
+
+    // Assert
+    assertEquals(0, purgeErrorCache.size());
+    assertTrue(actualEntriesSince.isEmpty());
+  }
+
+  /**
+   * Test PurgeErrorCache {@link PurgeErrorCache#getEntriesSince(long)}.
+   * <ul>
+   *   <li>When {@link Long#MAX_VALUE}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.PurgeErrorCache#getEntriesSince(long)}
+   */
+  @Test
+  public void testPurgeErrorCacheGetEntriesSince_whenMax_value() {
+    // Arrange
+    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
+    purgeErrorCache.add(1L);
+
+    // Act
+    Set<Long> actualEntriesSince = purgeErrorCache.getEntriesSince(Long.MAX_VALUE);
+
+    // Assert
+    assertEquals(0, purgeErrorCache.size());
+    assertTrue(actualEntriesSince.isEmpty());
+  }
+
+  /**
+   * Test PurgeErrorCache
+   * {@link PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl.PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}
+   */
+  @Test
+  public void testPurgeErrorCacheNewPurgeErrorCache() {
+    // Arrange, Act and Assert
+    assertEquals(0, ((new ResourcePurgeServiceImpl()).new PurgeErrorCache()).size());
+  }
+
+  /**
+   * Test PurgeErrorCache {@link PurgeErrorCache#size()}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl.PurgeErrorCache#size()}
+   */
+  @Test
+  public void testPurgeErrorCacheSize() {
+    // Arrange, Act and Assert
+    assertEquals(0, ((new ResourcePurgeServiceImpl()).new PurgeErrorCache()).size());
+  }
+
+  /**
+   * Test
+   * {@link ResourcePurgeServiceImpl#purgeOrderHistory(Class, String, Map, Map)}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl#purgeOrderHistory(Class, String, Map, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPurgeOrderHistory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass189 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    Class<Object> rootType = Object.class;
+    HashMap<String, List<DeleteStatementGeneratorImpl.PathElement>> depends = new HashMap<>();
+
+    // Act
+    resourcePurgeServiceImpl2.purgeOrderHistory(rootType, "42", depends, new HashMap<>());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPurgeCustomers() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass181 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+
+    // Act
+    resourcePurgeServiceImpl2.purgeCustomers(new HashMap<>());
+  }
+
+  /**
    * Test {@link ResourcePurgeServiceImpl#purgeCustomers(Map)}.
    * <ul>
    *   <li>When {@link HashMap#HashMap()}.</li>
@@ -182,6 +882,41 @@ public class ResourcePurgeServiceImplDiffblueTest {
 
     // Act and Assert
     assertThrows(IllegalArgumentException.class, () -> resourcePurgeServiceImpl.purgeCustomers(new HashMap<>()));
+  }
+
+  /**
+   * Test
+   * {@link ResourcePurgeServiceImpl#getCartsInErrorToIgnore(CartPurgeParams)}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl#getCartsInErrorToIgnore(ResourcePurgeServiceImpl.CartPurgeParams)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCartsInErrorToIgnore() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass43 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
+
+    // Act
+    resourcePurgeServiceImpl2.getCartsInErrorToIgnore(resourcePurgeServiceImpl3.new CartPurgeParams(new HashMap<>()));
   }
 
   /**
@@ -210,6 +945,144 @@ public class ResourcePurgeServiceImplDiffblueTest {
     // Assert
     verify(purgeParams).getFailedRetryTime();
     assertTrue(actualCartsInErrorToIgnore.isEmpty());
+  }
+
+  /**
+   * Test
+   * {@link ResourcePurgeServiceImpl#getCartsToPurge(CartPurgeParams, int, int, List)}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl#getCartsToPurge(ResourcePurgeServiceImpl.CartPurgeParams, int, int, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCartsToPurge() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass54 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl.CartPurgeParams purgeParams = resourcePurgeServiceImpl3.new CartPurgeParams(
+        new HashMap<>());
+
+    // Act
+    resourcePurgeServiceImpl2.getCartsToPurge(purgeParams, 1, 3, new ArrayList<>());
+  }
+
+  /**
+   * Test
+   * {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(CartPurgeParams, List)}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl#getCartsToPurgeLength(ResourcePurgeServiceImpl.CartPurgeParams, List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCartsToPurgeLength() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass76 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl.CartPurgeParams purgeParams = resourcePurgeServiceImpl3.new CartPurgeParams(
+        new HashMap<>());
+
+    // Act
+    resourcePurgeServiceImpl2.getCartsToPurgeLength(purgeParams, new ArrayList<>());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#notifyCart(Order)}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#notifyCart(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNotifyCart() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass152 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+
+    // Act
+    resourcePurgeServiceImpl2.notifyCart(new NullOrderImpl());
+  }
+
+  /**
+   * Test {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#getEmailForCart(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetEmailForCart() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass139 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+
+    // Act
+    resourcePurgeServiceImpl2.getEmailForCart(new NullOrderImpl());
   }
 
   /**
@@ -444,6 +1317,74 @@ public class ResourcePurgeServiceImplDiffblueTest {
   }
 
   /**
+   * Test {@link ResourcePurgeServiceImpl#deleteCart(Order)}.
+   * <p>
+   * Method under test: {@link ResourcePurgeServiceImpl#deleteCart(Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDeleteCart() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+
+    // Act
+    resourcePurgeServiceImpl2.deleteCart(new NullOrderImpl());
+  }
+
+  /**
+   * Test
+   * {@link ResourcePurgeServiceImpl#getCustomersInErrorToIgnore(CustomerPurgeParams)}.
+   * <p>
+   * Method under test:
+   * {@link ResourcePurgeServiceImpl#getCustomersInErrorToIgnore(ResourcePurgeServiceImpl.CustomerPurgeParams)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCustomersInErrorToIgnore() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass91 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
+
+    // Act
+    resourcePurgeServiceImpl2
+        .getCustomersInErrorToIgnore(resourcePurgeServiceImpl3.new CustomerPurgeParams(new HashMap<>()));
+  }
+
+  /**
    * Test
    * {@link ResourcePurgeServiceImpl#getCustomersInErrorToIgnore(CustomerPurgeParams)}.
    * <ul>
@@ -472,103 +1413,108 @@ public class ResourcePurgeServiceImplDiffblueTest {
   }
 
   /**
-   * Test PurgeErrorCache {@link PurgeErrorCache#add(Long)}.
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.PurgeErrorCache#add(Long)}
-   */
-  @Test
-  public void testPurgeErrorCacheAdd() {
-    // Arrange
-    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
-    purgeErrorCache.add(1L);
-
-    // Act and Assert
-    assertNull(purgeErrorCache.add(1L));
-    assertEquals(1, purgeErrorCache.size());
-  }
-
-  /**
-   * Test PurgeErrorCache {@link PurgeErrorCache#add(Long)}.
-   * <ul>
-   *   <li>Given {@link PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}
-   * with this$0 is {@link ResourcePurgeServiceImpl} (default constructor).</li>
-   * </ul>
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.PurgeErrorCache#add(Long)}
-   */
-  @Test
-  public void testPurgeErrorCacheAdd_givenPurgeErrorCacheWithThis$0IsResourcePurgeServiceImpl() {
-    // Arrange
-    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
-
-    // Act and Assert
-    assertNull(purgeErrorCache.add(1L));
-    assertEquals(1, purgeErrorCache.size());
-  }
-
-  /**
-   * Test PurgeErrorCache {@link PurgeErrorCache#getEntriesSince(long)}.
+   * Test
+   * {@link ResourcePurgeServiceImpl#getCustomersToPurge(CustomerPurgeParams, int, int, List)}.
    * <p>
    * Method under test:
-   * {@link ResourcePurgeServiceImpl.PurgeErrorCache#getEntriesSince(long)}
+   * {@link ResourcePurgeServiceImpl#getCustomersToPurge(ResourcePurgeServiceImpl.CustomerPurgeParams, int, int, List)}
    */
   @Test
-  public void testPurgeErrorCacheGetEntriesSince() {
+  @Ignore("TODO: Complete this test")
+  public void testGetCustomersToPurge() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass102 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
     // Arrange
-    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl.CustomerPurgeParams purgeParams = resourcePurgeServiceImpl3.new CustomerPurgeParams(
+        new HashMap<>());
 
     // Act
-    Set<Long> actualEntriesSince = purgeErrorCache.getEntriesSince(1L);
-
-    // Assert
-    assertEquals(0, purgeErrorCache.size());
-    assertTrue(actualEntriesSince.isEmpty());
+    resourcePurgeServiceImpl2.getCustomersToPurge(purgeParams, 1, 3, new ArrayList<>());
   }
 
   /**
-   * Test PurgeErrorCache {@link PurgeErrorCache#getEntriesSince(long)}.
-   * <ul>
-   *   <li>When {@link Long#MAX_VALUE}.</li>
-   * </ul>
+   * Test
+   * {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(CustomerPurgeParams, List)}.
    * <p>
    * Method under test:
-   * {@link ResourcePurgeServiceImpl.PurgeErrorCache#getEntriesSince(long)}
+   * {@link ResourcePurgeServiceImpl#getCustomersToPurgeLength(ResourcePurgeServiceImpl.CustomerPurgeParams, List)}
    */
   @Test
-  public void testPurgeErrorCacheGetEntriesSince_whenMax_value() {
+  @Ignore("TODO: Complete this test")
+  public void testGetCustomersToPurgeLength() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass124 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
     // Arrange
-    ResourcePurgeServiceImpl.PurgeErrorCache purgeErrorCache = (new ResourcePurgeServiceImpl()).new PurgeErrorCache();
-    purgeErrorCache.add(1L);
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl3 = new ResourcePurgeServiceImpl();
+    ResourcePurgeServiceImpl.CustomerPurgeParams purgeParams = resourcePurgeServiceImpl3.new CustomerPurgeParams(
+        new HashMap<>());
 
     // Act
-    Set<Long> actualEntriesSince = purgeErrorCache.getEntriesSince(Long.MAX_VALUE);
-
-    // Assert
-    assertEquals(0, purgeErrorCache.size());
-    assertTrue(actualEntriesSince.isEmpty());
+    resourcePurgeServiceImpl2.getCustomersToPurgeLength(purgeParams, new ArrayList<>());
   }
 
   /**
-   * Test PurgeErrorCache
-   * {@link PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}.
+   * Test {@link ResourcePurgeServiceImpl#deleteCustomer(Customer)}.
    * <p>
-   * Method under test:
-   * {@link ResourcePurgeServiceImpl.PurgeErrorCache#PurgeErrorCache(ResourcePurgeServiceImpl)}
+   * Method under test: {@link ResourcePurgeServiceImpl#deleteCustomer(Customer)}
    */
   @Test
-  public void testPurgeErrorCacheNewPurgeErrorCache() {
-    // Arrange, Act and Assert
-    assertEquals(0, ((new ResourcePurgeServiceImpl()).new PurgeErrorCache()).size());
-  }
+  @Ignore("TODO: Complete this test")
+  public void testDeleteCustomer() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.util.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass16 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.util.service.ResourcePurgeServiceImpl resourcePurgeServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
-  /**
-   * Test PurgeErrorCache {@link PurgeErrorCache#size()}.
-   * <p>
-   * Method under test: {@link ResourcePurgeServiceImpl.PurgeErrorCache#size()}
-   */
-  @Test
-  public void testPurgeErrorCacheSize() {
-    // Arrange, Act and Assert
-    assertEquals(0, ((new ResourcePurgeServiceImpl()).new PurgeErrorCache()).size());
+    // Arrange
+    ResourcePurgeServiceImpl resourcePurgeServiceImpl2 = new ResourcePurgeServiceImpl();
+
+    // Act
+    resourcePurgeServiceImpl2.deleteCustomer(new CustomerImpl());
   }
 }

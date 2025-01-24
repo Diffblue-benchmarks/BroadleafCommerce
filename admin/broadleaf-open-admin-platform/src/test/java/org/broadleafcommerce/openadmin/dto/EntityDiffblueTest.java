@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.dto;
 
 import static org.junit.Assert.assertEquals;
@@ -32,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,6 +180,103 @@ public class EntityDiffblueTest {
     assertEquals(1, pMap.size());
     assertSame(property, pMap.get(null));
     assertSame(properties, entity.getProperties());
+  }
+
+  /**
+   * Test {@link Entity#mergeProperties(String, Entity)}.
+   * <p>
+   * Method under test: {@link Entity#mergeProperties(String, Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testMergeProperties() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.dto.Entity.mergeProperties(Entity.java:123)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    entity.mergeProperties("Prefix", entity);
+  }
+
+  /**
+   * Test {@link Entity#overridePropertyValues(Entity)}.
+   * <ul>
+   *   <li>When {@link Entity} (default constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Entity#overridePropertyValues(Entity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testOverridePropertyValues_whenEntity() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.dto.Entity.overridePropertyValues(Entity.java:142)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Entity entity = new Entity();
+
+    // Act
+    entity.overridePropertyValues(new Entity());
+  }
+
+  /**
+   * Test {@link Entity#findProperty(String)}.
+   * <p>
+   * Method under test: {@link Entity#findProperty(String)}
+   */
+  @Test
+  public void testFindProperty() {
+    // Arrange, Act and Assert
+    assertNull(entity.findProperty("Name"));
+    assertTrue(entity.pMap.isEmpty());
+  }
+
+  /**
+   * Test {@link Entity#addProperty(Property)}.
+   * <ul>
+   *   <li>Given {@link Entity} (default constructor).</li>
+   *   <li>When {@link Property#Property()}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link Entity#addProperty(Property)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddProperty_givenEntity_whenProperty() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.dto.Entity.addProperty(Entity.java:194)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Entity entity = new Entity();
+
+    // Act
+    entity.addProperty(new Property());
+  }
+
+  /**
+   * Test {@link Entity#removeProperty(String)}.
+   * <p>
+   * Method under test: {@link Entity#removeProperty(String)}
+   */
+  @Test
+  public void testRemoveProperty() {
+    // Arrange, Act and Assert
+    assertNull(entity.removeProperty("Name"));
+    assertTrue(entity.pMap.isEmpty());
   }
 
   /**

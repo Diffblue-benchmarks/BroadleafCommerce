@@ -1,25 +1,10 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.media.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertThrows;
 import org.broadleafcommerce.core.media.domain.CategoryMediaMap.CategoryMediaMapPK;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class CategoryMediaMapDiffblueTest {
@@ -127,6 +112,72 @@ public class CategoryMediaMapDiffblueTest {
 
     // Act and Assert
     assertNotEquals(categoryMediaMapPK, categoryMediaMapPK2);
+  }
+
+  /**
+   * Test CategoryMediaMapPK {@link CategoryMediaMapPK#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then throw exception.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaMap.CategoryMediaMapPK#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCategoryMediaMapPKEquals_whenOtherIsDifferent_thenThrowException() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.media.domain.CategoryMediaMap$CategoryMediaMapPK.equals(CategoryMediaMap.java:82)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
+    categoryMediaMapPK.setCategoryId(null);
+    categoryMediaMapPK.setMediaId(1L);
+
+    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK2 = new CategoryMediaMap.CategoryMediaMapPK();
+    categoryMediaMapPK2.setCategoryId(1L);
+    categoryMediaMapPK2.setMediaId(1L);
+
+    // Act and Assert
+    assertThrows(NullPointerException.class, () -> categoryMediaMapPK.equals(categoryMediaMapPK2));
+  }
+
+  /**
+   * Test CategoryMediaMapPK {@link CategoryMediaMapPK#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then throw exception.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link CategoryMediaMap.CategoryMediaMapPK#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCategoryMediaMapPKEquals_whenOtherIsDifferent_thenThrowException2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.media.domain.CategoryMediaMap$CategoryMediaMapPK.equals(CategoryMediaMap.java:83)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK = new CategoryMediaMap.CategoryMediaMapPK();
+    categoryMediaMapPK.setCategoryId(1L);
+    categoryMediaMapPK.setMediaId(null);
+
+    CategoryMediaMap.CategoryMediaMapPK categoryMediaMapPK2 = new CategoryMediaMap.CategoryMediaMapPK();
+    categoryMediaMapPK2.setCategoryId(1L);
+    categoryMediaMapPK2.setMediaId(1L);
+
+    // Act and Assert
+    assertThrows(NullPointerException.class, () -> categoryMediaMapPK.equals(categoryMediaMapPK2));
   }
 
   /**

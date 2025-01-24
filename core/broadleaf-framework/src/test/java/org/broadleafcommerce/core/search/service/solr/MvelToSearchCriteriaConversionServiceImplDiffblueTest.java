@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.search.service.solr;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -28,9 +11,52 @@ import java.util.Collection;
 import java.util.List;
 import org.broadleafcommerce.core.search.domain.IndexFieldType;
 import org.broadleafcommerce.core.search.domain.IndexFieldTypeImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
+  @Autowired
+  private MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConvert() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14073 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).convert("Mvel Rule");
+  }
+
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#convert(String)}.
    * <ul>
@@ -48,6 +74,36 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> (new MvelToSearchCriteriaConversionServiceImpl()).convert("Mvel Rule"));
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#isProductRule(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsProductRule() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14318 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).isProductRule("Rule");
   }
 
   /**
@@ -84,6 +140,40 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertFalse((new MvelToSearchCriteriaConversionServiceImpl()).isProductRule("Rule"));
+  }
+
+  /**
+   * Test
+   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#isCustomFieldIndexed(List)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsCustomFieldIndexed() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14313 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl2 = new MvelToSearchCriteriaConversionServiceImpl();
+
+    // Act
+    mvelToSearchCriteriaConversionServiceImpl2.isCustomFieldIndexed(new ArrayList<>());
   }
 
   /**
@@ -203,6 +293,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
   /**
    * Test
    * {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsCategoryTargetingRule() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14283 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).isCategoryTargetingRule("Mvel Rule");
+  }
+
+  /**
+   * Test
+   * {@link MvelToSearchCriteriaConversionServiceImpl#isCategoryTargetingRule(String)}.
    * <ul>
    *   <li>Then return {@code true}.</li>
    * </ul>
@@ -241,6 +362,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
   /**
    * Test
    * {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCategoryIds() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14163 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).getCategoryIds("Mvel Rule");
+  }
+
+  /**
+   * Test
+   * {@link MvelToSearchCriteriaConversionServiceImpl#getCategoryIds(String)}.
    * <ul>
    *   <li>When {@code 42"]}.</li>
    *   <li>Then return array of {@link Long} with two.</li>
@@ -255,6 +407,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertArrayEquals(new Long[]{2L}, (new MvelToSearchCriteriaConversionServiceImpl()).getCategoryIds("42\"]"));
+  }
+
+  /**
+   * Test
+   * {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#convertRuleToFilters(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConvertRuleToFilters() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14133 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).convertRuleToFilters("Match Rule");
   }
 
   /**
@@ -346,6 +529,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
     assertEquals("\\\"))", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\\?\"))"));
     assertEquals("\"))", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\"))?"));
     assertEquals("\"))\\", (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("\"))\\?"));
+  }
+
+  /**
+   * Test
+   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#convertFieldName(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testConvertFieldName2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14103 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).convertFieldName("Field Name");
   }
 
   /**
@@ -1250,6 +1464,36 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
 
   /**
    * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testParseMethod() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14378 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).parseMethod("Field Name");
+  }
+
+  /**
+   * Test {@link MvelToSearchCriteriaConversionServiceImpl#parseMethod(String)}.
    * <ul>
    *   <li>When {@code Field Name}.</li>
    *   <li>Then return {@code field Na}.</li>
@@ -1378,6 +1622,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
   /**
    * Test
    * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsWildCardSearch() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14348 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).isWildCardSearch("42");
+  }
+
+  /**
+   * Test
+   * {@link MvelToSearchCriteriaConversionServiceImpl#isWildCardSearch(String)}.
    * <ul>
    *   <li>When {@code 42}.</li>
    *   <li>Then return {@code false}.</li>
@@ -1446,6 +1721,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
     // Arrange, Act and Assert
     assertEquals("org.apache.commons.lang3.StringUtils.contains", (new MvelToSearchCriteriaConversionServiceImpl())
         .getCustomFieldPropertyName("org.apache.commons.lang3.StringUtils.contains,"));
+  }
+
+  /**
+   * Test
+   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldPropertyName(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCustomFieldPropertyName2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14193 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldPropertyName("Mvel Rule");
   }
 
   /**
@@ -1582,6 +1888,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
   /**
    * Test
    * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRuleOrPropertyFromFunction() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14253 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).getRuleOrPropertyFromFunction("Mvel Rule");
+  }
+
+  /**
+   * Test
+   * {@link MvelToSearchCriteriaConversionServiceImpl#getRuleOrPropertyFromFunction(String)}.
    * <ul>
    *   <li>Then return {@code =}.</li>
    * </ul>
@@ -1669,6 +2006,37 @@ public class MvelToSearchCriteriaConversionServiceImplDiffblueTest {
     // Arrange, Act and Assert
     assertEquals("Mvel Rule",
         (new MvelToSearchCriteriaConversionServiceImpl()).getRuleOrPropertyFromFunction("Mvel Rule"));
+  }
+
+  /**
+   * Test
+   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}.
+   * <p>
+   * Method under test:
+   * {@link MvelToSearchCriteriaConversionServiceImpl#getCustomFieldValue(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetCustomFieldValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.search.service.solr;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass14223 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.search.service.solr.MvelToSearchCriteriaConversionServiceImpl mvelToSearchCriteriaConversionServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new MvelToSearchCriteriaConversionServiceImpl()).getCustomFieldValue("Mvel Rule");
   }
 
   /**

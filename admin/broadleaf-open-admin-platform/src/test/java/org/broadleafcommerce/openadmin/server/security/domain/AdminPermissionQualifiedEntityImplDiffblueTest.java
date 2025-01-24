@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Open Admin Platform
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -21,9 +21,60 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class AdminPermissionQualifiedEntityImplDiffblueTest {
+  /**
+   * Test
+   * {@link AdminPermissionQualifiedEntityImpl#checkCloneable(AdminPermissionQualifiedEntity)}.
+   * <ul>
+   *   <li>When {@link AdminPermissionQualifiedEntityImpl} (default
+   * constructor).</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminPermissionQualifiedEntityImpl#checkCloneable(AdminPermissionQualifiedEntity)}
+   */
+  @Test
+  public void testCheckCloneable_whenAdminPermissionQualifiedEntityImpl()
+      throws CloneNotSupportedException, NoSuchMethodException, SecurityException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange
+    AdminPermissionQualifiedEntityImpl adminPermissionQualifiedEntityImpl = new AdminPermissionQualifiedEntityImpl();
+
+    // Act
+    adminPermissionQualifiedEntityImpl.checkCloneable(new AdminPermissionQualifiedEntityImpl());
+  }
+
+  /**
+   * Test
+   * {@link AdminPermissionQualifiedEntityImpl#checkCloneable(AdminPermissionQualifiedEntity)}.
+   * <ul>
+   *   <li>When {@code null}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link AdminPermissionQualifiedEntityImpl#checkCloneable(AdminPermissionQualifiedEntity)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCheckCloneable_whenNull()
+      throws CloneNotSupportedException, NoSuchMethodException, SecurityException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.openadmin.server.security.domain.AdminPermissionQualifiedEntityImpl.checkCloneable(AdminPermissionQualifiedEntityImpl.java:109)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    (new AdminPermissionQualifiedEntityImpl()).checkCloneable(null);
+  }
+
   /**
    * Test {@link AdminPermissionQualifiedEntityImpl#clone()}.
    * <p>

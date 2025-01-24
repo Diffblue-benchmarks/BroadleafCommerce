@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -29,9 +29,18 @@ import java.util.List;
 import org.broadleafcommerce.common.vendor.service.monitor.StatusHandler;
 import org.broadleafcommerce.common.vendor.service.type.ServiceStatusType;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {CompositeStatusHandler.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class CompositeStatusHandlerDiffblueTest {
+  @Autowired
+  private CompositeStatusHandler compositeStatusHandler;
+
   /**
    * Test {@link CompositeStatusHandler#handleStatus(String, ServiceStatusType)}.
    * <ul>
@@ -64,6 +73,24 @@ public class CompositeStatusHandlerDiffblueTest {
 
     // Assert
     verify(statusHandler).handleStatus(eq("Service Name"), isA(ServiceStatusType.class));
+  }
+
+  /**
+   * Test {@link CompositeStatusHandler#handleStatus(String, ServiceStatusType)}.
+   * <ul>
+   *   <li>When {@link ServiceStatusType#DOWN}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link CompositeStatusHandler#handleStatus(String, ServiceStatusType)}
+   */
+  @Test
+  public void testHandleStatus_whenDown() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    compositeStatusHandler.handleStatus("Service Name", ServiceStatusType.DOWN);
   }
 
   /**

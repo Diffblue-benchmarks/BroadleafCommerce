@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.order.service;
 
 import static org.junit.Assert.assertEquals;
@@ -39,9 +22,57 @@ import org.broadleafcommerce.core.order.service.call.OrderItemRequestDTO;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AbstractOrderServiceExtensionHandlerDiffblueTest {
+  @Autowired
+  private AbstractOrderServiceExtensionHandler abstractOrderServiceExtensionHandler;
+
+  /**
+   * Test
+   * {@link AbstractOrderServiceExtensionHandler#attachAdditionalDataToNewNamedCart(Customer, Order)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#attachAdditionalDataToNewNamedCart(Customer, Order)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAttachAdditionalDataToNewNamedCart() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1542 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.AbstractOrderServiceExtensionHandler abstractOrderServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    CustomerImpl customer = new CustomerImpl();
+
+    // Act
+    cartMessageOrderItemServiceExtensionHandler.attachAdditionalDataToNewNamedCart(customer, new NullOrderImpl());
+  }
+
   /**
    * Test
    * {@link AbstractOrderServiceExtensionHandler#attachAdditionalDataToNewNamedCart(Customer, Order)}.
@@ -86,6 +117,45 @@ public class AbstractOrderServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         cartMessageOrderItemServiceExtensionHandler.attachAdditionalDataToNewNamedCart(customer, new NullOrderImpl()));
+  }
+
+  /**
+   * Test
+   * {@link AbstractOrderServiceExtensionHandler#preValidateCartOperation(Order, ExtensionResultHolder)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#preValidateCartOperation(Order, ExtensionResultHolder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPreValidateCartOperation() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1632 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.AbstractOrderServiceExtensionHandler abstractOrderServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    NullOrderImpl cart = new NullOrderImpl();
+
+    ExtensionResultHolder erh = new ExtensionResultHolder();
+    erh.setResult("Result");
+    erh.setThrowable(new Throwable());
+
+    // Act
+    cartMessageOrderItemServiceExtensionHandler.preValidateCartOperation(cart, erh);
   }
 
   /**
@@ -140,6 +210,46 @@ public class AbstractOrderServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         cartMessageOrderItemServiceExtensionHandler.preValidateCartOperation(cart, erh));
+  }
+
+  /**
+   * Test
+   * {@link AbstractOrderServiceExtensionHandler#preValidateUpdateQuantityOperation(Order, OrderItemRequestDTO, ExtensionResultHolder)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#preValidateUpdateQuantityOperation(Order, OrderItemRequestDTO, ExtensionResultHolder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPreValidateUpdateQuantityOperation() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1662 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.AbstractOrderServiceExtensionHandler abstractOrderServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    NullOrderImpl cart = new NullOrderImpl();
+    OrderItemRequestDTO dto = new OrderItemRequestDTO();
+
+    ExtensionResultHolder erh = new ExtensionResultHolder();
+    erh.setResult("Result");
+    erh.setThrowable(new Throwable());
+
+    // Act
+    cartMessageOrderItemServiceExtensionHandler.preValidateUpdateQuantityOperation(cart, dto, erh);
   }
 
   /**
@@ -249,6 +359,41 @@ public class AbstractOrderServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
         cartMessageOrderItemServiceExtensionHandler.attachAdditionalDataToOrder(order, true));
+  }
+
+  /**
+   * Test
+   * {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#addOfferCodes(Order, List, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddOfferCodes() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1521 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.AbstractOrderServiceExtensionHandler abstractOrderServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    cartMessageOrderItemServiceExtensionHandler.addOfferCodes(order, new ArrayList<>(), true);
   }
 
   /**
@@ -404,6 +549,87 @@ public class AbstractOrderServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.NOT_HANDLED,
         cartMessageOrderItemServiceExtensionHandler.findCartForCustomerWithEnhancements(customer, candidateCart, erh));
+  }
+
+  /**
+   * Test
+   * {@link AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer, Order, ExtensionResultHolder)}
+   * with {@code customer}, {@code candidateCart}, {@code erh}.
+   * <p>
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer, Order, ExtensionResultHolder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindCartForCustomerWithEnhancementsWithCustomerCandidateCartErh3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1602 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.AbstractOrderServiceExtensionHandler abstractOrderServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    CustomerImpl customer = new CustomerImpl();
+    NullOrderImpl candidateCart = new NullOrderImpl();
+
+    ExtensionResultHolder erh = new ExtensionResultHolder();
+    erh.setResult("Result");
+    erh.setThrowable(new Throwable());
+
+    // Act
+    cartMessageOrderItemServiceExtensionHandler.findCartForCustomerWithEnhancements(customer, candidateCart, erh);
+  }
+
+  /**
+   * Test
+   * {@link AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer, ExtensionResultHolder)}
+   * with {@code customer}, {@code erh}.
+   * <p>
+   * Method under test:
+   * {@link AbstractOrderServiceExtensionHandler#findCartForCustomerWithEnhancements(Customer, ExtensionResultHolder)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindCartForCustomerWithEnhancementsWithCustomerErh() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass1572 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.AbstractOrderServiceExtensionHandler abstractOrderServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CartMessageOrderItemServiceExtensionHandler cartMessageOrderItemServiceExtensionHandler = new CartMessageOrderItemServiceExtensionHandler();
+    CustomerImpl customer = new CustomerImpl();
+
+    ExtensionResultHolder erh = new ExtensionResultHolder();
+    erh.setResult("Result");
+    erh.setThrowable(new Throwable());
+
+    // Act
+    cartMessageOrderItemServiceExtensionHandler.findCartForCustomerWithEnhancements(customer, erh);
   }
 
   /**

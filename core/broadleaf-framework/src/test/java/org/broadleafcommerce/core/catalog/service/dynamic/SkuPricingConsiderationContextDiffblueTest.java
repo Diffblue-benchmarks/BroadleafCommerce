@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.catalog.service.dynamic;
 
 import static org.junit.Assert.assertFalse;
@@ -22,10 +5,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SkuPricingConsiderationContextDiffblueTest {
@@ -43,6 +28,25 @@ public class SkuPricingConsiderationContextDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link SkuPricingConsiderationContext#setSkuPricingConsiderationContext(HashMap)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link SkuPricingConsiderationContext#setSkuPricingConsiderationContext(HashMap)}
+   */
+  @Test
+  public void testSetSkuPricingConsiderationContext_whenHashMap() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    SkuPricingConsiderationContext.setSkuPricingConsiderationContext(new HashMap());
+  }
+
+  /**
    * Test {@link SkuPricingConsiderationContext#getSkuPricingService()}.
    * <p>
    * Method under test:
@@ -52,6 +56,52 @@ public class SkuPricingConsiderationContextDiffblueTest {
   public void testGetSkuPricingService() {
     // Arrange, Act and Assert
     assertNull(SkuPricingConsiderationContext.getSkuPricingService());
+  }
+
+  /**
+   * Test
+   * {@link SkuPricingConsiderationContext#setSkuPricingService(DynamicSkuPricingService)}.
+   * <p>
+   * Method under test:
+   * {@link SkuPricingConsiderationContext#setSkuPricingService(DynamicSkuPricingService)}
+   */
+  @Test
+  public void testSetSkuPricingService() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    SkuPricingConsiderationContext.setSkuPricingService(new DefaultDynamicSkuPricingServiceImpl());
+  }
+
+  /**
+   * Test {@link SkuPricingConsiderationContext#startPricingConsideration()}.
+   * <p>
+   * Method under test:
+   * {@link SkuPricingConsiderationContext#startPricingConsideration()}
+   */
+  @Test
+  public void testStartPricingConsideration() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    SkuPricingConsiderationContext.startPricingConsideration();
+  }
+
+  /**
+   * Test {@link SkuPricingConsiderationContext#endPricingConsideration()}.
+   * <p>
+   * Method under test:
+   * {@link SkuPricingConsiderationContext#endPricingConsideration()}
+   */
+  @Test
+  public void testEndPricingConsideration() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    SkuPricingConsiderationContext.endPricingConsideration();
   }
 
   /**
@@ -89,6 +139,35 @@ public class SkuPricingConsiderationContextDiffblueTest {
 
     // Assert
     assertTrue(actualThreadCache.isEmpty());
+  }
+
+  /**
+   * Test {@link SkuPricingConsiderationContext#clearThreadCache()}.
+   * <p>
+   * Method under test: {@link SkuPricingConsiderationContext#clearThreadCache()}
+   */
+  @Test
+  public void testClearThreadCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    SkuPricingConsiderationContext.clearThreadCache();
+  }
+
+  /**
+   * Test {@link SkuPricingConsiderationContext#removeFromThreadCache(Long)}.
+   * <p>
+   * Method under test:
+   * {@link SkuPricingConsiderationContext#removeFromThreadCache(Long)}
+   */
+  @Test
+  public void testRemoveFromThreadCache() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    SkuPricingConsiderationContext.removeFromThreadCache(1L);
   }
 
   /**
@@ -146,6 +225,35 @@ public class SkuPricingConsiderationContextDiffblueTest {
   public void testGetDynamicSkuPrices_whenSkuImpl() {
     // Arrange, Act and Assert
     assertNull(SkuPricingConsiderationContext.getDynamicSkuPrices(new SkuImpl()));
+  }
+
+  /**
+   * Test {@link SkuPricingConsiderationContext#getSingleField(Class, String)}.
+   * <ul>
+   *   <li>When {@code java.lang.Object}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link SkuPricingConsiderationContext#getSingleField(Class, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSingleField_whenJavaLangObject() throws IllegalStateException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at java.base/java.util.concurrent.ConcurrentHashMap.putVal(ConcurrentHashMap.java:1011)
+    //       at java.base/java.util.concurrent.ConcurrentHashMap.put(ConcurrentHashMap.java:1006)
+    //       at org.broadleafcommerce.core.catalog.service.dynamic.SkuPricingConsiderationContext.getSingleField(SkuPricingConsiderationContext.java:142)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    Class<Object> clazz = Object.class;
+
+    // Act
+    SkuPricingConsiderationContext.getSingleField(clazz, "Field Name");
   }
 
   /**

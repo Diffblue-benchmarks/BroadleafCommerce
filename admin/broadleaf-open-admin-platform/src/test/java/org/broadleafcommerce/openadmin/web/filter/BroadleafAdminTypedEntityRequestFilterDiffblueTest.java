@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.filter;
 
 import static org.junit.Assert.assertEquals;
@@ -39,14 +22,31 @@ import org.broadleafcommerce.openadmin.server.security.domain.AdminSection;
 import org.broadleafcommerce.openadmin.server.security.domain.AdminSectionImpl;
 import org.broadleafcommerce.openadmin.server.security.service.type.PermissionType;
 import org.broadleafcommerce.openadmin.web.compatibility.JSCompatibilityRequestWrapper;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.StandardEnvironment;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.multipart.support.DefaultMultipartHttpServletRequest;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BroadleafAdminTypedEntityRequestFilterDiffblueTest {
+  @Autowired
+  private BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+
   /**
    * Test
    * {@link BroadleafAdminTypedEntityRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
@@ -71,6 +71,43 @@ public class BroadleafAdminTypedEntityRequestFilterDiffblueTest {
 
     // Assert that nothing has changed
     verify(filterChain).doFilter(isA(ServletRequest.class), isA(ServletResponse.class));
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAdminTypedEntityRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAdminTypedEntityRequestFilter#doFilterInternalUnlessIgnored(HttpServletRequest, HttpServletResponse, FilterChain)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDoFilterInternalUnlessIgnored2() throws IOException, ServletException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3196 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter2 = new BroadleafAdminTypedEntityRequestFilter();
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+
+    // Act
+    broadleafAdminTypedEntityRequestFilter2.doFilterInternalUnlessIgnored(request, new MockHttpServletResponse(),
+        mock(FilterChain.class));
   }
 
   /**
@@ -144,6 +181,42 @@ public class BroadleafAdminTypedEntityRequestFilterDiffblueTest {
   /**
    * Test
    * {@link BroadleafAdminTypedEntityRequestFilter#isRequestForTypedEntity(HttpServletRequest, HttpServletResponse)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAdminTypedEntityRequestFilter#isRequestForTypedEntity(HttpServletRequest, HttpServletResponse)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsRequestForTypedEntity3() throws IOException, ServletException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3949 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter2 = new BroadleafAdminTypedEntityRequestFilter();
+    JSCompatibilityRequestWrapper request = new JSCompatibilityRequestWrapper(new MockHttpServletRequest());
+
+    // Act
+    broadleafAdminTypedEntityRequestFilter2.isRequestForTypedEntity(request, new MockHttpServletResponse());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAdminTypedEntityRequestFilter#isRequestForTypedEntity(HttpServletRequest, HttpServletResponse)}.
    * <ul>
    *   <li>When {@link MockHttpServletRequest#MockHttpServletRequest()}.</li>
    *   <li>Then return {@code false}.</li>
@@ -188,6 +261,38 @@ public class BroadleafAdminTypedEntityRequestFilterDiffblueTest {
   /**
    * Test
    * {@link BroadleafAdminTypedEntityRequestFilter#getTypedEntityFromServletPathId(String, String)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAdminTypedEntityRequestFilter#getTypedEntityFromServletPathId(String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTypedEntityFromServletPathId2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3928 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new BroadleafAdminTypedEntityRequestFilter()).getTypedEntityFromServletPathId("Servlet Path", "Ceiling Entity");
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAdminTypedEntityRequestFilter#getTypedEntityFromServletPathId(String, String)}.
    * <ul>
    *   <li>Given {@link BroadleafAdminTypedEntityRequestFilter} (default
    * constructor).</li>
@@ -203,6 +308,39 @@ public class BroadleafAdminTypedEntityRequestFilterDiffblueTest {
     // Arrange, Act and Assert
     assertNull((new BroadleafAdminTypedEntityRequestFilter()).getTypedEntityFromServletPathId("Servlet Path",
         "Ceiling Entity"));
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAdminTypedEntityRequestFilter#getTypeAdminSectionMismatchUrl(TypedEntity, String, String, String)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAdminTypedEntityRequestFilter#getTypeAdminSectionMismatchUrl(TypedEntity, String, String, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTypeAdminSectionMismatchUrl() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3876 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new BroadleafAdminTypedEntityRequestFilter()).getTypeAdminSectionMismatchUrl(mock(TypedEntity.class),
+        "https://example.org/example", "https://example.org/example", "https://example.org/example");
   }
 
   /**
@@ -349,6 +487,38 @@ public class BroadleafAdminTypedEntityRequestFilterDiffblueTest {
   /**
    * Test
    * {@link BroadleafAdminTypedEntityRequestFilter#typeMatchesAdminSection(TypedEntity, String)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAdminTypedEntityRequestFilter#typeMatchesAdminSection(TypedEntity, String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testTypeMatchesAdminSection2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4095 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new BroadleafAdminTypedEntityRequestFilter()).typeMatchesAdminSection(mock(TypedEntity.class), "Section Key");
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAdminTypedEntityRequestFilter#typeMatchesAdminSection(TypedEntity, String)}.
    * <ul>
    *   <li>Given {@link PermissionType#ALL}.</li>
    *   <li>When {@link TypedEntity} {@link TypedEntity#getType()} return
@@ -402,6 +572,77 @@ public class BroadleafAdminTypedEntityRequestFilterDiffblueTest {
     // Assert
     verify(typedEntity).getType();
     assertFalse(actualTypeMatchesAdminSectionResult);
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAdminTypedEntityRequestFilter#adminUserHasAccess(AdminSection)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAdminTypedEntityRequestFilter#adminUserHasAccess(AdminSection)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAdminUserHasAccess() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3176 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter2 = new BroadleafAdminTypedEntityRequestFilter();
+
+    // Act
+    broadleafAdminTypedEntityRequestFilter2.adminUserHasAccess(new AdminSectionImpl());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAdminTypedEntityRequestFilter#getEntityTypeFromRequest(HttpServletRequest)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAdminTypedEntityRequestFilter#getEntityTypeFromRequest(HttpServletRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetEntityTypeFromRequest() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3664 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter2 = new BroadleafAdminTypedEntityRequestFilter();
+
+    // Act
+    broadleafAdminTypedEntityRequestFilter2
+        .getEntityTypeFromRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
   }
 
   /**
@@ -501,6 +742,42 @@ public class BroadleafAdminTypedEntityRequestFilterDiffblueTest {
   /**
    * Test
    * {@link BroadleafAdminTypedEntityRequestFilter#getSectionKeyFromRequest(HttpServletRequest)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAdminTypedEntityRequestFilter#getSectionKeyFromRequest(HttpServletRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetSectionKeyFromRequest3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3770 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter2 = new BroadleafAdminTypedEntityRequestFilter();
+
+    // Act
+    broadleafAdminTypedEntityRequestFilter2
+        .getSectionKeyFromRequest(new JSCompatibilityRequestWrapper(new MockHttpServletRequest()));
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAdminTypedEntityRequestFilter#getSectionKeyFromRequest(HttpServletRequest)}.
    * <ul>
    *   <li>Given {@code https://example.org/example}.</li>
    *   <li>Then return {@code https:}.</li>
@@ -547,6 +824,41 @@ public class BroadleafAdminTypedEntityRequestFilterDiffblueTest {
 
     // Act and Assert
     assertEquals("", broadleafAdminTypedEntityRequestFilter.getSectionKeyFromRequest(new MockHttpServletRequest()));
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAdminTypedEntityRequestFilter#getTypeFieldName(AdminSection)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAdminTypedEntityRequestFilter#getTypeFieldName(AdminSection)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTypeFieldName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3908 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter2 = new BroadleafAdminTypedEntityRequestFilter();
+
+    // Act
+    broadleafAdminTypedEntityRequestFilter2.getTypeFieldName(new AdminSectionImpl());
   }
 
   /**
@@ -614,6 +926,38 @@ public class BroadleafAdminTypedEntityRequestFilterDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new BroadleafAdminTypedEntityRequestFilter()).getTypeFieldName(null));
+  }
+
+  /**
+   * Test
+   * {@link BroadleafAdminTypedEntityRequestFilter#getDynamicEntityDao(String)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafAdminTypedEntityRequestFilter#getDynamicEntityDao(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetDynamicEntityDao() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.web.filter;
+    //   @org.springframework.test.context.web.WebAppConfiguration
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3351 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.web.filter.BroadleafAdminTypedEntityRequestFilter broadleafAdminTypedEntityRequestFilter;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new BroadleafAdminTypedEntityRequestFilter()).getDynamicEntityDao("Class Name");
   }
 
   /**

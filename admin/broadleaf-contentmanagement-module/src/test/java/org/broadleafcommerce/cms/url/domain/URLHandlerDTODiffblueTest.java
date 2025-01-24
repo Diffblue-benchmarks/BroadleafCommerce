@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.url.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -22,7 +5,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -45,6 +30,61 @@ public class URLHandlerDTODiffblueTest {
 
   @MockBean
   private URLRedirectType uRLRedirectType;
+
+  /**
+   * Test {@link URLHandlerDTO#URLHandlerDTO(String, URLRedirectType)}.
+   * <p>
+   * Method under test:
+   * {@link URLHandlerDTO#URLHandlerDTO(String, URLRedirectType)}
+   */
+  @Test
+  public void testNewURLHandlerDTO() {
+    // Arrange
+    when(uRLRedirectType.getType()).thenReturn("https://example.org/example");
+
+    // Act
+    URLHandlerDTO actualUrlHandlerDTO = new URLHandlerDTO("https://example.org/example", uRLRedirectType);
+
+    // Assert
+    verify(uRLRedirectType).getType();
+    assertEquals("", actualUrlHandlerDTO.getIncomingURL());
+    assertEquals("https://example.org/example", actualUrlHandlerDTO.getNewURL());
+    URLRedirectType urlRedirectType = actualUrlHandlerDTO.getUrlRedirectType();
+    assertEquals("https://example.org/example", urlRedirectType.getFriendlyType());
+    assertEquals("https://example.org/example", urlRedirectType.getType());
+    assertEquals("https://example.org/example", actualUrlHandlerDTO.urlRedirectType);
+    assertNull(actualUrlHandlerDTO.getId());
+    assertFalse(actualUrlHandlerDTO.isRegexHandler());
+  }
+
+  /**
+   * Test {@link URLHandlerDTO#URLHandlerDTO(String, URLRedirectType)}.
+   * <ul>
+   *   <li>When {@link URLRedirectType#FORWARD}.</li>
+   *   <li>Then return {@link URLHandlerDTO#urlRedirectType} is
+   * {@code FORWARD}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link URLHandlerDTO#URLHandlerDTO(String, URLRedirectType)}
+   */
+  @Test
+  public void testNewURLHandlerDTO_whenForward_thenReturnUrlRedirectTypeIsForward() {
+    // Arrange
+    URLRedirectType redirectType = URLRedirectType.FORWARD;
+
+    // Act
+    URLHandlerDTO actualUrlHandlerDTO = new URLHandlerDTO("https://example.org/example", redirectType);
+
+    // Assert
+    assertEquals("", actualUrlHandlerDTO.getIncomingURL());
+    assertEquals("FORWARD", actualUrlHandlerDTO.urlRedirectType);
+    assertEquals("https://example.org/example", actualUrlHandlerDTO.getNewURL());
+    assertNull(actualUrlHandlerDTO.getId());
+    assertFalse(actualUrlHandlerDTO.isRegexHandler());
+    URLRedirectType expectedUrlRedirectType = redirectType.FORWARD;
+    assertSame(expectedUrlRedirectType, actualUrlHandlerDTO.getUrlRedirectType());
+  }
 
   /**
    * Test {@link URLHandlerDTO#URLHandlerDTO(String, URLRedirectType)}.
@@ -142,12 +182,47 @@ public class URLHandlerDTODiffblueTest {
   }
 
   /**
+   * Test {@link URLHandlerDTO#getUrlRedirectType()}.
+   * <p>
+   * Method under test: {@link URLHandlerDTO#getUrlRedirectType()}
+   */
+  @Test
+  public void testGetUrlRedirectType() {
+    // Arrange and Act
+    URLRedirectType actualUrlRedirectType = (new URLHandlerDTO("https://example.org/example", URLRedirectType.FORWARD))
+        .getUrlRedirectType();
+
+    // Assert
+    assertSame(actualUrlRedirectType.FORWARD, actualUrlRedirectType);
+  }
+
+  /**
    * Test {@link URLHandlerDTO#setUrlRedirectType(URLRedirectType)}.
    * <p>
    * Method under test: {@link URLHandlerDTO#setUrlRedirectType(URLRedirectType)}
    */
   @Test
   public void testSetUrlRedirectType() {
+    // Arrange
+    URLHandlerDTO urlHandlerDTO = new URLHandlerDTO("https://example.org/example", URLRedirectType.FORWARD);
+    URLRedirectType redirectType = URLRedirectType.FORWARD;
+
+    // Act
+    urlHandlerDTO.setUrlRedirectType(redirectType);
+
+    // Assert
+    assertEquals("FORWARD", urlHandlerDTO.urlRedirectType);
+    URLRedirectType expectedUrlRedirectType = redirectType.FORWARD;
+    assertSame(expectedUrlRedirectType, urlHandlerDTO.getUrlRedirectType());
+  }
+
+  /**
+   * Test {@link URLHandlerDTO#setUrlRedirectType(URLRedirectType)}.
+   * <p>
+   * Method under test: {@link URLHandlerDTO#setUrlRedirectType(URLRedirectType)}
+   */
+  @Test
+  public void testSetUrlRedirectType2() {
     // Arrange
     URLHandlerDTO urlHandlerDTO = new URLHandlerDTO("https://example.org/example", URLRedirectType.FORWARD);
 
@@ -215,6 +290,88 @@ public class URLHandlerDTODiffblueTest {
     urlHandlerDTO.createOrRetrieveCopyInstance(context);
 
     // Assert
+    verify(redirectType).getType();
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+  }
+
+  /**
+   * Test
+   * {@link URLHandlerDTO#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <ul>
+   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
+   *   <li>Then calls {@link CreateResponse#getClone()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link URLHandlerDTO#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance_givenURLHandlerImplIdIsOne_thenCallsGetClone()
+      throws CloneNotSupportedException {
+    // Arrange
+    URLRedirectType redirectType = mock(URLRedirectType.class);
+    when(redirectType.getType()).thenReturn("https://example.org/example");
+    URLHandlerDTO urlHandlerDTO = new URLHandlerDTO("https://example.org/example", redirectType);
+
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("https://example.org/example");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(urlHandlerImpl);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    urlHandlerDTO.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(redirectType).getType();
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+  }
+
+  /**
+   * Test
+   * {@link URLHandlerDTO#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <ul>
+   *   <li>Then calls {@link URLHandlerImpl#setIncomingURL(String)}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link URLHandlerDTO#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance_thenCallsSetIncomingURL() throws CloneNotSupportedException {
+    // Arrange
+    URLRedirectType redirectType = mock(URLRedirectType.class);
+    when(redirectType.getType()).thenReturn("https://example.org/example");
+    URLHandlerDTO urlHandlerDTO = new URLHandlerDTO("https://example.org/example", redirectType);
+    URLHandlerImpl urlHandlerImpl = mock(URLHandlerImpl.class);
+    doNothing().when(urlHandlerImpl).setIncomingURL(Mockito.<String>any());
+    doNothing().when(urlHandlerImpl).setNewURL(Mockito.<String>any());
+    doNothing().when(urlHandlerImpl).setRegexHandler(Mockito.<Boolean>any());
+    doNothing().when(urlHandlerImpl).setUrlRedirectType(Mockito.<URLRedirectType>any());
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(urlHandlerImpl);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    urlHandlerDTO.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(urlHandlerImpl).setIncomingURL(eq(""));
+    verify(urlHandlerImpl).setNewURL(eq("https://example.org/example"));
+    verify(urlHandlerImpl).setRegexHandler(eq(false));
+    verify(urlHandlerImpl).setUrlRedirectType(isA(URLRedirectType.class));
     verify(redirectType).getType();
     verify(createResponse).getClone();
     verify(createResponse).isAlreadyPopulated();

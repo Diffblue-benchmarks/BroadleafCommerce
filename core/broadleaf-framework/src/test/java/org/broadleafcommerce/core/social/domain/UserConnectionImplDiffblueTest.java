@@ -1,26 +1,11 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.social.domain;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 import org.broadleafcommerce.core.social.domain.UserConnectionImpl.UserConnectionPK;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class UserConnectionImplDiffblueTest {
@@ -227,6 +212,111 @@ public class UserConnectionImplDiffblueTest {
 
     // Act and Assert
     assertNotEquals(userConnectionPK, userConnectionPK2);
+  }
+
+  /**
+   * Test UserConnectionPK {@link UserConnectionPK#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then throw exception.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUserConnectionPKEquals_whenOtherIsDifferent_thenThrowException() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.social.domain.UserConnectionImpl$UserConnectionPK.equals(UserConnectionImpl.java:224)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    userConnectionPK.setProviderId(null);
+    userConnectionPK.setProviderUserId("42");
+    userConnectionPK.setUserId("42");
+
+    UserConnectionImpl.UserConnectionPK userConnectionPK2 = new UserConnectionImpl.UserConnectionPK();
+    userConnectionPK2.setProviderId("42");
+    userConnectionPK2.setProviderUserId("42");
+    userConnectionPK2.setUserId("42");
+
+    // Act and Assert
+    assertThrows(NullPointerException.class, () -> userConnectionPK.equals(userConnectionPK2));
+  }
+
+  /**
+   * Test UserConnectionPK {@link UserConnectionPK#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then throw exception.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUserConnectionPKEquals_whenOtherIsDifferent_thenThrowException2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.social.domain.UserConnectionImpl$UserConnectionPK.equals(UserConnectionImpl.java:225)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    userConnectionPK.setProviderId("42");
+    userConnectionPK.setProviderUserId(null);
+    userConnectionPK.setUserId("42");
+
+    UserConnectionImpl.UserConnectionPK userConnectionPK2 = new UserConnectionImpl.UserConnectionPK();
+    userConnectionPK2.setProviderId("42");
+    userConnectionPK2.setProviderUserId("42");
+    userConnectionPK2.setUserId("42");
+
+    // Act and Assert
+    assertThrows(NullPointerException.class, () -> userConnectionPK.equals(userConnectionPK2));
+  }
+
+  /**
+   * Test UserConnectionPK {@link UserConnectionPK#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then throw exception.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link UserConnectionImpl.UserConnectionPK#equals(Object)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testUserConnectionPKEquals_whenOtherIsDifferent_thenThrowException3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.social.domain.UserConnectionImpl$UserConnectionPK.equals(UserConnectionImpl.java:223)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    UserConnectionImpl.UserConnectionPK userConnectionPK = new UserConnectionImpl.UserConnectionPK();
+    userConnectionPK.setProviderId("42");
+    userConnectionPK.setProviderUserId("42");
+    userConnectionPK.setUserId(null);
+
+    UserConnectionImpl.UserConnectionPK userConnectionPK2 = new UserConnectionImpl.UserConnectionPK();
+    userConnectionPK2.setProviderId("42");
+    userConnectionPK2.setProviderUserId("42");
+    userConnectionPK2.setUserId("42");
+
+    // Act and Assert
+    assertThrows(NullPointerException.class, () -> userConnectionPK.equals(userConnectionPK2));
   }
 
   /**

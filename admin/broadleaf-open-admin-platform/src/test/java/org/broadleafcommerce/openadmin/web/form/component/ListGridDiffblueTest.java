@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.web.form.component;
 
 import static org.junit.Assert.assertEquals;
@@ -229,6 +212,66 @@ public class ListGridDiffblueTest {
   /**
    * Test {@link ListGrid#getActiveToolbarActions()}.
    * <ul>
+   *   <li>Given {@link ListGrid} (default constructor) addToolbarAction
+   * {@link DefaultListGridActions#ADD}.</li>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGrid#getActiveToolbarActions()}
+   */
+  @Test
+  public void testGetActiveToolbarActions_givenListGridAddToolbarActionAdd_thenReturnSizeIsOne() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.addToolbarAction(DefaultListGridActions.ADD);
+
+    // Act
+    List<ListGridAction> actualActiveToolbarActions = listGrid.getActiveToolbarActions();
+
+    // Assert
+    assertEquals(1, actualActiveToolbarActions.size());
+    ListGridAction getResult = actualActiveToolbarActions.get(0);
+    assertEquals("", getResult.getActionTargetEntity());
+    assertEquals("", getResult.getConfirmEnabledText());
+    assertEquals("/add", getResult.getUrlPostfix());
+    assertEquals("Add", getResult.getDisplayText());
+    assertEquals("fa fa-plus", getResult.getIconClass());
+    assertEquals("sub-list-grid-add", getResult.getButtonClass());
+    assertEquals("sub-list-grid-add", getResult.buttonClass);
+    assertNull(getResult.getActionUrlOverride());
+    assertFalse(getResult.getAllCapable());
+    assertFalse(getResult.getForListGridReadOnly());
+    assertFalse(getResult.getIsConfirmEnabled());
+    assertFalse(getResult.getRequiresNonEmptyGrid());
+    assertFalse(getResult.getSingleActionOnly());
+    assertFalse(getResult.isConfirmEnabled);
+    assertEquals(ListGridAction.ADD, getResult.getActionId());
+  }
+
+  /**
+   * Test {@link ListGrid#getActiveToolbarActions()}.
+   * <ul>
+   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is
+   * {@code true}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGrid#getActiveToolbarActions()}
+   */
+  @Test
+  public void testGetActiveToolbarActions_givenListGridIsReadOnlyIsTrue_thenReturnEmpty() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.setIsReadOnly(true);
+    listGrid.addToolbarAction(DefaultListGridActions.ADD);
+
+    // Act and Assert
+    assertTrue(listGrid.getActiveToolbarActions().isEmpty());
+  }
+
+  /**
+   * Test {@link ListGrid#getActiveToolbarActions()}.
+   * <ul>
    *   <li>Given {@link ListGrid} (default constructor).</li>
    *   <li>Then return Empty.</li>
    * </ul>
@@ -239,6 +282,66 @@ public class ListGridDiffblueTest {
   public void testGetActiveToolbarActions_givenListGrid_thenReturnEmpty() {
     // Arrange, Act and Assert
     assertTrue((new ListGrid()).getActiveToolbarActions().isEmpty());
+  }
+
+  /**
+   * Test {@link ListGrid#getActiveRowActions()}.
+   * <ul>
+   *   <li>Given {@link ListGrid} (default constructor) addRowAction
+   * {@link DefaultListGridActions#ADD}.</li>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGrid#getActiveRowActions()}
+   */
+  @Test
+  public void testGetActiveRowActions_givenListGridAddRowActionAdd_thenReturnSizeIsOne() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.addRowAction(DefaultListGridActions.ADD);
+
+    // Act
+    List<ListGridAction> actualActiveRowActions = listGrid.getActiveRowActions();
+
+    // Assert
+    assertEquals(1, actualActiveRowActions.size());
+    ListGridAction getResult = actualActiveRowActions.get(0);
+    assertEquals("", getResult.getActionTargetEntity());
+    assertEquals("", getResult.getConfirmEnabledText());
+    assertEquals("/add", getResult.getUrlPostfix());
+    assertEquals("Add", getResult.getDisplayText());
+    assertEquals("fa fa-plus", getResult.getIconClass());
+    assertEquals("sub-list-grid-add", getResult.getButtonClass());
+    assertEquals("sub-list-grid-add", getResult.buttonClass);
+    assertNull(getResult.getActionUrlOverride());
+    assertFalse(getResult.getAllCapable());
+    assertFalse(getResult.getForListGridReadOnly());
+    assertFalse(getResult.getIsConfirmEnabled());
+    assertFalse(getResult.getRequiresNonEmptyGrid());
+    assertFalse(getResult.getSingleActionOnly());
+    assertFalse(getResult.isConfirmEnabled);
+    assertEquals(ListGridAction.ADD, getResult.getActionId());
+  }
+
+  /**
+   * Test {@link ListGrid#getActiveRowActions()}.
+   * <ul>
+   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is
+   * {@code true}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGrid#getActiveRowActions()}
+   */
+  @Test
+  public void testGetActiveRowActions_givenListGridIsReadOnlyIsTrue_thenReturnEmpty() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.setIsReadOnly(true);
+    listGrid.addRowAction(DefaultListGridActions.ADD);
+
+    // Act and Assert
+    assertTrue(listGrid.getActiveRowActions().isEmpty());
   }
 
   /**
@@ -281,6 +384,30 @@ public class ListGridDiffblueTest {
   /**
    * Test {@link ListGrid#getActiveToolbarActionGroups()}.
    * <ul>
+   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is
+   * {@code true}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
+   */
+  @Test
+  public void testGetActiveToolbarActionGroups_givenListGridIsReadOnlyIsTrue_thenReturnEmpty() {
+    // Arrange
+    ListGridActionGroup actionGroup = new ListGridActionGroup();
+    actionGroup.addAction(DefaultListGridActions.ADD);
+
+    ListGrid listGrid = new ListGrid();
+    listGrid.setIsReadOnly(true);
+    listGrid.addToolbarActionGroup(actionGroup);
+
+    // Act and Assert
+    assertTrue(listGrid.getActiveToolbarActionGroups().isEmpty());
+  }
+
+  /**
+   * Test {@link ListGrid#getActiveToolbarActionGroups()}.
+   * <ul>
    *   <li>Given {@link ListGrid} (default constructor).</li>
    *   <li>Then return Empty.</li>
    * </ul>
@@ -312,6 +439,31 @@ public class ListGridDiffblueTest {
   }
 
   /**
+   * Test {@link ListGrid#getActiveToolbarActionGroups()}.
+   * <ul>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGrid#getActiveToolbarActionGroups()}
+   */
+  @Test
+  public void testGetActiveToolbarActionGroups_thenReturnSizeIsOne() {
+    // Arrange
+    ListGridActionGroup actionGroup = new ListGridActionGroup();
+    actionGroup.addAction(DefaultListGridActions.ADD);
+
+    ListGrid listGrid = new ListGrid();
+    listGrid.addToolbarActionGroup(actionGroup);
+
+    // Act
+    List<ListGridAction> actualActiveToolbarActionGroups = listGrid.getActiveToolbarActionGroups();
+
+    // Assert
+    assertEquals(1, actualActiveToolbarActionGroups.size());
+    assertSame(actionGroup, actualActiveToolbarActionGroups.get(0));
+  }
+
+  /**
    * Test {@link ListGrid#getActiveRowActionGroups()}.
    * <ul>
    *   <li>Given {@link ListGridActionGroup} (default constructor) addAction
@@ -327,6 +479,30 @@ public class ListGridDiffblueTest {
     actionGroup.addAction(DefaultListGridActions.MANUAL_FETCH);
 
     ListGrid listGrid = new ListGrid();
+    listGrid.addRowActionGroup(actionGroup);
+
+    // Act and Assert
+    assertTrue(listGrid.getActiveRowActionGroups().isEmpty());
+  }
+
+  /**
+   * Test {@link ListGrid#getActiveRowActionGroups()}.
+   * <ul>
+   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is
+   * {@code true}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGrid#getActiveRowActionGroups()}
+   */
+  @Test
+  public void testGetActiveRowActionGroups_givenListGridIsReadOnlyIsTrue_thenReturnEmpty() {
+    // Arrange
+    ListGridActionGroup actionGroup = new ListGridActionGroup();
+    actionGroup.addAction(DefaultListGridActions.ADD);
+
+    ListGrid listGrid = new ListGrid();
+    listGrid.setIsReadOnly(true);
     listGrid.addRowActionGroup(actionGroup);
 
     // Act and Assert
@@ -367,6 +543,52 @@ public class ListGridDiffblueTest {
   }
 
   /**
+   * Test {@link ListGrid#getActiveRowActionGroups()}.
+   * <ul>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGrid#getActiveRowActionGroups()}
+   */
+  @Test
+  public void testGetActiveRowActionGroups_thenReturnSizeIsOne() {
+    // Arrange
+    ListGridActionGroup actionGroup = new ListGridActionGroup();
+    actionGroup.addAction(DefaultListGridActions.ADD);
+
+    ListGrid listGrid = new ListGrid();
+    listGrid.addRowActionGroup(actionGroup);
+
+    // Act
+    List<ListGridAction> actualActiveRowActionGroups = listGrid.getActiveRowActionGroups();
+
+    // Assert
+    assertEquals(1, actualActiveRowActionGroups.size());
+    assertSame(actionGroup, actualActiveRowActionGroups.get(0));
+  }
+
+  /**
+   * Test {@link ListGrid#getActiveModalRowActions()}.
+   * <ul>
+   *   <li>Given {@link ListGrid} (default constructor) IsReadOnly is
+   * {@code true}.</li>
+   *   <li>Then return Empty.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGrid#getActiveModalRowActions()}
+   */
+  @Test
+  public void testGetActiveModalRowActions_givenListGridIsReadOnlyIsTrue_thenReturnEmpty() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.setIsReadOnly(true);
+    listGrid.addModalRowAction(DefaultListGridActions.ADD);
+
+    // Act and Assert
+    assertTrue(listGrid.getActiveModalRowActions().isEmpty());
+  }
+
+  /**
    * Test {@link ListGrid#getActiveModalRowActions()}.
    * <ul>
    *   <li>Given {@link ListGrid} (default constructor).</li>
@@ -379,6 +601,119 @@ public class ListGridDiffblueTest {
   public void testGetActiveModalRowActions_givenListGrid_thenReturnEmpty() {
     // Arrange, Act and Assert
     assertTrue((new ListGrid()).getActiveModalRowActions().isEmpty());
+  }
+
+  /**
+   * Test {@link ListGrid#getActiveModalRowActions()}.
+   * <ul>
+   *   <li>Then return size is one.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link ListGrid#getActiveModalRowActions()}
+   */
+  @Test
+  public void testGetActiveModalRowActions_thenReturnSizeIsOne() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    listGrid.addModalRowAction(DefaultListGridActions.ADD);
+
+    // Act
+    List<ListGridAction> actualActiveModalRowActions = listGrid.getActiveModalRowActions();
+
+    // Assert
+    assertEquals(1, actualActiveModalRowActions.size());
+    ListGridAction getResult = actualActiveModalRowActions.get(0);
+    assertEquals("", getResult.getActionTargetEntity());
+    assertEquals("", getResult.getConfirmEnabledText());
+    assertEquals("/add", getResult.getUrlPostfix());
+    assertEquals("Add", getResult.getDisplayText());
+    assertEquals("fa fa-plus", getResult.getIconClass());
+    assertEquals("sub-list-grid-add", getResult.getButtonClass());
+    assertEquals("sub-list-grid-add", getResult.buttonClass);
+    assertNull(getResult.getActionUrlOverride());
+    assertFalse(getResult.getAllCapable());
+    assertFalse(getResult.getForListGridReadOnly());
+    assertFalse(getResult.getIsConfirmEnabled());
+    assertFalse(getResult.getRequiresNonEmptyGrid());
+    assertFalse(getResult.getSingleActionOnly());
+    assertFalse(getResult.isConfirmEnabled);
+    assertEquals(ListGridAction.ADD, getResult.getActionId());
+  }
+
+  /**
+   * Test {@link ListGrid#addRowAction(ListGridAction)}.
+   * <p>
+   * Method under test: {@link ListGrid#addRowAction(ListGridAction)}
+   */
+  @Test
+  public void testAddRowAction() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    ListGridAction action = DefaultListGridActions.ADD;
+
+    // Act
+    listGrid.addRowAction(action);
+
+    // Assert
+    List<ListGridAction> activeRowActions = listGrid.getActiveRowActions();
+    assertEquals(1, activeRowActions.size());
+    assertEquals(activeRowActions, listGrid.getRowActions());
+    assertSame(action, activeRowActions.get(0));
+  }
+
+  /**
+   * Test {@link ListGrid#addModalRowAction(ListGridAction)}.
+   * <p>
+   * Method under test: {@link ListGrid#addModalRowAction(ListGridAction)}
+   */
+  @Test
+  public void testAddModalRowAction() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    ListGridAction action = DefaultListGridActions.ADD;
+
+    // Act
+    listGrid.addModalRowAction(action);
+
+    // Assert
+    List<ListGridAction> activeModalRowActions = listGrid.getActiveModalRowActions();
+    assertEquals(1, activeModalRowActions.size());
+    assertSame(action, activeModalRowActions.get(0));
+  }
+
+  /**
+   * Test {@link ListGrid#addToolbarAction(ListGridAction)}.
+   * <p>
+   * Method under test: {@link ListGrid#addToolbarAction(ListGridAction)}
+   */
+  @Test
+  public void testAddToolbarAction() {
+    // Arrange
+    ListGrid listGrid = new ListGrid();
+    ListGridAction action = DefaultListGridActions.ADD;
+
+    // Act
+    listGrid.addToolbarAction(action);
+
+    // Assert
+    List<ListGridAction> activeToolbarActions = listGrid.getActiveToolbarActions();
+    assertEquals(1, activeToolbarActions.size());
+    assertEquals(activeToolbarActions, listGrid.getToolbarActions());
+    assertSame(action, activeToolbarActions.get(0));
+  }
+
+  /**
+   * Test {@link ListGrid#removeAllToolbarActions()}.
+   * <p>
+   * Method under test: {@link ListGrid#removeAllToolbarActions()}
+   */
+  @Test
+  public void testRemoveAllToolbarActions() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new ListGrid()).removeAllToolbarActions();
   }
 
   /**
@@ -447,6 +782,20 @@ public class ListGridDiffblueTest {
   }
 
   /**
+   * Test {@link ListGrid#removeAllToolbarActionGroups()}.
+   * <p>
+   * Method under test: {@link ListGrid#removeAllToolbarActionGroups()}
+   */
+  @Test
+  public void testRemoveAllToolbarActionGroups() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new ListGrid()).removeAllToolbarActionGroups();
+  }
+
+  /**
    * Test {@link ListGrid#addRowActionGroup(ListGridActionGroup)}.
    * <p>
    * Method under test: {@link ListGrid#addRowActionGroup(ListGridActionGroup)}
@@ -464,6 +813,34 @@ public class ListGridDiffblueTest {
     List<ListGridActionGroup> rowActionGroups = listGrid.getRowActionGroups();
     assertEquals(1, rowActionGroups.size());
     assertSame(actionGroup, rowActionGroups.get(0));
+  }
+
+  /**
+   * Test {@link ListGrid#removeAllRowActionGroups()}.
+   * <p>
+   * Method under test: {@link ListGrid#removeAllRowActionGroups()}
+   */
+  @Test
+  public void testRemoveAllRowActionGroups() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new ListGrid()).removeAllRowActionGroups();
+  }
+
+  /**
+   * Test {@link ListGrid#removeAllModalRowActions()}.
+   * <p>
+   * Method under test: {@link ListGrid#removeAllModalRowActions()}
+   */
+  @Test
+  public void testRemoveAllModalRowActions() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new ListGrid()).removeAllModalRowActions();
   }
 
   /**
@@ -1197,6 +1574,34 @@ public class ListGridDiffblueTest {
 
     // Assert
     assertEquals("Class Name", listGrid.getCssClassNames());
+  }
+
+  /**
+   * Test {@link ListGrid#removeCssClass(String)}.
+   * <p>
+   * Method under test: {@link ListGrid#removeCssClass(String)}
+   */
+  @Test
+  public void testRemoveCssClass() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    listGrid.removeCssClass("Class Name");
+  }
+
+  /**
+   * Test {@link ListGrid#clearCssClasses()}.
+   * <p>
+   * Method under test: {@link ListGrid#clearCssClasses()}
+   */
+  @Test
+  public void testClearCssClasses() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Diffblue AI was unable to find a test
+
+    // Arrange and Act
+    (new ListGrid()).clearCssClasses();
   }
 
   /**

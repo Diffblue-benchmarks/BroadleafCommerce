@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -23,6 +23,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class StringUtilDiffblueTest {
@@ -2675,6 +2676,28 @@ public class StringUtilDiffblueTest {
   public void testRemoveSpecialCharacters_whenSpace_thenReturnEmptyString() {
     // Arrange, Act and Assert
     assertEquals("", StringUtil.removeSpecialCharacters(" "));
+  }
+
+  /**
+   * Test {@link StringUtil#extractFieldNameFromExpression(String)}.
+   * <p>
+   * Method under test: {@link StringUtil#extractFieldNameFromExpression(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testExtractFieldNameFromExpression() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.StringIndexOutOfBoundsException: begin 0, end -1, length 10
+    //       at java.base/java.lang.String.checkBoundsBeginEnd(String.java:3319)
+    //       at java.base/java.lang.String.substring(String.java:1874)
+    //       at org.broadleafcommerce.common.util.StringUtil.extractFieldNameFromExpression(StringUtil.java:132)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    StringUtil.extractFieldNameFromExpression("Expression");
   }
 
   /**

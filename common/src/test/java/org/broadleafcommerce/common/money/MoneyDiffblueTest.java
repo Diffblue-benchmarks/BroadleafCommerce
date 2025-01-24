@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -31,7 +31,10 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
@@ -40,6 +43,7 @@ import java.util.Currency;
 import javassist.util.proxy.ProxyObjectOutputStream;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrency;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mvel2.util.InternalNumber;
@@ -1774,6 +1778,27 @@ public class MoneyDiffblueTest {
     assertEquals("£", actualDefaultCurrencyResult.getSymbol());
     assertEquals(2, actualDefaultCurrencyResult.getDefaultFractionDigits());
     assertEquals(826, actualDefaultCurrencyResult.getNumericCode());
+  }
+
+  /**
+   * Test {@link Money#readExternal(ObjectInput)}.
+   * <p>
+   * Method under test: {@link Money#readExternal(ObjectInput)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testReadExternal() throws IOException, ClassNotFoundException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.io.StreamCorruptedException: invalid stream header: 41584158
+    //       at java.base/java.io.ObjectInputStream.readStreamHeader(ObjectInputStream.java:936)
+    //       at java.base/java.io.ObjectInputStream.<init>(ObjectInputStream.java:375)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    Money.ZERO.readExternal(new ObjectInputStream(new ByteArrayInputStream("AXAXAXAX".getBytes("UTF-8"))));
   }
 
   /**

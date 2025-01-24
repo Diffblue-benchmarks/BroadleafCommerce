@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -18,10 +18,22 @@
 package org.broadleafcommerce.common.event;
 
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.broadleafcommerce.common.util.BLCFieldUtils;
 import org.junit.Test;
 
 public class BroadleafApplicationEventDiffblueTest {
+  /**
+   * Test {@link BroadleafApplicationEvent#getContext()}.
+   * <p>
+   * Method under test: {@link BroadleafApplicationEvent#getContext()}
+   */
+  @Test
+  public void testGetContext() {
+    // Arrange, Act and Assert
+    assertTrue((new ReindexEvent(BLCFieldUtils.NULL_FIELD)).getContext().isEmpty());
+  }
+
   /**
    * Test {@link BroadleafApplicationEvent#getSiteId()}.
    * <p>
@@ -75,5 +87,16 @@ public class BroadleafApplicationEventDiffblueTest {
   public void testGetCurrencyCode() {
     // Arrange, Act and Assert
     assertNull((new ReindexEvent(BLCFieldUtils.NULL_FIELD)).getCurrencyCode());
+  }
+
+  /**
+   * Test {@link BroadleafApplicationEvent#getTimeZoneId()}.
+   * <p>
+   * Method under test: {@link BroadleafApplicationEvent#getTimeZoneId()}
+   */
+  @Test
+  public void testGetTimeZoneId() {
+    // Arrange, Act and Assert
+    assertNull((new ReindexEvent(BLCFieldUtils.NULL_FIELD)).getTimeZoneId());
   }
 }

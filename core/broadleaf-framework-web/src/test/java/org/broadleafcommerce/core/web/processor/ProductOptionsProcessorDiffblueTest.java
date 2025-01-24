@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.processor;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -40,10 +23,22 @@ import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.core.web.processor.ProductOptionsProcessor.ProductOptionDTO;
 import org.broadleafcommerce.core.web.processor.ProductOptionsProcessor.ProductOptionPricingDTO;
 import org.broadleafcommerce.presentation.model.BroadleafTemplateContext;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class ProductOptionsProcessorDiffblueTest {
+  @Autowired
+  private ProductOptionsProcessor productOptionsProcessor;
+
   /**
    * Test {@link ProductOptionsProcessor#getName()}.
    * <p>
@@ -92,6 +87,109 @@ class ProductOptionsProcessorDiffblueTest {
   }
 
   /**
+   * Test {@link ProductOptionsProcessor#getPrecedence()}.
+   * <p>
+   * Method under test: {@link ProductOptionsProcessor#getPrecedence()}
+   */
+  @Test
+  @DisplayName("Test getPrecedence()")
+  @Disabled("TODO: Complete this test")
+  void testGetPrecedence3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11522 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.ProductOptionsProcessor productOptionsProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new ProductOptionsProcessor()).getPrecedence();
+  }
+
+  /**
+   * Test
+   * {@link ProductOptionsProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test:
+   * {@link ProductOptionsProcessor#populateModelVariables(String, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName("Test populateModelVariables(String, Map, BroadleafTemplateContext)")
+  @Disabled("TODO: Complete this test")
+  void testPopulateModelVariables() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11525 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.ProductOptionsProcessor productOptionsProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ProductOptionsProcessor productOptionsProcessor2 = new ProductOptionsProcessor();
+
+    // Act
+    productOptionsProcessor2.populateModelVariables("Tag Name", new HashMap<>(), mock(BroadleafTemplateContext.class));
+  }
+
+  /**
+   * Test
+   * {@link ProductOptionsProcessor#addProductOptionPricingToModel(Map, Product, BroadleafTemplateContext, Map)}.
+   * <p>
+   * Method under test:
+   * {@link ProductOptionsProcessor#addProductOptionPricingToModel(Map, Product, BroadleafTemplateContext, Map)}
+   */
+  @Test
+  @DisplayName("Test addProductOptionPricingToModel(Map, Product, BroadleafTemplateContext, Map)")
+  @Disabled("TODO: Complete this test")
+  void testAddProductOptionPricingToModel() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11421 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.ProductOptionsProcessor productOptionsProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ProductOptionsProcessor productOptionsProcessor2 = new ProductOptionsProcessor();
+    HashMap<String, Object> newModelVars = new HashMap<>();
+    ProductBundleImpl product = new ProductBundleImpl();
+    BroadleafTemplateContext context = mock(BroadleafTemplateContext.class);
+
+    // Act
+    productOptionsProcessor2.addProductOptionPricingToModel(newModelVars, product, context, new HashMap<>());
+  }
+
+  /**
    * Test
    * {@link ProductOptionsProcessor#addProductOptionPricingToModel(Map, Product, BroadleafTemplateContext, Map)}.
    * <ul>
@@ -119,6 +217,44 @@ class ProductOptionsProcessorDiffblueTest {
     // Assert
     assertEquals(1, newModelVars.size());
     assertEquals("[]", newModelVars.get("skuPricing"));
+  }
+
+  /**
+   * Test
+   * {@link ProductOptionsProcessor#createPricingDto(Sku, List, Map, BroadleafTemplateContext)}.
+   * <p>
+   * Method under test:
+   * {@link ProductOptionsProcessor#createPricingDto(Sku, List, Map, BroadleafTemplateContext)}
+   */
+  @Test
+  @DisplayName("Test createPricingDto(Sku, List, Map, BroadleafTemplateContext)")
+  @Disabled("TODO: Complete this test")
+  void testCreatePricingDto() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11470 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.ProductOptionsProcessor productOptionsProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ProductOptionsProcessor productOptionsProcessor2 = new ProductOptionsProcessor();
+    SkuImpl sku = new SkuImpl();
+    ArrayList<Long> productOptionValueIds = new ArrayList<>();
+
+    // Act
+    productOptionsProcessor2.createPricingDto(sku, productOptionValueIds, new HashMap<>(),
+        mock(BroadleafTemplateContext.class));
   }
 
   /**
@@ -221,6 +357,42 @@ class ProductOptionsProcessorDiffblueTest {
     // Assert
     assertEquals(1, newModelVars2.size());
     assertEquals("[]", newModelVars2.get("allProductOptions"));
+  }
+
+  /**
+   * Test
+   * {@link ProductOptionsProcessor#addAllProductOptionsToModel(Map, Product)}.
+   * <p>
+   * Method under test:
+   * {@link ProductOptionsProcessor#addAllProductOptionsToModel(Map, Product)}
+   */
+  @Test
+  @DisplayName("Test addAllProductOptionsToModel(Map, Product)")
+  @Disabled("TODO: Complete this test")
+  void testAddAllProductOptionsToModel2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11379 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.ProductOptionsProcessor productOptionsProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ProductOptionsProcessor productOptionsProcessor2 = new ProductOptionsProcessor();
+    HashMap<String, Object> newModelVars = new HashMap<>();
+
+    // Act
+    productOptionsProcessor2.addAllProductOptionsToModel(newModelVars, new ProductBundleImpl());
   }
 
   /**
@@ -1019,6 +1191,40 @@ class ProductOptionsProcessorDiffblueTest {
     // Assert
     assertEquals(1, newModelVars2.size());
     assertEquals("\"42\"", newModelVars2.get("Model Key"));
+  }
+
+  /**
+   * Test {@link ProductOptionsProcessor#writeJSONToModel(Map, String, Object)}.
+   * <p>
+   * Method under test:
+   * {@link ProductOptionsProcessor#writeJSONToModel(Map, String, Object)}
+   */
+  @Test
+  @DisplayName("Test writeJSONToModel(Map, String, Object)")
+  @Disabled("TODO: Complete this test")
+  void testWriteJSONToModel2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.processor;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass11543 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.processor.ProductOptionsProcessor productOptionsProcessor;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ProductOptionsProcessor productOptionsProcessor2 = new ProductOptionsProcessor();
+
+    // Act
+    productOptionsProcessor2.writeJSONToModel(new HashMap<>(), "Model Key", "42");
   }
 
   /**

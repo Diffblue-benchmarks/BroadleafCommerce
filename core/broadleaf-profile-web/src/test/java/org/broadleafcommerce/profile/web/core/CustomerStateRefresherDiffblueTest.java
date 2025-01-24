@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Profile Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.profile.web.core;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,10 +8,95 @@ import static org.mockito.Mockito.when;
 import java.util.HashMap;
 import org.broadleafcommerce.profile.core.domain.Customer;
 import org.broadleafcommerce.profile.core.domain.CustomerImpl;
+import org.broadleafcommerce.profile.core.domain.CustomerPersistedEvent;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-profile-web-applicationContext.xml",
+    "/blc-config/site/bl-profile-web-applicationContext-servlet.xml",
+    "/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class CustomerStateRefresherDiffblueTest {
+  @Autowired
+  private CustomerStateRefresher customerStateRefresher;
+
+  /**
+   * Test
+   * {@link CustomerStateRefresher#onApplicationEvent(CustomerPersistedEvent)}
+   * with {@code CustomerPersistedEvent}.
+   * <p>
+   * Method under test:
+   * {@link CustomerStateRefresher#onApplicationEvent(CustomerPersistedEvent)}
+   */
+  @Test
+  @DisplayName("Test onApplicationEvent(CustomerPersistedEvent) with 'CustomerPersistedEvent'")
+  @Disabled("TODO: Complete this test")
+  void testOnApplicationEventWithCustomerPersistedEvent() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.core;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass827 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.CustomerStateRefresher customerStateRefresher;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerStateRefresher customerStateRefresher2 = new CustomerStateRefresher();
+
+    // Act
+    customerStateRefresher2.onApplicationEvent(new CustomerPersistedEvent(new CustomerImpl()));
+  }
+
+  /**
+   * Test {@link CustomerStateRefresher#resetTransientFields(Customer, Customer)}.
+   * <p>
+   * Method under test:
+   * {@link CustomerStateRefresher#resetTransientFields(Customer, Customer)}
+   */
+  @Test
+  @DisplayName("Test resetTransientFields(Customer, Customer)")
+  @Disabled("TODO: Complete this test")
+  void testResetTransientFields() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.web.core;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-web-applicationContext.xml","/blc-config/admin/framework/bl-profile-web-applicationContext.xml","/blc-config/site/bl-profile-web-applicationContext-servlet.xml","/blc-config/site/framework/bl-profile-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass856 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.web.core.CustomerStateRefresher customerStateRefresher;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CustomerStateRefresher customerStateRefresher2 = new CustomerStateRefresher();
+    CustomerImpl preMergedCustomer = new CustomerImpl();
+
+    // Act
+    customerStateRefresher2.resetTransientFields(preMergedCustomer, new CustomerImpl());
+  }
+
   /**
    * Test {@link CustomerStateRefresher#resetTransientFields(Customer, Customer)}.
    * <ul>

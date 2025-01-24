@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.checkout.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,6 +24,7 @@ import org.broadleafcommerce.core.order.domain.NullOrderImpl;
 import org.broadleafcommerce.core.order.domain.Order;
 import org.broadleafcommerce.core.order.domain.OrderImpl;
 import org.broadleafcommerce.core.order.service.type.OrderStatus;
+import org.broadleafcommerce.core.web.checkout.model.BillingInfoForm;
 import org.broadleafcommerce.core.web.checkout.model.OrderInfoForm;
 import org.broadleafcommerce.core.web.checkout.model.PaymentInfoForm;
 import org.broadleafcommerce.core.web.checkout.model.ShippingInfoForm;
@@ -54,11 +38,63 @@ import org.broadleafcommerce.profile.core.domain.CustomerPayment;
 import org.broadleafcommerce.profile.core.domain.CustomerPaymentImpl;
 import org.broadleafcommerce.profile.core.domain.PhoneImpl;
 import org.broadleafcommerce.profile.core.domain.StateImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.ui.ConcurrentModel;
+import org.springframework.ui.Model;
 
+@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class CheckoutFormServiceImplDiffblueTest {
+  @Autowired
+  private CheckoutFormServiceImpl checkoutFormServiceImpl;
+
+  /**
+   * Test
+   * {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateOrderInfoForm(OrderInfoForm, Order)")
+  @Disabled("TODO: Complete this test")
+  void testPrePopulateOrderInfoForm() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3199 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+
+    OrderInfoForm orderInfoForm = new OrderInfoForm();
+    orderInfoForm.setEmailAddress("42 Main St");
+
+    // Act
+    checkoutFormServiceImpl2.prePopulateOrderInfoForm(orderInfoForm, new NullOrderImpl());
+  }
+
   /**
    * Test
    * {@link CheckoutFormServiceImpl#prePopulateOrderInfoForm(OrderInfoForm, Order)}.
@@ -118,6 +154,159 @@ class CheckoutFormServiceImplDiffblueTest {
     // Assert
     verify(orderInfoForm, atLeast(1)).setEmailAddress(Mockito.<String>any());
     assertSame(orderInfoForm, actualPrePopulateOrderInfoFormResult);
+  }
+
+  /**
+   * Test
+   * {@link CheckoutFormServiceImpl#prePopulateShippingInfoForm(ShippingInfoForm, Order)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#prePopulateShippingInfoForm(ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateShippingInfoForm(ShippingInfoForm, Order)")
+  @Disabled("TODO: Complete this test")
+  void testPrePopulateShippingInfoForm() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3556 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
+
+    // Act
+    checkoutFormServiceImpl2.prePopulateShippingInfoForm(shippingInfoForm, new NullOrderImpl());
+  }
+
+  /**
+   * Test
+   * {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulateBillingInfoForm(BillingInfoForm, ShippingInfoForm, Order)")
+  @Disabled("TODO: Complete this test")
+  void testPrePopulateBillingInfoForm() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3072 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+
+    BillingInfoForm billingInfoForm = new BillingInfoForm();
+    billingInfoForm.setAddress(new AddressImpl());
+    billingInfoForm.setCustomerPayment(new CustomerPaymentImpl());
+    billingInfoForm.setCustomerPaymentId(1L);
+    billingInfoForm.setPaymentName("Payment Name");
+    billingInfoForm.setSaveNewPayment(true);
+    billingInfoForm.setUseCustomerPayment(true);
+    billingInfoForm.setUseShippingAddress(true);
+    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
+
+    // Act
+    checkoutFormServiceImpl2.prePopulateBillingInfoForm(billingInfoForm, shippingInfoForm, new NullOrderImpl());
+  }
+
+  /**
+   * Test
+   * {@link CheckoutFormServiceImpl#prePopulatePaymentInfoForm(PaymentInfoForm, ShippingInfoForm, Order)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#prePopulatePaymentInfoForm(PaymentInfoForm, ShippingInfoForm, Order)}
+   */
+  @Test
+  @DisplayName("Test prePopulatePaymentInfoForm(PaymentInfoForm, ShippingInfoForm, Order)")
+  @Disabled("TODO: Complete this test")
+  void testPrePopulatePaymentInfoForm() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3522 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
+    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
+
+    // Act
+    checkoutFormServiceImpl2.prePopulatePaymentInfoForm(paymentInfoForm, shippingInfoForm, new NullOrderImpl());
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#getKnownEmailAddress(Order, Customer)}
+   */
+  @Test
+  @DisplayName("Test getKnownEmailAddress(Order, Customer)")
+  @Disabled("TODO: Complete this test")
+  void testGetKnownEmailAddress() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2982 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    NullOrderImpl cart = new NullOrderImpl();
+
+    // Act
+    checkoutFormServiceImpl2.getKnownEmailAddress(cart, new CustomerImpl());
   }
 
   /**
@@ -357,6 +546,201 @@ class CheckoutFormServiceImplDiffblueTest {
 
     // Act and Assert
     assertNull(checkoutFormServiceImpl.getKnownEmailAddress(cart, new CustomerImpl()));
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getBillingAddress(Order)}.
+   * <p>
+   * Method under test: {@link CheckoutFormServiceImpl#getBillingAddress(Order)}
+   */
+  @Test
+  @DisplayName("Test getBillingAddress(Order)")
+  @Disabled("TODO: Complete this test")
+  void testGetBillingAddress() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2967 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+
+    // Act
+    checkoutFormServiceImpl2.getBillingAddress(new NullOrderImpl());
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#getAddressFromCCOrderPayment(Order)}
+   */
+  @Test
+  @DisplayName("Test getAddressFromCCOrderPayment(Order)")
+  @Disabled("TODO: Complete this test")
+  void testGetAddressFromCCOrderPayment() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2954 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+
+    // Act
+    checkoutFormServiceImpl2.getAddressFromCCOrderPayment(new NullOrderImpl());
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getCustomerPaymentUsedForOrder()}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#getCustomerPaymentUsedForOrder()}
+   */
+  @Test
+  @DisplayName("Test getCustomerPaymentUsedForOrder()")
+  @Disabled("TODO: Complete this test")
+  void testGetCustomerPaymentUsedForOrder() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2980 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CheckoutFormServiceImpl()).getCustomerPaymentUsedForOrder();
+  }
+
+  /**
+   * Test
+   * {@link CheckoutFormServiceImpl#getShouldUseCustomerPaymentDefaultValue(CustomerPayment)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#getShouldUseCustomerPaymentDefaultValue(CustomerPayment)}
+   */
+  @Test
+  @DisplayName("Test getShouldUseCustomerPaymentDefaultValue(CustomerPayment)")
+  @Disabled("TODO: Complete this test")
+  void testGetShouldUseCustomerPaymentDefaultValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3023 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+
+    // Act
+    checkoutFormServiceImpl2.getShouldUseCustomerPaymentDefaultValue(new CustomerPaymentImpl());
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#getShouldSaveNewPaymentDefaultValue()}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#getShouldSaveNewPaymentDefaultValue()}
+   */
+  @Test
+  @DisplayName("Test getShouldSaveNewPaymentDefaultValue()")
+  @Disabled("TODO: Complete this test")
+  void testGetShouldSaveNewPaymentDefaultValue() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3021 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CheckoutFormServiceImpl()).getShouldSaveNewPaymentDefaultValue();
+  }
+
+  /**
+   * Test {@link CheckoutFormServiceImpl#areCustomerSavedPaymentsEnabled()}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#areCustomerSavedPaymentsEnabled()}
+   */
+  @Test
+  @DisplayName("Test areCustomerSavedPaymentsEnabled()")
+  @Disabled("TODO: Complete this test")
+  void testAreCustomerSavedPaymentsEnabled() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2921 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CheckoutFormServiceImpl()).areCustomerSavedPaymentsEnabled();
   }
 
   /**
@@ -647,6 +1031,44 @@ class CheckoutFormServiceImplDiffblueTest {
     verify(address).getAddressLine1();
     verify(address).getAddressLine2();
     assertFalse(actualShouldUseShippingAddressDefaultValue);
+  }
+
+  /**
+   * Test
+   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)}
+   */
+  @Test
+  @DisplayName("Test getShouldUseShippingAddressDefaultValue(CustomerPayment, PaymentInfoForm, ShippingInfoForm)")
+  @Disabled("TODO: Complete this test")
+  void testGetShouldUseShippingAddressDefaultValue5() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3037 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    CustomerPaymentImpl customerPaymentUsedForOrder = new CustomerPaymentImpl();
+    PaymentInfoForm paymentInfoForm = new PaymentInfoForm();
+
+    // Act
+    checkoutFormServiceImpl2.getShouldUseShippingAddressDefaultValue(customerPaymentUsedForOrder, paymentInfoForm,
+        new ShippingInfoForm());
   }
 
   /**
@@ -1004,6 +1426,115 @@ class CheckoutFormServiceImplDiffblueTest {
     // Act and Assert
     assertFalse(
         checkoutFormServiceImpl.getShouldUseShippingAddressDefaultValue(null, paymentInfoForm, shippingInfoForm));
+  }
+
+  /**
+   * Test
+   * {@link CheckoutFormServiceImpl#prePopulateInfoForms(ShippingInfoForm, PaymentInfoForm)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#prePopulateInfoForms(ShippingInfoForm, PaymentInfoForm)}
+   */
+  @Test
+  @DisplayName("Test prePopulateInfoForms(ShippingInfoForm, PaymentInfoForm)")
+  @Disabled("TODO: Complete this test")
+  void testPrePopulateInfoForms() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3176 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
+
+    // Act
+    checkoutFormServiceImpl2.prePopulateInfoForms(shippingInfoForm, new PaymentInfoForm());
+  }
+
+  /**
+   * Test
+   * {@link CheckoutFormServiceImpl#determineIfSavedAddressIsSelected(Model, ShippingInfoForm, PaymentInfoForm)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#determineIfSavedAddressIsSelected(Model, ShippingInfoForm, PaymentInfoForm)}
+   */
+  @Test
+  @DisplayName("Test determineIfSavedAddressIsSelected(Model, ShippingInfoForm, PaymentInfoForm)")
+  @Disabled("TODO: Complete this test")
+  void testDetermineIfSavedAddressIsSelected() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2923 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    ConcurrentModel model = new ConcurrentModel();
+    ShippingInfoForm shippingInfoForm = new ShippingInfoForm();
+
+    // Act
+    checkoutFormServiceImpl2.determineIfSavedAddressIsSelected(model, shippingInfoForm, new PaymentInfoForm());
+  }
+
+  /**
+   * Test
+   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}.
+   * <p>
+   * Method under test:
+   * {@link CheckoutFormServiceImpl#addressesContentsAreEqual(Address, Address)}
+   */
+  @Test
+  @DisplayName("Test addressesContentsAreEqual(Address, Address)")
+  @Disabled("TODO: Complete this test")
+  void testAddressesContentsAreEqual() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.checkout.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2847 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.checkout.service.CheckoutFormServiceImpl checkoutFormServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CheckoutFormServiceImpl checkoutFormServiceImpl2 = new CheckoutFormServiceImpl();
+    AddressImpl address1 = new AddressImpl();
+
+    // Act
+    checkoutFormServiceImpl2.addressesContentsAreEqual(address1, new AddressImpl());
   }
 
   /**

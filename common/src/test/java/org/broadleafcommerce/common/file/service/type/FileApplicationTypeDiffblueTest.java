@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -31,6 +31,21 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class FileApplicationTypeDiffblueTest {
   @Autowired
   private FileApplicationType fileApplicationType;
+
+  /**
+   * Test {@link FileApplicationType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link FileApplicationType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    FileApplicationType actualInstance = FileApplicationType.getInstance("Type");
+
+    // Assert
+    assertEquals("/", actualInstance.getFriendlyType());
+    assertEquals("Type", actualInstance.getType());
+  }
 
   /**
    * Test getters and setters.

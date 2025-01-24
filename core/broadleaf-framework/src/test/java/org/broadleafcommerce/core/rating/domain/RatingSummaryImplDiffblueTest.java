@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.rating.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -26,9 +9,24 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadleafcommerce.core.rating.service.type.RatingType;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class RatingSummaryImplDiffblueTest {
+  @Autowired
+  private RatingSummaryImpl ratingSummaryImpl;
+
   /**
    * Test getters and setters.
    * <p>
@@ -60,6 +58,35 @@ public class RatingSummaryImplDiffblueTest {
     assertEquals("42", ratingSummaryImpl.getItemId());
     assertEquals(0.0d, actualAverageRating.doubleValue(), 0.0);
     assertEquals(1L, actualId.longValue());
+  }
+
+  /**
+   * Test {@link RatingSummaryImpl#resetAverageRating()}.
+   * <p>
+   * Method under test: {@link RatingSummaryImpl#resetAverageRating()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testResetAverageRating() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.rating.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3936 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new RatingSummaryImpl()).resetAverageRating();
   }
 
   /**
@@ -182,6 +209,35 @@ public class RatingSummaryImplDiffblueTest {
 
   /**
    * Test {@link RatingSummaryImpl#getNumberOfRatings()}.
+   * <p>
+   * Method under test: {@link RatingSummaryImpl#getNumberOfRatings()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetNumberOfRatings() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.rating.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3901 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new RatingSummaryImpl()).getNumberOfRatings();
+  }
+
+  /**
+   * Test {@link RatingSummaryImpl#getNumberOfRatings()}.
    * <ul>
    *   <li>Given {@link RatingSummaryImpl} (default constructor).</li>
    * </ul>
@@ -256,6 +312,35 @@ public class RatingSummaryImplDiffblueTest {
 
   /**
    * Test {@link RatingSummaryImpl#getNumberOfReviews()}.
+   * <p>
+   * Method under test: {@link RatingSummaryImpl#getNumberOfReviews()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetNumberOfReviews() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.rating.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3908 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new RatingSummaryImpl()).getNumberOfReviews();
+  }
+
+  /**
+   * Test {@link RatingSummaryImpl#getNumberOfReviews()}.
    * <ul>
    *   <li>Given {@link RatingSummaryImpl} (default constructor).</li>
    * </ul>
@@ -326,6 +411,35 @@ public class RatingSummaryImplDiffblueTest {
     // Assert
     verify(type).getType();
     assertEquals(0, actualNumberOfReviews.intValue());
+  }
+
+  /**
+   * Test {@link RatingSummaryImpl#getRatingType()}.
+   * <p>
+   * Method under test: {@link RatingSummaryImpl#getRatingType()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRatingType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.rating.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3915 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new RatingSummaryImpl()).getRatingType();
   }
 
   /**
@@ -407,6 +521,35 @@ public class RatingSummaryImplDiffblueTest {
     verify(type).getType();
     assertEquals("Type", actualRatingType.getFriendlyType());
     assertEquals("Type", actualRatingType.getType());
+  }
+
+  /**
+   * Test {@link RatingSummaryImpl#setRatingType(RatingType)}.
+   * <p>
+   * Method under test: {@link RatingSummaryImpl#setRatingType(RatingType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetRatingType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.rating.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3943 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new RatingSummaryImpl()).setRatingType(RatingType.PRODUCT);
   }
 
   /**
@@ -499,6 +642,35 @@ public class RatingSummaryImplDiffblueTest {
 
   /**
    * Test {@link RatingSummaryImpl#getRatings()}.
+   * <p>
+   * Method under test: {@link RatingSummaryImpl#getRatings()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetRatings() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.rating.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3922 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new RatingSummaryImpl()).getRatings();
+  }
+
+  /**
+   * Test {@link RatingSummaryImpl#getRatings()}.
    * <ul>
    *   <li>Given {@link RatingSummaryImpl} (default constructor).</li>
    * </ul>
@@ -569,6 +741,35 @@ public class RatingSummaryImplDiffblueTest {
     // Assert
     verify(type).getType();
     assertTrue(actualRatings.isEmpty());
+  }
+
+  /**
+   * Test {@link RatingSummaryImpl#getReviews()}.
+   * <p>
+   * Method under test: {@link RatingSummaryImpl#getReviews()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetReviews() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.rating.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3929 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new RatingSummaryImpl()).getReviews();
   }
 
   /**
@@ -672,5 +873,35 @@ public class RatingSummaryImplDiffblueTest {
     assertTrue(actualRatingSummaryImpl.getReviews().isEmpty());
     assertTrue(actualRatingSummaryImpl.ratings.isEmpty());
     assertTrue(actualRatingSummaryImpl.reviews.isEmpty());
+  }
+
+  /**
+   * Test new {@link RatingSummaryImpl} (default constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link RatingSummaryImpl}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewRatingSummaryImpl2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.rating.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3900 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.rating.domain.RatingSummaryImpl ratingSummaryImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    new RatingSummaryImpl();
   }
 }

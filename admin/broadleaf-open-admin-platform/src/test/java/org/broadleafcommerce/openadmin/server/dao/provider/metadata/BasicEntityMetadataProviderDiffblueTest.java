@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
 import static org.junit.Assert.assertEquals;
@@ -45,10 +28,25 @@ import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddM
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest;
 import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
 import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BasicEntityMetadataProviderDiffblueTest {
+  @Autowired
+  private BasicEntityMetadataProvider basicEntityMetadataProvider;
+
   /**
    * Test
    * {@link BasicEntityMetadataProvider#addTabAndGroupMetadata(AddMetadataRequest, Map)}.
@@ -97,6 +95,44 @@ public class BasicEntityMetadataProviderDiffblueTest {
 
   /**
    * Test
+   * {@link BasicEntityMetadataProvider#addTabAndGroupMetadata(AddMetadataRequest, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicEntityMetadataProvider#addTabAndGroupMetadata(AddMetadataRequest, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddTabAndGroupMetadata3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass18707 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicEntityMetadataProvider basicEntityMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicEntityMetadataProvider basicEntityMetadataProvider2 = new BasicEntityMetadataProvider();
+    Class<Object> parentClass = Object.class;
+    Class<Object> targetClass = Object.class;
+    AddMetadataRequest addMetadataRequest = new AddMetadataRequest(parentClass, targetClass, new DynamicEntityDaoImpl(),
+        "Prefix");
+
+    // Act
+    basicEntityMetadataProvider2.addTabAndGroupMetadata(addMetadataRequest, new HashMap<>());
+  }
+
+  /**
+   * Test
    * {@link BasicEntityMetadataProvider#overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)}.
    * <p>
    * Method under test:
@@ -141,6 +177,43 @@ public class BasicEntityMetadataProviderDiffblueTest {
 
   /**
    * Test
+   * {@link BasicEntityMetadataProvider#overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicEntityMetadataProvider#overrideMetadataViaAnnotation(OverrideViaAnnotationRequest, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testOverrideMetadataViaAnnotation3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass19994 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicEntityMetadataProvider basicEntityMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicEntityMetadataProvider basicEntityMetadataProvider2 = new BasicEntityMetadataProvider();
+    Class<Object> requestedEntity = Object.class;
+    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
+        new DynamicEntityDaoImpl(), "Prefix");
+
+    // Act
+    basicEntityMetadataProvider2.overrideMetadataViaAnnotation(overrideViaAnnotationRequest, new HashMap<>());
+  }
+
+  /**
+   * Test
    * {@link BasicEntityMetadataProvider#overrideMetadataViaXml(OverrideViaXmlRequest, Map)}.
    * <p>
    * Method under test:
@@ -158,6 +231,42 @@ public class BasicEntityMetadataProviderDiffblueTest {
     // Act and Assert
     assertEquals(MetadataProviderResponse.HANDLED,
         basicEntityMetadataProvider.overrideMetadataViaXml(overrideViaXmlRequest, new HashMap<>()));
+  }
+
+  /**
+   * Test
+   * {@link BasicEntityMetadataProvider#overrideMetadataViaXml(OverrideViaXmlRequest, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicEntityMetadataProvider#overrideMetadataViaXml(OverrideViaXmlRequest, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testOverrideMetadataViaXml2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass20318 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicEntityMetadataProvider basicEntityMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicEntityMetadataProvider basicEntityMetadataProvider2 = new BasicEntityMetadataProvider();
+    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
+        "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
+
+    // Act
+    basicEntityMetadataProvider2.overrideMetadataViaXml(overrideViaXmlRequest, new HashMap<>());
   }
 
   /**
@@ -527,6 +636,48 @@ public class BasicEntityMetadataProviderDiffblueTest {
   /**
    * Test
    * {@link BasicEntityMetadataProvider#addTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicEntityMetadataProvider#addTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddTabAndGroupMetadataFromCmdProperties7() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass19031 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicEntityMetadataProvider basicEntityMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicEntityMetadataProvider basicEntityMetadataProvider2 = new BasicEntityMetadataProvider();
+
+    ClassMetadata cmd = new ClassMetadata();
+    cmd.setCeilingType("Type");
+    cmd.setCurrencyCode("GBP");
+    cmd.setPolymorphicEntities(new ClassTree());
+    cmd.setProperties(new Property[]{new Property()});
+    cmd.setSecurityCeilingType("Security Ceiling Type");
+    cmd.setTabAndGroupMetadata(new HashMap<>());
+
+    // Act
+    basicEntityMetadataProvider2.addTabAndGroupMetadataFromCmdProperties(cmd, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link BasicEntityMetadataProvider#addTabAndGroupMetadataFromCmdProperties(ClassMetadata, Map)}.
    * <ul>
    *   <li>Then calls {@link TabMetadata#getGroupMetadata()}.</li>
    * </ul>
@@ -852,6 +1003,42 @@ public class BasicEntityMetadataProviderDiffblueTest {
   /**
    * Test
    * {@link BasicEntityMetadataProvider#buildTabMetadata(AdminTabPresentation, Class, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicEntityMetadataProvider#buildTabMetadata(AdminTabPresentation, Class, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildTabMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass19670 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicEntityMetadataProvider basicEntityMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicEntityMetadataProvider basicEntityMetadataProvider2 = new BasicEntityMetadataProvider();
+    AdminTabPresentation tabPresentation = mock(AdminTabPresentation.class);
+    Class<Object> owningClass = Object.class;
+
+    // Act
+    basicEntityMetadataProvider2.buildTabMetadata(tabPresentation, owningClass, new HashMap<>());
+  }
+
+  /**
+   * Test
+   * {@link BasicEntityMetadataProvider#buildTabMetadata(AdminTabPresentation, Class, Map)}.
    * <ul>
    *   <li>Given {@link TabMetadata} (default constructor).</li>
    *   <li>When {@link HashMap#HashMap()} {@code foo} is {@link TabMetadata}
@@ -1033,6 +1220,42 @@ public class BasicEntityMetadataProviderDiffblueTest {
     assertTrue(firstGroup.getCollapsed());
     assertTrue(firstGroup.getUntitled());
     assertSame(firstGroup, groupMetadata.get("Name"));
+  }
+
+  /**
+   * Test
+   * {@link BasicEntityMetadataProvider#buildGroupMetadata(AdminGroupPresentation, Class, Map)}.
+   * <p>
+   * Method under test:
+   * {@link BasicEntityMetadataProvider#buildGroupMetadata(AdminGroupPresentation, Class, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testBuildGroupMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass19346 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.BasicEntityMetadataProvider basicEntityMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicEntityMetadataProvider basicEntityMetadataProvider2 = new BasicEntityMetadataProvider();
+    AdminGroupPresentation groupPresentation = mock(AdminGroupPresentation.class);
+    Class<Object> owningClass = Object.class;
+
+    // Act
+    basicEntityMetadataProvider2.buildGroupMetadata(groupPresentation, owningClass, new HashMap<>());
   }
 
   /**

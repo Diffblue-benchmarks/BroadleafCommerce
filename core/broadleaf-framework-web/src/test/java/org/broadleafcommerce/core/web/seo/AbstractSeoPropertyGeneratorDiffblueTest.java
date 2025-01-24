@@ -1,23 +1,7 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.seo;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -34,10 +18,132 @@ import org.broadleafcommerce.core.catalog.domain.ProductAttribute;
 import org.broadleafcommerce.core.catalog.domain.ProductAttributeImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
 import org.broadleafcommerce.core.catalog.domain.ProductImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.env.Environment;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class AbstractSeoPropertyGeneratorDiffblueTest {
+  @MockBean
+  private AbstractSeoPropertyGenerator abstractSeoPropertyGenerator;
+
+  @MockBean
+  private Environment environment;
+
+  @MockBean
+  private SeoDefaultPropertyService seoDefaultPropertyService;
+
+  /**
+   * Test {@link AbstractSeoPropertyGenerator#gatherSeoProperties(Category)} with
+   * {@code category}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#gatherSeoProperties(Category)}
+   */
+  @Test
+  @DisplayName("Test gatherSeoProperties(Category) with 'category'")
+  void testGatherSeoPropertiesWithCategory() {
+    // Arrange
+    when(abstractSeoPropertyGenerator.gatherSeoProperties(Mockito.<Category>any())).thenReturn(new HashMap<>());
+
+    // Act
+    Map<String, String> actualGatherSeoPropertiesResult = abstractSeoPropertyGenerator
+        .gatherSeoProperties(new CategoryImpl());
+
+    // Assert
+    verify(abstractSeoPropertyGenerator).gatherSeoProperties(isA(Category.class));
+    assertTrue(actualGatherSeoPropertiesResult.isEmpty());
+  }
+
+  /**
+   * Test {@link AbstractSeoPropertyGenerator#gatherSeoProperties(PageDTO)} with
+   * {@code page}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#gatherSeoProperties(PageDTO)}
+   */
+  @Test
+  @DisplayName("Test gatherSeoProperties(PageDTO) with 'page'")
+  void testGatherSeoPropertiesWithPage() {
+    // Arrange
+    when(abstractSeoPropertyGenerator.gatherSeoProperties(Mockito.<PageDTO>any())).thenReturn(new HashMap<>());
+
+    // Act
+    Map<String, String> actualGatherSeoPropertiesResult = abstractSeoPropertyGenerator
+        .gatherSeoProperties(new PageDTO());
+
+    // Assert
+    verify(abstractSeoPropertyGenerator).gatherSeoProperties(isA(PageDTO.class));
+    assertTrue(actualGatherSeoPropertiesResult.isEmpty());
+  }
+
+  /**
+   * Test {@link AbstractSeoPropertyGenerator#gatherSeoProperties(Product)} with
+   * {@code product}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#gatherSeoProperties(Product)}
+   */
+  @Test
+  @DisplayName("Test gatherSeoProperties(Product) with 'product'")
+  void testGatherSeoPropertiesWithProduct() {
+    // Arrange
+    when(abstractSeoPropertyGenerator.gatherSeoProperties(Mockito.<Product>any())).thenReturn(new HashMap<>());
+
+    // Act
+    Map<String, String> actualGatherSeoPropertiesResult = abstractSeoPropertyGenerator
+        .gatherSeoProperties(new ProductBundleImpl());
+
+    // Assert
+    verify(abstractSeoPropertyGenerator).gatherSeoProperties(isA(Product.class));
+    assertTrue(actualGatherSeoPropertiesResult.isEmpty());
+  }
+
+  /**
+   * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(Category)} with
+   * {@code category}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(Category)}
+   */
+  @Test
+  @DisplayName("Test getSimpleProperties(Category) with 'category'")
+  @Disabled("TODO: Complete this test")
+  void testGetSimplePropertiesWithCategory() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.seo;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2174 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.seo.AbstractSeoPropertyGenerator abstractSeoPropertyGenerator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    // Act
+    basicSeoPropertyGeneratorImpl.getSimpleProperties(new CategoryImpl());
+  }
+
   /**
    * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(Category)} with
    * {@code category}.
@@ -124,6 +230,41 @@ class AbstractSeoPropertyGeneratorDiffblueTest {
   /**
    * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(PageDTO)} with
    * {@code page}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(PageDTO)}
+   */
+  @Test
+  @DisplayName("Test getSimpleProperties(PageDTO) with 'page'")
+  @Disabled("TODO: Complete this test")
+  void testGetSimplePropertiesWithPage() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.seo;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2155 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.seo.AbstractSeoPropertyGenerator abstractSeoPropertyGenerator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    // Act
+    basicSeoPropertyGeneratorImpl.getSimpleProperties(new PageDTO());
+  }
+
+  /**
+   * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(PageDTO)} with
+   * {@code page}.
    * <ul>
    *   <li>Given {@link HashMap#HashMap()} {@code foo} is {@code foo}.</li>
    *   <li>Then calls {@link PageDTO#getPageAttributes()}.</li>
@@ -203,6 +344,41 @@ class AbstractSeoPropertyGeneratorDiffblueTest {
 
     // Act and Assert
     assertTrue(basicSeoPropertyGeneratorImpl.getSimpleProperties(new PageDTO()).isEmpty());
+  }
+
+  /**
+   * Test {@link AbstractSeoPropertyGenerator#getSimpleProperties(Product)} with
+   * {@code product}.
+   * <p>
+   * Method under test:
+   * {@link AbstractSeoPropertyGenerator#getSimpleProperties(Product)}
+   */
+  @Test
+  @DisplayName("Test getSimpleProperties(Product) with 'product'")
+  @Disabled("TODO: Complete this test")
+  void testGetSimplePropertiesWithProduct() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.seo;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2210 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.seo.AbstractSeoPropertyGenerator abstractSeoPropertyGenerator;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    BasicSeoPropertyGeneratorImpl basicSeoPropertyGeneratorImpl = new BasicSeoPropertyGeneratorImpl();
+
+    // Act
+    basicSeoPropertyGeneratorImpl.getSimpleProperties(new ProductBundleImpl());
   }
 
   /**

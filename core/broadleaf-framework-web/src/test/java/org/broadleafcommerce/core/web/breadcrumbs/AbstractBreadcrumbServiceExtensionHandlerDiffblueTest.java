@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.breadcrumbs;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,10 +15,24 @@ import org.broadleafcommerce.common.breadcrumbs.dto.BreadcrumbDTO;
 import org.broadleafcommerce.common.extension.ExtensionResultHolder;
 import org.broadleafcommerce.common.extension.ExtensionResultStatusType;
 import org.broadleafcommerce.core.catalog.domain.CategoryImpl;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml",
+    "/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+@ExtendWith(SpringExtension.class)
 class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
+  @Autowired
+  private AbstractBreadcrumbServiceExtensionHandler abstractBreadcrumbServiceExtensionHandler;
+
   /**
    * Test
    * {@link AbstractBreadcrumbServiceExtensionHandler#modifyBreadcrumbList(String, Map, ExtensionResultHolder)}.
@@ -88,6 +85,37 @@ class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
     // Act and Assert
     assertEquals(ExtensionResultStatusType.HANDLED_CONTINUE,
         categoryBreadcrumbServiceExtensionHandler.modifyBreadcrumbList("https://example.org/example", params, holder));
+  }
+
+  /**
+   * Test {@link AbstractBreadcrumbServiceExtensionHandler#getPriority()}.
+   * <p>
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#getPriority()}
+   */
+  @Test
+  @DisplayName("Test getPriority()")
+  @Disabled("TODO: Complete this test")
+  void testGetPriority() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.breadcrumbs;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass969 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.AbstractBreadcrumbServiceExtensionHandler abstractBreadcrumbServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CategoryBreadcrumbServiceExtensionHandler()).getPriority();
   }
 
   /**
@@ -187,6 +215,37 @@ class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link AbstractBreadcrumbServiceExtensionHandler#setPriority(Integer)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#setPriority(Integer)}
+   */
+  @Test
+  @DisplayName("Test setPriority(Integer)")
+  @Disabled("TODO: Complete this test")
+  void testSetPriority2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.breadcrumbs;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass981 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.AbstractBreadcrumbServiceExtensionHandler abstractBreadcrumbServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CategoryBreadcrumbServiceExtensionHandler()).setPriority(1);
+  }
+
+  /**
+   * Test {@link AbstractBreadcrumbServiceExtensionHandler#setPriority(Integer)}.
    * <ul>
    *   <li>Then calls {@link CategoryImpl#getParentCategory()}.</li>
    * </ul>
@@ -215,6 +274,41 @@ class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
     verify(category).getParentCategory();
     assertEquals(1, categoryBreadcrumbServiceExtensionHandler.priority.intValue());
     assertEquals(1, categoryBreadcrumbServiceExtensionHandler.getPriority());
+  }
+
+  /**
+   * Test
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#buildLink(String, Map)}
+   */
+  @Test
+  @DisplayName("Test buildLink(String, Map)")
+  @Disabled("TODO: Complete this test")
+  void testBuildLink() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.breadcrumbs;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass954 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.AbstractBreadcrumbServiceExtensionHandler abstractBreadcrumbServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    CategoryBreadcrumbServiceExtensionHandler categoryBreadcrumbServiceExtensionHandler = new CategoryBreadcrumbServiceExtensionHandler();
+
+    // Act
+    categoryBreadcrumbServiceExtensionHandler.buildLink("https://example.org/example", new HashMap<>());
   }
 
   /**
@@ -447,6 +541,37 @@ class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
 
   /**
    * Test {@link AbstractBreadcrumbServiceExtensionHandler#isEnabled()}.
+   * <p>
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#isEnabled()}
+   */
+  @Test
+  @DisplayName("Test isEnabled()")
+  @Disabled("TODO: Complete this test")
+  void testIsEnabled() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.breadcrumbs;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass973 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.AbstractBreadcrumbServiceExtensionHandler abstractBreadcrumbServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CategoryBreadcrumbServiceExtensionHandler()).isEnabled();
+  }
+
+  /**
+   * Test {@link AbstractBreadcrumbServiceExtensionHandler#isEnabled()}.
    * <ul>
    *   <li>Given {@link CategoryBreadcrumbServiceExtensionHandler} (default
    * constructor).</li>
@@ -526,6 +651,37 @@ class AbstractBreadcrumbServiceExtensionHandlerDiffblueTest {
     // Assert
     verify(category).getParentCategory();
     assertTrue(actualIsEnabledResult);
+  }
+
+  /**
+   * Test {@link AbstractBreadcrumbServiceExtensionHandler#setEnabled(boolean)}.
+   * <p>
+   * Method under test:
+   * {@link AbstractBreadcrumbServiceExtensionHandler#setEnabled(boolean)}
+   */
+  @Test
+  @DisplayName("Test setEnabled(boolean)")
+  @Disabled("TODO: Complete this test")
+  void testSetEnabled() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.web.breadcrumbs;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-web-applicationContext.xml","/blc-config/admin/framework/bl-framework-web-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-web-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass977 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.web.breadcrumbs.AbstractBreadcrumbServiceExtensionHandler abstractBreadcrumbServiceExtensionHandler;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new CategoryBreadcrumbServiceExtensionHandler()).setEnabled(true);
   }
 
   /**

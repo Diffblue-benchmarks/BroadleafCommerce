@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce CMS Module
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.cms.url.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -29,11 +12,62 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.broadleafcommerce.cms.url.type.URLRedirectType;
 import org.broadleafcommerce.common.copy.CreateResponse;
+import org.broadleafcommerce.common.copy.MultiTenantCopierExtensionManager;
 import org.broadleafcommerce.common.copy.MultiTenantCopyContext;
+import org.broadleafcommerce.common.service.GenericEntityServiceImpl;
+import org.broadleafcommerce.common.site.domain.CatalogImpl;
+import org.broadleafcommerce.common.site.domain.SiteImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml",
+    "/applicationContext-servlet-cms-contentClient.xml", "/applicationContext-servlet-cms-contentCreator.xml",
+    "/bl-cms-contentClient-applicationContext.xml", "/bl-cms-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-cms-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext-servlet.xml",
+    "/blc-config/site/framework/bl-cms-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class URLHandlerImplDiffblueTest {
+  @Autowired
+  private URLHandlerImpl uRLHandlerImpl;
+
+  /**
+   * Test {@link URLHandlerImpl#getUrlRedirectType()}.
+   * <p>
+   * Method under test: {@link URLHandlerImpl#getUrlRedirectType()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetUrlRedirectType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.url.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9306 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.domain.URLHandlerImpl uRLHandlerImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new URLHandlerImpl()).getUrlRedirectType();
+  }
+
   /**
    * Test {@link URLHandlerImpl#getUrlRedirectType()}.
    * <ul>
@@ -49,6 +83,144 @@ public class URLHandlerImplDiffblueTest {
 
     // Arrange, Act and Assert
     assertNull((new URLHandlerImpl()).getUrlRedirectType());
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#getUrlRedirectType()}.
+   * <ul>
+   *   <li>Then return FriendlyType is {@code https://example.org/example}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerImpl#getUrlRedirectType()}
+   */
+  @Test
+  public void testGetUrlRedirectType_thenReturnFriendlyTypeIsHttpsExampleOrgExample() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    URLRedirectType redirectType = mock(URLRedirectType.class);
+    when(redirectType.getType()).thenReturn("https://example.org/example");
+
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setUrlRedirectType(redirectType);
+
+    // Act
+    URLRedirectType actualUrlRedirectType = urlHandlerImpl.getUrlRedirectType();
+
+    // Assert
+    verify(redirectType).getType();
+    assertEquals("https://example.org/example", actualUrlRedirectType.getFriendlyType());
+    assertEquals("https://example.org/example", actualUrlRedirectType.getType());
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#setUrlRedirectType(URLRedirectType)}.
+   * <p>
+   * Method under test: {@link URLHandlerImpl#setUrlRedirectType(URLRedirectType)}
+   */
+  @Test
+  public void testSetUrlRedirectType() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    URLRedirectType redirectType = mock(URLRedirectType.class);
+    when(redirectType.getType()).thenReturn("https://example.org/example");
+
+    // Act
+    urlHandlerImpl.setUrlRedirectType(redirectType);
+
+    // Assert
+    verify(redirectType).getType();
+    URLRedirectType urlRedirectType = urlHandlerImpl.getUrlRedirectType();
+    assertEquals("https://example.org/example", urlRedirectType.getFriendlyType());
+    assertEquals("https://example.org/example", urlRedirectType.getType());
+    assertEquals("https://example.org/example", urlHandlerImpl.urlRedirectType);
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#setUrlRedirectType(URLRedirectType)}.
+   * <p>
+   * Method under test: {@link URLHandlerImpl#setUrlRedirectType(URLRedirectType)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetUrlRedirectType2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.url.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9660 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.domain.URLHandlerImpl uRLHandlerImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new URLHandlerImpl()).setUrlRedirectType(URLRedirectType.FORWARD);
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#setUrlRedirectType(URLRedirectType)}.
+   * <ul>
+   *   <li>When {@link URLRedirectType#FORWARD}.</li>
+   *   <li>Then {@link URLHandlerImpl} (default constructor)
+   * {@link URLHandlerImpl#urlRedirectType} is {@code FORWARD}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerImpl#setUrlRedirectType(URLRedirectType)}
+   */
+  @Test
+  public void testSetUrlRedirectType_whenForward_thenURLHandlerImplUrlRedirectTypeIsForward() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    URLRedirectType redirectType = URLRedirectType.FORWARD;
+
+    // Act
+    urlHandlerImpl.setUrlRedirectType(redirectType);
+
+    // Assert
+    assertEquals("FORWARD", urlHandlerImpl.urlRedirectType);
+    URLRedirectType expectedUrlRedirectType = redirectType.FORWARD;
+    assertSame(expectedUrlRedirectType, urlHandlerImpl.getUrlRedirectType());
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#isRegexHandler()}.
+   * <p>
+   * Method under test: {@link URLHandlerImpl#isRegexHandler()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsRegexHandler() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.url.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9638 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.domain.URLHandlerImpl uRLHandlerImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new URLHandlerImpl()).isRegexHandler();
   }
 
   /**
@@ -123,6 +295,64 @@ public class URLHandlerImplDiffblueTest {
     // Assert
     verify(redirectType).getType();
     assertTrue(actualIsRegexHandlerResult);
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#setRegexHandler(Boolean)} with {@code Boolean}.
+   * <p>
+   * Method under test: {@link URLHandlerImpl#setRegexHandler(Boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetRegexHandlerWithBoolean() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.url.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9646 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.domain.URLHandlerImpl uRLHandlerImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new URLHandlerImpl()).setRegexHandler((Boolean) true);
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#setRegexHandler(boolean)} with {@code boolean}.
+   * <p>
+   * Method under test: {@link URLHandlerImpl#setRegexHandler(boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSetRegexHandlerWithBoolean2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.url.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9653 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.domain.URLHandlerImpl uRLHandlerImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new URLHandlerImpl()).setRegexHandler(true);
   }
 
   /**
@@ -259,6 +489,35 @@ public class URLHandlerImplDiffblueTest {
 
   /**
    * Test {@link URLHandlerImpl#getMainEntityName()}.
+   * <p>
+   * Method under test: {@link URLHandlerImpl#getMainEntityName()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetMainEntityName() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.url.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9298 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.domain.URLHandlerImpl uRLHandlerImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new URLHandlerImpl()).getMainEntityName();
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#getMainEntityName()}.
    * <ul>
    *   <li>Given {@link URLHandlerImpl} (default constructor).</li>
    * </ul>
@@ -298,6 +557,35 @@ public class URLHandlerImplDiffblueTest {
     // Assert
     verify(redirectType).getType();
     assertNull(actualMainEntityName);
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#getLocation()}.
+   * <p>
+   * Method under test: {@link URLHandlerImpl#getLocation()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetLocation() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.url.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9290 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.domain.URLHandlerImpl uRLHandlerImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new URLHandlerImpl()).getLocation();
   }
 
   /**
@@ -392,6 +680,35 @@ public class URLHandlerImplDiffblueTest {
     // Assert
     verify(redirectType).getType();
     assertEquals("https://example.org/example", actualLocation);
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#hasRegExCharacters(String)}.
+   * <p>
+   * Method under test: {@link URLHandlerImpl#hasRegExCharacters(String)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHasRegExCharacters() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.url.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9314 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.domain.URLHandlerImpl uRLHandlerImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new URLHandlerImpl()).hasRegExCharacters("https://example.org/example");
   }
 
   /**
@@ -760,6 +1077,46 @@ public class URLHandlerImplDiffblueTest {
   /**
    * Test
    * {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <p>
+   * Method under test:
+   * {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreateOrRetrieveCopyInstance2() throws CloneNotSupportedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.cms.url.domain;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-cms-applicationContext-entity.xml","/applicationContext-servlet-cms-contentClient.xml","/applicationContext-servlet-cms-contentCreator.xml","/bl-cms-contentClient-applicationContext.xml","/bl-cms-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-cms-admin-applicationContext.xml","/blc-config/site/framework/bl-cms-applicationContext-servlet.xml","/blc-config/site/framework/bl-cms-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass9224 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.cms.url.domain.URLHandlerImpl uRLHandlerImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    CatalogImpl fromCatalog = new CatalogImpl();
+    CatalogImpl toCatalog = new CatalogImpl();
+    SiteImpl fromSite = new SiteImpl();
+    SiteImpl toSite = new SiteImpl();
+    GenericEntityServiceImpl genericEntityService = new GenericEntityServiceImpl();
+
+    // Act
+    urlHandlerImpl.createOrRetrieveCopyInstance(new MultiTenantCopyContext(fromCatalog, toCatalog, fromSite, toSite,
+        genericEntityService, new MultiTenantCopierExtensionManager()));
+  }
+
+  /**
+   * Test
+   * {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
    * <ul>
    *   <li>Given {@link CreateResponse} {@link CreateResponse#getClone()} return
    * {@link NullURLHandler#NullURLHandler()}.</li>
@@ -785,6 +1142,51 @@ public class URLHandlerImplDiffblueTest {
     urlHandlerImpl.createOrRetrieveCopyInstance(context);
 
     // Assert
+    verify(createResponse).getClone();
+    verify(createResponse).isAlreadyPopulated();
+    verify(context).createOrRetrieveCopyInstance(isA(Object.class));
+  }
+
+  /**
+   * Test
+   * {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}.
+   * <ul>
+   *   <li>Given {@link URLHandlerImpl} (default constructor) Id is one.</li>
+   *   <li>Then calls {@link URLRedirectType#getType()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link URLHandlerImpl#createOrRetrieveCopyInstance(MultiTenantCopyContext)}
+   */
+  @Test
+  public void testCreateOrRetrieveCopyInstance_givenURLHandlerImplIdIsOne_thenCallsGetType()
+      throws CloneNotSupportedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    URLRedirectType redirectType = mock(URLRedirectType.class);
+    when(redirectType.getType()).thenReturn("https://example.org/example");
+
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setUrlRedirectType(redirectType);
+
+    URLHandlerImpl urlHandlerImpl2 = new URLHandlerImpl();
+    urlHandlerImpl2.setId(1L);
+    urlHandlerImpl2.setIncomingURL("https://example.org/example");
+    urlHandlerImpl2.setNewURL("https://example.org/example");
+    urlHandlerImpl2.setRegexHandler(true);
+    urlHandlerImpl2.setUrlRedirectType(URLRedirectType.FORWARD);
+    CreateResponse<Object> createResponse = mock(CreateResponse.class);
+    when(createResponse.isAlreadyPopulated()).thenReturn(false);
+    when(createResponse.getClone()).thenReturn(urlHandlerImpl2);
+    MultiTenantCopyContext context = mock(MultiTenantCopyContext.class);
+    when(context.createOrRetrieveCopyInstance(Mockito.<Object>any())).thenReturn(createResponse);
+
+    // Act
+    urlHandlerImpl.createOrRetrieveCopyInstance(context);
+
+    // Assert
+    verify(redirectType).getType();
     verify(createResponse).getClone();
     verify(createResponse).isAlreadyPopulated();
     verify(context).createOrRetrieveCopyInstance(isA(Object.class));
@@ -911,6 +1313,39 @@ public class URLHandlerImplDiffblueTest {
     urlHandlerImpl.setNewURL("https://example.org/example");
     urlHandlerImpl.setRegexHandler(true);
     urlHandlerImpl.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    URLHandlerImpl urlHandlerImpl2 = new URLHandlerImpl();
+    urlHandlerImpl2.setId(1L);
+    urlHandlerImpl2.setIncomingURL("https://example.org/example");
+    urlHandlerImpl2.setNewURL("https://example.org/example");
+    urlHandlerImpl2.setRegexHandler(true);
+    urlHandlerImpl2.setUrlRedirectType(URLRedirectType.FORWARD);
+
+    // Act and Assert
+    assertNotEquals(urlHandlerImpl, urlHandlerImpl2);
+  }
+
+  /**
+   * Test {@link URLHandlerImpl#equals(Object)}.
+   * <ul>
+   *   <li>When other is different.</li>
+   *   <li>Then return not equal.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link URLHandlerImpl#equals(Object)}
+   */
+  @Test
+  public void testEquals_whenOtherIsDifferent_thenReturnNotEqual2() {
+    // Arrange
+    URLRedirectType redirectType = mock(URLRedirectType.class);
+    when(redirectType.getType()).thenReturn("https://example.org/example");
+
+    URLHandlerImpl urlHandlerImpl = new URLHandlerImpl();
+    urlHandlerImpl.setId(1L);
+    urlHandlerImpl.setIncomingURL("https://example.org/example");
+    urlHandlerImpl.setNewURL("https://example.org/example");
+    urlHandlerImpl.setRegexHandler(true);
+    urlHandlerImpl.setUrlRedirectType(redirectType);
 
     URLHandlerImpl urlHandlerImpl2 = new URLHandlerImpl();
     urlHandlerImpl2.setId(1L);

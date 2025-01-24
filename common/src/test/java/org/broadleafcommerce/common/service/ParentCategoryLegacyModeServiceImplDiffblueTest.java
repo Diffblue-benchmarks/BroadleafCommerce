@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -18,6 +18,7 @@
 package org.broadleafcommerce.common.service;
 
 import static org.junit.Assert.assertFalse;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.BeansException;
 import org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext;
@@ -44,5 +45,26 @@ public class ParentCategoryLegacyModeServiceImplDiffblueTest {
 
     // Assert that nothing has changed
     assertFalse(parentCategoryLegacyModeServiceImpl.isLegacyMode());
+  }
+
+  /**
+   * Test {@link ParentCategoryLegacyModeServiceImpl#getLegacyModeService()}.
+   * <p>
+   * Method under test:
+   * {@link ParentCategoryLegacyModeServiceImpl#getLegacyModeService()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetLegacyModeService() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.IllegalStateException: org.springframework.boot.web.reactive.context.AnnotationConfigReactiveWebApplicationContext@602d948e has not been refreshed yet
+    //       at org.broadleafcommerce.common.service.ParentCategoryLegacyModeServiceImpl.getLegacyModeService(ParentCategoryLegacyModeServiceImpl.java:54)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    ParentCategoryLegacyModeServiceImpl.getLegacyModeService();
   }
 }

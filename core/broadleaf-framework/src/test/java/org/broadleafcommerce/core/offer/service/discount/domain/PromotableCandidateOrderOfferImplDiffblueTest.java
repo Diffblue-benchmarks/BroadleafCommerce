@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.offer.service.discount.domain;
 
 import static org.junit.Assert.assertEquals;
@@ -27,11 +10,79 @@ import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import org.broadleafcommerce.common.currency.domain.BroadleafCurrencyImpl;
 import org.broadleafcommerce.common.money.Money;
+import org.broadleafcommerce.core.offer.domain.Offer;
 import org.broadleafcommerce.core.offer.domain.OfferImpl;
 import org.broadleafcommerce.core.offer.service.type.OfferDiscountType;
+import org.broadleafcommerce.core.order.domain.NullOrderImpl;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class PromotableCandidateOrderOfferImplDiffblueTest {
+  /**
+   * Test
+   * {@link PromotableCandidateOrderOfferImpl#PromotableCandidateOrderOfferImpl(PromotableOrder, Offer)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableCandidateOrderOfferImpl#PromotableCandidateOrderOfferImpl(PromotableOrder, Offer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewPromotableCandidateOrderOfferImpl() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl.getAllOrderItems(PromotableOrderImpl.java:94)
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl.calculateSubtotalWithoutAdjustments(PromotableOrderImpl.java:316)
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateOrderOfferImpl.calculatePotentialSavings(PromotableCandidateOrderOfferImpl.java:70)
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateOrderOfferImpl.<init>(PromotableCandidateOrderOfferImpl.java:45)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    // Act
+    new PromotableCandidateOrderOfferImpl(promotableOrder, new OfferImpl());
+
+  }
+
+  /**
+   * Test
+   * {@link PromotableCandidateOrderOfferImpl#PromotableCandidateOrderOfferImpl(PromotableOrder, Offer, Money)}.
+   * <p>
+   * Method under test:
+   * {@link PromotableCandidateOrderOfferImpl#PromotableCandidateOrderOfferImpl(PromotableOrder, Offer, Money)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testNewPromotableCandidateOrderOfferImpl2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl.getAllOrderItems(PromotableOrderImpl.java:94)
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableOrderImpl.calculateSubtotalWithoutAdjustments(PromotableOrderImpl.java:316)
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateOrderOfferImpl.calculatePotentialSavings(PromotableCandidateOrderOfferImpl.java:70)
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateOrderOfferImpl.<init>(PromotableCandidateOrderOfferImpl.java:45)
+    //       at org.broadleafcommerce.core.offer.service.discount.domain.PromotableCandidateOrderOfferImpl.<init>(PromotableCandidateOrderOfferImpl.java:58)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    NullOrderImpl order = new NullOrderImpl();
+    PromotableOrderImpl promotableOrder = new PromotableOrderImpl(order,
+        new PromotableItemFactoryImpl(new PromotableOfferUtilityImpl()), true);
+
+    OfferImpl offer = new OfferImpl();
+
+    // Act
+    new PromotableCandidateOrderOfferImpl(promotableOrder, offer, new Money());
+
+  }
+
   /**
    * Test {@link PromotableCandidateOrderOfferImpl#calculatePotentialSavings()}.
    * <p>

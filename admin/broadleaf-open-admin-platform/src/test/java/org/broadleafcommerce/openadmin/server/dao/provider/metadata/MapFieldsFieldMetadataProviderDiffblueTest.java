@@ -1,117 +1,64 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
 import org.broadleafcommerce.openadmin.server.dao.DynamicEntityDaoImpl;
-import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaAnnotationRequest;
-import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.OverrideViaXmlRequest;
-import org.broadleafcommerce.openadmin.server.service.type.MetadataProviderResponse;
+import org.broadleafcommerce.openadmin.server.dao.provider.metadata.request.AddFieldMetadataRequest;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class MapFieldsFieldMetadataProviderDiffblueTest {
+  @Autowired
+  private MapFieldsFieldMetadataProvider mapFieldsFieldMetadataProvider;
+
   /**
    * Test
-   * {@link MapFieldsFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
+   * {@link MapFieldsFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}.
    * <p>
    * Method under test:
-   * {@link MapFieldsFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
+   * {@link MapFieldsFieldMetadataProvider#addMetadata(AddFieldMetadataRequest, Map)}
    */
   @Test
-  public void testOverrideViaAnnotation() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+  @Ignore("TODO: Complete this test")
+  public void testAddMetadata() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.dao.provider.metadata;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass27089 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.dao.provider.metadata.MapFieldsFieldMetadataProvider mapFieldsFieldMetadataProvider;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
 
     // Arrange
-    MapFieldsFieldMetadataProvider mapFieldsFieldMetadataProvider = new MapFieldsFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
+    MapFieldsFieldMetadataProvider mapFieldsFieldMetadataProvider2 = new MapFieldsFieldMetadataProvider();
+    Class<Object> parentClass = Object.class;
+    Class<Object> targetClass = Object.class;
+    AddFieldMetadataRequest addMetadataRequest = new AddFieldMetadataRequest(null, parentClass, targetClass,
         new DynamicEntityDaoImpl(), "Prefix");
 
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        mapFieldsFieldMetadataProvider.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldsFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldsFieldMetadataProvider#overrideViaAnnotation(OverrideViaAnnotationRequest, Map)}
-   */
-  @Test
-  public void testOverrideViaAnnotation2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldsFieldMetadataProvider mapFieldsFieldMetadataProvider = new MapFieldsFieldMetadataProvider();
-    Class<Object> requestedEntity = Object.class;
-    OverrideViaAnnotationRequest overrideViaAnnotationRequest = new OverrideViaAnnotationRequest(requestedEntity, true,
-        mock(DynamicEntityDaoImpl.class), "Prefix");
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        mapFieldsFieldMetadataProvider.overrideViaAnnotation(overrideViaAnnotationRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldsFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldsFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
-   */
-  @Test
-  public void testOverrideViaXml() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldsFieldMetadataProvider mapFieldsFieldMetadataProvider = new MapFieldsFieldMetadataProvider();
-    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
-        "Requested Ceiling Entity", "Prefix", true, new DynamicEntityDaoImpl());
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        mapFieldsFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest, new HashMap<>()));
-  }
-
-  /**
-   * Test
-   * {@link MapFieldsFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}.
-   * <p>
-   * Method under test:
-   * {@link MapFieldsFieldMetadataProvider#overrideViaXml(OverrideViaXmlRequest, Map)}
-   */
-  @Test
-  public void testOverrideViaXml2() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    MapFieldsFieldMetadataProvider mapFieldsFieldMetadataProvider = new MapFieldsFieldMetadataProvider();
-    OverrideViaXmlRequest overrideViaXmlRequest = new OverrideViaXmlRequest("Requested Config Key",
-        "Requested Ceiling Entity", "Prefix", true, mock(DynamicEntityDaoImpl.class));
-
-    // Act and Assert
-    assertEquals(MetadataProviderResponse.NOT_HANDLED,
-        mapFieldsFieldMetadataProvider.overrideViaXml(overrideViaXmlRequest, new HashMap<>()));
+    // Act
+    mapFieldsFieldMetadataProvider2.addMetadata(addMetadataRequest, new HashMap<>());
   }
 
   /**

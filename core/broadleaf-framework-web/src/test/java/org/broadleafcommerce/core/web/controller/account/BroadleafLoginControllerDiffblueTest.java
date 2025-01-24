@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework Web
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.web.controller.account;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,8 +10,10 @@ import static org.mockito.Mockito.when;
 import java.util.function.Function;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.broadleafcommerce.common.exception.ServiceException;
 import org.broadleafcommerce.core.web.search.SearchRequestWrapper;
 import org.broadleafcommerce.core.web.security.XssRequestWrapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -37,6 +22,8 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.ui.ConcurrentModel;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 
 class BroadleafLoginControllerDiffblueTest {
   /**
@@ -146,6 +133,35 @@ class BroadleafLoginControllerDiffblueTest {
 
   /**
    * Test
+   * {@link BroadleafLoginController#processForgotPassword(String, HttpServletRequest, Model)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafLoginController#processForgotPassword(String, HttpServletRequest, Model)}
+   */
+  @Test
+  @DisplayName("Test processForgotPassword(String, HttpServletRequest, Model)")
+  @Disabled("TODO: Complete this test")
+  void testProcessForgotPassword() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.web.controller.account.BroadleafLoginController.processForgotPassword(BroadleafLoginController.java:108)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+
+    // Act
+    broadleafLoginController.processForgotPassword("janedoe", request, new ConcurrentModel());
+  }
+
+  /**
+   * Test
    * {@link BroadleafLoginController#forcedPasswordChange(HttpServletRequest, HttpServletResponse, Model)}.
    * <ul>
    *   <li>Given {@link Function} {@link Function#apply(Object)} return
@@ -206,6 +222,35 @@ class BroadleafLoginControllerDiffblueTest {
 
   /**
    * Test
+   * {@link BroadleafLoginController#processForcedPasswordChange(String, HttpServletRequest, Model)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafLoginController#processForcedPasswordChange(String, HttpServletRequest, Model)}
+   */
+  @Test
+  @DisplayName("Test processForcedPasswordChange(String, HttpServletRequest, Model)")
+  @Disabled("TODO: Complete this test")
+  void testProcessForcedPasswordChange() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.web.controller.account.BroadleafLoginController.processForcedPasswordChange(BroadleafLoginController.java:127)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+
+    // Act
+    broadleafLoginController.processForcedPasswordChange("janedoe", request, new ConcurrentModel());
+  }
+
+  /**
+   * Test
    * {@link BroadleafLoginController#forgotUsername(HttpServletRequest, HttpServletResponse, Model)}.
    * <ul>
    *   <li>Given {@link Function} {@link Function#apply(Object)} return
@@ -262,6 +307,39 @@ class BroadleafLoginControllerDiffblueTest {
     // Act and Assert
     assertEquals("authentication/forgotUsername",
         broadleafLoginController.forgotUsername(request, response, new ConcurrentModel()));
+  }
+
+  /**
+   * Test
+   * {@link BroadleafLoginController#processForgotUsername(String, HttpServletRequest, HttpServletResponse, Model)}.
+   * <ul>
+   *   <li>When {@link ConcurrentModel#ConcurrentModel()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BroadleafLoginController#processForgotUsername(String, HttpServletRequest, HttpServletResponse, Model)}
+   */
+  @Test
+  @DisplayName("Test processForgotUsername(String, HttpServletRequest, HttpServletResponse, Model); when ConcurrentModel()")
+  @Disabled("TODO: Complete this test")
+  void testProcessForgotUsername_whenConcurrentModel() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.web.controller.account.BroadleafLoginController.processForgotUsername(BroadleafLoginController.java:165)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+
+    // Act
+    broadleafLoginController.processForgotUsername("jane.doe@example.org", request, response, new ConcurrentModel());
   }
 
   /**
@@ -375,6 +453,47 @@ class BroadleafLoginControllerDiffblueTest {
     assertNull(((ResetPasswordForm) getResult).getPasswordConfirm());
     assertNull(((ResetPasswordForm) getResult).getToken());
     assertNull(((ResetPasswordForm) getResult).getUsername());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafLoginController#processResetPassword(ResetPasswordForm, HttpServletRequest, HttpServletResponse, Model, BindingResult)}.
+   * <ul>
+   *   <li>When {@link ConcurrentModel#ConcurrentModel()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BroadleafLoginController#processResetPassword(ResetPasswordForm, HttpServletRequest, HttpServletResponse, Model, BindingResult)}
+   */
+  @Test
+  @DisplayName("Test processResetPassword(ResetPasswordForm, HttpServletRequest, HttpServletResponse, Model, BindingResult); when ConcurrentModel()")
+  @Disabled("TODO: Complete this test")
+  void testProcessResetPassword_whenConcurrentModel() throws ServiceException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //       at org.broadleafcommerce.core.web.controller.account.BroadleafLoginController.processResetPassword(BroadleafLoginController.java:205)
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange
+    BroadleafLoginController broadleafLoginController = new BroadleafLoginController();
+
+    ResetPasswordForm resetPasswordForm = new ResetPasswordForm();
+    resetPasswordForm.setPassword("iloveyou");
+    resetPasswordForm.setPasswordConfirm("Password Confirm");
+    resetPasswordForm.setToken("ABC123");
+    resetPasswordForm.setUsername("janedoe");
+    MockHttpServletRequest servletRequest = new MockHttpServletRequest();
+    SearchRequestWrapper request = new SearchRequestWrapper(new XssRequestWrapper(servletRequest,
+        new StandardReactiveWebEnvironment(), new String[]{"White List Param Names"}));
+    MockHttpServletResponse response = new MockHttpServletResponse();
+    ConcurrentModel model = new ConcurrentModel();
+
+    // Act
+    broadleafLoginController.processResetPassword(resetPasswordForm, request, response, model,
+        new BindException("Target", "Object Name"));
   }
 
   /**

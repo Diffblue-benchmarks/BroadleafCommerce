@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -18,7 +18,12 @@
 package org.broadleafcommerce.common.payment.service;
 
 import static org.junit.Assert.assertThrows;
+import org.broadleafcommerce.common.payment.dto.PaymentRequestDTO;
+import org.broadleafcommerce.common.vendor.service.exception.PaymentException;
+import org.broadleafcommerce.common.web.filter.SessionlessHttpServletRequestWrapper;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.mock.web.MockHttpServletRequest;
 
 public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   /**
@@ -46,6 +51,52 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> (new AbstractPaymentGatewayConfigurationService()).getTransactionService());
+  }
+
+  /**
+   * Test
+   * {@link AbstractPaymentGatewayConfigurationService#getTransactionConfirmationService()}.
+   * <p>
+   * Method under test:
+   * {@link AbstractPaymentGatewayConfigurationService#getTransactionConfirmationService()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetTransactionConfirmationService() throws PaymentException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    PaymentGatewayTransactionConfirmationService actualTransactionConfirmationService = (new AbstractPaymentGatewayConfigurationService())
+        .getTransactionConfirmationService();
+    actualTransactionConfirmationService.confirmTransaction(new PaymentRequestDTO());
+  }
+
+  /**
+   * Test
+   * {@link AbstractPaymentGatewayConfigurationService#getReportingService()}.
+   * <p>
+   * Method under test:
+   * {@link AbstractPaymentGatewayConfigurationService#getReportingService()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetReportingService() throws PaymentException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    PaymentGatewayReportingService actualReportingService = (new AbstractPaymentGatewayConfigurationService())
+        .getReportingService();
+    actualReportingService.findDetailsByTransaction(new PaymentRequestDTO());
   }
 
   /**
@@ -90,6 +141,50 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
   }
 
   /**
+   * Test {@link AbstractPaymentGatewayConfigurationService#getFraudService()}.
+   * <p>
+   * Method under test:
+   * {@link AbstractPaymentGatewayConfigurationService#getFraudService()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetFraudService() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    PaymentGatewayFraudService actualFraudService = (new AbstractPaymentGatewayConfigurationService())
+        .getFraudService();
+    actualFraudService.requestPayerAuthentication(new PaymentRequestDTO());
+  }
+
+  /**
+   * Test {@link AbstractPaymentGatewayConfigurationService#getHostedService()}.
+   * <p>
+   * Method under test:
+   * {@link AbstractPaymentGatewayConfigurationService#getHostedService()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetHostedService() throws PaymentException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    PaymentGatewayHostedService actualHostedService = (new AbstractPaymentGatewayConfigurationService())
+        .getHostedService();
+    actualHostedService.requestHostedEndpoint(new PaymentRequestDTO());
+  }
+
+  /**
    * Test {@link AbstractPaymentGatewayConfigurationService#getRollbackService()}.
    * <p>
    * Method under test:
@@ -104,6 +199,30 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
 
   /**
    * Test
+   * {@link AbstractPaymentGatewayConfigurationService#getWebResponseService()}.
+   * <p>
+   * Method under test:
+   * {@link AbstractPaymentGatewayConfigurationService#getWebResponseService()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetWebResponseService() throws PaymentException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    PaymentGatewayWebResponseService actualWebResponseService = (new AbstractPaymentGatewayConfigurationService())
+        .getWebResponseService();
+    actualWebResponseService
+        .translateWebResponse(new SessionlessHttpServletRequestWrapper(new MockHttpServletRequest()));
+  }
+
+  /**
+   * Test
    * {@link AbstractPaymentGatewayConfigurationService#getTransparentRedirectService()}.
    * <p>
    * Method under test:
@@ -114,6 +233,29 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> (new AbstractPaymentGatewayConfigurationService()).getTransparentRedirectService());
+  }
+
+  /**
+   * Test
+   * {@link AbstractPaymentGatewayConfigurationService#getClientTokenService()}.
+   * <p>
+   * Method under test:
+   * {@link AbstractPaymentGatewayConfigurationService#getClientTokenService()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetClientTokenService() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: No inputs found that don't throw a trivial exception.
+    //   Diffblue Cover tried to run the arrange/act section, but the method under
+    //   test threw
+    //   java.lang.NullPointerException
+    //   See https://diff.blue/R013 to resolve this issue.
+
+    // Arrange and Act
+    PaymentGatewayClientTokenService actualClientTokenService = (new AbstractPaymentGatewayConfigurationService())
+        .getClientTokenService();
+    actualClientTokenService.generateClientToken(new PaymentRequestDTO());
   }
 
   /**
@@ -156,5 +298,23 @@ public class AbstractPaymentGatewayConfigurationServiceDiffblueTest {
     // Arrange, Act and Assert
     assertThrows(UnsupportedOperationException.class,
         () -> (new AbstractPaymentGatewayConfigurationService()).getCreditCardTypesExtensionHandler());
+  }
+
+  /**
+   * Test new {@link AbstractPaymentGatewayConfigurationService} (default
+   * constructor).
+   * <p>
+   * Method under test: default or parameterless constructor of
+   * {@link AbstractPaymentGatewayConfigurationService}
+   */
+  @Test
+  public void testNewAbstractPaymentGatewayConfigurationService() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   There are no fields that could be asserted on.
+
+    // Arrange and Act
+    new AbstractPaymentGatewayConfigurationService();
   }
 }

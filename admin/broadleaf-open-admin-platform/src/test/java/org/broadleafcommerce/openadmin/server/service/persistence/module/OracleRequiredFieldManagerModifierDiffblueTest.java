@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Open Admin Platform
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.openadmin.server.service.persistence.module;
 
 import static org.junit.Assert.assertEquals;
@@ -25,12 +8,96 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.lang.reflect.Field;
 import javax.persistence.Column;
+import javax.persistence.EntityManager;
 import org.broadleafcommerce.common.presentation.AdminPresentation;
 import org.broadleafcommerce.common.presentation.RequiredOverride;
 import org.broadleafcommerce.common.presentation.client.SupportedFieldType;
+import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml",
+    "/bl-open-admin-applicationContext-entity.xml", "/bl-open-admin-contentClient-applicationContext.xml",
+    "/bl-open-admin-contentCreator-applicationContext.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml",
+    "/blc-config/admin/framework/bl-open-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class OracleRequiredFieldManagerModifierDiffblueTest {
+  @Autowired
+  private OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier;
+
+  /**
+   * Test
+   * {@link OracleRequiredFieldManagerModifier#canHandle(Field, Object, EntityManager)}.
+   * <p>
+   * Method under test:
+   * {@link OracleRequiredFieldManagerModifier#canHandle(Field, Object, EntityManager)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanHandle() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2584 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier2 = new OracleRequiredFieldManagerModifier();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+
+    // Act
+    oracleRequiredFieldManagerModifier2.canHandle(null, "Value",
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
+  }
+
+  /**
+   * Test
+   * {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}.
+   * <p>
+   * Method under test:
+   * {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsRequiredField() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2881 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OracleRequiredFieldManagerModifier()).isRequiredField(mock(AdminPresentation.class), null);
+  }
+
   /**
    * Test
    * {@link OracleRequiredFieldManagerModifier#isRequiredField(AdminPresentation, Column)}.
@@ -153,6 +220,37 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
   /**
    * Test
    * {@link OracleRequiredFieldManagerModifier#isStringFieldType(Field, AdminPresentation)}.
+   * <p>
+   * Method under test:
+   * {@link OracleRequiredFieldManagerModifier#isStringFieldType(Field, AdminPresentation)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testIsStringFieldType() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2882 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OracleRequiredFieldManagerModifier()).isStringFieldType(null, mock(AdminPresentation.class));
+  }
+
+  /**
+   * Test
+   * {@link OracleRequiredFieldManagerModifier#isStringFieldType(Field, AdminPresentation)}.
    * <ul>
    *   <li>Given {@code ID}.</li>
    *   <li>Then return {@code false}.</li>
@@ -209,6 +307,78 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link OracleRequiredFieldManagerModifier#getModifiedWriteValue(Field, Object, Object, EntityManager)}.
+   * <p>
+   * Method under test:
+   * {@link OracleRequiredFieldManagerModifier#getModifiedWriteValue(Field, Object, Object, EntityManager)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetModifiedWriteValue() throws IllegalAccessException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2774 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier2 = new OracleRequiredFieldManagerModifier();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+
+    // Act
+    oracleRequiredFieldManagerModifier2.getModifiedWriteValue(null, "Value", "New Value",
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
+  }
+
+  /**
+   * Test
+   * {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object, EntityManager)}.
+   * <p>
+   * Method under test:
+   * {@link OracleRequiredFieldManagerModifier#getModifiedReadValue(Field, Object, EntityManager)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetModifiedReadValue() throws IllegalAccessException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2679 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier2 = new OracleRequiredFieldManagerModifier();
+    SessionDelegatorBaseImpl delegate = new SessionDelegatorBaseImpl(null);
+
+    // Act
+    oracleRequiredFieldManagerModifier2.getModifiedReadValue(null, "Value",
+        new SessionDelegatorBaseImpl(delegate, new SessionDelegatorBaseImpl(null)));
+  }
+
+  /**
    * Test {@link OracleRequiredFieldManagerModifier#getOrder()}.
    * <p>
    * Method under test: {@link OracleRequiredFieldManagerModifier#getOrder()}
@@ -219,5 +389,34 @@ public class OracleRequiredFieldManagerModifierDiffblueTest {
 
     // Arrange, Act and Assert
     assertEquals(1000, (new OracleRequiredFieldManagerModifier()).getOrder());
+  }
+
+  /**
+   * Test {@link OracleRequiredFieldManagerModifier#getOrder()}.
+   * <p>
+   * Method under test: {@link OracleRequiredFieldManagerModifier#getOrder()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testGetOrder2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.openadmin.server.service.persistence.module;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/applicationContext-servlet-open-admin.xml","/bl-open-admin-applicationContext-entity.xml","/bl-open-admin-contentClient-applicationContext.xml","/bl-open-admin-contentCreator-applicationContext.xml","/blc-config/admin/framework/bl-open-admin-applicationContext-servlet.xml","/blc-config/admin/framework/bl-open-admin-applicationContext.xml","/blc-config/site/framework/bl-openadmin-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass2880 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.openadmin.server.service.persistence.module.OracleRequiredFieldManagerModifier oracleRequiredFieldManagerModifier;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new OracleRequiredFieldManagerModifier()).getOrder();
   }
 }

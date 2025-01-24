@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -18,13 +18,117 @@
 package org.broadleafcommerce.common.event;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiFunction;
 import org.junit.Test;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 public class BroadleafSystemEventDiffblueTest {
+  @MockBean
+  private BroadleafSystemEvent broadleafSystemEvent;
+
+  /**
+   * Test
+   * {@link BroadleafSystemEvent#BroadleafSystemEvent(String, BroadleafEventScopeType, BroadleafEventWorkerType, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link BroadleafSystemEvent#BroadleafSystemEvent(String, BroadleafSystemEvent.BroadleafEventScopeType, BroadleafSystemEvent.BroadleafEventWorkerType, boolean)}
+   */
+  @Test
+  public void testNewBroadleafSystemEvent() {
+    // Arrange and Act
+    BroadleafSystemEvent actualBroadleafSystemEvent = new BroadleafSystemEvent("Type",
+        BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, BroadleafSystemEvent.BroadleafEventWorkerType.SITE, true);
+
+    // Assert
+    assertEquals("Type", actualBroadleafSystemEvent.getType());
+    assertEquals("Type", actualBroadleafSystemEvent.getSource());
+    assertNull(actualBroadleafSystemEvent.getCatalogId());
+    assertNull(actualBroadleafSystemEvent.getProfileId());
+    assertNull(actualBroadleafSystemEvent.getSiteId());
+    assertNull(actualBroadleafSystemEvent.getCurrencyCode());
+    assertNull(actualBroadleafSystemEvent.getLocaleCode());
+    assertNull(actualBroadleafSystemEvent.getTimeZoneId());
+    assertNull(actualBroadleafSystemEvent.getDetailMap());
+    assertEquals(BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, actualBroadleafSystemEvent.getScopeType());
+    assertEquals(BroadleafSystemEvent.BroadleafEventWorkerType.SITE, actualBroadleafSystemEvent.getWorkerType());
+    assertTrue(actualBroadleafSystemEvent.getContext().isEmpty());
+    assertTrue(actualBroadleafSystemEvent.isUniversal());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafSystemEvent#BroadleafSystemEvent(String, Map, BroadleafEventScopeType, BroadleafEventWorkerType, boolean)}.
+   * <ul>
+   *   <li>Given {@code ThreadLocalManager.notify.orphans}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BroadleafSystemEvent#BroadleafSystemEvent(String, Map, BroadleafSystemEvent.BroadleafEventScopeType, BroadleafSystemEvent.BroadleafEventWorkerType, boolean)}
+   */
+  @Test
+  public void testNewBroadleafSystemEvent_givenThreadLocalManagerNotifyOrphans() {
+    // Arrange
+    HashMap<String, BroadleafSystemEventDetail> detailMap = new HashMap<>();
+    detailMap.computeIfPresent("ThreadLocalManager.notify.orphans", mock(BiFunction.class));
+
+    // Act
+    BroadleafSystemEvent actualBroadleafSystemEvent = new BroadleafSystemEvent("Type", detailMap,
+        BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, BroadleafSystemEvent.BroadleafEventWorkerType.SITE, true);
+
+    // Assert
+    assertEquals("Type", actualBroadleafSystemEvent.getType());
+    assertEquals("Type", actualBroadleafSystemEvent.getSource());
+    assertNull(actualBroadleafSystemEvent.getCatalogId());
+    assertNull(actualBroadleafSystemEvent.getProfileId());
+    assertNull(actualBroadleafSystemEvent.getSiteId());
+    assertNull(actualBroadleafSystemEvent.getCurrencyCode());
+    assertNull(actualBroadleafSystemEvent.getLocaleCode());
+    assertNull(actualBroadleafSystemEvent.getTimeZoneId());
+    assertEquals(BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, actualBroadleafSystemEvent.getScopeType());
+    assertEquals(BroadleafSystemEvent.BroadleafEventWorkerType.SITE, actualBroadleafSystemEvent.getWorkerType());
+    assertTrue(actualBroadleafSystemEvent.getContext().isEmpty());
+    assertTrue(actualBroadleafSystemEvent.getDetailMap().isEmpty());
+    assertTrue(actualBroadleafSystemEvent.isUniversal());
+  }
+
+  /**
+   * Test
+   * {@link BroadleafSystemEvent#BroadleafSystemEvent(String, Map, BroadleafEventScopeType, BroadleafEventWorkerType, boolean)}.
+   * <ul>
+   *   <li>When {@link HashMap#HashMap()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link BroadleafSystemEvent#BroadleafSystemEvent(String, Map, BroadleafSystemEvent.BroadleafEventScopeType, BroadleafSystemEvent.BroadleafEventWorkerType, boolean)}
+   */
+  @Test
+  public void testNewBroadleafSystemEvent_whenHashMap() {
+    // Arrange and Act
+    BroadleafSystemEvent actualBroadleafSystemEvent = new BroadleafSystemEvent("Type", new HashMap<>(),
+        BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, BroadleafSystemEvent.BroadleafEventWorkerType.SITE, true);
+
+    // Assert
+    assertEquals("Type", actualBroadleafSystemEvent.getType());
+    assertEquals("Type", actualBroadleafSystemEvent.getSource());
+    assertNull(actualBroadleafSystemEvent.getCatalogId());
+    assertNull(actualBroadleafSystemEvent.getProfileId());
+    assertNull(actualBroadleafSystemEvent.getSiteId());
+    assertNull(actualBroadleafSystemEvent.getCurrencyCode());
+    assertNull(actualBroadleafSystemEvent.getLocaleCode());
+    assertNull(actualBroadleafSystemEvent.getTimeZoneId());
+    assertEquals(BroadleafSystemEvent.BroadleafEventScopeType.GLOBAL, actualBroadleafSystemEvent.getScopeType());
+    assertEquals(BroadleafSystemEvent.BroadleafEventWorkerType.SITE, actualBroadleafSystemEvent.getWorkerType());
+    assertTrue(actualBroadleafSystemEvent.getContext().isEmpty());
+    assertTrue(actualBroadleafSystemEvent.getDetailMap().isEmpty());
+    assertTrue(actualBroadleafSystemEvent.isUniversal());
+  }
+
   /**
    * Test getters and setters.
    * <p>

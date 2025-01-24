@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Profile
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.profile.core.service;
 
 import static org.junit.Assert.assertEquals;
@@ -29,9 +12,176 @@ import java.util.List;
 import org.broadleafcommerce.profile.core.domain.Address;
 import org.broadleafcommerce.profile.core.domain.AddressImpl;
 import org.broadleafcommerce.profile.core.service.exception.AddressVerificationException;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml",
+    "/bl-profile-applicationContext-persistence.xml", "/bl-profile-applicationContext.xml",
+    "/blc-config/admin/framework/bl-profile-applicationContext.xml",
+    "/blc-config/site/framework/bl-profile-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class AddressServiceImplDiffblueTest {
+  @Autowired
+  private AddressServiceImpl addressServiceImpl;
+
+  /**
+   * Test {@link AddressServiceImpl#saveAddress(Address)}.
+   * <p>
+   * Method under test: {@link AddressServiceImpl#saveAddress(Address)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testSaveAddress() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass431 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.AddressServiceImpl addressServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AddressServiceImpl addressServiceImpl2 = new AddressServiceImpl();
+
+    // Act
+    addressServiceImpl2.saveAddress(new AddressImpl());
+  }
+
+  /**
+   * Test {@link AddressServiceImpl#readAddressById(Long)}.
+   * <p>
+   * Method under test: {@link AddressServiceImpl#readAddressById(Long)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testReadAddressById() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass415 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.AddressServiceImpl addressServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AddressServiceImpl()).readAddressById(1L);
+  }
+
+  /**
+   * Test {@link AddressServiceImpl#create()}.
+   * <p>
+   * Method under test: {@link AddressServiceImpl#create()}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCreate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass335 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.AddressServiceImpl addressServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new AddressServiceImpl()).create();
+  }
+
+  /**
+   * Test {@link AddressServiceImpl#delete(Address)}.
+   * <p>
+   * Method under test: {@link AddressServiceImpl#delete(Address)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDelete() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass337 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.AddressServiceImpl addressServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AddressServiceImpl addressServiceImpl2 = new AddressServiceImpl();
+
+    // Act
+    addressServiceImpl2.delete(new AddressImpl());
+  }
+
+  /**
+   * Test {@link AddressServiceImpl#verifyAddress(Address)}.
+   * <p>
+   * Method under test: {@link AddressServiceImpl#verifyAddress(Address)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testVerifyAddress() throws AddressVerificationException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass470 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.AddressServiceImpl addressServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AddressServiceImpl addressServiceImpl2 = new AddressServiceImpl();
+
+    // Act
+    addressServiceImpl2.verifyAddress(new AddressImpl());
+  }
+
   /**
    * Test {@link AddressServiceImpl#verifyAddress(Address)}.
    * <ul>
@@ -139,6 +289,40 @@ public class AddressServiceImplDiffblueTest {
   /**
    * Test {@link AddressServiceImpl#copyAddress(Address, Address)} with
    * {@code dest}, {@code orig}.
+   * <p>
+   * Method under test: {@link AddressServiceImpl#copyAddress(Address, Address)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCopyAddressWithDestOrig() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass259 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.AddressServiceImpl addressServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AddressServiceImpl addressServiceImpl2 = new AddressServiceImpl();
+    AddressImpl dest = new AddressImpl();
+
+    // Act
+    addressServiceImpl2.copyAddress(dest, new AddressImpl());
+  }
+
+  /**
+   * Test {@link AddressServiceImpl#copyAddress(Address, Address)} with
+   * {@code dest}, {@code orig}.
    * <ul>
    *   <li>When {@code null}.</li>
    *   <li>Then return {@code null}.</li>
@@ -155,6 +339,71 @@ public class AddressServiceImplDiffblueTest {
 
     // Act and Assert
     assertNull(addressServiceImpl.copyAddress(new AddressImpl(), null));
+  }
+
+  /**
+   * Test {@link AddressServiceImpl#copyAddress(Address)} with {@code orig}.
+   * <p>
+   * Method under test: {@link AddressServiceImpl#copyAddress(Address)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCopyAddressWithOrig() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass220 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.AddressServiceImpl addressServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AddressServiceImpl addressServiceImpl2 = new AddressServiceImpl();
+
+    // Act
+    addressServiceImpl2.copyAddress(new AddressImpl());
+  }
+
+  /**
+   * Test {@link AddressServiceImpl#populateAddressISOCountrySub(Address)}.
+   * <p>
+   * Method under test:
+   * {@link AddressServiceImpl#populateAddressISOCountrySub(Address)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testPopulateAddressISOCountrySub() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.profile.core.service;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-profile-applicationContext-entity.xml","/bl-profile-applicationContext-persistence.xml","/bl-profile-applicationContext.xml","/blc-config/admin/framework/bl-profile-applicationContext.xml","/blc-config/site/framework/bl-profile-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass376 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.profile.core.service.AddressServiceImpl addressServiceImpl;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    AddressServiceImpl addressServiceImpl2 = new AddressServiceImpl();
+
+    // Act
+    addressServiceImpl2.populateAddressISOCountrySub(new AddressImpl());
   }
 
   /**
@@ -181,5 +430,28 @@ public class AddressServiceImplDiffblueTest {
 
     // Assert
     verify(address).getIsoCountrySubdivision();
+  }
+
+  /**
+   * Test {@link AddressServiceImpl#setMustValidateAddresses(boolean)}.
+   * <p>
+   * Method under test:
+   * {@link AddressServiceImpl#setMustValidateAddresses(boolean)}
+   */
+  @Test
+  public void testSetMustValidateAddresses() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing observers.
+    //   Diffblue Cover was unable to create an assertion.
+    //   Add getters for the following fields or make them package-private:
+    //     AddressServiceImpl.addressDao
+    //     AddressServiceImpl.countrySubdivisionService
+    //     AddressServiceImpl.moduleConfigService
+    //     AddressServiceImpl.mustValidateAddresses
+    //     AddressServiceImpl.phoneService
+    //     AddressServiceImpl.providers
+
+    // Arrange and Act
+    (new AddressServiceImpl()).setMustValidateAddresses(true);
   }
 }

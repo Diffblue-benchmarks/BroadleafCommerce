@@ -2,7 +2,7 @@
  * #%L
  * BroadleafCommerce Common Libraries
  * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
+ * Copyright (C) 2009 - 2025 Broadleaf Commerce
  * %%
  * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
  * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
@@ -20,9 +20,35 @@ package org.broadleafcommerce.common.sandbox.domain;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(classes = {SandBoxType.class})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class SandBoxTypeDiffblueTest {
+  @Autowired
+  private SandBoxType sandBoxType;
+
+  /**
+   * Test {@link SandBoxType#getInstance(String)}.
+   * <p>
+   * Method under test: {@link SandBoxType#getInstance(String)}
+   */
+  @Test
+  public void testGetInstance() {
+    // Arrange and Act
+    SandBoxType actualInstance = SandBoxType.getInstance("Type");
+
+    // Assert
+    assertEquals("Type", actualInstance.getType());
+    assertEquals("createSandBox", actualInstance.getFriendlyType());
+    assertEquals(3, actualInstance.getPriority().intValue());
+  }
+
   /**
    * Test getters and setters.
    * <p>
@@ -45,6 +71,36 @@ public class SandBoxTypeDiffblueTest {
     assertNull(actualPriority);
     assertNull(actualFriendlyType);
     assertNull(actualSandBoxType.getType());
+  }
+
+  /**
+   * Test {@link SandBoxType#SandBoxType(String, String, Integer)}.
+   * <ul>
+   *   <li>When {@code Cannot add the type: (}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SandBoxType#SandBoxType(String, String, Integer)}
+   */
+  @Test
+  public void testNewSandBoxType_whenCannotAddTheType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new SandBoxType("Cannot add the type: (", "Friendly Type", 1));
+
+  }
+
+  /**
+   * Test {@link SandBoxType#SandBoxType(String, String, Integer)}.
+   * <ul>
+   *   <li>When {@code Type}.</li>
+   * </ul>
+   * <p>
+   * Method under test: {@link SandBoxType#SandBoxType(String, String, Integer)}
+   */
+  @Test
+  public void testNewSandBoxType_whenType() {
+    // Arrange, Act and Assert
+    assertThrows(RuntimeException.class, () -> new SandBoxType("Type", "Friendly Type", 1));
+
   }
 
   /**

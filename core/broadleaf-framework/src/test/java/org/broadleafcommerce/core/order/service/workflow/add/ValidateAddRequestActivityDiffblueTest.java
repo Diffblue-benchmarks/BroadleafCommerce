@@ -1,20 +1,3 @@
-/*-
- * #%L
- * BroadleafCommerce Framework
- * %%
- * Copyright (C) 2009 - 2024 Broadleaf Commerce
- * %%
- * Licensed under the Broadleaf Fair Use License Agreement, Version 1.0
- * (the "Fair Use License" located  at http://license.broadleafcommerce.org/fair_use_license-1.0.txt)
- * unless the restrictions on use therein are violated and require payment to Broadleaf in which case
- * the Broadleaf End User License Agreement (EULA), Version 1.1
- * (the "Commercial License" located at http://license.broadleafcommerce.org/commercial_license-1.1.txt)
- * shall apply.
- * 
- * Alternatively, the Commercial License may be replaced with a mutually agreed upon license (the "Custom License")
- * between you and Broadleaf Commerce. You may not use this file except in compliance with the applicable license.
- * #L%
- */
 package org.broadleafcommerce.core.order.service.workflow.add;
 
 import static org.junit.Assert.assertFalse;
@@ -34,6 +17,7 @@ import org.broadleafcommerce.common.currency.domain.NullBroadleafCurrency;
 import org.broadleafcommerce.common.money.Money;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.ProductBundleImpl;
+import org.broadleafcommerce.core.catalog.domain.ProductImpl;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 import org.broadleafcommerce.core.catalog.domain.SkuImpl;
 import org.broadleafcommerce.core.order.domain.NullOrderImpl;
@@ -47,9 +31,54 @@ import org.broadleafcommerce.core.workflow.ActivityMessages;
 import org.broadleafcommerce.core.workflow.DefaultProcessContextImpl;
 import org.broadleafcommerce.core.workflow.ProcessContext;
 import org.broadleafcommerce.core.workflow.state.RollbackHandler;
+import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml",
+    "/bl-framework-applicationContext-persistence.xml", "/bl-framework-applicationContext-workflow.xml",
+    "/bl-framework-applicationContext.xml", "/blc-config/admin/framework/bl-framework-admin-applicationContext.xml",
+    "/blc-config/site/framework/bl-framework-applicationContext.xml"})
+@RunWith(SpringJUnit4ClassRunner.class)
 public class ValidateAddRequestActivityDiffblueTest {
+  @Autowired
+  private ValidateAddRequestActivity validateAddRequestActivity;
+
+  /**
+   * Test {@link ValidateAddRequestActivity#execute(ProcessContext)}.
+   * <p>
+   * Method under test: {@link ValidateAddRequestActivity#execute(ProcessContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testExecute() throws Exception {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3886 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+
+    // Act
+    validateAddRequestActivity2.execute((ProcessContext<CartOperationRequest>) new DefaultProcessContextImpl<>());
+  }
+
   /**
    * Test {@link ValidateAddRequestActivity#execute(ProcessContext)}.
    * <ul>
@@ -163,6 +192,39 @@ public class ValidateAddRequestActivityDiffblueTest {
     verify(context).getSeedData();
     verify(context).stopProcess();
     assertSame(context, actualExecuteResult);
+  }
+
+  /**
+   * Test {@link ValidateAddRequestActivity#validate(ProcessContext)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#validate(ProcessContext)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidate() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4139 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+
+    // Act
+    validateAddRequestActivity2.validate(new DefaultProcessContextImpl<>());
   }
 
   /**
@@ -285,6 +347,69 @@ public class ValidateAddRequestActivityDiffblueTest {
   }
 
   /**
+   * Test
+   * {@link ValidateAddRequestActivity#validateIfProductIsProdRecord(Product)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#validateIfProductIsProdRecord(Product)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateIfProductIsProdRecord() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4184 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+
+    // Act
+    validateAddRequestActivity2.validateIfProductIsProdRecord(new ProductBundleImpl());
+  }
+
+  /**
+   * Test {@link ValidateAddRequestActivity#hasQuantity(Integer)}.
+   * <p>
+   * Method under test: {@link ValidateAddRequestActivity#hasQuantity(Integer)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHasQuantity() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4046 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new ValidateAddRequestActivity()).hasQuantity(2);
+  }
+
+  /**
    * Test {@link ValidateAddRequestActivity#hasQuantity(Integer)}.
    * <ul>
    *   <li>Given {@link ValidateAddRequestActivity} (default constructor)
@@ -362,6 +487,40 @@ public class ValidateAddRequestActivityDiffblueTest {
   /**
    * Test
    * {@link ValidateAddRequestActivity#determineProduct(OrderItemRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#determineProduct(OrderItemRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetermineProduct() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3826 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+
+    // Act
+    validateAddRequestActivity2.determineProduct(new OrderItemRequestDTO());
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#determineProduct(OrderItemRequestDTO)}.
    * <ul>
    *   <li>When {@link OrderItemRequestDTO#OrderItemRequestDTO()}.</li>
    *   <li>Then return {@code null}.</li>
@@ -379,6 +538,102 @@ public class ValidateAddRequestActivityDiffblueTest {
 
     // Act and Assert
     assertNull(validateAddRequestActivity.determineProduct(new OrderItemRequestDTO()));
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#determineSku(Product, Long, Map, ActivityMessages)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#determineSku(Product, Long, Map, ActivityMessages)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testDetermineSku() throws RequiredAttributeNotProvidedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3856 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+    ProductBundleImpl product = new ProductBundleImpl();
+    HashMap<String, String> attributeValues = new HashMap<>();
+
+    // Act
+    validateAddRequestActivity2.determineSku(product, 1L, attributeValues, new DefaultProcessContextImpl<>());
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#determineSku(Product, Long, Map, ActivityMessages)}.
+   * <ul>
+   *   <li>Then calls {@link ProductImpl#getProductOptionXrefs()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#determineSku(Product, Long, Map, ActivityMessages)}
+   */
+  @Test
+  public void testDetermineSku_thenCallsGetProductOptionXrefs() throws RequiredAttributeNotProvidedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity = new ValidateAddRequestActivity();
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getProductOptionXrefs()).thenThrow(new IllegalArgumentException("foo"));
+    HashMap<String, String> attributeValues = new HashMap<>();
+
+    // Act
+    validateAddRequestActivity.determineSku(product, 1L, attributeValues, new DefaultProcessContextImpl<>());
+
+    // Assert
+    verify(product).getProductOptionXrefs();
+  }
+
+  /**
+   * Test {@link ValidateAddRequestActivity#canSellDefaultSku(Product)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#canSellDefaultSku(Product)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testCanSellDefaultSku() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3796 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+
+    // Act
+    validateAddRequestActivity2.canSellDefaultSku(new ProductBundleImpl());
   }
 
   /**
@@ -443,6 +698,37 @@ public class ValidateAddRequestActivityDiffblueTest {
   /**
    * Test {@link ValidateAddRequestActivity#canSellDefaultSku(Product)}.
    * <ul>
+   *   <li>Given {@link IllegalArgumentException#IllegalArgumentException(String)}
+   * with {@code foo}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#canSellDefaultSku(Product)}
+   */
+  @Test
+  public void testCanSellDefaultSku_givenIllegalArgumentExceptionWithFoo() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity = new ValidateAddRequestActivity();
+
+    ArrayList<Sku> skuList = new ArrayList<>();
+    skuList.add(new SkuImpl());
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getCanSellWithoutOptions()).thenThrow(new IllegalArgumentException("foo"));
+    when(product.getAdditionalSkus()).thenReturn(skuList);
+
+    // Act
+    validateAddRequestActivity.canSellDefaultSku(product);
+
+    // Assert
+    verify(product).getAdditionalSkus();
+    verify(product).getCanSellWithoutOptions();
+  }
+
+  /**
+   * Test {@link ValidateAddRequestActivity#canSellDefaultSku(Product)}.
+   * <ul>
    *   <li>Given {@code true}.</li>
    * </ul>
    * <p>
@@ -495,6 +781,70 @@ public class ValidateAddRequestActivityDiffblueTest {
   /**
    * Test {@link ValidateAddRequestActivity#findMatchingSku(Product, Map)} with
    * {@code product}, {@code attributeValuesForSku}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#findMatchingSku(Product, Map)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindMatchingSkuWithProductAttributeValuesForSku() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3901 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+    ProductBundleImpl product = new ProductBundleImpl();
+
+    // Act
+    validateAddRequestActivity2.findMatchingSku(product, new HashMap<>());
+  }
+
+  /**
+   * Test {@link ValidateAddRequestActivity#findMatchingSku(Product, Map)} with
+   * {@code product}, {@code attributeValuesForSku}.
+   * <ul>
+   *   <li>Then calls {@link ProductImpl#getId()}.</li>
+   * </ul>
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#findMatchingSku(Product, Map)}
+   */
+  @Test
+  public void testFindMatchingSkuWithProductAttributeValuesForSku_thenCallsGetId() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity = new ValidateAddRequestActivity();
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getId()).thenThrow(new IllegalArgumentException("foo"));
+
+    HashMap<String, String> attributeValuesForSku = new HashMap<>();
+    attributeValuesForSku.put("", "");
+
+    // Act
+    validateAddRequestActivity.findMatchingSku(product, attributeValuesForSku);
+
+    // Assert
+    verify(product).getId();
+  }
+
+  /**
+   * Test {@link ValidateAddRequestActivity#findMatchingSku(Product, Map)} with
+   * {@code product}, {@code attributeValuesForSku}.
    * <ul>
    *   <li>Then return {@code null}.</li>
    * </ul>
@@ -534,6 +884,68 @@ public class ValidateAddRequestActivityDiffblueTest {
 
     // Act and Assert
     assertNull(validateAddRequestActivity.findMatchingSku(product, new HashMap<>()));
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#findMatchingSku(Product, Map, ActivityMessages)}
+   * with {@code product}, {@code attributeValues}, {@code messages}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#findMatchingSku(Product, Map, ActivityMessages)}
+   */
+  @Test
+  public void testFindMatchingSkuWithProductAttributeValuesMessages() throws RequiredAttributeNotProvidedException {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity = new ValidateAddRequestActivity();
+    ProductBundleImpl product = mock(ProductBundleImpl.class);
+    when(product.getProductOptionXrefs()).thenThrow(new IllegalArgumentException("foo"));
+    HashMap<String, String> attributeValues = new HashMap<>();
+
+    // Act
+    validateAddRequestActivity.findMatchingSku(product, attributeValues, new DefaultProcessContextImpl<>());
+
+    // Assert
+    verify(product).getProductOptionXrefs();
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#findMatchingSku(Product, Map, ActivityMessages)}
+   * with {@code product}, {@code attributeValues}, {@code messages}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#findMatchingSku(Product, Map, ActivityMessages)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testFindMatchingSkuWithProductAttributeValuesMessages2() throws RequiredAttributeNotProvidedException {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3931 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+    ProductBundleImpl product = new ProductBundleImpl();
+    HashMap<String, String> attributeValues = new HashMap<>();
+
+    // Act
+    validateAddRequestActivity2.findMatchingSku(product, attributeValues, new DefaultProcessContextImpl<>());
   }
 
   /**
@@ -639,6 +1051,37 @@ public class ValidateAddRequestActivityDiffblueTest {
   /**
    * Test
    * {@link ValidateAddRequestActivity#shouldValidateWithException(boolean, boolean, String, boolean)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#shouldValidateWithException(boolean, boolean, String, boolean)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testShouldValidateWithException2() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4120 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange and Act
+    (new ValidateAddRequestActivity()).shouldValidateWithException(true, true, "0123456789ABCDEF", true);
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#shouldValidateWithException(boolean, boolean, String, boolean)}.
    * <ul>
    *   <li>When empty string.</li>
    *   <li>Then return {@code false}.</li>
@@ -729,6 +1172,45 @@ public class ValidateAddRequestActivityDiffblueTest {
 
     // Arrange, Act and Assert
     assertTrue((new ValidateAddRequestActivity()).shouldValidateWithException(true, true, "0123456789ABCDEF", true));
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#addSkuToCart(Sku, OrderItemRequestDTO, Product, CartOperationRequest)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#addSkuToCart(Sku, OrderItemRequestDTO, Product, CartOperationRequest)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testAddSkuToCart() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3766 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+    SkuImpl sku = new SkuImpl();
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
+    ProductBundleImpl product = new ProductBundleImpl();
+    NullOrderImpl order = new NullOrderImpl();
+
+    // Act
+    validateAddRequestActivity2.addSkuToCart(sku, orderItemRequestDTO, product,
+        new CartOperationRequest(order, new OrderItemRequestDTO(), true));
   }
 
   /**
@@ -938,6 +1420,41 @@ public class ValidateAddRequestActivityDiffblueTest {
   /**
    * Test
    * {@link ValidateAddRequestActivity#hasSkuOrIsNonDiscreteOI(Sku, OrderItemRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#hasSkuOrIsNonDiscreteOI(Sku, OrderItemRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHasSkuOrIsNonDiscreteOI() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4090 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+    SkuImpl sku = new SkuImpl();
+
+    // Act
+    validateAddRequestActivity2.hasSkuOrIsNonDiscreteOI(sku, new OrderItemRequestDTO());
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#hasSkuOrIsNonDiscreteOI(Sku, OrderItemRequestDTO)}.
    * <ul>
    *   <li>When
    * {@link NonDiscreteOrderItemRequestDTO#NonDiscreteOrderItemRequestDTO()}.</li>
@@ -1024,6 +1541,41 @@ public class ValidateAddRequestActivityDiffblueTest {
 
     // Act and Assert
     assertTrue(validateAddRequestActivity.hasSkuOrIsNonDiscreteOI(sku, new OrderItemRequestDTO()));
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#handleIfNoSku(OrderItemRequestDTO, Product)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#handleIfNoSku(OrderItemRequestDTO, Product)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandleIfNoSku() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3961 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
+
+    // Act
+    validateAddRequestActivity2.handleIfNoSku(orderItemRequestDTO, new ProductBundleImpl());
   }
 
   /**
@@ -1161,6 +1713,66 @@ public class ValidateAddRequestActivityDiffblueTest {
   /**
    * Test
    * {@link ValidateAddRequestActivity#handleIfNonDiscreteOI(OrderItemRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#handleIfNonDiscreteOI(OrderItemRequestDTO)}
+   */
+  @Test
+  public void testHandleIfNonDiscreteOI2() {
+    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity = new ValidateAddRequestActivity();
+    NonDiscreteOrderItemRequestDTO orderItemRequestDTO = mock(NonDiscreteOrderItemRequestDTO.class);
+    when(orderItemRequestDTO.getOverrideRetailPrice()).thenThrow(new RequiredAttributeNotProvidedException(
+        "At least one override price is required for non discrete order item add requests"));
+    when(orderItemRequestDTO.getItemName()).thenReturn("Item Name");
+
+    // Act
+    validateAddRequestActivity.handleIfNonDiscreteOI(orderItemRequestDTO);
+
+    // Assert
+    verify(orderItemRequestDTO).getItemName();
+    verify(orderItemRequestDTO).getOverrideRetailPrice();
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#handleIfNonDiscreteOI(OrderItemRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#handleIfNonDiscreteOI(OrderItemRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHandleIfNonDiscreteOI3() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass3991 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+
+    // Act
+    validateAddRequestActivity2.handleIfNonDiscreteOI(new OrderItemRequestDTO());
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#handleIfNonDiscreteOI(OrderItemRequestDTO)}.
    * <ul>
    *   <li>Given empty string.</li>
    * </ul>
@@ -1237,6 +1849,40 @@ public class ValidateAddRequestActivityDiffblueTest {
     // Act and Assert
     assertThrows(IllegalArgumentException.class,
         () -> validateAddRequestActivity.handleIfNonDiscreteOI(orderItemRequestDTO));
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#hasPrice(NonDiscreteOrderItemRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#hasPrice(NonDiscreteOrderItemRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHasPrice() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4021 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+
+    // Act
+    validateAddRequestActivity2.hasPrice(new NonDiscreteOrderItemRequestDTO());
   }
 
   /**
@@ -1341,6 +1987,43 @@ public class ValidateAddRequestActivityDiffblueTest {
 
     // Act and Assert
     assertFalse(validateAddRequestActivity.hasPrice(new NonDiscreteOrderItemRequestDTO()));
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#hasSameCurrency(OrderItemRequestDTO, CartOperationRequest, Sku)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#hasSameCurrency(OrderItemRequestDTO, CartOperationRequest, Sku)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testHasSameCurrency() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4060 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+    OrderItemRequestDTO orderItemRequestDTO = new OrderItemRequestDTO();
+    NullOrderImpl order = new NullOrderImpl();
+    CartOperationRequest request = new CartOperationRequest(order, new OrderItemRequestDTO(), true);
+
+    // Act
+    validateAddRequestActivity2.hasSameCurrency(orderItemRequestDTO, request, new SkuImpl());
   }
 
   /**
@@ -1575,5 +2258,39 @@ public class ValidateAddRequestActivityDiffblueTest {
 
     // Act and Assert
     assertTrue(validateAddRequestActivity.hasSameCurrency(orderItemRequestDTO, request, new SkuImpl()));
+  }
+
+  /**
+   * Test
+   * {@link ValidateAddRequestActivity#validateIfParentOrderItemExists(OrderItemRequestDTO)}.
+   * <p>
+   * Method under test:
+   * {@link ValidateAddRequestActivity#validateIfParentOrderItemExists(OrderItemRequestDTO)}
+   */
+  @Test
+  @Ignore("TODO: Complete this test")
+  public void testValidateIfParentOrderItemExists() {
+    // TODO: Diffblue Cover was only able to create a partial test for this method:
+    //   Reason: Missing beans when creating Spring context.
+    //   Failed to create Spring context due to missing beans
+    //   in the current Spring profile:
+    //   when running class:
+    //   package org.broadleafcommerce.core.order.service.workflow.add;
+    //   @org.springframework.test.context.ContextConfiguration(locations = {"/bl-framework-applicationContext-entity.xml","/bl-framework-applicationContext-persistence.xml","/bl-framework-applicationContext-workflow.xml","/bl-framework-applicationContext.xml","/blc-config/admin/framework/bl-framework-admin-applicationContext.xml","/blc-config/site/framework/bl-framework-applicationContext.xml"})
+    //   @org.junit.runner.RunWith(value = org.springframework.test.context.junit4.SpringRunner.class) // if JUnit 4
+    //   @org.junit.jupiter.api.extension.ExtendWith(value = org.springframework.test.context.junit.jupiter.SpringExtension.class) // if JUnit 5
+    //   public class DiffblueFakeClass4154 {
+    //     @org.springframework.beans.factory.annotation.Autowired org.broadleafcommerce.core.order.service.workflow.add.ValidateAddRequestActivity validateAddRequestActivity;
+    //     @org.junit.Test // if JUnit 4
+    //     @org.junit.jupiter.api.Test // if JUnit 5
+    //     public void testSpringContextLoads() {}
+    //   }
+    //   See https://diff.blue/R027 to resolve this issue.
+
+    // Arrange
+    ValidateAddRequestActivity validateAddRequestActivity2 = new ValidateAddRequestActivity();
+
+    // Act
+    validateAddRequestActivity2.validateIfParentOrderItemExists(new OrderItemRequestDTO());
   }
 }
