@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-
-    <name>BroadleafCommerce</name>
+    <modelVersion>4.0.0</modelVersion>    <name>BroadleafCommerce</name>
     <description>BroadleafCommerce Top Level Project</description>
     <groupId>org.broadleafcommerce</groupId>
     <artifactId>broadleaf</artifactId>
     <version>6.2.12-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <url>https://www.broadleafcommerce.com/</url>
-
-    <licenses>
+    <url>https://www.broadleafcommerce.com/</url>    <licenses>
         <license>
             <name>Broadleaf Fair Use 1.0</name>
             <url>http://license.broadleafcommerce.org/fair_use_license-1.0.txt</url>
@@ -235,14 +231,23 @@
                 <configuration>
                     <failWhenNoMutations>false</failWhenNoMutations>
                     <targetTests>
-                        <param>**DiffblueTest</param>
+                        <param>**DiffblueTest*</param>
                     </targetTests>
-                    <argLine>
-                        --add-opens java.base/java.lang=ALL-UNNAMED
-                    </argLine>
+                    <exportLineCoverage>true</exportLineCoverage>
+                    <outputFormats>
+                        <value>XML</value>
+                        <value>HTML</value>
+                    </outputFormats>
+                    <timestampedReports>false</timestampedReports>
                 </configuration>
-
-<!--                <dependencies>-->
+                <executions>
+                    <execution>
+                        <id>run-mutation-tests</id>
+                        <goals>
+                            <goal>mutationCoverage</goal>
+                        </goals>
+                    </execution>
+                </executions><!--                <dependencies>-->
 <!--                    <dependency>-->
 <!--                        <groupId>org.pitest</groupId>-->
 <!--                        <artifactId>pitest-junit5-plugin</artifactId>-->
@@ -400,6 +405,7 @@
         <module>core</module>
         <module>integration</module>
         <module>admin</module>
+        <module>mutation-aggregation</module>
     </modules>
     <dependencies>
         <dependency>
@@ -610,9 +616,7 @@
                 <version>${project.version}</version>
                 <classifier>tests</classifier>
                 <scope>test</scope>
-            </dependency>
-
-            <!-- Hibernate Libraries -->
+            </dependency>            <!-- Hibernate Libraries -->
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-envers</artifactId>
@@ -665,9 +669,7 @@
                         <artifactId>jboss-logging</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <!-- Commons Libraries -->
+            </dependency>            <!-- Commons Libraries -->
             <dependency>
                 <groupId>commons-validator</groupId>
                 <artifactId>commons-validator</artifactId>
@@ -750,9 +752,7 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>3.13.0</version>
-            </dependency>
-
-            <!-- Logging -->
+            </dependency>            <!-- Logging -->
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-bom</artifactId>
@@ -765,9 +765,7 @@
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
                 <version>1.4.7</version>
-            </dependency>
-
-            <!-- Java EE APIs removed from JDK in Java 9 -->
+            </dependency>            <!-- Java EE APIs removed from JDK in Java 9 -->
             <dependency>
                 <groupId>javax.annotation</groupId>
                 <artifactId>javax.annotation-api</artifactId>
@@ -792,9 +790,7 @@
                 <groupId>com.sun.xml.ws</groupId>
                 <artifactId>jaxws-rt</artifactId>
                 <version>${sunxml.version}</version>
-            </dependency>
-
-            <!-- XML Libraries -->
+            </dependency>            <!-- XML Libraries -->
             <dependency>
                 <groupId>org.apache.xmlbeans</groupId>
                 <artifactId>xmlbeans</artifactId>
@@ -809,9 +805,7 @@
                         <artifactId>log4j-core</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <!-- Allow JAXB Annotations with Jackson -->
+            </dependency>            <!-- Allow JAXB Annotations with Jackson -->
             <dependency>
                 <groupId>com.fasterxml.jackson.module</groupId>
                 <artifactId>jackson-module-jaxb-annotations</artifactId>
@@ -845,17 +839,13 @@
                 <artifactId>geronimo-jms_1.1_spec</artifactId>
                 <version>1.1.1</version>
                 <scope>compile</scope>
-            </dependency>
-
-            <!-- Servlet API -->
+            </dependency>            <!-- Servlet API -->
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>4.0.1</version>
                 <scope>provided</scope>
-            </dependency>
-
-            <!-- Testing Libraries -->
+            </dependency>            <!-- Testing Libraries -->
             <dependency>
                 <groupId>com.icegreen</groupId>
                 <artifactId>greenmail</artifactId>
@@ -904,9 +894,7 @@
                 <artifactId>spock-core</artifactId>
                 <version>${spock.core.version}</version>
                 <scope>test</scope>
-            </dependency>
-
-            <!-- Search Related Libraries -->
+            </dependency>            <!-- Search Related Libraries -->
             <dependency>
                 <groupId>org.apache.solr</groupId>
                 <artifactId>solr-solrj</artifactId>
@@ -981,49 +969,37 @@
                 <groupId>net.bytebuddy</groupId>
                 <artifactId>byte-buddy</artifactId>
                 <version>1.14.3</version>
-            </dependency>
-
-            <!--Scheduling Libraries -->
+            </dependency>            <!--Scheduling Libraries -->
             <dependency>
                 <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz</artifactId>
                 <version>2.3.2</version>
                 <type>jar</type>
                 <scope>compile</scope>
-            </dependency>
-
-            <!-- Rules Engine Libraries -->
+            </dependency>            <!-- Rules Engine Libraries -->
             <dependency>
                 <groupId>org.mvel</groupId>
                 <artifactId>mvel2</artifactId>
                 <version>2.4.3.Final</version>
-            </dependency>
-
-            <!--Regular Expression Libraries -->
+            </dependency>            <!--Regular Expression Libraries -->
             <dependency>
                 <groupId>jakarta-regexp</groupId>
                 <artifactId>jakarta-regexp</artifactId>
                 <version>1.4</version>
                 <type>jar</type>
                 <scope>runtime</scope>
-            </dependency>
-
-            <!--Cache Libraries -->
+            </dependency>            <!--Cache Libraries -->
             <dependency>
                 <groupId>org.ehcache</groupId>
                 <artifactId>ehcache</artifactId>
                 <version>${ehcache3.version}</version>
                 <optional>true</optional>
-            </dependency>
-
-            <!--Spring Libraries -->
+            </dependency>            <!--Spring Libraries -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
                 <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
+            </dependency>            <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
                 <version>${spring.version}</version>
@@ -1073,9 +1049,7 @@
                 <artifactId>spring-test</artifactId>
                 <version>${spring.version}</version>
                 <scope>test</scope>
-            </dependency>
-
-            <dependency>
+            </dependency>            <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
                 <version>${spring.boot.version}</version>
@@ -1111,9 +1085,7 @@
                         <artifactId>spring-web</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <!-- Spring Security -->
+            </dependency>            <!-- Spring Security -->
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-acl</artifactId>
@@ -1309,9 +1281,7 @@
                         <artifactId>spring-context</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <!--Persistence Libraries -->
+            </dependency>            <!--Persistence Libraries -->
             <dependency>
                 <groupId>commons-pool</groupId>
                 <artifactId>commons-pool</artifactId>
@@ -1325,9 +1295,7 @@
                 <version>2.7.1</version>
                 <classifier>jdk8</classifier>
                 <scope>test</scope>
-            </dependency>
-
-            <!--Other -->
+            </dependency>            <!--Other -->
             <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
@@ -1438,9 +1406,7 @@
                 <groupId>org.codehaus.jettison</groupId>
                 <artifactId>jettison</artifactId>
                 <version>1.5.4</version>
-            </dependency>
-
-            <dependency>
+            </dependency>            <dependency>
                 <groupId>com.yahoo.platform.yui</groupId>
                 <artifactId>yuicompressor</artifactId>
                 <version>2.4.8</version>
