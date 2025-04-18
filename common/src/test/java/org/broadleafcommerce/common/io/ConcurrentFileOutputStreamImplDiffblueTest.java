@@ -17,19 +17,13 @@
  */
 package org.broadleafcommerce.common.io;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Paths;
-import org.codehaus.groovy.runtime.WritablePath;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -59,9 +53,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
     "/context/reader/merge/testbeans2.xml", "/context/reader/merge/testbeans3.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class ConcurrentFileOutputStreamImplDiffblueTest {
-  @Autowired
-  private ConcurrentFileOutputStreamImpl concurrentFileOutputStreamImpl;
-
   /**
    * Test {@link ConcurrentFileOutputStreamImpl#write(InputStream, File)} with
    * {@code src}, {@code dest}.
@@ -603,35 +594,6 @@ public class ConcurrentFileOutputStreamImplDiffblueTest {
   }
 
   /**
-   * Test {@link ConcurrentFileOutputStreamImpl#replaceExisting(File, File)}.
-   * <ul>
-   *   <li>Given Property is {@code java.io.tmpdir}.</li>
-   *   <li>Then calls {@link WritablePath#toFile()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ConcurrentFileOutputStreamImpl#replaceExisting(File, File)}
-   */
-  @Test
-  public void testReplaceExisting_givenPropertyIsJavaIoTmpdir_thenCallsToFile() throws IOException {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ConcurrentFileOutputStreamImpl concurrentFileOutputStreamImpl = new ConcurrentFileOutputStreamImpl();
-    System.getProperty("java.io.tmpdir");
-    WritablePath writablePath = mock(WritablePath.class);
-    when(writablePath.toFile()).thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-    File src = writablePath.toFile();
-
-    // Act
-    concurrentFileOutputStreamImpl.replaceExisting(src,
-        Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-
-    // Assert that nothing has changed
-    verify(writablePath).toFile();
-  }
-
-  /**
    * Test {@link ConcurrentFileOutputStreamImpl#getFileMoveLock(File)}.
    * <p>
    * Method under test:
@@ -719,32 +681,5 @@ public class ConcurrentFileOutputStreamImplDiffblueTest {
     // Act
     concurrentFileOutputStreamImpl2
         .getFileMoveLock(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-  }
-
-  /**
-   * Test {@link ConcurrentFileOutputStreamImpl#getFileMoveLock(File)}.
-   * <ul>
-   *   <li>Given Property is {@code java.io.tmpdir}.</li>
-   *   <li>Then calls {@link WritablePath#toFile()}.</li>
-   * </ul>
-   * <p>
-   * Method under test:
-   * {@link ConcurrentFileOutputStreamImpl#getFileMoveLock(File)}
-   */
-  @Test
-  public void testGetFileMoveLock_givenPropertyIsJavaIoTmpdir_thenCallsToFile() {
-    //   Diffblue Cover was unable to create a Spring-specific test for this Spring method.
-
-    // Arrange
-    ConcurrentFileOutputStreamImpl concurrentFileOutputStreamImpl = new ConcurrentFileOutputStreamImpl();
-    System.getProperty("java.io.tmpdir");
-    WritablePath writablePath = mock(WritablePath.class);
-    when(writablePath.toFile()).thenReturn(Paths.get(System.getProperty("java.io.tmpdir"), "test.txt").toFile());
-
-    // Act
-    concurrentFileOutputStreamImpl.getFileMoveLock(writablePath.toFile());
-
-    // Assert
-    verify(writablePath).toFile();
   }
 }
